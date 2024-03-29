@@ -1,23 +1,21 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+// LoginForm.js
+import React, { useState, useContext } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import Logo from '../Images/Logo';
 import Bgg from '../Images/Bgg';
 import { FaRegUser } from "react-icons/fa";
 import { MdOutlinePassword } from "react-icons/md";
 import { toast } from 'react-hot-toast';
-import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-
+import { UserContext } from '../Context/UserContext';
 
 function LoginForm() {
-  //
   const navigate = useNavigate();
+  const { setUser } = useContext(UserContext);
   const [data, setData] = useState({
     email: '',
     password: ''
   });
-
- 
 
   const loginUser = async (e) => {
     e.preventDefault();
@@ -32,9 +30,8 @@ function LoginForm() {
         toast.error(userData.error);
       } else {
         setData({ email: '', password: '' }); // Clear input fields
+        setUser(userData); // Set user data in context
         const role = userData.role; // Extract role from response data
-        
-     
         
         // Redirect based on role
         switch (role) {
@@ -62,10 +59,9 @@ function LoginForm() {
       console.error('Error logging in:', error);
     }
   };
-  //
+
   return (
     <div className='flex h-screen'>
-
       {/* Left Section */}
       <section className='flex md:w-full lg:w-full'>
         <div className='w-full px-4 md:px-12 lg:px-24 my-14 '>
