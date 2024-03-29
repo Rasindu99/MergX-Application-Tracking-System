@@ -1,5 +1,5 @@
 import React  from 'react';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import {  Route, Routes } from 'react-router-dom';
 import './App.css';
 import Login from './Pages/Login';
 import ForgetPassword from './Pages/ForgetPassword';
@@ -19,6 +19,7 @@ import Interviewerdash from './Pages/interviewer/Interviewerdash';
 import Hiringmanagerdash from './Pages/hiring manager/Hiringmanagerdash';
 import Candidatedash from './Pages/candidate/Candidatedash';
 import Register from './Pages/Register';
+import UserContextProvider from './Context/UserContext';
 
 axios.defaults.baseURL = 'http://localhost:8000';
 axios.defaults.withCredentials = true
@@ -30,8 +31,10 @@ function App() {
   
   return (
     <div className="App">
+
+      <UserContextProvider>
       <Toaster position='bottom-right' toastOptions={{duration: 3000}}></Toaster>
-      <BrowserRouter>
+      
         <Routes>
           
           <Route  path='/'element={<Login/>}> </Route>
@@ -47,7 +50,9 @@ function App() {
           <Route path='/hiringmanagerdash'element={<Hiringmanagerdash/>}></Route>
           <Route path='/candidatedash' element={<Candidatedash/>}></Route>
         </Routes>
-      </BrowserRouter>
+
+        </UserContextProvider>
+      
 
       
     </div>

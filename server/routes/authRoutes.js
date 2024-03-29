@@ -14,8 +14,7 @@ router.use(
 // Routes
 router.post('/register', registerUser);
 router.post('/login', loginUser);
-router.get('/profile', getprofile)
-
+router.get('/profile', getprofile);
 // Protected route with logging
 //router.get('/protected-route', ProtectedRoute);
 

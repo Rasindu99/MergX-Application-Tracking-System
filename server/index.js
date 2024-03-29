@@ -4,13 +4,14 @@ const dotenv = require('dotenv').config(); // Configuration management
 const cors = require('cors'); // Middleware for enabling CORS
 const mongoose = require('mongoose'); // MongoDB ORM
 const cookieParser = require('cookie-parser'); // Middleware for parsing cookies
+const JWT = require('jsonwebtoken')
 
 // Creating an instance of express application
 const app = express();
 
 // Connecting to the database
 mongoose
-  .connect(process.env.MONGO_URL)
+  .connect(process.env.REACT_APP_MONGO_URL)
   .then(() => console.log('Database connected'))
   .catch((err) => console.log('Database not connected', err));
 
