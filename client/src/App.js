@@ -20,6 +20,13 @@ import Hiringmanagerdash from './Pages/hiring manager/Hiringmanagerdash';
 import Candidatedash from './Pages/candidate/Candidatedash';
 import Register from './Pages/Register';
 import UserContextProvider from './Context/UserContext';
+import CreateNewUser from './Pages/admin/CreateNewUser'
+import ModifyUserAccount from './Pages/admin/ModifyUserAccount';
+
+import RoleAssignment from './Pages/admin/RoleAssignment';
+import AccessControl from './Pages/admin/AccessControl';
+import SystemSettings from './Pages/admin/SystemSettings';
+import DeleteUserAccount from './Pages/admin/DeleteUserAccount';
 
 axios.defaults.baseURL = 'http://localhost:8000';
 axios.defaults.withCredentials = true
@@ -49,6 +56,14 @@ function App() {
           <Route path='/interviewerdash' element={<Interviewerdash/>}></Route>
           <Route path='/hiringmanagerdash'element={<Hiringmanagerdash/>}></Route>
           <Route path='/candidatedash' element={<Candidatedash/>}></Route>
+
+          <Route path='/admincreateuser' element={<CreateNewUser/>}/>
+          <Route path='/adminmodifyuser' element={<ModifyUserAccount/>}/>
+          <Route path='/admindeleteuser' element={<DeleteUserAccount/>}/>
+          <Route path='/adminroleassignment' element={<RoleAssignment/>}/>
+          <Route path='/adminaccesscontrol' element={<AccessControl/>}/>
+          <Route path='/adminsystemsettings' element={<SystemSettings/>}/>
+  
         </Routes>
 
         </UserContextProvider>

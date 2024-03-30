@@ -1,17 +1,18 @@
 import React from 'react'
 import AdminNav from '../../Components/admincomp/AdminNav'
 
-export default function CreateNewUser() {
+export default function SystemSettings() {
   return (
     <div>
-      <div className='flex'>
+        <div className='flex'>
             <div>
                 <AdminNav/>
             </div>
             <div>
-                <h1>Create new user</h1>
+                <h1>System Settings</h1>
             </div>
         </div>
+      
     </div>
   )
 }
