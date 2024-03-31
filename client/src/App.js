@@ -14,7 +14,7 @@ import NewCandidateCreateAccount from './Pages/NewCandidateCreateAccount';
 import {Toaster} from 'react-hot-toast'
 
 import Admindash from './Pages/admin/Admindash';
-import Recruiterdash from './Pages/recruiter/Recruiterdash';
+import RecruiterDash from './Pages/recruiter/RecruiterDash';
 import Interviewerdash from './Pages/interviewer/Interviewerdash';
 import Hiringmanagerdash from './Pages/hiring manager/Hiringmanagerdash';
 import Candidatedash from './Pages/candidate/Candidatedash';
@@ -27,6 +27,13 @@ import RoleAssignment from './Pages/admin/RoleAssignment';
 import AccessControl from './Pages/admin/AccessControl';
 import SystemSettings from './Pages/admin/SystemSettings';
 import DeleteUserAccount from './Pages/admin/DeleteUserAccount';
+
+import RecruiterLayout from './Components/recruitercomp/RecruiterLayout';
+import JobPosting from './Pages/recruiter/JobPosting';
+import CandidateCommunication from './Pages/recruiter/CandidateCommunication';
+import ApplicationManagement from './Pages/recruiter/ApplicationManagement';
+import CandidateAssessment from './Pages/recruiter/CandidateAssessment';
+import Message from './Pages/recruiter/Message';
 
 axios.defaults.baseURL = 'http://localhost:8000';
 axios.defaults.withCredentials = true
@@ -52,7 +59,14 @@ function App() {
           
           <Route path='/admindash' element={<Admindash/> }></Route>
          
-          <Route path='/recruiterdash' element={<Recruiterdash/>}></Route>
+          <Route path='/recruiterdash' element={<RecruiterLayout />}>
+            <Route index element={<RecruiterDash />} />
+            <Route path="JobPosting" element={<JobPosting />} />
+            <Route path="CandidateCommunication" element={<CandidateCommunication />} />
+            <Route path="ApplicationManagement" element={<ApplicationManagement />} />
+            <Route path="CandidateAssessment" element={<CandidateAssessment />} />
+            <Route path="Message" element={<Message />} />
+          </Route>
           <Route path='/interviewerdash' element={<Interviewerdash/>}></Route>
           <Route path='/hiringmanagerdash'element={<Hiringmanagerdash/>}></Route>
           <Route path='/candidatedash' element={<Candidatedash/>}></Route>
