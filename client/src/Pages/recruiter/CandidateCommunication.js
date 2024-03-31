@@ -91,7 +91,7 @@ export default function CandidateCommunication() {
 
             {showAddStatus && (
                 <div
-                    className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-50 "
+                    className="fixed inset-0 z-50 flex items-center justify-center bg-gray-800 bg-opacity-50 "
                     style={{overflowY: "scroll"}}
                 >
                     <div
@@ -303,7 +303,7 @@ export default function CandidateCommunication() {
 
             {showAddAnnoucement && (
                 <div
-                    className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-50 "
+                    className="fixed inset-0 z-50 flex items-center justify-center bg-gray-800 bg-opacity-50 "
                     style={{}}
                 >
                     <div
@@ -479,7 +479,7 @@ export default function CandidateCommunication() {
 
             {showSendInvitation && (
                 <div
-                    className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-50 "
+                    className="fixed inset-0 z-50 flex items-center justify-center bg-gray-800 bg-opacity-50 "
                     style={{}}
                 >
                     <div

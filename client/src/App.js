@@ -14,7 +14,7 @@ import NewCandidateCreateAccount from './Pages/NewCandidateCreateAccount';
 import {Toaster} from 'react-hot-toast'
 
 import Admindash from './Pages/admin/Admindash';
-import RecruiterDash from './Pages/recruiter/RecruiterDash';
+//import Recruiterdash from './Pages/recruiter/Recruiterdash';
 import Interviewerdash from './Pages/interviewer/Interviewerdash';
 import Hiringmanagerdash from './Pages/hiring manager/Hiringmanagerdash';
 import Candidatedash from './Pages/candidate/Candidatedash';
@@ -58,9 +58,8 @@ function App() {
           <Route  path='/register'element={ <Register/>}> </Route>
           
           <Route path='/admindash' element={<Admindash/> }></Route>
-         
           <Route path='/recruiterdash' element={<RecruiterLayout />}>
-            <Route index element={<RecruiterDash />} />
+            
             <Route path="JobPosting" element={<JobPosting />} />
             <Route path="CandidateCommunication" element={<CandidateCommunication />} />
             <Route path="ApplicationManagement" element={<ApplicationManagement />} />
