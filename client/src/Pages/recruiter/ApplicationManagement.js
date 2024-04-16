@@ -12,9 +12,6 @@ export default function ApplicationManagement() {
               <p className='text-center text-[#FFFFFF]' style={{ width: '100%', backgroundColor: '#1E1E1E', padding: '5px' }}>Short List</p>
                <div style={{paddingTop:'20px'}}>
                 <SinglePosition position='Software Engineer' time='5' applications='10' />
-                <SinglePosition position='Software Engineer' time='5' applications='10' />
-                <SinglePosition position='Software Engineer' time='5' applications='10' />
-                <SinglePosition position='Software Engineer' time='5' applications='10' />
                </div>
               </div>
             </div>
@@ -23,23 +20,18 @@ export default function ApplicationManagement() {
               <p className='text-center text-[#FFFFFF]' style={{ width: '100%', backgroundColor: '#1E1E1E', padding: '25px' }}>New</p>
               <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', marginTop: '1.5em' }}>
                 <div style={{ marginBottom: '0.5em' }}><PostTag name='Rasindu' post='Software Engineer' ></PostTag></div>
-                <div style={{ marginBottom: '0.5em' }}><PostTag name='Piyushan' post='UI Designer' ></PostTag></div>
-                <div style={{ marginBottom: '0.5em' }}><PostTag name='Gangamina' post='Software Engineer' ></PostTag></div>
               </div>
             </div>
             <div style={{ width: '25%', borderImage: 'linear-gradient(to bottom, #383838,rgb(56, 56, 56,0)) 1', borderStyle: 'solid', borderWidth: '0px 3px 0px 0px' }}>
               <p className='text-center text-[#FFFFFF]' style={{ width: '100%', backgroundColor: '#1E1E1E', padding: '25px' }}>Rejected</p>
               <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', marginTop: '1.5em' }}>
                 <div style={{ marginBottom: '0.5em' }}><PostTag name='Rasindu' post='Software Engineer' ></PostTag></div>
-
               </div>
             </div>
             <div style={{ width: '25%' }}>
               <p className='text-center text-[#FFFFFF]' style={{ width: '100%', backgroundColor: '#1E1E1E', padding: '25px' , borderTopRightRadius:'30px'}}>Accepted</p>
               <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', marginTop: '1.5em' }}>
                 <div style={{ marginBottom: '0.5em' }}><PostTag name='Rasindu' post='Software Engineer' ></PostTag></div>
-                <div style={{ marginBottom: '0.5em' }}><PostTag name='Piyushan' post='UI Designer' ></PostTag></div>
-
               </div>
             </div>
           </div>

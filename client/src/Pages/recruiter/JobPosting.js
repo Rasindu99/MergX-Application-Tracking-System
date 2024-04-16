@@ -283,7 +283,7 @@ function ApprovedJobs() {
                     <Card title="Now Available Vacancies" value="00" />
                 </div>
 
-                <div style={{ display: 'flex', width: '100%', justifyContent: ' center', paddingBottom: '1rem' }}>
+                <div style={{ display: 'flex', width: '100%', justifyContent: ' center', paddingBottom: '1rem', paddingTop:'1rem' }}>
                     <div style={{ marginRight: '1em' }}>Expired Tag</div>
                     <div style={{marginRight: '1em'}}>-</div>
 

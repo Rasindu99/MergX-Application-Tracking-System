@@ -18,14 +18,10 @@ export default function CandidateAssessment() {
             <div className='candidates flex flex-col gap-[10px] bg-[#1E1E1E] rounded-[30px] esm:p-[10px] 450px:p-[15px] sm:p-[25px] h-[110vh] sm:w-auto 450px:w-[165px] 500px:w-[175px] esm:w-[140px]'>
               <p className='text-center text-[#FFFFFF] esm:p-[4px] 450px:p-[6px] sm:p-[10px] font-general-sans pt-[0px]'>Interviewed Candidates</p>
               <PostTag name='Rasindu' post='Software Engineer' ></PostTag>
-              <PostTag name='Piyushan' post='UI Designer' ></PostTag>
-              <PostTag name='Gangamina' post='Software Engineer' ></PostTag>
-              <PostTag name='Pabasara' post='Software Engineer' ></PostTag>
-
             </div>
           </div>
           <div style={{ width: '75%' }}>
-            <div className='details ' style={{ color: '#fff', marginTop: '2em',paddingLeft: '2em' }}>
+            <div className='details ' style={{ color: '#fff', marginTop: '2em',paddingLeft: '2em', textAlign:'left' }}>
               <p style={{ paddingBottom: '0.5em' }}>Rasindu Ranavaka</p>
               <p style={{ paddingBottom: '0.5em' }}>Software Engineer</p>
               <p style={{ paddingBottom: '0.5em' }}>Interviewers : W.K.Piyushan</p>
