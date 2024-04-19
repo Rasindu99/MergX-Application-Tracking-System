@@ -4,7 +4,7 @@ import Logout from '../../Components/Logout'
 export default function Candidatedash() {
   return (
     <div>
-      <h1 className='text-5xl'>candidate 123</h1>
+      <h1 className='text-5xl'>R G R SANDEEP</h1>
       <div className='pt-12'>
         <Logout/>
       </div>
