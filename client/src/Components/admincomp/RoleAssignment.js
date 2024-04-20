@@ -55,7 +55,7 @@ export default function RoleAssignment({ visible, onClose, user }) {
 
     return (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-30 backdrop-filter backdrop-blur-sm">
-            <div className="bg-[#19191A] p-6 rounded-lg shadow-lg h-[800px] w-[500px] border-orange-700 border-[1px]">
+            <div className="bg-[#19191A] p-6 rounded-lg shadow-lg h-[500px] w-[500px] border-orange-700 border-[1px]">
                 <button
                     className="absolute px-4 py-2 text-white bg-gray-700 rounded-md top-4 right-4 hover:bg-gray-600 size-12"
                     onClick={onClose}
@@ -64,21 +64,27 @@ export default function RoleAssignment({ visible, onClose, user }) {
                 </button>
 
                 <div>
-                    <div>
-                        <h1>Select Role</h1>
+                    <div className=''>
+                        <h1 className='text-2xl text-orange-600'>Select Role</h1>
                     </div>
-                    <div className='flex justify-center border'>
+                    <div className='flex justify-center pt-2'>
                         <img src={user.image} alt='' className='w-[150px] h-[150px] rounded-full border-[2px]' />
                     </div>
-                    <div>
+                    <div className='pt-4'>
+                        <h1 className='text-[13px] text-orange-500'>{user._id}</h1>
                         <h1>{user.fname} {user.lname}</h1>
-                        <label>{user.role}</label>
+                        <label className=' opacity-40'>{user.role}</label>
+                        
                     </div>
                 </div>
                 <div>
                     <form onSubmit={handleSubmit}>
-                        <div className='text-left'>
-                            <label>Select role</label>
+                        <div className='flex justify-center pt-6'>
+                            <div className='text-start'>
+                            <div>
+                                <label className='opacity-45'>Select Role :</label> 
+                            </div>
+                            
                             <div>
                                 <select
                                     name='role'
@@ -87,15 +93,17 @@ export default function RoleAssignment({ visible, onClose, user }) {
                                     onChange={handleRoleChange}
                                 >
                                     
-                                    <option value='admin'>Admin</option>
-                                    <option value='recruiter'>Recruiter</option>
-                                    <option value='hiring manager'>Hiring Manager</option>
-                                    <option value='interviewer'>Interviewer</option>
-                                    <option value='candidate'>Candidate</option>
+                                        <option value='admin' className='text-white bg-black bg-opacity-90'>Admin</option>
+                                        <option value='recruiter' className='text-white bg-black bg-opacity-90'>Recruiter</option>
+                                        <option value='hiring manager' className='text-white bg-black bg-opacity-90' >Hiring Manager</option>
+                                        <option value='interviewer' className='text-white bg-black bg-opacity-90' >Interviewer</option>
+                                        <option value='candidate' className='text-white bg-black bg-opacity-90' >Candidae</option>
                                 </select>
                             </div>
+                            </div>
+                            
                         </div>
-                        <div>
+                        <div className='pt-6'>
                             <button type="submit" className="px-4 py-2 font-bold text-white bg-orange-600 rounded hover:bg-orange-400">
                                 Save
                             </button>
