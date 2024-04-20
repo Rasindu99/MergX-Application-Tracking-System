@@ -3,9 +3,9 @@ import { Link, useLocation } from 'react-router-dom';
 import { UserContext } from '../../Context/UserContext';
 import { MdDashboard } from 'react-icons/md';
 import { IoPersonAddSharp } from 'react-icons/io5';
-import { TiUserDelete } from 'react-icons/ti';
+
 import { FaUserEdit } from 'react-icons/fa';
-import { MdOutlineAssessment } from 'react-icons/md';
+
 import { CiLogout } from 'react-icons/ci';
 import { DiAptana } from 'react-icons/di';
 import { SiPrivateinternetaccess } from 'react-icons/si';
@@ -27,17 +27,12 @@ export default function AdminNav() {
             case '/adminmodifyuser':
                 setActiveItem(3);
                 break;
-            case '/admindeleteuser':
+           
+            case '/adminaccesscontrol':
                 setActiveItem(4);
                 break;
-            case '/adminroleassignment':
-                setActiveItem(5);
-                break;
-            case '/adminaccesscontrol':
-                setActiveItem(6);
-                break;
             case '/adminsystemsettings':
-                setActiveItem(7);
+                setActiveItem(5);
                 break;
             default:
                 setActiveItem(null);
@@ -55,7 +50,7 @@ export default function AdminNav() {
 
                 <div className='pt-4 pb-8'>
                     {!!user && <h1> {user?.fname} {user?.lname}</h1>}
-                    {!!user && <h1> {user.role} </h1>}
+                    {!!user && <h1 className='opacity-40'> {user.role} </h1>}
                 </div>
             </div>
 
@@ -90,25 +85,10 @@ export default function AdminNav() {
                                 </div>
                             </li>
                         </Link>
-                        <Link to='/admindeleteuser' className='no-underline'>
-                            <li>
-                                <div className={`flex items-center py-3 pl-8 hover:bg-gray-100 hover:bg-opacity-10 ${activeItem === 4 ? 'bg-[#BABABA] bg-opacity-20 text-white' : 'text-gray-100 hover:bg-gray-300 hover:text-white'}`}>
-                                    <div className='mr-8'><TiUserDelete size={20} className="opacity-25 sm:w-6 sm:h-6" /></div>
-                                    <div><label className='text-white opacity-25' style={{ fontSize: '18px' }}>Delete User Account</label></div>
-                                </div>
-                            </li>
-                        </Link>
-                        <Link to='/adminroleassignment' className='no-underline'>
-                            <li>
-                                <div className={`flex items-center py-3 pl-8 hover:bg-gray-100 hover:bg-opacity-10 ${activeItem === 5 ?'bg-[#BABABA] bg-opacity-20 text-white' : 'text-gray-100 hover:bg-gray-300 hover:text-white'}`}>
-                                    <div className='mr-8'><MdOutlineAssessment size={20} className="opacity-25 sm:w-6 sm:h-6" /></div>
-                                    <div><label className='text-white opacity-25' style={{ fontSize: '18px' }}>Role Assignment</label></div>
-                                </div>
-                            </li>
-                        </Link>
+                        
                         <Link to='/adminaccesscontrol' className='no-underline'>
                             <li>
-                                <div className={`flex items-center py-3 pl-8 hover:bg-gray-100 hover:bg-opacity-10 ${activeItem === 6 ?'bg-[#BABABA] bg-opacity-20 text-white' : 'text-gray-100 hover:bg-gray-300 hover:text-white'}`}>
+                                <div className={`flex items-center py-3 pl-8 hover:bg-gray-100 hover:bg-opacity-10 ${activeItem === 4 ?'bg-[#BABABA] bg-opacity-20 text-white' : 'text-gray-100 hover:bg-gray-300 hover:text-white'}`}>
                                     <div className='mr-8'><SiPrivateinternetaccess size={20} className="opacity-25 sm:w-6 sm:h-6 hover:text-white" /></div>
                                     <div><label className='text-white opacity-25 hover:text-white' style={{ fontSize: '18px' }}>Access Control</label></div>
                                 </div>
@@ -116,7 +96,7 @@ export default function AdminNav() {
                         </Link>
                         <Link to='/adminsystemsettings' className='no-underline'>
                             <li>
-                                <div className={`flex items-center py-3 pl-8 hover:bg-gray-100 hover:bg-opacity-10 ${activeItem === 7 ? 'bg-[#BABABA] bg-opacity-20 text-white' : 'text-gray-100 hover:bg-gray-300 hover:text-white'}`}>
+                                <div className={`flex items-center py-3 pl-8 hover:bg-gray-100 hover:bg-opacity-10 ${activeItem === 5 ? 'bg-[#BABABA] bg-opacity-20 text-white' : 'text-gray-100 hover:bg-gray-300 hover:text-white'}`}>
                                     <div className='mr-8'><DiAptana size={20} className="opacity-25 sm:w-6 sm:h-6 hover:text-white" /></div>
                                     <div><label className='text-white opacity-25 hover:text-white' style={{ fontSize: '18px' }}>System Settings</label></div>
                                 </div>
