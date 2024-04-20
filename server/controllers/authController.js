@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 const { hashPassword, comparePassword } = require('../helpers/auth');
+const UserModel = require('../models/user');
 
 //const multer = require('multer')
 
@@ -142,12 +143,68 @@ const getprofile = (req, res) => {
     }
 };
 
+//get all user
+const getusers = (req, res) => {
+    try {
+      UserModel.find()
+        .then(users => res.json(users))
+        .catch(error => res.json(error));
+    } catch (error) {
+     
+      res.json(error);
+    }
+  };
+
+//put
+// updateUser controller
+// updateUser controller
+const updateUser = async (req, res) => {
+    try {
+      const { userId } = req.params;
+      const { fname, lname, email, phone_number, password, role, education, bio, dob, gender, image } = req.body;
+  
+      // Check if the user exists
+      const user = await User.findById(userId);
+      if (!user) {
+        return res.status(404).json({ error: 'User not found' });
+      }
+  
+      // Update the user's information
+      user.fname = fname;
+      user.lname = lname;
+      user.email = email;
+      user.phone_number = phone_number;
+      if (password) {
+        user.password = await hashPassword(password);
+      }
+      user.role = role;
+      user.education = education;
+      user.bio = bio;
+      user.dob = dob;
+      user.gender = gender;
+      user.image = image;
+  
+      // Save the updated user
+      await user.save();
+  
+      res.json(user);
+    } catch (error) {
+      console.error('Error updating user:', error);
+      res.status(500).json({ error: 'Server error' });
+    }
+  };
+
+
 
 
 module.exports = {
     //test,
     registerUser,
     loginUser,
-    
-    getprofile
+    getusers,
+    getprofile,
+    updateUser
+   
+
+  
 };

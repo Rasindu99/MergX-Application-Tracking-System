@@ -34,6 +34,7 @@ import CandidateCommunication from './Pages/recruiter/CandidateCommunication';
 import ApplicationManagement from './Pages/recruiter/ApplicationManagement';
 import CandidateAssessment from './Pages/recruiter/CandidateAssessment';
 import Message from './Pages/recruiter/Message';
+import ViewUserCard from './Components/admincomp/ViewUserCard';
 
 axios.defaults.baseURL = 'http://localhost:8000';
 axios.defaults.withCredentials = true
@@ -76,7 +77,8 @@ function App() {
           <Route path='/adminroleassignment' element={<RoleAssignment/>}/>
           <Route path='/adminaccesscontrol' element={<AccessControl/>}/>
           <Route path='/adminsystemsettings' element={<SystemSettings/>}/>
-  
+
+          <Route path = '/userdetails' element={<ViewUserCard/>}/>
         </Routes>
 
         </UserContextProvider>
