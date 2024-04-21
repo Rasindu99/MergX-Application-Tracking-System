@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const cors = require('cors');
-const { registerUser, loginUser, getprofile } = require('../controllers/authController');
+const { registerUser, loginUser, getprofile, getusers, updateUser } = require('../controllers/authController');
+
 //const ProtectedRoute = require('./ProtectedRoute'); // Import ProtectedRoute middleware
 
 router.use(
@@ -15,6 +16,11 @@ router.use(
 router.post('/register', registerUser);
 router.post('/login', loginUser);
 router.get('/profile', getprofile);
+router.get('/getusers', getusers);
+router.put('/users/:userId', updateUser);
+
+
+
 // Protected route with logging
 //router.get('/protected-route', ProtectedRoute);
 
