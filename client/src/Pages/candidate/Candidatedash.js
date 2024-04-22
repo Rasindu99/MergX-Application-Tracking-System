@@ -1,6 +1,6 @@
 import React from 'react'
-import Sidebar from './Components/sidebar/Sidebar'
-import RightContainer from './Components/rightContainer/RightContainer'
+import Sidebar from '../../../src/Components/candidateComp/sidebar/Sidebar'
+import RightContainer from '../../../src/Components/candidateComp/rightContainer/RightContainer'
 import '../candidate/customStyle.css'
 
 

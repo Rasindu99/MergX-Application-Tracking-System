@@ -1,8 +1,8 @@
 import React from 'react'
-import Card from '../Components/LandingPage/Card'
-import AvatarBio from '../Components/LandingPage/AvatarBio'
-import Description from '../Components/LandingPage/Description'
-import Education from '../Components/LandingPage/Education'
+import Card from '../../../Components/candidateComp/LandingPage/Card'
+import AvatarBio from '../../../Components/candidateComp/LandingPage/AvatarBio'
+import Description from '../../../Components/candidateComp/LandingPage/Description'
+import Education from '../../../Components/candidateComp/LandingPage/Education'
 
 
 const LandingPage = () => {

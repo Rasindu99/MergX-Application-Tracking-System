@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import profileImg from '../../../../Images/Profile.jpg'
+import profileImg from '../../../Images/Profile.jpg'
 
 const PopUp = () => {
   const [isHovered, setIsHovered] = useState(false);

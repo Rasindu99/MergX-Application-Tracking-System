@@ -2,7 +2,7 @@ import React from 'react';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
 import { yupResolver } from '@hookform/resolvers/yup';
-import AvatarDP from '../Components/EditProfile/AvatarDP';
+import AvatarDP from '../../../Components/candidateComp/EditProfile/AvatarDP';
 import { useState, useEffect } from 'react';
 
         

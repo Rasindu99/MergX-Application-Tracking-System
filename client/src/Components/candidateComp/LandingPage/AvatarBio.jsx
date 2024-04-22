@@ -1,5 +1,5 @@
 import React from 'react';
-import img1 from '../../../../Images/Profile.jpg';
+import img1 from '../../../Images/Profile.jpg';
 
 
 const AvatarBio = () => {

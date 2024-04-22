@@ -1,5 +1,5 @@
 import React from 'react';
-import Avatar from './Avatar';
+import Avatar from '../../../Components/candidateComp/sidebar/Avatar';
 import { LuLayoutDashboard } from "react-icons/lu";
 import { TbUserEdit } from "react-icons/tb";
 import { PiCircleDashedBold } from "react-icons/pi";
