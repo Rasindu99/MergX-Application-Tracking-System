@@ -28,6 +28,14 @@ import AccessControl from './Pages/admin/AccessControl';
 import SystemSettings from './Pages/admin/SystemSettings';
 import DeleteUserAccount from './Pages/admin/DeleteUserAccount';
 
+// Candidatedash Page 
+import EditProfile from './Pages/candidate/pages/EditProfile';
+import LandingPage from './Pages/candidate/pages/LandingPage';
+import Status from './Pages/candidate/pages/Status';
+import PendingSubmission from './Pages/candidate/pages/PendingSubmission';
+import Session from './Pages/candidate/pages/Session';
+import Invitation from './Pages/candidate/pages/Invitation';
+
 import RecruiterLayout from './Components/recruitercomp/RecruiterLayout';
 import JobPosting from './Pages/recruiter/JobPosting';
 import CandidateCommunication from './Pages/recruiter/CandidateCommunication';
@@ -69,7 +77,15 @@ function App() {
           </Route>
           <Route path='/interviewerdash' element={<Interviewerdash/>}></Route>
           <Route path='/hiringmanagerdash'element={<Hiringmanagerdash/>}></Route>
-          <Route path='/candidatedash' element={<Candidatedash/>}></Route>
+
+          <Route path='/candidatedash' element={<Candidatedash/>}>
+            <Route path='editProfile' element={<EditProfile/>} />
+            <Route path='landingPage' element={<LandingPage/>} />
+            <Route path='statusPage' element={<Status/>} />
+            <Route path='submissionPage' element={<PendingSubmission/>} />
+            <Route path='sessionPage' element={<Session/>} />
+            <Route path='invitationPage' element={<Invitation/>} />
+          </Route>
 
           <Route path='/admincreateuser' element={<CreateNewUser/>}/>
           <Route path='/adminmodifyuser' element={<ModifyUserAccount/>}/>

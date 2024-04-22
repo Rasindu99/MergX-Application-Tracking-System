@@ -1,13 +1,17 @@
 import React from 'react'
-import Logout from '../../Components/Logout'
+import Sidebar from '../../../src/Components/candidateComp/sidebar/Sidebar'
+import RightContainer from '../../../src/Components/candidateComp/rightContainer/RightContainer'
+import '../candidate/customStyle.css'
+
+
+
+
 
 export default function Candidatedash() {
   return (
-    <div>
-      <h1 className='text-5xl'>candidate 123</h1>
-      <div className='pt-12'>
-        <Logout/>
+      <div className='flex'>
+        <Sidebar />
+        <RightContainer />
       </div>
-    </div>
   )
 }

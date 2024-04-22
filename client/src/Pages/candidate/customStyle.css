@@ -1,0 +1,54 @@
+.custom-heading {
+  color: blue;
+  font-size: 24px;
+  font-weight: bold;
+}
+
+.card {
+  height: 175px;
+  width: 170px;
+}
+
+.temp{
+  font-size: 50px;
+  font-weight: bold;
+  color: white;
+  margin-top: 20px;
+}
+
+.border-3 {
+  border-width: 3px;
+}
+
+
+.upload{
+  position: relative;
+}
+
+.upload .round{
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  background: rgb(234 88 12);
+  width: 35px;
+  height: 35px;
+  line-height: 32px;
+  overflow: hidden;
+  text-align: center;
+  border-radius: 50%;
+  border: 1px solid rgb(255 247 237);
+}
+
+.upload .round input[type='file'] {
+  position: absolute;
+  transform: scale(2);
+  opacity: 0;
+}
+
+input[type="file"]::-webkit-file-upload-button {
+  cursor: pointer;
+}
+
+
+
+
