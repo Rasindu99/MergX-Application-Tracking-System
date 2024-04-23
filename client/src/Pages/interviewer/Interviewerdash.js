@@ -1,16 +1,25 @@
-import React from 'react'
-import Logout from '../../Components/Logout'
+import React, { useContext } from 'react';
+import Logout from '../../Components/Logout';
+import { UserContext } from '../../Context/UserContext';
+import InterviewNav from '../../Components/interviewercomp/InterviewNav'
+import './custom.css';
+import Header from '../../Components/interviewercomp/InterviewerHeader';
 
 export default function Interviewerdash() {
+
+  const { user } = useContext(UserContext);
+
   return (
     <div>
-
-      
-
-      <h1 className='text-5xl'>Interviewer</h1>
-      <div className='pt-12'>
-        <Logout/>
+      <div className='flex'>
+        <div>
+          <InterviewNav/>
+        </div>
+        <div>
+          <Header/>
+        </div>
       </div>
     </div>
   )
 }
+

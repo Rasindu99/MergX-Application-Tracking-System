@@ -23,7 +23,7 @@ export default function Greatings() {
 
   return (
     <div>
-       {greeting}
+      <p className="text-3xl text-white text-opacity-40 font-medium">{greeting}</p>
     </div>
   )
 }

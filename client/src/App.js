@@ -44,6 +44,12 @@ import CandidateAssessment from './Pages/recruiter/CandidateAssessment';
 import Message from './Pages/recruiter/Message';
 import ViewUserCard from './Components/admincomp/ViewUserCard';
 
+import Evaluation from './Pages/interviewer/Evaluation';
+import Interview from './Pages/interviewer/InterviewPage';
+import Feedbacksubmission from './Pages/interviewer/FeedbackSubmission';
+import Scheduling from './Pages/interviewer/Scheduling';
+import InterviewMessage from './Pages/interviewer/Message';
+
 axios.defaults.baseURL = 'http://localhost:8000';
 axios.defaults.withCredentials = true
 
@@ -75,7 +81,14 @@ function App() {
             <Route path="CandidateAssessment" element={<CandidateAssessment />} />
             <Route path="Message" element={<Message />} />
           </Route>
+
           <Route path='/interviewerdash' element={<Interviewerdash/>}></Route>
+          <Route path='/interview' element={<Interview/>}></Route>
+          <Route path='/feedbacksubmission' element={<Feedbacksubmission/>}></Route>
+          <Route path='/evaluation' element={<Evaluation/>}></Route>
+          <Route path='/scheduling' element={<Scheduling/>}></Route>
+          <Route path='/message' element={<InterviewMessage/>}></Route>
+
           <Route path='/hiringmanagerdash'element={<Hiringmanagerdash/>}></Route>
 
           <Route path='/candidatedash' element={<Candidatedash/>}>
