@@ -35,5 +35,5 @@ const jobPostingSchema = new mongoose.Schema({
   }
 }, {timestamps: true});
 
-const Jobmodel = mongoose.model('JobPosting', jobPostingSchema);
-module.exports = Jobmodel;
+const JobPostingmodel = mongoose.model('JobPosting', jobPostingSchema);
+module.exports = JobPostingmodel;
