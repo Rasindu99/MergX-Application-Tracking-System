@@ -184,6 +184,7 @@ export default function CreateUserAccountForm() {
                                           <option value='interviewer' className='text-white bg-black bg-opacity-90' >Interviewer</option>
                                           <option value='candidate' className='text-white bg-black bg-opacity-90' >Candidae</option>
                                           
+                                          
                                         </select>
                                       </div>
                                     </div>

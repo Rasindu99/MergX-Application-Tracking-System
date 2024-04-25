@@ -107,12 +107,15 @@ export default function AdminNav() {
                     </ul>
                     <div className='flex items-center justify-center'>
                         <div className='pt-10 fix w-fit'>
-                            <button className='bg-[#EA7122] w-44 h-12 rounded-xl flex items-center justify-center' >
-                                <div className='flex items-center'>
-                                    <CiLogout size={24} className='mr-2 text-lg text-white ' />
-                                    <span className='text-white'>LOGOUT</span>
-                                </div>
-                            </button>
+                            <Link to='/'>
+                                <button className='bg-[#EA7122] w-44 h-12 rounded-xl flex items-center justify-center' >
+                                    <div className='flex items-center'>
+                                        <CiLogout size={24} className='mr-2 text-lg text-white ' />
+                                        <span className='text-white'>LOGOUT</span>
+                                    </div>
+                                </button>
+                            </Link>
+                            
                         </div>
                     </div>
                 </nav>

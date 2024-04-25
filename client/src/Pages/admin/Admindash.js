@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import Logout from '../../Components/Logout';
+
 import { UserContext } from '../../Context/UserContext';
 import AdminNav from '../../Components/admincomp/AdminNav';
 import Greatings from '../../Components/Greatings';
@@ -16,7 +16,7 @@ function Admindash() {
         </div>
 
         <div>
-          <Logout />
+          
           {/* Check if user exists before accessing its properties */}
           {!!user && (
             <div>
