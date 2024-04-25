@@ -1,7 +1,10 @@
-import React from 'react'
-import InterviewNav from '../../Components/interviewercomp/InterviewNav'
+import React from 'react';
+import InterviewNav from '../../Components/interviewercomp/InterviewNav';
+import Description from '../../Components/interviewercomp/InterviewerDes';
 
-export default function Message() {
+export default function Message() {  
+const name = 'Message';
+
   return (
     <div>
         <div className='flex'>
@@ -9,7 +12,7 @@ export default function Message() {
           <InterviewNav/>
         </div>
         <div>
-            <h1>Message</h1>
+          <Description name={name} />
         </div>
         </div>
 
