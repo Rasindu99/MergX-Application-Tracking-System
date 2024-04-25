@@ -1,7 +1,10 @@
 import React from 'react'
-import InterviewNav from '../../Components/interviewercomp/InterviewNav'
+import InterviewNav from '../../Components/interviewercomp/InterviewNav';
+import Description from '../../Components/interviewercomp/InterviewerDes';
 
 export default function Evaluation() {
+  const name = 'Evaluation';
+
   return (
     <div>
         <div className='flex'>
@@ -9,7 +12,7 @@ export default function Evaluation() {
           <InterviewNav/>
         </div>
         <div>
-            <h1>Evaluation</h1>
+           <Description name={name} />
         </div>
         </div>
 
