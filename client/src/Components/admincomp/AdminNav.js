@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation,  } from 'react-router-dom';
 import { UserContext } from '../../Context/UserContext';
 import { MdDashboard } from 'react-icons/md';
 import { IoPersonAddSharp } from 'react-icons/io5';
@@ -13,6 +13,7 @@ import { SiPrivateinternetaccess } from 'react-icons/si';
 export default function AdminNav() {
     const [activeItem, setActiveItem] = useState(null);
     const { user } = useContext(UserContext);
+    
     const location = useLocation();
 
     useEffect(() => {
@@ -39,6 +40,7 @@ export default function AdminNav() {
         }
     }, [location.pathname]);
 
+   
     return (
         <div className='h-screen bg-[#2B2B2B] lg:w-[320px] sm:w-fit md:w-72 w-fit'>
             <div className='pt-12'>
@@ -105,7 +107,7 @@ export default function AdminNav() {
                     </ul>
                     <div className='flex items-center justify-center'>
                         <div className='pt-10 fix w-fit'>
-                            <button className='bg-[#EA7122] w-44 h-12 rounded-xl flex items-center justify-center'>
+                            <button className='bg-[#EA7122] w-44 h-12 rounded-xl flex items-center justify-center' >
                                 <div className='flex items-center'>
                                     <CiLogout size={24} className='mr-2 text-lg text-white ' />
                                     <span className='text-white'>LOGOUT</span>
