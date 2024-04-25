@@ -11,7 +11,7 @@ import RoleAssignment from './RoleAssignment';
 import { toast } from 'react-hot-toast';
 
 export default function GetModify() {
-  const {user} = useContext(UserContext);
+ 
   const { users, setUsers } = useContext(UserContext); // Destructure setUsers from UserContext
   const [showModal, setShowModal] = useState(false);
   const [showModal1, setShowModal1] = useState(false);
