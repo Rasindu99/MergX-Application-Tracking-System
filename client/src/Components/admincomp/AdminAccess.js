@@ -1,118 +1,171 @@
 import React, { useState } from 'react';
 
 export default function AdminAccess() {
-  const [selectedOption, setSelectedOption] = useState(null);
+  const [createUser, setCreateUser] = useState(false);
+  const [modifyUser, setModifyUser] = useState(false);
+  const [deleteUser, setDeleteUser] = useState(false);
+  const [roleAssignment, setRoleAssignment] = useState(false);
 
-  const handleOptionChange = (event) => {
-    setSelectedOption(event.target.value);
+  const handleCreateUser = () => {
+    setCreateUser(!createUser);
+    const newValue = !createUser;
+    setCreateUser(newValue);
+    console.log(`Create User Account turned ${newValue ? 'on' : 'off'}`);
+  };
+
+  const handleModifyUser = () => {
+    setModifyUser(!modifyUser);
+    const newValue = !modifyUser
+    setModifyUser(newValue);
+    console.log(`Modify User Account turned ${newValue ? 'on' : 'off'}`);
+  };
+
+  const handleDeleteUser = () => {
+    setDeleteUser(!deleteUser);
+    const newValue =!deleteUser
+    setDeleteUser(newValue);
+    console.log(`Delete user Account turned ${newValue ? 'on' : 'off'}`);
+  };
+
+  const handleRoleAssignment = () => {
+    setRoleAssignment(!roleAssignment);
+    const newValue =!roleAssignment
+    setRoleAssignment(newValue);
+    console.log(`Role Assignment turned ${newValue ? 'on' : 'off'}`);
   };
 
   return (
     <div className='flex justify-center'>
-      <h1>Admin Access</h1>
       <div>
-      <div className='flex border'>
-        <label>
-            Create User Account
-        </label>
-        <label>
-            <input
-            type="radio"
-            value="createon"
-            checked={selectedOption === "createon"}
-            onChange={handleOptionChange}
-            />
-            Turn On
-        </label>
-        <label>
-            <input
-            type="radio"
-            value="createoff"
-            checked={selectedOption === "createoff"}
-            onChange={handleOptionChange}
-            />
-            Turn Off
-        </label>
-    </div>
-    
-    <div>
-      <label>
-        Modify  User Account
-      </label>
-      <label>
-            <input
-            type="radio"
-            value="modifyon"
-            checked={selectedOption === "modifyon"}
-            onChange={handleOptionChange}
-            />
-            Turn On
-        </label>
-        <label>
-            <input
-            type="radio"
-            value="modifyoff"
-            checked={selectedOption === "modifyoff"}
-            onChange={handleOptionChange}
-            />
-            Turn Off
-        </label>
-    </div>
+        <table>
+          <thead>
+            <tr>
+              <th></th>
+              <th className='pl-10'></th>
+              <th className='pl-8 pr-8 '>Turn On</th>
+              <th>Turn Off</th>
+            </tr>
+          </thead>
 
-     
-    <div>
-      <label>
-        Role Assignment
-      </label>
-      <label>
-            <input
-            type="radio"
-            value="roleon"
-            checked={selectedOption === "roleon"}
-            onChange={handleOptionChange}
-            />
-            Turn On
-        </label>
-        <label>
-            <input
-            type="radio"
-            value="option2"
-            checked={selectedOption === "roleoff"}
-            onChange={handleOptionChange}
-            />
-            Turn Off
-        </label>
-    </div>
+          <tbody>
+            <tr>
+              <td>
+                <div className='text-left'>
+                  <label>Create User Account</label>
+                </div>
+              </td>
+              <td>
+                <h1>-</h1>
+              </td>
+              <td>
+                <div>
+                  <input
+                    type="radio"
+                    checked={createUser}
+                    onChange={handleCreateUser}
+                  />
+                </div>
+              </td>
+              <td>
+                <div>
+                  <input
+                    type="radio"
+                    checked={!createUser}
+                    onChange={handleCreateUser}
+                  />
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div className='text-left'>
+                  <label>Modify User Account</label>
+                </div>
+              </td>
+              <td>
+                <h1>-</h1>
+              </td>
+              <td>
+                <div>
+                  <input
+                    type="radio"
+                    checked={modifyUser}
+                    onChange={handleModifyUser}
+                  />
+                </div>
+              </td>
+              <td>
+                <div>
+                  <input
+                    type="radio"
+                    checked={!modifyUser}
+                    onChange={handleModifyUser}
+                  />
+                </div>
+              </td>
+            </tr>
 
-     
-    <div>
-      <label>
-        Delete user account
-      </label>
-      <label>
-            <input
-            type="radio"
-            value="option1"
-            checked={selectedOption === "deleteon"}
-            onChange={handleOptionChange}
-            />
-            Turn On
-        </label>
-        <label>
-            <input
-            type="radio"
-            value="option2"
-            checked={selectedOption === "deleteoff"}
-            onChange={handleOptionChange}
-            />
-            Turn Off
-        </label>
-    </div>
-    
+            <tr>
+              <td>
+                <div className='text-left'>
+                  <label>Delete User Account</label>
+                </div>
+              </td>
+              <td>
+                <h1>-</h1>
+              </td>
+              
+              <td>
+                <div>
+                  <input
+                    type="radio"
+                    checked={deleteUser}
+                    onChange={handleDeleteUser}
+                  />
+                </div>
+              </td>
+              <td>
+                <div>
+                  <input
+                    type="radio"
+                    checked={!deleteUser}
+                    onChange={handleDeleteUser}
+                  />
+                </div>
+              </td>
+            </tr>
+
+            <tr>
+              <td>
+                <div className='text-left'>
+                  <label>Role Assignment</label>
+                </div>
+              </td>
+              <td>
+                <h1>-</h1>
+              </td>
+              <td>
+                <div>
+                  <input
+                    type="radio"
+                    checked={roleAssignment}
+                    onChange={handleRoleAssignment}
+                  />
+                </div>
+              </td>
+              <td>
+                <div>
+                  <input
+                    type="radio"
+                    checked={!roleAssignment}
+                    onChange={handleRoleAssignment}
+                  />
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
       </div>
-    
-      
-
     </div>
   );
 }
