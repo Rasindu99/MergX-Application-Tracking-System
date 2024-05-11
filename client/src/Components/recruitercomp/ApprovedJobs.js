@@ -3,16 +3,15 @@ import { PiBriefcase } from 'react-icons/pi';
 import { MdOutlineRemoveRedEye } from 'react-icons/md';
 import Card from './Card';
 import axios from 'axios';
+import toast from 'react-hot-toast';
 
 export default function ApprovedJobs() {
     const [jobPostings, setJobPostings] = useState([]);
     const [selectedJob, setSelectedJob] = useState(null);
-    const [expired, setExpired] = useState(false);
 
 
-    useEffect(() => {
-        // Fetch all approved job postings
-        axios.get('/job/getAllApprovedJobPostings') // Adjust the URL to your backend endpoint
+    useEffect(() => {      
+        axios.get('/job/getAllApprovedJobPostings')
             .then(response => {
                 setJobPostings(response.data);
             })
@@ -22,21 +21,21 @@ export default function ApprovedJobs() {
     }, []);
 
     const handleExpiredChange = async (jobId, newExpiredValue) => {
-        try {
-            // Update the selected job's expired status in the database
+        try {           
             await axios.put(`/job/updateExpiredStatus/${jobId}`, { expired: newExpiredValue });
-            // Update the local state to reflect the change
-            setJobPostings(prevJobPostings => 
-                prevJobPostings.map(job => 
-                    job._id === jobId ? { ...job, expired: newExpiredValue } : job
-                )
-            );
-            // Also update the selectedJob if it's the one being updated
+                     
             if (selectedJob && selectedJob._id === jobId) {
                 setSelectedJob(prevSelectedJob => ({ ...prevSelectedJob, expired: newExpiredValue }));
             }
+            
+            if (newExpiredValue) {
+                toast.success('Job post marked as expired.');
+            } else {
+                toast.success('Job post marked as active.');
+            }
+
         } catch (error) {
-            console.log('Error updating expired status:', error);
+            toast.error('Failed to update expired status.');
         }
     };
     

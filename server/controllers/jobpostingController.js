@@ -9,14 +9,12 @@ const createJobPosting = async (req, res) => {
     try {
         const { jobTitle, vacancies, description, salary, requiredExperience, requiredSkills, approved } = req.body;
         
-        // Check if required fields are provided
         if (!jobTitle || !salary || !requiredExperience) {
             return res.status(400).json({
                 error: 'job title, salary, and required experience are required'
             });
         }
 
-        // Create a new job posting
         const jobPosting = await JobPosting.create({
             jobTitle,
             vacancies,
@@ -27,7 +25,6 @@ const createJobPosting = async (req, res) => {
             approved
         });
         
-        // Return the created job posting
         return res.status(201).json(jobPosting);
     } catch (error) {
         console.log(error);
@@ -44,7 +41,6 @@ const getAllPendingJobPostings = async (req, res) => {
             return res.status(404).json({ message: "No pending job postings found" });
         }
 
-        // Return the array of job postings
         return res.status(200).json(jobPostings);
     } catch (error) {
         console.log(error);
@@ -55,13 +51,12 @@ const getAllPendingJobPostings = async (req, res) => {
 // GET all approved job postings
 const getAllApprovedJobPostings = async (req, res) => {
     try {
-        const jobPostings = await JobPosting.find({ approved: true }).sort({ createdAt: -1 });
+        const jobPostings = await JobPosting.find({ approved: true }).sort({ updatedAt: -1 });
 
         if (!jobPostings || jobPostings.length === 0) {
             return res.status(404).json({ message: "No approved job postings found" });
         }
 
-        // Return the array of job postings
         return res.status(200).json(jobPostings);
     } catch (error) {
         console.log(error);
@@ -69,6 +64,7 @@ const getAllApprovedJobPostings = async (req, res) => {
     }
 };
 
+//UPDATE a job post
 const updateJobPosting = async(req, res) =>{
     const jobId = req.params.id;
     const updatedJob = req.body;
@@ -84,10 +80,11 @@ const updateJobPosting = async(req, res) =>{
         res.json(job); 
     } catch (error) {
         console.error('Error updating job:', error);
-        res.status(500).json({ message: 'Internal server error' });
+        res.status(500).json({ message: 'Failed to update job post.' });
     }
 }
 
+//Delete a job post
 const deleteJobPosting = async(req, res) => {
     const jobId = req.params.id;
 

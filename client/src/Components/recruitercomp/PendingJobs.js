@@ -5,21 +5,19 @@ import { FaRegEdit } from "react-icons/fa";
 import { RiDeleteBinLine } from "react-icons/ri";
 import { toast } from "react-hot-toast";
 
-export default function PendingJobs({ jobPostings, setJobPostings, fetchJobPostings}) {
-
+export default function PendingJobs({ jobPostings, setJobPostings, fetchPendingJobPostings}) {
   const [selectedJob, setSelectedJob] = useState(null);
   const [editModeJobs, setEditModeJobs] = useState({});
 
   useEffect(() => {
-    axios
-      .get("/job/getAllPendingJobPostings")
+    axios.get("/job/getAllPendingJobPostings")
       .then((response) => {
         setJobPostings(response.data);
       })
       .catch((error) => {
         console.log("Error fetching pending job postings:", error);
       });
-  }, []);
+  }, [setJobPostings]);
 
   const toggleEditMode = (jobId) => {
     setEditModeJobs((prevState) => ({
@@ -30,13 +28,11 @@ export default function PendingJobs({ jobPostings, setJobPostings, fetchJobPosti
 
   const handleJobBarClick = (job) => {
     setSelectedJob(job);
-    // Ensure edit mode is not enabled when clicking on the job bar
     setEditModeJobs({});
   };
 
   const handleInputChange = (e, field) => {
     if (field === "requiredSkills") {
-      // Split the textarea value into an array of skills using newline as delimiter
       const skillsArray = e.target.value.split("\n");
       setSelectedJob((prevState) => ({ ...prevState, [field]: skillsArray }));
     } else {
@@ -81,11 +77,11 @@ export default function PendingJobs({ jobPostings, setJobPostings, fetchJobPosti
           });
           setSelectedJob(null);
           setEditModeJobs({});
-          toast.success("Job updated successfully!");
+          toast.success("Job Post updated successfully!");
         })
         .catch((error) => {
-          console.log("Error updating job:", error);
-          toast.error("Failed to update job. Please try again later.");
+          console.log("Error updating job post:", error);
+          toast.error("Failed to update job post. Please try again later.");
         });
     }
   };
@@ -98,15 +94,14 @@ export default function PendingJobs({ jobPostings, setJobPostings, fetchJobPosti
   const handleDeleteClick = () => {
     axios.delete(`/job/deleteJobPosting/${selectedJob._id}`)
       .then(() => {
-        // setJobPostings((prevState) => prevState.filter(job => job._id !== selectedJob._id));
-        fetchJobPostings();
-        toast.success('Job deleted successfully!');
+        fetchPendingJobPostings();
+        toast.success('Job Post deleted successfully!');
         setSelectedJob(null);
         setEditModeJobs({});
       })
       .catch((error) => {
-        console.log('Error deleting job:', error);
-        toast.error('Failed to delete job. Please try again later.');
+        console.log('Error deleting job post:', error);
+        toast.error('Failed to delete job psot. Please try again later.');
       });
   };
 
@@ -301,7 +296,7 @@ export default function PendingJobs({ jobPostings, setJobPostings, fetchJobPosti
               </div>
             </div>
             {editModeJobs[selectedJob._id] && (
-              <div className="flex justify-center w-[100%] bg-red ">
+              <div className="flex justify-center w-[100%] ">
                 <button
                   onClick={handleSaveClick}
                   className="bg-[#EA7122] w-[100px] h-[50px] rounded-[10px] mr-5"
