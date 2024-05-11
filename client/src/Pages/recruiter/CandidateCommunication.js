@@ -12,7 +12,7 @@ import { FaKey } from "react-icons/fa";
 import { TbBulb } from "react-icons/tb";
 import { SlBadge } from "react-icons/sl";
 // import axios from 'axios';
-import Dropzone from "react-dropzone";
+// import Dropzone from "react-dropzone";
 
 export default function CandidateCommunication() {
   //   const[files,setFiles] = useState([]);
@@ -26,7 +26,7 @@ export default function CandidateCommunication() {
   //   }
   const [state, setState] = useState(1);
 
-  const [file, setFile] = useState();
+  // const [file, setFile] = useState();
 
   const action = (index) => {
     setState(index);
@@ -190,7 +190,7 @@ export default function CandidateCommunication() {
                     marginTop: "1em",
                   }}
                 >
-                  <Dropzone
+                  {/* <Dropzone
                     accept={{ "image/*": [], "video/*": [] }}
                     onDrop={(acceptedFiles) => {
                       console.log(acceptedFiles);
@@ -232,8 +232,8 @@ export default function CandidateCommunication() {
                         </div>
                       </section>
                     )}
-                  </Dropzone>
-                  {/* <form>
+                  </Dropzone> */}
+                  <form>
                                         <input className="file-input" type="file" name="file" hidden />
                                         <div
                                             style={{
@@ -248,7 +248,7 @@ export default function CandidateCommunication() {
                                             </div>
                                             <p className="text-white opacity-25 ">Drag and drop files here</p>
                                         </div>
-                                    </form> */}
+                                    </form>
                 </div>
 
                 <div style={{ width: "100%", marginTop: "1em" }}>

@@ -3,7 +3,7 @@ import axios from "axios";
 import { toast } from "react-hot-toast";
 
 
-export default function JobPost({ fetchJobPostings }) {
+export default function JobPost({ fetchPendingJobPostings }) {
   const [jobTitle, setJobTitle] = useState("");
   const [vacancies, setVacancies] = useState("");
   const [description, setDescription] = useState("");
@@ -51,7 +51,8 @@ export default function JobPost({ fetchJobPostings }) {
 
       await axios.post("/job/createJobPosting", formData);
       console.log("Form data submitted successfully");
-      fetchJobPostings();
+      toast.success('Form data submitted successfully');
+      fetchPendingJobPostings();
       clearForm();
       }
     } catch (error) {
@@ -169,7 +170,7 @@ export default function JobPost({ fetchJobPostings }) {
             <button
               type="button"
               onClick={clearForm}
-              className="bg-[#EA7122] w-[100px] h-[50px] rounded-[10px] mr-5"
+              className="bg-[#EA7122] w-[100px] h-[50px] rounded-[10px] mr-5 "
             >
               Clear
             </button>
