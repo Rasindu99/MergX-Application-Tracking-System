@@ -7,6 +7,8 @@ const statusset = (req, res) => {
 // Function to delete status after 6 hours
 const deleteStatus = async (statusId) => {
     try {
+       
+
         // Find and delete the status
         await Status.findByIdAndDelete(statusId);
         console.log('Status deleted successfully');
@@ -38,7 +40,7 @@ const updatestatus = async (req, res) => {
         // Schedule deletion of status after 6 hours
         setTimeout(() => {
             deleteStatus(status._id); // Call deleteStatus function after 6 hours
-        }, 6 * 1000 * 10 * 30); // 30mins in milliseconds
+        },  60 * 1000 ); // 30mins in milliseconds
 
         return res.status(200).json({ message: 'Status updated successfully', status });
     } catch (error) {
@@ -60,8 +62,24 @@ const getstatus = async (req, res) => {
     }
 };
 
+// Controller function to handle delete status request
+const deleteStatuses = async (req, res) => {
+    try {
+      const statusId = req.params.statusId;
+      await deleteStatus(statusId);
+      res.status(200).json({ message: 'Status deleted successfully' });
+    } catch (error) {
+      console.error('Error deleting status:', error);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  };
+
+
 module.exports = {
     statusset,
     updatestatus,
-    getstatus
+    getstatus,
+    deleteStatuses
+    
+    
 };
