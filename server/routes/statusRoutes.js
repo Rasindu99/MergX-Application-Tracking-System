@@ -1,7 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const cors = require('cors');
-const { updatestatus, getstatus } = require('../controllers/statusController');
+//const Status = require('../models/status');
+
+const { updatestatus, getstatus, deleteStatuses} = require('../controllers/statusController');
 
 router.use(
     cors({
@@ -12,8 +14,8 @@ router.use(
 
 //route
 router.post('/update',updatestatus);
-router.get('/getstatus',getstatus)
+router.get('/getstatus',getstatus);
 
-
+router.delete('/deletestatus/:statusId', deleteStatuses);
 
 module.exports = router;

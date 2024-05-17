@@ -24,6 +24,7 @@ app.use(express.urlencoded({ limit: '3mb', extended: false })); // Parsing URL-e
 app.use('/', require('./routes/authRoutes')); // Mounting auth routes
 app.use('/job',  require('./routes/jobPostingRoutes'));
 app.use('/status', require('./routes/statusRoutes'));
+app.use('/announcement', require('./routes/announcementRoutes'));
 //app.use('/Protected', require('./routes/ProtectedRoute'));
 // Defining the port for the server to listen on
 const port = 8000;

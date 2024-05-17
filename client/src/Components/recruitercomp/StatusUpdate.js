@@ -3,19 +3,49 @@ import React, { useContext, useEffect, useState } from 'react';
 import { UserContext } from '../../Context/UserContext';
 import StatusUpdatePopup from './StatusUpdatePopup';
 import { MdDeleteForever } from "react-icons/md";
+import { GrFormView } from "react-icons/gr";
+import { IoMdSettings } from "react-icons/io";
 import moment from 'moment';
+import AnnouncementUpdatePopup from './AnnouncementUpdatePopup';
+import { toast } from 'react-hot-toast';
+import StatusView from '../../Components/candidateComp/StatusView';
+import AnnouncementView from '../../Components/candidateComp/AnnouncementView';
 
 export default function StatusUpdate() {
   const { user } = useContext(UserContext);
   const [showModalStatus, setShowModalStatus] = useState(false);
+  const [showModalAnnouncement, setShowModalAnnoucement] = useState(false);
   const [statusData, setStatusData] = useState([]);
+  const [announcementData, setAnnouncementData] = useState([]);
+  const [selectedStatus, setSelectedStatus] = useState(null);
+  const [showStatus, setShowStatus] = useState(false);
+  const [showAnnouncement, setShowAnnouncement] = useState(false);
+  const [selectedAnnouncement,setSelectedAnnouncement] = useState(null);
 
   const handleStatusUpdate = () => {
     setShowModalStatus(true);
   };
 
+  const handleAnnouncementUpdate = () => {
+    setShowModalAnnoucement(true)
+  };
+
+  const handleViewStatus = (status) => {
+    setSelectedStatus(status)
+    setShowStatus(true)
+    
+  };
+
+  const handleViewAnnouncement = (announcements) =>{
+    setSelectedAnnouncement(announcements);
+    setShowAnnouncement(true);
+  }
+
   const handleModalstatusClose = () => {
     setShowModalStatus(false);
+    setShowModalAnnoucement(false);
+    setShowStatus(false);
+    setShowAnnouncement(false);
 
     axios.get('/status/getstatus')
         .then(response => {
@@ -24,6 +54,18 @@ export default function StatusUpdate() {
         .catch(error => {
             console.error('Error fetching status:', error);
         });
+
+    axios.get('/announcement/getannouncement')
+        .then(response => {
+            setAnnouncementData(response.data);
+        })
+        .catch(error => {
+            console.error('Error fetching announcement:', error);
+        });
+        
+        
+
+    
 };
 
   const getStatus = async () => {
@@ -35,9 +77,55 @@ export default function StatusUpdate() {
     }
   };
 
+  const getAnnouncement = async ()=>{
+
+    try {
+        const response = await axios.get('/announcement/getannouncement');
+        setAnnouncementData(response.data); // Assuming the response contains an array of status data
+      } catch (error) {
+        console.error('Error fetching Announcement:', error);
+      }
+    
+  }
+
+  const DeleteAnnouncement = async (announcementId) => {
+    try {
+      await axios.delete(`/announcement/deleteannouncement/${announcementId}`);
+      
+      console.log('deleted')
+      toast.success( 'Deleted Successsfully')
+
+      const response = await axios.get('/announcement/getannouncement');
+      setAnnouncementData(response.data);
+    } catch (error) {
+      console.error('Error deleting Announcement:',error);
+    }
+  };
+
+  const DeleteStatus = async (statusId) => {
+    try {
+        await axios.delete(`/status/deletestatus/${statusId}`);
+        
+        //after deletion, i want refresh my status list
+        const response = await axios.get('/status/getstatus');
+        setStatusData(response.data);
+
+        console.log('deleted')
+
+        toast.success( 'Deleted Successsfully')
+    } catch (error) {
+        console.error('Error deleting status:',error);
+        
+    }
+};
+
+
+
   useEffect(() => {
     // Fetch status data when component mounts or user changes
     getStatus();
+    getAnnouncement();
+    
   }, [user]);
 
   // Check if the user object is available before rendering the StatusUpdatePopup
@@ -99,8 +187,15 @@ export default function StatusUpdate() {
                                         </div>
                                     </td>
                                     <td>
+                                      <div className="mr-4">
+                                        <button onClick={() => handleViewStatus(status)}>
+                                          <GrFormView className="size-[50px]  hover:opacity-40" />
+                                        </button>
+                                      </div>
+                                    </td>
+                                    <td>
                                         <div className='mr-8'>
-                                            <button>
+                                            <button onClick={() => DeleteStatus(status._id)}>
                                                 <h1 className='text-red-500'>
                                                     <MdDeleteForever className="size-[35px]  hover:size-[35px] hover:opacity-35" />
                                                 </h1>
@@ -120,11 +215,84 @@ export default function StatusUpdate() {
         </div>
         <div className='w-[700px]'>
           <div>
-            <button className='h-10 bg-orange-600 w-[250px] rounded-md'>Update Announcements</button>
+            <button onClick={handleAnnouncementUpdate} className='h-10 bg-orange-600 w-[250px] rounded-md'>Update Announcements</button>
+          </div>
+          <div className='pt-10'>
+            <div>
+                <h1 className='text-2xl opacity-45'>Your Announcement</h1>
+            <div className='flex justify-center pt-2 '>
+                    <hr className='w-[200px] justify-center opacity-25'></hr> 
+            </div>
+            
+            </div>
+            <div className='flex justify-center pt-10  overflow-y-scroll max-h-[500px] scrollbar-w-2 scrollbar-track-gray-200 scrollbar-thumb-gray-500 scrollbar-thumb-hover-gray-700'>
+
+            <table className=''>
+                <tbody>
+                    {announcementData
+                        .filter((announcements) => announcements.user_email === user.email) // Filter status posts by user_id
+                        .slice()
+                        .reverse()
+                        .map((announcements, index) => {
+                            const announcementsTime = moment(announcements.time, 'HH:mm:ss'); // Parse the time string using moment
+
+                            if (!announcementsTime.isValid()) {
+                                console.error('Invalid time format:', announcements.time);
+                                return null; // Skip rendering if the time format is invalid
+                            }
+
+                            const timeAgo = announcementsTime.fromNow();
+                            const formattedTimeAgo = timeAgo.includes('seconds') ? timeAgo.replace('seconds', 'secs') : timeAgo;
+
+                            return (
+                                // Reverse the array before mapping
+                                <tr key={index} 
+                                className="border-b border-gray-500 h-[100px] bg-gradient-to-b from-[#2B2B2B] to-[#333333] " >
+                                    
+                                    <td className='w-[50px]'></td>
+                                    <td className='w-[300px] text-left'>
+                                    <h1 className='text-2xl truncate'>{announcements.title?.slice(0, 20)}</h1>
+                                       <p className=' opacity-30'>{announcements.announce.slice(0, 35)}.....</p> 
+                                        <div className='text-sm text-gray-400'>
+                                            {formattedTimeAgo}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div className="mr-4">
+                                            <button onClick={()=>{handleViewAnnouncement(announcements)}}>
+                                            <GrFormView className="size-[50px]  hover:opacity-40" />
+                                            </button>
+                                        </div>
+                                    </td>
+                                    
+                                    <td>
+                                        <div className='mr-8'>
+                                            <button onClick={()=> DeleteAnnouncement(announcements._id)}>
+                                                <h1 className='text-red-500'>
+                                                    <MdDeleteForever className="size-[35px]   hover:opacity-35" />
+                                                </h1>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            );
+                        })}
+                </tbody>
+            </table>
+
+          </div>
+
           </div>
         </div>
       </div>
       <StatusUpdatePopup visible={showModalStatus} onClose={handleModalstatusClose} />
+      <AnnouncementUpdatePopup visible={showModalAnnouncement} onClose={handleModalstatusClose}/>
+      <div>
+        <StatusView visible={showStatus} onClose={handleModalstatusClose} status={selectedStatus} />
+      </div>
+      <div>
+        <AnnouncementView visible={showAnnouncement} onClose={handleModalstatusClose} announcements={selectedAnnouncement}/>
+      </div>
     </div>
   );
 }
