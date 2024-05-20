@@ -2,6 +2,7 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 const { hashPassword, comparePassword } = require('../helpers/auth');
 const UserModel = require('../models/user');
+const { sendMail } = require('../helpers/sendMail');
 
 //const multer = require('multer')
 
@@ -12,7 +13,7 @@ const test = (req, res) => {
 //register end point
 const registerUser = async (req, res) => {
     try {
-        const { fname, lname, email, phone_number, password, role, education, bio, dob, gender, image } = req.body; 
+        const {  fname, lname, email, phone_number, password, role, education, bio, dob, gender, image } = req.body; 
 
         // Check if name was entered
         if (!fname || !lname) {
@@ -48,6 +49,7 @@ const registerUser = async (req, res) => {
 
         // Create user in the database
         const user = await User.create({
+            
             fname,
             lname,
             email,
@@ -60,6 +62,10 @@ const registerUser = async (req, res) => {
             gender,
             image,
         });
+
+        sendMail(email,"Welcome Application Tracking System",
+            `hi ${fname} ${lname},\n your user email : ${email},\n your password : ${password}\n\nBest regards,\nMergeX\n(Application Tracking System)`
+    )
 
         return res.json(user);
     } catch (error) {
@@ -155,63 +161,83 @@ const getusers = (req, res) => {
     }
   };
 
-//put
-// updateUser controller
+
 // updateUser controller
 const updateUser = async (req, res) => {
     try {
-      const { userId } = req.params;
-      const { fname, lname, email, phone_number, password, role, education, bio, dob, gender, image } = req.body;
-  
-      // Check if the user exists
-      const user = await User.findById(userId);
-      if (!user) {
-        return res.status(404).json({ error: 'User not found' });
-      }
-  
-      // Update the user's information
-      user.fname = fname;
-      user.lname = lname;
-      user.email = email;
-      user.phone_number = phone_number;
-      if (password) {
-        user.password = await hashPassword(password);
-      }
-      user.role = role;
-      user.education = education;
-      user.bio = bio;
-      user.dob = dob;
-      user.gender = gender;
-      user.image = image;
-  
-      // Save the updated user
-      await user.save();
-  
-      res.json(user);
+        const { userId } = req.params;
+        const { fname, lname, email, phone_number, password, role, education, bio, dob, gender, image } = req.body;
+
+        // Check if the user exists
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
+        }
+
+        // Track role change
+        const oldRole = user.role;
+
+        // Update the user's information
+        user.fname = fname;
+        user.lname = lname;
+        user.email = email;
+        user.phone_number = phone_number;
+        if (password) {
+            user.password = await hashPassword(password);
+        }
+        user.role = role;
+        user.education = education;
+        user.bio = bio;
+        user.dob = dob;
+        user.gender = gender;
+        user.image = image;
+
+        // Save the updated user
+        await user.save();
+
+        // Send email notification if the role has changed
+        if (role && role !== oldRole) {
+            await sendMail(
+                email,
+                "Role Update Notification",
+                `Hi ${fname} ${lname},\n\nYour role has been updated to ${role}.\n\nBest regards,\nMergeX\n(Application Tracking System)`
+            );
+        }
+
+        res.json(user);
     } catch (error) {
-      console.error('Error updating user:', error);
-      res.status(500).json({ error: 'Server error' });
+        console.error('Error updating user:', error);
+        res.status(500).json({ error: 'Server error' });
     }
-  };
+};
 
   //delete user
 
   const deleteUser = async (req, res) => {
     const userId = req.params.userId;
 
-    try{
-        const deleteUser = await User.findByIdAndDelete(userId);
+    try {
+        // Find the user to be deleted
+        const user = await User.findById(userId);
 
-        if(!deleteUser) {
-            return res.status(404).json({error: "User not found"});
+        if (!user) {
+            return res.status(404).json({ error: 'User not found' });
         }
 
-        res.status(200).json({message: "User deleted Successfully"});
-    }catch (error) {
-        console.error('Error deleting user:' , error);
+        // Delete the user
+        await User.findByIdAndDelete(userId);
+
+        // Send email notification
+        await sendMail(user.email, "Account Deletion Notice", 
+        `Hi ${user.fname} ${user.lname},\n\n your account has been deleted.\n\nBest regards,\nMergeX\n(Application Tracking System)`
+    );
+
+        res.status(200).json({ message: "User deleted successfully" });
+    } catch (error) {
+        console.error('Error deleting user:', error);
         res.status(500).json({ error: 'Failed to delete user. Please try again later.' });
     }
-  };
+};
 
 
 
