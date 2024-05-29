@@ -1,9 +1,12 @@
-import React, { useState } from "react";
+import React, { useContext,useState, useEffect } from "react";
 import axios from "axios";
 import { toast } from "react-hot-toast";
+import { UserContext } from "../../Context/UserContext";
 
 
 export default function JobPost({ fetchPendingJobPostings }) {
+  const { user } = useContext(UserContext);
+  const [jobcreatorEmail, setJobcreatorEmail] = useState();
   const [jobTitle, setJobTitle] = useState("");
   const [vacancies, setVacancies] = useState("");
   const [description, setDescription] = useState("");
@@ -11,6 +14,12 @@ export default function JobPost({ fetchPendingJobPostings }) {
   const [requiredExperience, setRequiredExperience] = useState("");
   const [requiredSkills, setRequiredSkills] = useState("");
   const [error, setError] = useState("");
+
+  useEffect(() => {
+    if (user && user.email) {
+      setJobcreatorEmail(user.email);
+    }
+  }, [user]);
 
   const clearForm = () => {
     setJobTitle("");
@@ -41,6 +50,7 @@ export default function JobPost({ fetchPendingJobPostings }) {
       const skillsArray = requiredSkills.split(",");
 
       const formData = {
+        jobcreatorEmail,
         jobTitle,
         vacancies,
         description,
