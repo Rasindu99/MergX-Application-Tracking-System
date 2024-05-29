@@ -1,6 +1,15 @@
 const mongoose = require('mongoose');
 
 const jobPostingSchema = new mongoose.Schema({
+  jobid:{
+    type:Number,
+    required: true,
+    unique: true
+  },
+  jobcreatorEmail: {
+    type: String,
+    required: true
+  },
   jobTitle: {
     type: String,
     required: true

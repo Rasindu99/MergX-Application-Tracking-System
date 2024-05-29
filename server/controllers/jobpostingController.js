@@ -7,15 +7,33 @@ const jobtest = (req, res) => {
 //POST a new jobposting
 const createJobPosting = async (req, res) => {
     try {
-        const { jobTitle, vacancies, description, salary, requiredExperience, requiredSkills, approved } = req.body;
-        
+        const { jobcreatorEmail, jobTitle, vacancies, description, salary, requiredExperience, requiredSkills, approved } = req.body;
+
+        // Check if required fields are provided
         if (!jobTitle || !salary || !requiredExperience) {
             return res.status(400).json({
                 error: 'job title, salary, and required experience are required'
             });
         }
 
+        // Find the highest jobid in the collection
+        const lastJobPosting = await JobPosting.findOne().sort({ jobid: -1 });
+
+        // Ensure lastJobPosting is valid and has a valid jobid
+        const lastJobId = lastJobPosting && typeof lastJobPosting.jobid === 'number' ? lastJobPosting.jobid : 0;
+
+        // Set the new jobid to be the highest jobid + 1
+        const newJobId = lastJobId + 1;
+
+        // Ensure newJobId is a valid number
+        if (isNaN(newJobId)) {
+            throw new Error('Failed to generate a valid job ID');
+        }
+
+        // Create a new job posting
         const jobPosting = await JobPosting.create({
+            jobid: newJobId,
+            jobcreatorEmail,
             jobTitle,
             vacancies,
             description,
@@ -24,14 +42,14 @@ const createJobPosting = async (req, res) => {
             requiredSkills,
             approved
         });
-        
+
+        // Return the created job posting
         return res.status(201).json(jobPosting);
     } catch (error) {
         console.log(error);
         return res.status(400).json({ message: error.message });
     }
 };
-
 // GET all pending job postings
 const getAllPendingJobPostings = async (req, res) => {
     try {
