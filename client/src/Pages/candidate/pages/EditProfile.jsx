@@ -1,152 +1,286 @@
-import React from 'react';
-import { useForm } from 'react-hook-form';
-import * as yup from 'yup';
-import { yupResolver } from '@hookform/resolvers/yup';
-import AvatarDP from '../../../Components/candidateComp/EditProfile/AvatarDP';
-import { useState, useEffect } from 'react';
-
-        
+import React, { useContext, useState, useEffect } from 'react';
+import { UserContext } from '../../../Context/UserContext';
+import axios from 'axios';
+import { toast } from 'react-hot-toast';
 
 
 const EditProfile = () => {
-
-  const [formData, setFormData] = useState({
-    firstName: '',
-    secondName: '',
-    email: '',
-    telephone: '',
-    age: '',
-    dob: '',
-    gender: '',
-    education:'',
-    description: '',
+  const { user } = useContext(UserContext);
+  const [image, setImage] = useState(null);
+  const [showForm] = useState(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get('showForm') === 'true';
   });
+  const [formData, setFormData] = useState(() => {
+    const storedFormData = localStorage.getItem('formData');
+    return storedFormData ? JSON.parse(storedFormData) : {
+      fname: '',
+      lname: '',
+      email: '',
+      phone_number: '',
+      role: '',
+      education: '',
+      bio: '',
+      dob: '',
+      gender: '',
+      image: '',
+    };
+  });
+
+  
+  useEffect(() => {
+    if (user) {
+      setFormData({
+        fname: user.fname || '',
+        lname: user.lname || '',
+        email: user.email || '',
+        phone_number: user.phone_number || '',
+        role: user.role || '',
+        education: user.education || '',
+        bio: user.bio || '',
+        dob: user.dob || '',
+        gender: user.gender || '',
+        image: user.image || '',
+      });
+      setImage(user.image || '');
+    }
+  }, [user]);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!user || !user._id) {
+      console.error('User ID is not available.');
+      return;
+    }
+    try {
+      await axios.put(`/users/${user._id}`, formData);
+      localStorage.removeItem('formData'); // Clear local storage after successful submission
+      toast.success('Updated successfully');
+     // window.location.reload(); // Refresh the page
+    } catch (error) {
+      console.error('Error updating user:', error);
+    }
+  };
 
   useEffect(() => {
-    console.log(formData);
-
+    // Store formData in local storage whenever it changes
+    localStorage.setItem('formData', JSON.stringify(formData));
   }, [formData]);
 
+  const handleInputChange = (e) => {
+    const { name, value, type, files } = e.target;
+    if (type === 'file') {
+      const file = files[0];
+      const reader = new FileReader();
+
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        setImage(reader.result);
+        setFormData({ ...formData, [name]: reader.result });
+      };
+    } else {
+      setFormData({
+        ...formData,
+        [name]: value,
+      });
+    }
+  };
+
+  const handleYesClick = () => {
+    const currentUrl = window.location.href;
+    const newUrl = currentUrl.includes('?')
+      ? `${currentUrl}&showForm=true`
+      : `${currentUrl}?showForm=true`;
+    window.location.href = newUrl;
+  };
   
-  const schema = yup.object().shape({
-    firstName: yup.string().required("First Name is required"),
-    secondName: yup.string().required("Second Name is required"),
-    email: yup.string().email("Invalid email").required("Email is required"),
-    telephone: yup
-      .string()
-      .matches(/^\d+$/, "Invalid telephone number")
-      .min(10, "Telephone number must be at least 10 digits")
-      .required("Telephone number is required"),
-
-    age: yup
-      .number()
-      .positive("Age must be a positive number")
-      .integer("Age must be an integer")
-      .max(99, "Age must be less than 100")
-      .required("Age is required"),
-
-    dob: yup.date()
-      .required("Date of Birth is required")
-      .max(new Date(), "Date of Birth cannot be in the future"),
-
-    gender: yup.string()
-      .oneOf(['male', 'female', 'other'], "Invalid gender")
-      .required("Gender is required"),
-
-    education: yup.string().max(500, "education cannot exceed 500 characters"),
-    description: yup.string().max(500, "description cannot exceed 500 characters"),
-  });
   
-  // {errors}: This part of the destructuring assignment specifically extracts the errors property from the formState.
-  // formState - This property contains various state-related information about the form, including errors, touched fields, dirty fields, etc.
-  // errors - This property contains an object containing all the validation errors that have occurred in the form.
 
-  const { register, handleSubmit, formState: {errors} } = useForm({
-    resolver: yupResolver(schema),
-  });
-  // Before invoking the provided callback function (onSubmit), 
-  // handleSubmit performs form validation using the validation rules defined in the Yup schema.
-  // If there are validation errors, the form submission is prevented,
-  // If there are no validation errors, 
-  // the provided callback function (onSubmit) is called with the form data as its argument.
-
-  const onSubmit = async (data, e) => {
-    e.preventDefault();
-    setFormData(data); // state updates are asynchronous in React, meaning that the state update may not be reflected immediately after calling setFormData. 
+  if (!user) {
+    return <div>Loading...</div>;
   }
 
+  console.log(formData.fname);
+  console.log(formData.phone_number);
+  
+  
+
   return (
-    <div className='flex items-center justify-center h-full '>
-      <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col items-center justify-start w-3/5 gap-1 py-1 mt-8 text-neutral-900 bg-neutral-800 h-5/6'>
-        <div className='flex items-start justify-around w-full px-1 bg-neutral-800'>
-          <div className='flex flex-col justify-center w-2/5 gap-1 bg-neutral-800'>
+    <div className='flex items-center justify-center h-full'>
+      {!showForm ? (
+        <div className=''>
+          <div className=''><h1 className='text-4xl'>Do you want to update your details?</h1></div> 
+          <div className='pt-8'><button onClick={handleYesClick} className='px-4 py-2 font-bold text-white bg-orange-600 rounded hover:bg-orange-400'>Yes update !</button></div>
+        </div>
+      ) : (
+        
+        <div className=''>
+          
+          <form onSubmit={handleSubmit}>
 
-            <input type="text" placeholder='FirstName' {...register("firstName")} 
-            className='px-3 py-2 text-white transition duration-200 border-2 border-orange-700 bg-amber-800 bg-opacity-15 rounded-2xl focus:outline-none focus:bg-neutral-100 focus:bg-opacity-25'/>
-                <p className='text-red-500'>{errors.firstName?.message}</p>
-
-            <input type="text" placeholder='SecondName' {...register("secondName")} 
-            className='px-3 py-2 text-white transition duration-200 border-2 border-orange-700 bg-amber-800 bg-opacity-15 rounded-2xl focus:outline-none focus:bg-neutral-100 focus:bg-opacity-25'/>
-                <p className='text-red-500'>{errors.secondName?.message}</p>
-
-            <input type="email" placeholder='Email' {...register("email")} 
-             className='px-3 py-2 text-white transition duration-200 border-2 border-orange-700 bg-amber-800 bg-opacity-15 rounded-2xl focus:outline-none focus:bg-neutral-100 focus:bg-opacity-25'/>
-                <p className='text-red-500'>{errors.email?.message}</p>
-
-            <input type="tel" placeholder='Telephone' {...register("telephone")} 
-             className='px-3 py-2 text-white transition duration-200 border-2 border-orange-700 bg-amber-800 bg-opacity-15 rounded-2xl focus:outline-none focus:bg-neutral-100 focus:bg-opacity-25'/>
-                <p className='text-red-500'>{errors.telephone?.message}</p>
-
-            <input type="text" placeholder='Age' {...register("age")} 
-             className='px-3 py-2 text-white transition duration-200 border-2 border-orange-700 bg-amber-800 bg-opacity-15 rounded-2xl focus:outline-none focus:bg-neutral-100 focus:bg-opacity-25'/>
-                <p className='text-red-500'>{errors.age?.message}</p>
-
-            <input type="date" placeholder='Date of Birth' {...register("dob")} 
-             className='px-3 py-2 text-white transition duration-200 border-2 border-orange-700 bg-amber-800 bg-opacity-15 rounded-2xl focus:outline-none focus:bg-neutral-100 focus:bg-opacity-25'/>
-                <p className='text-red-500'>{errors.dob?.message}</p>
-
-            <div className='container flex gap-2'>
-              <label className='w-3/12 text-white border-2 border-orange-700 genderLabel rounded-2xl' for='male'> Male
-                <input type="radio" value="male" {...register("gender")} className='gender' id='male'/>
-              </label>
-              
-              <label className='text-white genderLabel' for='female'> Female </label>
-                <input type="radio" value="female" {...register("gender")} className='gender' id='female'/>
+            <div className='flex justify-between'>
+            
+            <div>
+            <div className='flex justify-center pl-10 pr-10 mt-8 text-start'>
+              <div>
+                <div className='flex justify-between w-full'>
+                  <div className='pb-2'>
+                    <label className='opacity-40'>First Name:</label>
+                    <div className='pt-1 pl-0'>
+                      <input
+                        className="bg-[#2a2a2a] w-[170px] h-10 rounded-lg pl-4"
+                        type='text'
+                        name='fname'
+                        placeholder='First Name'
+                        value={formData.fname}
+                        onChange={handleInputChange}
+                      />
+                    </div>
+                  </div>
+                  <div className='pb-2'>
+                    <label className='opacity-40'>Last Name:</label>
+                    <div className='pt-1 pl-0'>
+                      <input
+                        className="bg-[#2a2a2a] w-[170px] h-10 rounded-lg pl-4"
+                        type='text'
+                        name='lname'
+                        placeholder='Last Name'
+                        value={formData.lname}
+                        onChange={handleInputChange}
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div className='pb-2'>
+                  <label className='opacity-40'>Email:</label>
+                  <div className='pt-1 pl-10'>
+                    <input
+                      className="bg-[#2a2a2a] w-[400px] h-10 rounded-lg pl-4"
+                      type='email'
+                      name='email'
+                      placeholder='Email'
+                      value={formData.email}
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                </div>
+                <div className='pb-2'>
+              <label  className='opacity-40'>Mobile Number : </label>
+                <div className='pt-1 pl-10'>
+                  <input
+                    className="bg-[#2a2a2a] w-[400px] h-10 rounded-lg pl-4"
+                    type='text'
+                    name='phone_number'
+                    placeholder='Phone number'
+                    value={formData.phone_number}
+                    onChange={handleInputChange}
+                  />
+                </div>
                 
-              
-              <label className='text-white genderLabel' for='other'> Other </label>
-                <input type="radio" value="other" {...register("gender")} className='other' id='other'/>
-               
+              </div>
+
+              <div className='pb-2'>
+                    <label className='opacity-40'>Date of Birth:</label>
+                    <div className='pt-1 pl-10'>
+                      <input
+                        className="bg-[#2a2a2a] w-[400px] h-10 rounded-lg pl-4"
+                        type='date'
+                        name='dob'
+                        placeholder='Birth Day'
+                        value={formData.dob}
+                        onChange={handleInputChange}
+                      />
+                    </div>
+                  </div>
+                  
+                  <div className='text-left'>
+                    <label className='opacity-40'>Gender:</label>
+                    <div className='pt-1 pl-10'>
+                      <select
+                        name='gender'
+                        className='h-10 text-left rounded-lg bg-opacity-10 md:48 optional:bg-[#2a2a2a] w-[400px] pl-4'
+                        value={formData.gender}
+                        onChange={handleInputChange}
+                      >
+                        <option value='male' className='text-white bg-black bg-opacity-90'>Male</option>
+                        <option value='female' className='text-white bg-black bg-opacity-90'>Female</option>
+                        <option value='other' className='text-white bg-black bg-opacity-90'>Other</option>
+                      </select>
+                    </div>
+                  </div>
+                
+              </div>
             </div>
-                <p className='text-red-500'>{errors.gender?.message}</p>
-          </div>
+            </div>
+            
+            <div className='pl-8 border-l border-orange-500'>
+                <div className='flex justify-center '>
+                  {image ? (
+                    <div>
+                      <img src={image} alt='' className='rounded-full h-[200px] w-[200px] border-[2px]'></img>
+                    </div>
+                  ) : (
+                    <img src={formData.image} alt='' className='rounded-full h-[200px] w-[200px] border-[2px]'></img>
+                  )}
+                </div>
+                <div>
+                  <input
+                    accept='image/*'
+                    type='file'
+                    name='image'
+                    className=''
+                    onChange={handleInputChange}
+                  />
+                </div> 
 
-          <AvatarDP/>
+                <div className=''>
+                    <div>
+                    <label className='flex text-left opacity-40'>Education:</label>
+                    </div>
+                    <div className='pt-1 pl-10'>
+                      <textarea
+                        className='bg-[#2a2a2a] w-[400px] h-10 rounded-lg pl-4'
+                        type='text'
+                        name='education'
+                        value={formData.education}
+                        onChange={handleInputChange}
+                      >
+                        
+                      </textarea>
+                    </div>
+              </div>
+
+              <div className=''>
+                    <div>
+                    <label className='flex text-left opacity-40'>Bio:</label>
+                    </div>
+                    <div className='pt-1 pl-10'>
+                      <textarea
+                        className='bg-[#2a2a2a] w-[400px] h-20 rounded-lg pl-4'
+                        type='text'
+                        name='bio'
+                        value={formData.bio}
+                        onChange={handleInputChange}
+                      >
+                        
+                      </textarea>
+                    </div>
+                </div>
+
+            </div>
+              
+            </div>
+
+            <div className='pt-8'>
+              <button type='submit' className='px-4 py-2 font-bold text-white bg-orange-600 rounded hover:bg-orange-400'>
+                Update
+              </button>
+            </div>
+          </form>
         </div>
-        
-        <div className='w-5/6 px-1 py-1 '>
-          <label className='flex flex-col items-start text-white '>
-            Education
-            <textarea className='w-full pt-2 border-2 border-orange-700 resize-none text-neutral-900 bg-amber-800 bg-opacity-15 rounded-2xl indent-5' 
-            placeholder='Education Qualification' {...register("education")} /> 
-          </label>
-              <p className='text-red-500'>{errors.education?.message}</p>
-
-            <label className='flex flex-col items-start text-white'>
-              Description
-              <textarea className='w-full pt-2 border-2 border-orange-700 resize-none text-neutral-900 bg-amber-800 bg-opacity-15 rounded-2xl indent-5' 
-              placeholder='I am SystemChanger' {...register("description")} /> 
-            </label>
-              <p className='text-red-500'>{errors.description?.message}</p>
-        </div>
-        
-
-        <button type="submit" className='bg-white text-neutral-900'>SUBMIT</button>
-      </form>
-      
+      )}
     </div>
-  )
-}
+  );
+};
 
 export default EditProfile;
-
