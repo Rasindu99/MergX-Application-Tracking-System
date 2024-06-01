@@ -128,13 +128,16 @@ const getprofile = (req, res) => {
                     // Include image data in the response
                     const userProfile = {
                         email: user.email,
-                        id: user._id,
+                        _id: user._id,
                         fname: user.fname,
                         lname: user.lname,
                         gender: user.gender,
                         dob: user.dob,
                         role: user.role,
-                        image: user.image // Include the image data
+                        image: user.image, // Include the image data
+                        bio:user.bio,
+                        phone_number: user.phone_number,
+                        education: user.education
                     };
 
                     res.json(userProfile);
