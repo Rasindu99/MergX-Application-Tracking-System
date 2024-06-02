@@ -49,6 +49,7 @@ import Interview from './Pages/interviewer/InterviewPage';
 import Feedbacksubmission from './Pages/interviewer/FeedbackSubmission';
 import Scheduling from './Pages/interviewer/Scheduling';
 import InterviewMessage from './Pages/interviewer/Message';
+import ProtectedRoute from './Components/ProtectedRoute';
 
 axios.defaults.baseURL = 'http://localhost:8000';
 axios.defaults.withCredentials = true
@@ -72,9 +73,8 @@ function App() {
           <Route  path='/createNewAccount'element={<NewCandidateCreateAccount/>}> </Route>
           <Route  path='/register'element={ <Register/>}> </Route>
           
-          <Route path='/admindash' element={<Admindash/> }></Route>
-          <Route path='/recruiterdash' element={<RecruiterLayout />}>
-            
+          <Route path='/admindash' element={<ProtectedRoute><Admindash /></ProtectedRoute>} />
+          <Route path='/recruiterdash' element={<ProtectedRoute><RecruiterLayout /></ProtectedRoute>}>
             <Route path="JobPosting" element={<JobPosting />} />
             <Route path="CandidateCommunication" element={<CandidateCommunication />} />
             <Route path="ApplicationManagement" element={<ApplicationManagement />} />
@@ -82,32 +82,32 @@ function App() {
             <Route path="Message" element={<Message />} />
           </Route>
 
-          <Route path='/interviewerdash' element={<Interviewerdash/>}></Route>
-          <Route path='/interview' element={<Interview/>}></Route>
-          <Route path='/feedbacksubmission' element={<Feedbacksubmission/>}></Route>
-          <Route path='/evaluation' element={<Evaluation/>}></Route>
-          <Route path='/scheduling' element={<Scheduling/>}></Route>
-          <Route path='/message' element={<InterviewMessage/>}></Route>
+          <Route path='/interviewerdash' element={<ProtectedRoute><Interviewerdash /></ProtectedRoute>} />
+          <Route path='/interview' element={<ProtectedRoute><Interview /></ProtectedRoute>} />
+          <Route path='/feedbacksubmission' element={<ProtectedRoute><Feedbacksubmission /></ProtectedRoute>} />
+          <Route path='/evaluation' element={<ProtectedRoute><Evaluation /></ProtectedRoute>} />
+          <Route path='/scheduling' element={<ProtectedRoute><Scheduling /></ProtectedRoute>} />
+          <Route path='/message' element={<ProtectedRoute><InterviewMessage /></ProtectedRoute>} />
 
-          <Route path='/hiringmanagerdash'element={<Hiringmanagerdash/>}></Route>
+          <Route path='/hiringmanagerdash' element={<ProtectedRoute><Hiringmanagerdash /></ProtectedRoute>} />
 
-          <Route path='/candidatedash' element={<Candidatedash/>}>
-            <Route path='editProfile' element={<EditProfile/>} />
-            <Route path='landingPage' element={<LandingPage/>} />
-            <Route path='statusPage' element={<Status/>} />
-            <Route path='submissionPage' element={<PendingSubmission/>} />
-            <Route path='sessionPage' element={<Session/>} />
-            <Route path='invitationPage' element={<Invitation/>} />
+          <Route path='/candidatedash' element={<ProtectedRoute><Candidatedash /></ProtectedRoute>}>
+            <Route path='editProfile' element={<EditProfile />} />
+            <Route path='landingPage' element={<LandingPage />} />
+            <Route path='statusPage' element={<Status />} />
+            <Route path='submissionPage' element={<PendingSubmission />} />
+            <Route path='sessionPage' element={<Session />} />
+            <Route path='invitationPage' element={<Invitation />} />
           </Route>
 
-          <Route path='/admincreateuser' element={<CreateNewUser/>}/>
-          <Route path='/adminmodifyuser' element={<ModifyUserAccount/>}/>
-          <Route path='/admindeleteuser' element={<DeleteUserAccount/>}/>
-          <Route path='/adminroleassignment' element={<RoleAssignment/>}/>
-          <Route path='/adminaccesscontrol' element={<AccessControl/>}/>
-          <Route path='/adminsystemsettings' element={<SystemSettings/>}/>
+          <Route path='/admincreateuser' element={<ProtectedRoute><CreateNewUser /></ProtectedRoute>} />
+          <Route path='/adminmodifyuser' element={<ProtectedRoute><ModifyUserAccount /></ProtectedRoute>} />
+          <Route path='/admindeleteuser' element={<ProtectedRoute><DeleteUserAccount /></ProtectedRoute>} />
+          <Route path='/adminroleassignment' element={<ProtectedRoute><RoleAssignment /></ProtectedRoute>} />
+          <Route path='/adminaccesscontrol' element={<ProtectedRoute><AccessControl /></ProtectedRoute>} />
+          <Route path='/adminsystemsettings' element={<ProtectedRoute><SystemSettings /></ProtectedRoute>} />
 
-          <Route path = '/userdetails' element={<ViewUserCard/>}/>
+          <Route path='/userdetails' element={<ProtectedRoute><ViewUserCard /></ProtectedRoute>} />
         </Routes>
 
         </UserContextProvider>

@@ -242,6 +242,10 @@ const updateUser = async (req, res) => {
     }
 };
 
+const logoutUser = (req, res) => {
+    res.clearCookie('token');
+    res.status(200).json({ message: 'Logout successful' });
+};
 
 
 
@@ -252,7 +256,8 @@ module.exports = {
     getusers,
     getprofile,
     updateUser,
-    deleteUser
+    deleteUser,
+    logoutUser
    
 
   

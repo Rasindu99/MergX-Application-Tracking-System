@@ -21,18 +21,20 @@ function LoginForm() {
     e.preventDefault();
     const { email, password } = data;
     try {
-      const response = await axios.post('/login', {
-        email,
-        password
-      });
+      const response = await axios.post('/login', { email, password });
       const userData = response.data;
       if (userData.error) {
         toast.error(userData.error);
       } else {
         setData({ email: '', password: '' }); // Clear input fields
         setUser(userData); // Set user data in context
+
+        // Save token and user details in local storage
+        //localStorage.setItem('token', userData.token);
+        localStorage.setItem('user', JSON.stringify(userData));
+
         const role = userData.role; // Extract role from response data
-        
+
         // Redirect based on role
         switch (role) {
           case 'admin':
@@ -45,10 +47,10 @@ function LoginForm() {
             navigate('/hiringmanagerdash');
             break;
           case 'interviewer':
-             navigate('/interviewerdash');
-             break;
+            navigate('/interviewerdash');
+            break;
           case 'candidate':
-            navigate('/candidatedash');
+            navigate('/candidatedash/landingPage');
             break;
           default:
             // Handle unrecognized roles or default redirection
@@ -73,26 +75,26 @@ function LoginForm() {
               <h1 className='text-3xl '>Applicant Tracking System</h1>
             </div>
             <div className='grid gap-8 text-black'>
-                <div className='px-3 mt-5 text-white'><FaRegUser className='opacity-30'/></div>
+              <div className='px-3 mt-5 text-white'><FaRegUser className='opacity-30'/></div>
               <input type='text' placeholder='Enter Email here' className='absolute lg:w-[390px] rounded-lg bg-[white] bg-opacity-10 text-white h-14 border px-10  md:w-96 sm:w-[250px] w-200px' value={data.email}
                 onChange={(e) => setData({ ...data, email: e.target.value })} />
             </div>
-            
+
             <div className='grid gap-8 mt-3 text-black pt-7 md:w-48'>
-                <div className='px-3 mt-5 text-white opacity-30'><MdOutlinePassword /></div>
+              <div className='px-3 mt-5 text-white opacity-30'><MdOutlinePassword /></div>
               <input type='password' placeholder='Enter password here' className='lg:w-[390px] rounded-lg bg-[white] bg-opacity-10 text-white h-14 border absolute px-10 md:w-96 lg:border sm:border md:border sm:w-[250px] w-200px' value={data.password}
                 onChange={(e) => setData({ ...data, password: e.target.value })} />
             </div>
-            
+
             <div className='flex pt-5 mt-3 mb-6 text-right'>
               <div className='flex '>
                 <input type='checkbox' className='' /><label className='mx-2'> Remember me</label>
               </div>
               <div className='flex ml-auto text-blue-400 '>
-                <Link to='/forget' className=''>Forget  password</Link>
+                <Link to='/forget' className=''>Forget password</Link>
               </div>
             </div>
-            
+
             <div className='pt-4 '>
               <button className='h-12 px-12 bg-orange-600 rounded-xl md:w-auto'>LOGIN</button>
             </div>
@@ -103,9 +105,9 @@ function LoginForm() {
               <label>Create an account as a candidate</label>
             </div>
             <div className='pt-4'>
-            <Link to='/createNewAccount'>
-              <button type='submit' className='w-full h-12 px-12 bg-orange-600 rounded-2xl md:w-auto'>Create New Account</button>
-            </Link>
+              <Link to='/createNewAccount'>
+                <button type='button' className='w-full h-12 px-12 bg-orange-600 rounded-2xl md:w-auto'>Create New Account</button>
+              </Link>
             </div>
           </form>
         </div>
