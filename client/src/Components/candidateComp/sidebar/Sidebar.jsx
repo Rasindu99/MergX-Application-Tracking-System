@@ -23,54 +23,58 @@ const Sidebar = () => {
 
   return (
     
-    <div className='flex flex-col justify-between items-center bg-neutral-800 w-2/12 h-screen'>
+    <div className='flex flex-col items-center justify-between w-2/12 h-screen bg-neutral-800'>
       <Avatar />
-      <div className='flex flex-col divide-y divide-neutral-600 mb-9 w-full'>
+      <div className='flex flex-col w-full divide-y divide-neutral-600 mb-9'>
 
         <NavLink style={navLinkStyles} to="/candidatedash/landingPage" >
-          <div className='flex justify-start   pt-3 py-3 hover:bg-neutral-700 hover:text-gray-400 pl-8'>
-            <LuLayoutDashboard className='text-2xl mr-5'/>
+          <div className='flex justify-start py-3 pt-3 pl-8 hover:bg-neutral-700 hover:text-gray-400'>
+            <LuLayoutDashboard className='mr-5 text-2xl'/>
             Dashboard
           </div>
         </NavLink>
 
         <NavLink style={navLinkStyles} to='/candidatedash/editProfile'>
-          <div className='flex justify-start   pt-3 py-3 hover:bg-neutral-700 hover:text-gray-400 pl-8'>
-            <TbUserEdit className='text-2xl mr-5'/>
+          <div className='flex justify-start py-3 pt-3 pl-8 hover:bg-neutral-700 hover:text-gray-400'>
+            <TbUserEdit className='mr-5 text-2xl'/>
             Edit Profile
           </div>
         </NavLink>
 
         <NavLink style={navLinkStyles} to='/candidatedash/statusPage'>
-          <div className='flex justify-start   pt-3 py-3 hover:bg-neutral-700 hover:text-gray-400 pl-8'>  
-            <PiCircleDashedBold className='text-2xl mr-5 ' />
+          <div className='flex justify-start py-3 pt-3 pl-8 hover:bg-neutral-700 hover:text-gray-400'>  
+            <PiCircleDashedBold className='mr-5 text-2xl ' />
             Status Updates
           </div>
         </NavLink>
 
         <NavLink style={navLinkStyles} to='/candidatedash/invitationPage'>
-          <div className='flex justify-start   pt-3 py-3 hover:bg-neutral-700 hover:text-gray-400 pl-8'>
-            <RiInboxArchiveLine className='text-2xl mr-5 ' />
+          <div className='flex justify-start py-3 pt-3 pl-8 hover:bg-neutral-700 hover:text-gray-400'>
+            <RiInboxArchiveLine className='mr-5 text-2xl ' />
             Interview Invitations
           </div>
         </NavLink>
 
         <NavLink style={navLinkStyles} to='/candidatedash/submissionPage'>
-          <div className='flex justify-start   pt-3 py-3 hover:bg-neutral-700 hover:text-gray-400 pl-8'>
-            <RiFolderUploadLine className='text-2xl mr-5 ' />
+          <div className='flex justify-start py-3 pt-3 pl-8 hover:bg-neutral-700 hover:text-gray-400'>
+            <RiFolderUploadLine className='mr-5 text-2xl ' />
             Submit Application
           </div>
         </NavLink>
 
         <NavLink style={navLinkStyles} to='/candidatedash/sessionPage'>
-          <div className='flex justify-start   pt-3 py-3 hover:bg-neutral-700 hover:text-gray-400 pl-8'>
-            <BsPersonVideo3 className='text-2xl mr-5 ' />
+          <div className='flex justify-start py-3 pt-3 pl-8 hover:bg-neutral-700 hover:text-gray-400'>
+            <BsPersonVideo3 className='mr-5 text-2xl ' />
             Join Interview
           </div>
         </NavLink>
+
+        <div className='flex justify-center pt-20 '>
+          <Logout />
+        </div>
        
       </div>
-      <Logout />
+      
     </div>
     
   )

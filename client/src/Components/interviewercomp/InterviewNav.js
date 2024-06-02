@@ -8,11 +8,11 @@ import { FaFileSignature } from 'react-icons/fa';
 import { FaRegCalendarAlt } from "react-icons/fa";
 import { CiLogout } from 'react-icons/ci';
 import { MdMessage } from 'react-icons/md';
-import proImg from '../../Images/pro1.png'
+//import proImg from '../../Images/pro1.png'
 
 export default function InterviewNav() {
     const [activeItem, setActiveItem] = useState(null);
-    const { user } = useContext(UserContext);
+    const { user , logout } = useContext(UserContext);
     const location = useLocation();
 
     useEffect(() => {
@@ -115,7 +115,9 @@ export default function InterviewNav() {
                     <div className='flex items-center justify-center'>
                         <div className='pt-10 fix w-fit'>
                             <Link to='/'>
-                            <button className='bg-[#EA7122] w-44 h-12 rounded-xl flex items-center justify-center mb-4'>
+                            <button className='bg-[#EA7122] w-44 h-12 rounded-xl flex items-center justify-center mb-4'
+                            onClick={logout}
+                            >
                                 <div className='flex items-center'>
                                     <CiLogout size={24} className='mr-2 text-lg text-white ' />
                                     <span className='text-white'>LOGOUT</span>
