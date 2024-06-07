@@ -6,6 +6,9 @@ const jobPostingSchema = new mongoose.Schema({
     required: true,
     unique: true
   },
+  jobCreatorId: {
+    type: String
+  },
   jobcreatorEmail: {
     type: String,
     required: true
