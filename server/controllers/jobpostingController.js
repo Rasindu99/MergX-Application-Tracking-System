@@ -7,7 +7,7 @@ const jobtest = (req, res) => {
 //POST a new jobposting
 const createJobPosting = async (req, res) => {
     try {
-        const { jobcreatorEmail, jobTitle, vacancies, description, salary, requiredExperience, requiredSkills, approved } = req.body;
+        const { jobCreatorId, jobcreatorEmail, jobTitle, vacancies, description, salary, requiredExperience, requiredSkills, approved } = req.body;
 
         // Check if required fields are provided
         if (!jobTitle || !salary || !requiredExperience) {
@@ -33,6 +33,7 @@ const createJobPosting = async (req, res) => {
         // Create a new job posting
         const jobPosting = await JobPosting.create({
             jobid: newJobId,
+            jobCreatorId,
             jobcreatorEmail,
             jobTitle,
             vacancies,
@@ -50,6 +51,7 @@ const createJobPosting = async (req, res) => {
         return res.status(400).json({ message: error.message });
     }
 };
+
 // GET all pending job postings
 const getAllPendingJobPostings = async (req, res) => {
     try {

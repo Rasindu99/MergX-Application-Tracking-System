@@ -6,6 +6,7 @@ import { UserContext } from "../../Context/UserContext";
 
 export default function JobPost({ fetchPendingJobPostings }) {
   const { user } = useContext(UserContext);
+  const [jobCreatorId, setJobCreatorId] = useState();
   const [jobcreatorEmail, setJobcreatorEmail] = useState();
   const [jobTitle, setJobTitle] = useState("");
   const [vacancies, setVacancies] = useState("");
@@ -18,8 +19,10 @@ export default function JobPost({ fetchPendingJobPostings }) {
   useEffect(() => {
     if (user && user.email) {
       setJobcreatorEmail(user.email);
+      setJobCreatorId(user._id);
     }
   }, [user]);
+  
 
   const clearForm = () => {
     setJobTitle("");
@@ -46,10 +49,12 @@ export default function JobPost({ fetchPendingJobPostings }) {
       } else if (vacancies < 0 || salary < 0 || requiredExperience < 0) {
         toast.error("Number fields cannot have negative values.");
       }else{
+        
       // Split required skills by comma to create an array
       const skillsArray = requiredSkills.split(",");
 
       const formData = {
+        jobCreatorId,
         jobcreatorEmail,
         jobTitle,
         vacancies,
@@ -82,6 +87,8 @@ export default function JobPost({ fetchPendingJobPostings }) {
     salary &&
     requiredExperience &&
     requiredSkills;
+
+    
 
   return (
     <div>
