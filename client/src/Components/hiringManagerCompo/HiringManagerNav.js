@@ -2,13 +2,18 @@ import React, { useContext, useState, useEffect } from 'react';
 import { Link, useLocation,  } from 'react-router-dom';
 import { UserContext } from '../../Context/UserContext';
 import { MdDashboard } from 'react-icons/md';
-import { IoPersonAddSharp } from 'react-icons/io5';
 
-import { FaUserEdit } from 'react-icons/fa';
+
+
+import { MdComment } from "react-icons/md";
+import { FaComments } from "react-icons/fa";
+import { MdOutlineApproval } from "react-icons/md";
+import { BsClipboardDataFill } from "react-icons/bs";
+import { FaSquarePollHorizontal } from "react-icons/fa6";
 
 import { CiLogout } from 'react-icons/ci';
-import { DiAptana } from 'react-icons/di';
-import { SiPrivateinternetaccess } from 'react-icons/si';
+
+
 
 export default function HiringmanagerNav() {
     const [activeItem, setActiveItem] = useState(null);
@@ -80,7 +85,7 @@ export default function HiringmanagerNav() {
                         <Link to='/hiringmanagerjobapproval' className='no-underline'>
                             <li>
                                 <div className={`flex items-center py-3 pl-8 hover:bg-gray-100 hover:bg-opacity-10 ${activeItem === 2 ? 'bg-[#BABABA] bg-opacity-20 text-white' : 'text-gray-100 hover:bg-gray-300 hover:text-white'}`}>
-                                    <div className='mr-8'><IoPersonAddSharp size={20} className="opacity-25 sm:w-6 sm:h-6" /></div>
+                                    <div className='mr-8'><MdOutlineApproval size={20} className="opacity-25 sm:w-6 sm:h-6" /></div>
                                     <div><label className='text-white opacity-25' style={{ fontSize: '18px' }}>Job approval</label></div>
                                 </div>
                             </li>
@@ -89,7 +94,7 @@ export default function HiringmanagerNav() {
                         <Link to='/hiringmanagerinterviewfeedback' className='no-underline'>
                             <li>
                                 <div className={`flex items-center py-3 pl-8 hover:bg-gray-100 hover:bg-opacity-10 ${activeItem === 3 ? 'bg-[#BABABA] bg-opacity-20 text-white' : 'text-gray-100 hover:bg-gray-300 hover:text-white'}`}>
-                                    <div className='mr-8'><FaUserEdit size={20} className="opacity-25 sm:w-6 sm:h-6" /></div>
+                                    <div className='mr-8'><MdComment  size={20} className="opacity-25 sm:w-6 sm:h-6" /></div>
                                     <div><label className='text-white opacity-25' style={{ fontSize: '18px' }}>Interview feedback</label></div>
                                 </div>
                             </li>
@@ -98,7 +103,7 @@ export default function HiringmanagerNav() {
                         <Link to='/hiringmanagerhiringdecisions' className='no-underline'>
                             <li>
                                 <div className={`flex items-center py-3 pl-8 hover:bg-gray-100 hover:bg-opacity-10 ${activeItem === 4 ?'bg-[#BABABA] bg-opacity-20 text-white' : 'text-gray-100 hover:bg-gray-300 hover:text-white'}`}>
-                                    <div className='mr-8'><SiPrivateinternetaccess size={20} className="opacity-25 sm:w-6 sm:h-6 hover:text-white" /></div>
+                                    <div className='mr-8'><BsClipboardDataFill  size={20} className="opacity-25 sm:w-6 sm:h-6 hover:text-white" /></div>
                                     <div><label className='text-white opacity-25 hover:text-white' style={{ fontSize: '18px' }}>Hiring decisions</label></div>
                                 </div>
                             </li>
@@ -106,15 +111,15 @@ export default function HiringmanagerNav() {
                         <Link to='/hiringmanagerreporting' className='no-underline'>
                             <li>
                                 <div className={`flex items-center py-3 pl-8 hover:bg-gray-100 hover:bg-opacity-10 ${activeItem === 5 ? 'bg-[#BABABA] bg-opacity-20 text-white' : 'text-gray-100 hover:bg-gray-300 hover:text-white'}`}>
-                                    <div className='mr-8'><DiAptana size={20} className="opacity-25 sm:w-6 sm:h-6 hover:text-white" /></div>
+                                    <div className='mr-8'><FaSquarePollHorizontal size={20} className="opacity-25 sm:w-6 sm:h-6 hover:text-white" /></div>
                                     <div><label className='text-white opacity-25 hover:text-white' style={{ fontSize: '18px' }}>Reporting</label></div>
                                 </div>
                             </li>
                         </Link>
                         <Link to='/hiringmanagermessage' className='no-underline'>
                             <li>
-                                <div className={`flex items-center py-3 pl-8 hover:bg-gray-100 hover:bg-opacity-10 ${activeItem === 5 ? 'bg-[#BABABA] bg-opacity-20 text-white' : 'text-gray-100 hover:bg-gray-300 hover:text-white'}`}>
-                                    <div className='mr-8'><DiAptana size={20} className="opacity-25 sm:w-6 sm:h-6 hover:text-white" /></div>
+                                <div className={`flex items-center py-3 pl-8 hover:bg-gray-100 hover:bg-opacity-10 ${activeItem === 6 ? 'bg-[#BABABA] bg-opacity-20 text-white' : 'text-gray-100 hover:bg-gray-300 hover:text-white'}`}>
+                                    <div className='mr-8'><FaComments  size={20} className="opacity-25 sm:w-6 sm:h-6 hover:text-white" /></div>
                                     <div><label className='text-white opacity-25 hover:text-white' style={{ fontSize: '18px' }}>Message</label></div>
                                 </div>
                             </li>
