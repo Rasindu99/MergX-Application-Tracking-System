@@ -51,6 +51,13 @@ import Scheduling from './Pages/interviewer/Scheduling';
 import InterviewMessage from './Pages/interviewer/Message';
 import ProtectedRoute from './Components/ProtectedRoute';
 
+import JobApproval from './Pages/hiring manager/JobApproval';
+import InterviewFeedback from './Pages/hiring manager/InterviewFeedback';
+import HiringDecisions from './Pages/hiring manager/HiringDecisions';
+import Reporting from './Pages/hiring manager/Reporting';
+import MessageHiringManager from './Pages/hiring manager/MessageHiringManager';
+
+
 axios.defaults.baseURL = 'http://localhost:8000';
 axios.defaults.withCredentials = true
 
@@ -90,7 +97,12 @@ function App() {
           <Route path='/message' element={<ProtectedRoute><InterviewMessage /></ProtectedRoute>} />
 
           <Route path='/hiringmanagerdash' element={<ProtectedRoute><Hiringmanagerdash /></ProtectedRoute>} />
-
+          <Route path='/hiringmanagerjobapproval' element={<ProtectedRoute><JobApproval/></ProtectedRoute>} />
+          <Route path='/hiringmanagerinterviewfeedback' element={<ProtectedRoute><InterviewFeedback/></ProtectedRoute>} />
+          <Route path='/hiringmanagerhiringdecisions' element={<ProtectedRoute><HiringDecisions/></ProtectedRoute>} />
+          <Route path='/hiringmanagerreporting' element={<ProtectedRoute><Reporting/></ProtectedRoute>} />
+          <Route path='/hiringmanagermessage' element={<ProtectedRoute><MessageHiringManager/></ProtectedRoute>} />
+          
           <Route path='/candidatedash' element={<ProtectedRoute><Candidatedash /></ProtectedRoute>}>
             <Route path='editProfile' element={<EditProfile />} />
             <Route path='landingPage' element={<LandingPage />} />
