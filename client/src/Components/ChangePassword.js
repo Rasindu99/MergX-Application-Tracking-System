@@ -4,7 +4,7 @@ import Logo from '../Images/Logo';
 import Bgg from '../Images/Bgg';
 import { MdOutlinePassword } from "react-icons/md";
 import { IoArrowBackSharp } from "react-icons/io5";
-import { MdOutlineConfirmationNumber } from "react-icons/md";
+
 
 function ChangePassword() {
 
@@ -17,7 +17,7 @@ function ChangePassword() {
   return (
     <div className='flex h-screen'>
         <div div className='absolute block h-12 mx-6 my-6 '>
-        <Link to='/forget' className='text-4xl text-white opacity-40'><IoArrowBackSharp /></Link>
+        <Link to='/verifyotp' className='text-4xl text-white opacity-40'><IoArrowBackSharp /></Link>
         </div>
 
       {/* Left Section */}
@@ -33,14 +33,7 @@ function ChangePassword() {
             <div className='mb-5 opacity-30'>
               <hr className=''></hr>
             </div>
-            <div className='grid gap-8 text-black'>
-                <div className='px-3 mt-5 text-white '><MdOutlineConfirmationNumber  className='opacity-30'/></div>
-              <input type='text' placeholder='Enter verification code' className='absolute w-full rounded-lg bg-[white] bg-opacity-10 text-white h-14 border px-10  md:w-96' />
-            </div>
-
-            <div className='flex text-orange-600 pt-7 '>
-                <Link to='/forget' className=''>Resend verifiation code</Link>
-              </div>
+            
             
             <div className='grid gap-8 pt-6 mt-3 text-black md:w-48'>
                 <div className='px-3 mt-5 text-white opacity-30'><MdOutlinePassword /></div>
