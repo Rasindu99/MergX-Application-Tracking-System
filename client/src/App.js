@@ -56,7 +56,7 @@ import InterviewFeedback from './Pages/hiring manager/InterviewFeedback';
 import HiringDecisions from './Pages/hiring manager/HiringDecisions';
 import Reporting from './Pages/hiring manager/Reporting';
 import MessageHiringManager from './Pages/hiring manager/MessageHiringManager';
-
+import OTP from './Pages/OTP';
 
 axios.defaults.baseURL = 'http://localhost:8000';
 axios.defaults.withCredentials = true
@@ -76,6 +76,7 @@ function App() {
           
           <Route  path='/'element={<Login/>}> </Route>
           <Route  path='/forget'element={<ForgetPassword/>}> </Route>
+          <Route path='verifyotp' element={<OTP/>}/>
           <Route  path='/changepassword'element={<ChangePw/>}> </Route>
           <Route  path='/createNewAccount'element={<NewCandidateCreateAccount/>}> </Route>
           <Route  path='/register'element={ <Register/>}> </Route>

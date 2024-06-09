@@ -3,7 +3,7 @@ const User = require('../models/user');
 const { hashPassword, comparePassword } = require('../helpers/auth');
 const UserModel = require('../models/user');
 const { sendMail } = require('../helpers/sendMail');
-
+const OtpModel = require('../models/otp');
 //const multer = require('multer')
 
 const test = (req, res) => {
@@ -247,6 +247,119 @@ const logoutUser = (req, res) => {
     res.status(200).json({ message: 'Logout successful' });
 };
 
+//forget password (check email and 4n number)
+const forgetPassword = async (req, res) => {
+    try {
+        const { email, phone_number } = req.body;
+
+        // Check if user exists
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res.json({ error: 'No user found' });
+        }
+
+        // Compare phone numbers
+        const match = await comparePhoneNumber(phone_number, user.phone_number);
+        if (!match) {
+            return res.json({ error: 'Incorrect phone number' });
+        }
+
+        // Generate OTP
+        const otp = generateVerificationCode();
+
+        // Send OTP via email
+        await sendMail(email, 'Password Reset Verification Code', `Your verification code is ${otp}`);
+
+        // Save OTP to the database with TTL index
+        const expirationTime = new Date();
+        expirationTime.setMinutes(expirationTime.getMinutes() + 3); // Set expiration time to 3 minutes from now
+        await OtpModel.create({
+            user_email: email,
+            user_phone_number: phone_number,
+            otp: otp,
+            createdAt: new Date(), // Add a createdAt field for reference
+            expiresAt: expirationTime // Set expiration time
+        });
+
+        return res.json({ message: 'Verification code sent' });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: 'Internal server error' });
+    }
+};
+
+// Helper functions
+const comparePhoneNumber = async (providedPhoneNumber, storedPhoneNumber) => {
+    return providedPhoneNumber === storedPhoneNumber;
+};
+
+const generateVerificationCode = () => {
+    return Math.floor(100000 + Math.random() * 900000).toString(); // Example: 6-digit code
+};
+
+//forget pw (otp search db)
+const checkOtp = async (req, res) => {
+    try {
+        const { otp } = req.body;
+
+        // Check OTP
+        const otpRecord = await OtpModel.findOne({ otp });
+
+        if (!otpRecord) {
+            return res.json({
+                error: 'OTP incorrect'
+            });
+        }
+
+        return res.json({
+            message: 'OTP is correct'
+        });
+
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ error: 'Server error' });
+    }
+}
+
+// Change password
+const changepassword = async (req, res) => {
+    try {
+        const { otp, newPassword } = req.body;
+
+        const otpRecord = await OtpModel.findOne({ otp });
+
+        if (!otpRecord) {
+            return res.json({ error: 'Invalid or expired OTP' });
+        }
+
+        const user = await User.findOne({ email: otpRecord.user_email });
+        if (!user) {
+            return res.json({ error: 'User not found' });
+        }
+
+        if (!newPassword || newPassword.length < 6) {
+            return res.json({ error: 'Password is required and should be at least 6 characters' });
+        }
+
+        const hashedPassword = await hashPassword(newPassword);
+
+        user.password = hashedPassword;
+        await user.save();
+
+        await OtpModel.findByIdAndDelete(otpRecord._id);
+
+        const { email, fname, lname } = user;
+        await sendMail(email, "Password is changed",
+            `Hi ${fname} ${lname},\n\nYour user email: ${email},\nYour new password: ${newPassword}\n\nBest regards,\nMergeX\n(Application Tracking System)`
+        );
+
+        return res.json({ message: 'Password changed successfully' });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ error: 'Internal server error' });
+    }
+};
+
 
 
 module.exports = {
@@ -257,7 +370,10 @@ module.exports = {
     getprofile,
     updateUser,
     deleteUser,
-    logoutUser
+    logoutUser,
+    forgetPassword,
+    checkOtp,
+    changepassword
    
 
   
