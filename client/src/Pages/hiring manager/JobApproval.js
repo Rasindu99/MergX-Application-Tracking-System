@@ -1,13 +1,76 @@
-import React from 'react'
-import HiringmanagerNav from '../../Components/hiringManagerCompo/HiringManagerNav'
+import React, { useState, useEffect } from "react";
+import Navbar from "../../Components/hiringManagerCompo/Navbar.jsx";
+import Topbar from "../../Components/hiringManagerCompo/Topbar.jsx";
+import PendingJobs from "../../Components/hiringManagerCompo/PendingJobs.jsx";
+import axios from "axios";
+import HiringmanagerNav from '../../Components/hiringManagerCompo/HiringManagerNav';
+
 
 export default function JobApproval() {
+  const name = "Kavindrika Piyushan";
+  const post = "Hiring Manager";
+  const { jsxNavbar, isOpened } = Navbar({ name, post });
+  const [jobpostings, setJobPostings] = useState([]);
+
+
+
+  useEffect(() => {
+    axios
+      .get("/job/getAllPendingJobPostings")
+      .then((response) => {
+        setJobPostings(response.data);
+        console.log("Pending job postings:", response.data);
+      })
+      .catch((error) => {
+        console.log("Error fetching pending job postings:", error);
+      });
+  }, []);
+
   return (
-    <div>
-        <div>
-            <HiringmanagerNav/>
-        </div>
-      
-    </div>
-  )
+    <div className='flex w-screen'>
+      <div className='fixed'>
+        <HiringmanagerNav/>
+      </div>
+      <div className='w-screen lg:ml-[320px] md:ml-72 ml-[260px] '>
+
+      <div   >
+            <Topbar
+              msg="Job Approval"
+              name="Piyushan"
+              post="Hiring Manager"
+            ></Topbar>
+            <div className="content text-white p-[30px] bg-[linear-gradient(180deg,_rgba(43,_43,_43,_0.5)_0%,_rgba(43,_43,_43,_0)_100%)] m-[30px] h-fit rounded-[30px] ">
+              <p className="pb-[20px] 320px:text-[0.5rem]  450px:text-[0.8rem] sm:text-[0.9rem]   900px:text-[1.1rem]  1010px:text-[1.2rem] ">
+                Pending jobs
+              </p>
+              <div>
+                <div>
+                  {jobpostings.map((jobposting) => (
+                    <PendingJobs
+                      key={jobposting._id}
+                      post={jobposting.jobTitle}
+                      date={jobposting.updatedAt}
+                      sallary={jobposting.salary}
+                      requiredExperience={jobposting.requiredExperience}
+                      requiredSkills={jobposting.requiredSkills}
+                      vacancies={jobposting.vacancies}
+                      description={jobposting.description}
+                 
+                    ></PendingJobs>
+                  ))}
+                  {/* <PendingJobs post='Software Engineer' date='2024-06-03' recruiter='Pramudi'></PendingJobs> */}
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+
+
+
+
+      </div>
+      </div>
+          
+  );
 }
