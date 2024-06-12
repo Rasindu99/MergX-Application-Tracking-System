@@ -32,6 +32,18 @@ const interviewScheduleSchema = new mongoose.Schema({
     password: {
         type: String,
         required: true
+    },
+    experience:{
+        type: String,
+        required: true
+    },
+    skills:{
+        type: String,
+        required: true 
+    },
+    description:{
+        type:String,
+        required: true
     }
 });
 

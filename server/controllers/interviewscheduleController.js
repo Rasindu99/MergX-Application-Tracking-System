@@ -3,9 +3,9 @@ const InterviewSchedule = require('../models/interviewSchedule');
 // Post interview schedule
 const createInterviewSchedule = async (req, res) => {
     try {
-        const { jobId, creatorId, date, start_time, end_time, subject, link, password } = req.body;
+        const { jobId, creatorId, date, start_time, end_time, subject, link, password, experience, skills, description } = req.body;
         
-        if (!jobId || !creatorId || !date || !start_time || !end_time || !subject || !link || !password) {
+        if (!jobId || !creatorId || !date || !start_time || !end_time || !subject || !link || !password || !experience || !skills || !description) {
             return res.status(400).json({ error: 'Missing required fields' });
         }
 
@@ -18,7 +18,10 @@ const createInterviewSchedule = async (req, res) => {
             end_time,
             subject,
             link,
-            password
+            password,
+            experience,
+            skills,
+            description
         });
         return res.status(200).json({ message: 'Interview Schedule created successfully', interviewschedule });
     } catch (error) {
