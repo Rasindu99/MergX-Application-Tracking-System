@@ -9,7 +9,7 @@ export default function UserDropdown() {
   const toggleDropdown = () => setIsOpen(!isOpen);
 
   return (
-    <div  className=' relative z-50'>
+    <div  className='relative z-50 '>
     <button onClick={toggleDropdown} id="dropdownAvatarNameButton" className="className='accLabel flex flex-row flex ring-[2.5px] ring-[#eb7323] bg-[#2b2b2b] sm:pl-[5px] items-center justify-start rounded-[30px] gap-[4px] w-[150px] h-[45px] lg:rounded-[25px] lg:gap-[8px] lg:w-[200px] lg:h-[60px] sm:gap-[6px] sm:w-[180px] sm:h-[50px] sm:rounded-[30px] esm:w-[fit-content]" >
     { !!user &&  <img src={user.image} alt="" className='userImg rounded-[50%] border-[solid] border-[#ffffff] ml-[0.7rem] w-[35px] h-[35px] border-[1.5px] lg:w-[40px] lg:h-[40px] lg:border-[2px] md:w-[37px] md:h-[37px] md:border-[2px] esm:m-1 ' />}
         <div className='block esm:hidden sm:block'>
