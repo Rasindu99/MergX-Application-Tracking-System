@@ -139,6 +139,23 @@ const updateExpiredStatus = async(req,res) => {
     res.status(500).json({ success: false, message: 'Internal server error' });
   }
 }
+//get expire = false jobs
+const getNotExpiredJobposting = async (req, res) => {
+    try {
+        const jobPostings = await JobPosting.find({ expired : false }).sort({ createdAt: -1 });
+
+        if (!jobPostings || jobPostings.length === 0) {
+            return res.status(404).json({ message: "All are expired job " });
+        }
+
+        // Return the array of job postings
+        return res.status(200).json(jobPostings);
+    } catch (error) {
+       console.log(error);
+       return res.status(500).json({message: error.message}) 
+    }
+}
+
 
 module.exports = {
     jobtest,
@@ -147,5 +164,6 @@ module.exports = {
     getAllApprovedJobPostings,
     updateJobPosting,
     deleteJobPosting,
-    updateExpiredStatus
+    updateExpiredStatus,
+    getNotExpiredJobposting
 };
