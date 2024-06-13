@@ -22,7 +22,8 @@ const createInterviewSchedule = async (req, res) => {
             password,
             experience,
             skills,
-            description
+            description,
+            send:false
         });
         return res.status(200).json({ message: 'Interview Schedule created successfully', interviewschedule });
     } catch (error) {
