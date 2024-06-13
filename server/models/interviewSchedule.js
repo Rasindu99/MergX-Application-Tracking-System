@@ -48,6 +48,10 @@ const interviewScheduleSchema = new mongoose.Schema({
     description:{
         type:String,
         required: true
+    },
+    send:{
+        type: Boolean,
+        default: false
     }
 });
 
