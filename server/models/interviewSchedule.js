@@ -5,6 +5,10 @@ const interviewScheduleSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    jobtitle:{
+        type: String,
+        required: true
+    },
     creatorId: {
         type: String,
         required: true
@@ -38,7 +42,7 @@ const interviewScheduleSchema = new mongoose.Schema({
         required: true
     },
     skills:{
-        type: String,
+        type: [String],
         required: true 
     },
     description:{
