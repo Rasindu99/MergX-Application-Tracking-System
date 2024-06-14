@@ -3,6 +3,7 @@ import axios from 'axios';
 import { FcInvite } from "react-icons/fc";
 import { GrFormView } from "react-icons/gr";
 import { IoMdClose } from "react-icons/io";
+import { toast } from 'react-hot-toast';
 
 export default function SendJobInvitation() {
     const [invitationsendisfalseData, setInvitationsendisfalseData] = useState([]);
@@ -58,6 +59,7 @@ export default function SendJobInvitation() {
 
              // Close the modal if it was sent from there
              handleModalClose();
+             toast.success( 'sent invitation Successsfully')
         } catch (error) {
             console.error('Error:', error);
         }
