@@ -3,10 +3,13 @@ import React, { useContext } from 'react';
 import { UserContext } from '../../Context/UserContext';
 import AdminNav from '../../Components/admincomp/AdminNav';
 import Greatings from '../../Components/Greatings';
+import Adminheadrightbar from '../../Components/admincomp/Adminheadrightbar';
 
-function Admindash() {
+
+function Admindash(resreq) {
   const { user } = useContext(UserContext); // Destructure user from context
- 
+  
+  
 
   return (
     <div>
@@ -15,13 +18,13 @@ function Admindash() {
           <AdminNav/>
         </div>
 
-        <div>
+        <div className='w-screen '>
           
           {/* Check if user exists before accessing its properties */}
           {!!user && (
-            <div>
-              <div><Greatings/></div>
-              <h1>Hi {user.fname} {user.lname} {user.gender} {user.email}</h1>
+            <div className='flex justify-between pt-8 pb-8 pl-5'>
+              <div className='flex'><Greatings/><h1 className='text-3xl'>, {user.fname}</h1></div>
+              <div className='mr-5'> <Adminheadrightbar/></div>
               
             </div>
           )}
