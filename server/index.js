@@ -29,6 +29,7 @@ app.use('/chatbot',require('./routes/chatRoutes'));
 app.use('/interview', require('./routes/interviewscheduleRoutes'));
 app.use('/evaluation', require('./routes/evaluationRoutes'));
 app.use('/invitation',require('./routes/jobinterviewinvitationRoutes'));
+app.use('/access',require('./routes/adminaccessRoutes'));
 //app.use('/Protected', require('./routes/ProtectedRoute'));
 // Defining the port for the server to listen on
 const port = 8000;

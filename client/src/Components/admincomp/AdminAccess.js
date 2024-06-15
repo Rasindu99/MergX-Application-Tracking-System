@@ -1,57 +1,130 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 
 export default function AdminAccess() {
-  const [createUser, setCreateUser] = useState(false);
-  const [modifyUser, setModifyUser] = useState(false);
-  const [deleteUser, setDeleteUser] = useState(false);
-  const [roleAssignment, setRoleAssignment] = useState(false);
+  const [createUserAccount, setCreateUserAccount] = useState(false);
+  const [modifyUserAccount, setModifyUserAccount] = useState(false);
+  const [roleUpdate, setroleUpdate] = useState(false);
+  const [deleteUserAccount, setDeleteUserAccount] = useState(false);
 
-  const handleCreateUser = () => {
-    setCreateUser(!createUser);
-    const newValue = !createUser;
-    setCreateUser(newValue);
-    console.log(`Create User Account turned ${newValue ? 'on' : 'off'}`);
+  useEffect(() => {
+    // Fetch the current state of create_user_account from the backend
+    const fetchCreateUserAccount = async () => {
+      try {
+        const response = await axios.get('/access/getcreateuseraccount');
+        setCreateUserAccount(response.data.create_user_account);
+      } catch (error) {
+        console.error('Error fetching create user account state:', error);
+      }
+    };
+
+    //fetch the modify_user account  from the backend
+    const fetchModifyUserAccount = async () => {
+      try {
+        const response = await axios.get('/access/getmodifyuseraccount');
+        setModifyUserAccount(response.data.modify_user_account);
+      } catch (error) {
+        console.error('Error fetching create user account state:', error);
+      }
+    };
+    
+     //fetch the role update  from the backend
+     const fetchRoleUpdate = async () => {
+      try {
+        const response = await axios.get('/access/getupdaterole');
+        setroleUpdate(response.data.role_update);
+      } catch (error) {
+        console.error('Error fetching create user account state:', error);
+      }
+    };
+    
+    //fetch get delete user
+    const fetchDeleteUserAccount = async () => {
+      try {
+        const response = await axios.get('/access/getdeleteaccount');
+        setDeleteUserAccount(response.data.delete_user_account);
+      } catch (error) {
+        console.error('Error fetching create user account state:', error);
+      }
+    };
+    
+    
+    fetchModifyUserAccount();
+    fetchCreateUserAccount();
+    fetchRoleUpdate();
+    fetchDeleteUserAccount();
+  }, []);
+
+  const handleRadioChange = async (value) => {
+    setCreateUserAccount(value);
+
+    try {
+      await axios.put('/access/updatecreateuseraccount', {
+        create_user_account: value
+      });
+    } catch (error) {
+      console.error('Error updating create user account state:', error);
+    }
   };
 
-  const handleModifyUser = () => {
-    setModifyUser(!modifyUser);
-    const newValue = !modifyUser
-    setModifyUser(newValue);
-    console.log(`Modify User Account turned ${newValue ? 'on' : 'off'}`);
+  const handleRadioChangemodifyuser = async (value) => {
+    setModifyUserAccount(value);
+
+    try {
+      await axios.put('/access/modifyuseraccount', {
+        modify_user_account: value
+      });
+    } catch (error) {
+      console.error('Error updating create user account state:', error);
+    }
   };
 
-  const handleDeleteUser = () => {
-    setDeleteUser(!deleteUser);
-    const newValue =!deleteUser
-    setDeleteUser(newValue);
-    console.log(`Delete user Account turned ${newValue ? 'on' : 'off'}`);
+  const handleRadioChangeroleupdate = async (value) => {
+    setroleUpdate(value);
+
+    try {
+      await axios.put('/access/updateroleaccess', {
+        role_update: value
+      });
+    } catch (error) {
+      console.error('Error updating create user account state:', error);
+    }
+  };
+  const handleRadioChangedeleteuser = async (value) => {
+    setDeleteUserAccount(value);
+
+    try {
+      await axios.put('/access/deleteuser', {
+        delete_user_account: value
+      });
+    } catch (error) {
+      console.error('Error updating create user account state:', error);
+    }
   };
 
-  const handleRoleAssignment = () => {
-    setRoleAssignment(!roleAssignment);
-    const newValue =!roleAssignment
-    setRoleAssignment(newValue);
-    console.log(`Role Assignment turned ${newValue ? 'on' : 'off'}`);
-  };
+
 
   return (
     <div className='flex justify-center'>
-      <div>
-        <table>
+      <div className='pt-12' >
+        <div className='pt-5 pb-3 mb-10 border-b'>
+          <h1 className='text-2xl opacity-50'>Admin Accesses</h1>
+        </div>
+        <table className=' h-[300px] w-[550px]'>
           <thead>
             <tr>
               <th></th>
               <th className='pl-10'></th>
-              <th className='pl-8 pr-8 '>Turn On</th>
-              <th>Turn Off</th>
+              <th className='pl-8 pr-8 text-orange-500'>Turn On</th>
+              <th  className='text-orange-500'>Turn Off</th>
             </tr>
           </thead>
 
           <tbody>
-            <tr>
-              <td>
+            <tr className='pt-6'>
+              <td >
                 <div className='text-left'>
-                  <label>Create User Account</label>
+                  <label className='text-xl' >Create User Account</label>
                 </div>
               </td>
               <td>
@@ -61,8 +134,8 @@ export default function AdminAccess() {
                 <div>
                   <input
                     type="radio"
-                    checked={createUser}
-                    onChange={handleCreateUser}
+                    checked={createUserAccount === true}
+                    onChange={() => handleRadioChange(true)}
                   />
                 </div>
               </td>
@@ -70,16 +143,17 @@ export default function AdminAccess() {
                 <div>
                   <input
                     type="radio"
-                    checked={!createUser}
-                    onChange={handleCreateUser}
+                    checked={createUserAccount === false}
+                    onChange={() => handleRadioChange(false)}
                   />
                 </div>
               </td>
             </tr>
-            <tr>
-              <td>
+            {/* Repeat similar structure for other functionalities */}
+            <tr className=''>
+            <td>
                 <div className='text-left'>
-                  <label>Modify User Account</label>
+                  <label className='text-xl'>Modify Details User Account</label>
                 </div>
               </td>
               <td>
@@ -89,8 +163,8 @@ export default function AdminAccess() {
                 <div>
                   <input
                     type="radio"
-                    checked={modifyUser}
-                    onChange={handleModifyUser}
+                    checked={modifyUserAccount === true}
+                    onChange={() => handleRadioChangemodifyuser(true)}
                   />
                 </div>
               </td>
@@ -98,29 +172,57 @@ export default function AdminAccess() {
                 <div>
                   <input
                     type="radio"
-                    checked={!modifyUser}
-                    onChange={handleModifyUser}
+                    checked={modifyUserAccount === false}
+                    onChange={() => handleRadioChangemodifyuser(false)}
                   />
                 </div>
               </td>
             </tr>
 
             <tr>
-              <td>
+            <td>
                 <div className='text-left'>
+                  <label className='text-xl'> Role Update User Account</label>
+                </div>
+              </td>
+              <td>
+                <h1>-</h1>
+              </td>
+              <td>
+                <div>
+                  <input
+                    type="radio"
+                    checked={roleUpdate === true}
+                    onChange={() => handleRadioChangeroleupdate(true)}
+                  />
+                </div>
+              </td>
+              <td>
+                <div>
+                  <input
+                    type="radio"
+                    checked={roleUpdate === false}
+                    onChange={() => handleRadioChangeroleupdate(false)}
+                  />
+                </div>
+              </td>
+            </tr>
+
+            <tr>
+            <td>
+                <div className='text-xl text-left '>
                   <label>Delete User Account</label>
                 </div>
               </td>
               <td>
                 <h1>-</h1>
               </td>
-              
               <td>
                 <div>
                   <input
                     type="radio"
-                    checked={deleteUser}
-                    onChange={handleDeleteUser}
+                    checked={deleteUserAccount === true}
+                    onChange={() => handleRadioChangedeleteuser(true)}
                   />
                 </div>
               </td>
@@ -128,37 +230,8 @@ export default function AdminAccess() {
                 <div>
                   <input
                     type="radio"
-                    checked={!deleteUser}
-                    onChange={handleDeleteUser}
-                  />
-                </div>
-              </td>
-            </tr>
-
-            <tr>
-              <td>
-                <div className='text-left'>
-                  <label>Role Assignment</label>
-                </div>
-              </td>
-              <td>
-                <h1>-</h1>
-              </td>
-              <td>
-                <div>
-                  <input
-                    type="radio"
-                    checked={roleAssignment}
-                    onChange={handleRoleAssignment}
-                  />
-                </div>
-              </td>
-              <td>
-                <div>
-                  <input
-                    type="radio"
-                    checked={!roleAssignment}
-                    onChange={handleRoleAssignment}
+                    checked={deleteUserAccount === false}
+                    onChange={() => handleRadioChangedeleteuser(false)}
                   />
                 </div>
               </td>

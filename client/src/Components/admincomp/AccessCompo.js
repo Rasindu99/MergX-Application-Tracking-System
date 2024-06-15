@@ -15,7 +15,7 @@ export default function AccessCompo() {
     }
 
   return (
-    <div className='  ml-[70px] bg-gradient-to-b from-[#272727] to-[#17171A] rounded-[30px]  h-[800px] w-[1400px] mr-[70px]'>
+    <div className='  ml-[70px] bg-gradient-to-b from-[#272727] to-[#17171A] rounded-[30px]  h-[600px] w-[1400px] mr-[70px]'>
       <div className=''>
             <div className='w-full bg-[#525252] h-200 rounded-[30px]'>
                 <div className="flex items-center justify-between bg-[#2B2B2B] bg-opacity-90 w-full h-20 rounded-t-[30px] text-center text-[18px]">
@@ -38,19 +38,19 @@ export default function AccessCompo() {
                 
                 <div>
                   
-                    <div className={` ${state === 1 ? 'bg-gradient-to-b from-[#272727] to-[#17171A] text-white rounded-b-[30px] h-[730px]' : 'hidden'}`}>
+                    <div className={` ${state === 1 ? 'bg-gradient-to-b from-[#272727] to-[#17171A] text-white rounded-b-[30px] h-[700px]' : 'hidden'}`}>
                       <AdminAccess/>
                     </div>
-                    <div className={`  ${state === 2 ? 'bg-gradient-to-b from-[#272727] to-[#17171A] text-white rounded-b-[30px] h-[730px]' : 'hidden'}`}>
+                    <div className={`  ${state === 2 ? 'bg-gradient-to-b from-[#272727] to-[#17171A] text-white rounded-b-[30px] h-[700px]' : 'hidden'}`}>
                         <RecruiterAccess/>
                     </div>
-                    <div className={` ${state === 3 ? 'bg-gradient-to-b from-[#272727] to-[#17171A] text-white rounded-b-[30px] h-[730px]' : 'hidden'}`}>
+                    <div className={` ${state === 3 ? 'bg-gradient-to-b from-[#272727] to-[#17171A] text-white rounded-b-[30px] h-[700px]' : 'hidden'}`}>
                         <HiringManagerAccess/>
                     </div>
-                    <div className={` ${state === 4 ? 'bg-gradient-to-b from-[#272727] to-[#17171A] text-white rounded-b-[30px] h-[730px]' : 'hidden'}`}>
+                    <div className={` ${state === 4 ? 'bg-gradient-to-b from-[#272727] to-[#17171A] text-white rounded-b-[30px] h-[700px]' : 'hidden'}`}>
                         <InterViewerAccess/>
                     </div>
-                    <div className={`  ${state === 5 ? 'bg-gradient-to-b from-[#272727] to-[#17171A] text-white rounded-b-[30px] h-[730px]' : 'hidden'}`}>
+                    <div className={`  ${state === 5 ? 'bg-gradient-to-b from-[#272727] to-[#17171A] text-white rounded-b-[30px] h-[700px]' : 'hidden'}`}>
                         <CandidateAccess/>
                     </div>
                 </div>
