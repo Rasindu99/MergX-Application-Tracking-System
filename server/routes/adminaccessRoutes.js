@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const cors = require('cors');
 const { postaccess, putCreateUserAccount,  getCreateUserAccount, putModifyUserAccount, updateRole, getModifyUserAccount, getupdateRole, getDeleteUserAccount, putDeleteUserAccount } = require('../controllers/adminaccessController');
-const { postrecruiteraccess } = require('../controllers/recruiteraccessController')
+const { postrecruiteraccess, putCreateJobPost, putStatusCreate, putCreateAnnouncement, putSendInvitation } = require('../controllers/recruiteraccessController')
 
 router.use(
     cors({
@@ -24,5 +24,10 @@ router.get('/getdeleteaccount', getDeleteUserAccount);
 
 //recruiter access
 router.post('/postrecruiteraccess',postrecruiteraccess);
+router.put('/createjobpostaccess', putCreateJobPost);
+router.put('/createstatusaccess',putStatusCreate );
+router.put('/createannouncementaccess', putCreateAnnouncement);
+router.put('/sendinvitationaccess', putSendInvitation);
+
 
 module.exports = router;
