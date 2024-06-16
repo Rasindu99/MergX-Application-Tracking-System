@@ -59,53 +59,61 @@ export default function RecruiterNav() {
                     <ul className='text-left'>
                         <Link to='/recruiterdash' >
                             <li>
-                                <div className={`flex items-center py-3 pl-8 hover:bg-gray-100 hover:bg-opacity-10 dark:hover:text-neutral-300 ${activeItem === 1 ? 'bg-[#BABABA] bg-opacity-20 text-white' : 'text-gray-100 hover:bg-gray-300 hover:text-white'}`}>
-                                    <div className='mr-8'>
-                                        <MdDashboard size={20} className="opacity-25 sm:w-6 sm:h-6 hover:text-white hover:opacity-70" />
-                                    </div>
-                                    <div>
-                                        <label className='text-white opacity-25 hover:text-white hover:opacity-70' style={{ fontSize: '18px' }}>Dashboard</label>
+                                <div className={`flex items-center py-3 pl-8 hover:bg-gray-100 hover:bg-opacity-10 dark:hover:text-neutral-300 text-white ${activeItem === 1 ? 'bg-[#BABABA] bg-opacity-20 opacity-100' : 'opacity-25 hover:bg-gray-300 hover:text-white hover:opacity-70'}`}>
+                                    <div className='flex'>
+                                        <MdDashboard size={20} className=" sm:w-6 sm:h-6  mr-8" />
+                                        <label className='text-[18px]'>Dashboard</label>
                                     </div>
                                 </div>
                             </li>
                         </Link>
                         <Link to='/recruiterdash/jobposting' className='no-underline'>
                             <li>
-                                <div className={`flex items-center py-3 pl-8 hover:bg-gray-100 hover:bg-opacity-10 ${activeItem === 2 ? 'bg-[#BABABA] bg-opacity-20 text-white' : 'text-gray-100 hover:bg-gray-300 hover:text-white'}`}>
-                                    <div className='mr-8'><FiArchive size={20} className="opacity-25 sm:w-6 sm:h-6" /></div>
-                                    <div><label className='text-white opacity-25' style={{ fontSize: '18px' }}>Job Posting</label></div>
+                            <div className={`flex items-center py-3 pl-8 hover:bg-gray-100 hover:bg-opacity-10 dark:hover:text-neutral-300 text-white ${activeItem === 2 ? 'bg-[#BABABA] bg-opacity-20 opacity-100' : 'opacity-25 hover:bg-gray-300 hover:text-white hover:opacity-70'}`}>
+                                <div className='flex'>
+                                        <FiArchive size={20} className="sm:w-6 sm:h-6 mr-8" />
+                                        <label className='text-[18px]'>Job Posting</label>
+                                    </div> 
                                 </div>
                             </li>
                         </Link>
                         <Link to='/recruiterdash/candidatecommunication' className='no-underline'>
                             <li>
-                                <div className={`flex items-center py-3 pl-8 hover:bg-gray-100 hover:bg-opacity-10 ${activeItem === 3 ? 'bg-[#BABABA] bg-opacity-20 text-white' : 'text-gray-100 hover:bg-gray-300 hover:text-white'}`}>
-                                    <div className='mr-8'><GiSatelliteCommunication size={20} className="opacity-25 sm:w-6 sm:h-6" /></div>
-                                    <div><label className='text-white opacity-25' style={{ fontSize: '18px' }}>Candidate Communication</label></div>
+                            <div className={`flex items-center py-3 pl-8 hover:bg-gray-100 hover:bg-opacity-10 dark:hover:text-neutral-300 text-white ${activeItem === 3 ? 'bg-[#BABABA] bg-opacity-20 opacity-100' : 'opacity-25 hover:bg-gray-300 hover:text-white hover:opacity-70'}`}>
+                                <div className='flex'>
+                                        <GiSatelliteCommunication size={20} className="mr-8 sm:w-6 sm:h-6" />
+                                        <label className='text-[18px]'>Candidate Communication</label>
+                                </div>
                                 </div>
                             </li>
                         </Link>
                         <Link to='/recruiterdash/applicationmanagement' className='no-underline'>
                             <li>
-                                <div className={`flex items-center py-3 pl-8 hover:bg-gray-100 hover:bg-opacity-10 ${activeItem === 4 ? 'bg-[#BABABA] bg-opacity-20 text-white' : 'text-gray-100 hover:bg-gray-300 hover:text-white'}`}>
-                                    <div className='mr-8'><BiBook size={20} className="opacity-25 sm:w-6 sm:h-6" /></div>
-                                    <div><label className='text-white opacity-25' style={{ fontSize: '18px' }}>Application Management</label></div>
+                            <div className={`flex items-center py-3 pl-8 hover:bg-gray-100 hover:bg-opacity-10 dark:hover:text-neutral-300 text-white ${activeItem === 4 ? 'bg-[#BABABA] bg-opacity-20 opacity-100' : 'opacity-25 hover:bg-gray-300 hover:text-white hover:opacity-70'}`}>
+                                <div className='flex'>
+                                        <BiBook size={20} className="mr-8 sm:w-6 sm:h-6" />
+                                        <label className='text-[18px]'>Application Management</label>
+                                    </div>
                                 </div>
                             </li>
                         </Link>
                         <Link to='/recruiterdash/candidateassessment' className='no-underline'>
                             <li>
-                                <div className={`flex items-center py-3 pl-8 hover:bg-gray-100 hover:bg-opacity-10 ${activeItem === 5 ?'bg-[#BABABA] bg-opacity-20 text-white' : 'text-gray-100 hover:bg-gray-300 hover:text-white'}`}>
-                                    <div className='mr-8'><MdOutlineAssessment size={20} className="opacity-25 sm:w-6 sm:h-6" /></div>
-                                    <div><label className='text-white opacity-25' style={{ fontSize: '18px' }}>Candidate Assessment</label></div>
+                            <div className={`flex items-center py-3 pl-8 hover:bg-gray-100 hover:bg-opacity-10 dark:hover:text-neutral-300 text-white ${activeItem === 5 ? 'bg-[#BABABA] bg-opacity-20 opacity-100' : 'opacity-25 hover:bg-gray-300 hover:text-white hover:opacity-70'}`}>
+                                <div className='flex'>
+                                        <MdOutlineAssessment size={20} className="mr-8 sm:w-6 sm:h-6" />
+                                        <label className='text-[18px]'>Candidate Assessment</label>
+                                    </div>
                                 </div>
                             </li>
                         </Link>
                         <Link to='/recruiterdash/message' className='no-underline'>
                             <li>
-                                <div className={`flex items-center py-3 pl-8 hover:bg-gray-100 hover:bg-opacity-10 ${activeItem === 6 ?'bg-[#BABABA] bg-opacity-20 text-white' : 'text-gray-100 hover:bg-gray-300 hover:text-white'}`}>
-                                    <div className='mr-8'><MdMessage size={20} className="opacity-25 sm:w-6 sm:h-6 hover:text-white" /></div>
-                                    <div><label className='text-white opacity-25 hover:text-white' style={{ fontSize: '18px' }}>Message</label></div>
+                            <div className={`flex items-center py-3 pl-8 hover:bg-gray-100 hover:bg-opacity-10 dark:hover:text-neutral-300 text-white ${activeItem === 6 ? 'bg-[#BABABA] bg-opacity-20 opacity-100' : 'opacity-25 hover:bg-gray-300 hover:text-white hover:opacity-70'}`}>
+                                <div className='flex'>
+                                        <MdMessage size={20} className="mr-8 sm:w-6 sm:h-6 hover:text-white" />
+                                        <label className='text-[18px]'>Message</label>
+                                        </div>
                                 </div>
                             </li>
                         </Link>
