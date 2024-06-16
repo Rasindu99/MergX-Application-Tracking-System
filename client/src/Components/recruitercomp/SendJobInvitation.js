@@ -12,6 +12,24 @@ export default function SendJobInvitation() {
     const [showsentInvitation, setShowsentInvitation] = useState(false);
     const [selectedInvitation, setSelectedInvitation] = useState(null);
 
+    //get invitation send access
+    const [accessSendInvitation,setAccessSendInvitation] = useState(false);
+    
+    useEffect(() => {
+        // Fetch the current state of send invitation access from the backend
+        const fetchAccessStatusUpdate = async () => {
+          try {
+            const response = await axios.get('/access/getsendinvitationaccess');
+            setAccessSendInvitation(response.data.send_invitation);
+          } catch (error) {
+            console.error('Error fetching create status state:', error);
+          }
+        };
+        fetchAccessStatusUpdate();
+        
+      }, []);
+    
+
     const handleModalClose = () => {
         setShowInvitation(false);
         setSelectedInvitation(null);
@@ -50,6 +68,10 @@ export default function SendJobInvitation() {
     };
 
     const updateSendStatus = async (id) => {
+        if (!accessSendInvitation) {
+            toast.error('Admin blocked temporarily');
+            return;
+          }
         try {
             await axios.put(`/invitation/send/${id}`, { send: true });
             console.log('Invitation sent successfully');
