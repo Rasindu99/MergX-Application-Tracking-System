@@ -4,6 +4,7 @@ import InterviewNav from '../../Components/interviewercomp/InterviewNav';
 import { UserContext } from '../../Context/UserContext';
 import Topbar from '../../Components/hiringManagerCompo/Topbar.jsx'
 import PieCharts from '../../Components/interviewercomp/InputPieCharts';
+import { FaS } from 'react-icons/fa6';
 
 
 export default function Evaluation() {
@@ -89,34 +90,37 @@ export default function Evaluation() {
         <div className='w-screen lg:ml-[320px] md:ml-72 ml-[260px] '>
        
       <Topbar msg='Interview Feedback' name='Piyushan'  post='Hiring Manager' ></Topbar>
-      <div className=' content max-h-[100vh] overflow-y-auto text-white flex flex-row p-[0px]  bg-[#1E1E1E] m-[30px]  h-fit rounded-[30px] 320px:text-[0.5rem]  450px:text-[0.8rem] sm:text-[0.9rem]   900px:text-[1.1rem]  1010px:text-[1.2rem]  '>
-        <div className='candidates  flex flex-col gap-[10px] bg-[#1E1E1E] rounded-[30px] rounded-tr-[0px] rounded-br-[0px] esm:p-[10px] 450px:p-[15px] sm:p-[25px]  sm:w-auto 450px:w-[165px] 500px:w-[175px] esm:w-[140px]'>
+      <div className={`content max-h-[100vh] overflow-y-auto text-white flex flex-row p-[0px]  bg-[#1E1E1E] m-[30px]  h-fit rounded-[30px] 320px:text-[0.5rem]  450px:text-[0.8rem] sm:text-[0.9rem]   900px:text-[1.1rem]  1010px:text-[1.2rem]  ${showDetails===false ? ' justify-center' :null}`} >
+        <div className={`  candidates  flex flex-col gap-[10px] bg-[#1E1E1E] rounded-[30px] rounded-tr-[0px] rounded-br-[0px] esm:p-[10px] 450px:p-[15px] sm:p-[25px]  sm:w-auto 450px:w-[165px] 500px:w-[175px] esm:w-[140px]`}>
           <p className='text-center text-[#FFFFFF] esm:p-[4px] 450px:p-[6px] sm:p-[10px] font-general-sans pt-[0px]'>Interviewed Candidates</p>
-          <div className=' max-h-[100vh] overflow-y-auto'>
-
+          <div className={`max-h-[100vh] flex justify-center overflow-y-auto ${showDetails===false ? 'w-[600px]' :null}`}  >
+          <div>
     {users.map((user) => (
-      <button  onClick={()=>{setshowDetails(false)}}   className='hover:scale-110 accLabel m-[10px] my-[5px]  flex flex-row flex  bg-[#2b2b2b] sm:pl-[5px]  items-center justify-start rounded-[30px]  sm:gap-[4px] esm:w-[110px] esm:h-[25px] 450px:w-[140px] 450px:h-[35px]   sm:w-[150px] sm:h-[45px]  lg:rounded-[25px]  lg:gap-[8px] lg:w-[200px] lg:h-[60px] sm:gap-[6px] sm:w-[180px] sm:h-[50px] sm:rounded-[30px] esm:w-[fit-content]'>
+      <button  onClick={()=>{setshowDetails(true)}}   className={` hover:scale-110 accLabel m-[10px] my-[5px]  flex flex-row   bg-[#2b2b2b] sm:pl-[5px]  items-center   rounded-[30px]  sm:gap-[4px] esm:w-[110px] esm:h-[25px] 450px:w-[140px] 450px:h-[35px]   sm:w-[150px] sm:h-[45px]  lg:rounded-[25px]  lg:gap-[12px] lg:w-[200px] lg:h-[60px] sm:gap-[6px] sm:w-[180px] sm:h-[50px] sm:rounded-[30px] esm:w-[fit-content] ${showDetails===false ? 'lg:w-[500px] justify-between hover:scale-105' :null}`}>
+           <div className={` ${showDetails===false ? 'flex justify-evenly gap-[12px]' :' flex flex-row  gap-[12px] justify-start'} `}>
             <img src={user.image} alt="" className='userImg  rounded-[50%] border-[solid] border-[#ffffff] ml-[0.7rem] esm:w-[20px] esm:h-[20px]  450px:w-[30px] 450px:h-[30px]  sm:w-[35px] sm:h-[35px] border-[1.5px]  lg:w-[40px] lg:h-[40px] lg:border-[2px] md:w-[37px] md:h-[37px] md:border-[2px] sm:m-1 esm:m-[3px]' />
            <div className='block '>
-           <p className='name text-[#ffffff] mb-[-2px] md:mb-[-4px] text-[0.7rem] lg:text-[1rem]  md:text-[0.9rem] 320px:text-[0.5rem]'>{user.fname} </p>
-            <p className='post text-[#ffffff] opacity-[30%]  mt-[-2px] md:mt-[-4px] text-[0.7rem] lg:text-[1rem]  md:text-[0.9rem] 320px:text-[0.5rem]'>{user.role}</p>
+           <p className='name text-left text-[#ffffff] mb-[-2px] md:mb-[-4px] text-[0.7rem] lg:text-[1rem]  md:text-[0.9rem] 320px:text-[0.5rem]'>{user.fname} </p>
+            <p className='post text-left text-[#ffffff] opacity-[30%]  mt-[-2px] md:mt-[-4px] text-[0.7rem] lg:text-[1rem]  md:text-[0.9rem] 320px:text-[0.5rem]'>{user.role}</p>
            </div>
+           </div>
+           <p className={`post ${showDetails === false ? 'block' :'hidden'} mr-[60px] text-[#ffffff] opacity-[30%]  mt-[-2px] md:mt-[-4px] text-[0.7rem] lg:text-[1rem]  md:text-[0.9rem] 320px:text-[0.5rem]`} >System Rank: </p>
           </button>
     ) )}
-
+</div>
      
     </div>
         
 
         </div>
 
-        <div className='description flex flex-col w-full box-border'>
+        {showDetails ? (<div className='description flex flex-col w-full box-border'>
         <div  className='flex flex-row py-[20px] justify-center gap-5 border-[grey]  border-b-[2px] '>
               <img src={user.image} alt="" className=' userImg  rounded-[50%] border-[solid] border-[#ffffff] ml-[0.7rem] esm:w-[20px] esm:h-[20px]  450px:w-[30px] 450px:h-[30px]  sm:w-[35px] sm:h-[35px] border-[1.5px]  lg:w-[100px] lg:h-[100px] lg:border-[2px] md:w-[37px] md:h-[37px] md:border-[2px] sm:m-1 esm:m-[3px]' />
              <div className='details flex flex-col justify-evenly  '>
               <p className='text-left'>Rasindu Ranavaka</p>
-              <p className='text-left'>Software Engineer</p>
-              <p className='text-left'>Interviewers : W.K.Piyushan</p>
+              <p className='text-left text-[#ffffff] opacity-[30%] '>Software Engineer</p>
+              <p className='text-left text-[#ffffff] opacity-[30%] '>System Rank: </p>
              </div>
              </div>
              <div className='' >
@@ -275,7 +279,7 @@ export default function Evaluation() {
           
              </div>
               
-        </div>
+        </div>):null}
        
        
       </div>
