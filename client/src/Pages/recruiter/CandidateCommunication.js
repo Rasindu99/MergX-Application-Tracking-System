@@ -1,6 +1,7 @@
 import { useState } from "react";
 import React  from 'react'
 import StatusUpdate from "../../Components/recruitercomp/StatusUpdate";
+import SendJobInvitation from "../../Components/recruitercomp/SendJobInvitation";
 
 
 export default function CandidateCommunication() {
@@ -34,7 +35,7 @@ export default function CandidateCommunication() {
                       <StatusUpdate/>
                     </div>
                     <div className={`  ${state === 2 ? 'bg-gradient-to-b from-[#272727] to-[#17171A] text-white rounded-b-[30px] h-[730px]' : 'hidden'}`}>
-                        
+                      <SendJobInvitation/>  
                     </div>
                     
                 </div>

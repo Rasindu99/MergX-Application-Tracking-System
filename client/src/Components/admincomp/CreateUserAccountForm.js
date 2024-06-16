@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import axios from 'axios';
 import user from '../../Images/user.jpg'
 import {toast} from 'react-hot-toast';
@@ -20,6 +20,22 @@ export default function CreateUserAccountForm() {
       password: '',
       image: ''
     });
+
+    const [createUserAccount, setCreateUserAccount] = useState(false);
+
+  useEffect(() => {
+    // Fetch the current state of create_user_account from the backend
+    const fetchCreateUserAccount = async () => {
+      try {
+        const response = await axios.get('/access/getcreateuseraccount');
+        setCreateUserAccount(response.data.create_user_account);
+      } catch (error) {
+        console.error('Error fetching create user account state:', error);
+      }
+    };
+
+    fetchCreateUserAccount();
+  }, []);
    
     const handleChange = (e) => {
       const { name, value, type, files } = e.target;
@@ -43,6 +59,12 @@ export default function CreateUserAccountForm() {
    
     const registerUser = async (e) => {
       e.preventDefault();
+
+      if (!createUserAccount) {
+        toast.error('Admin blocked temporarily');
+        return;
+      }
+      
       try {
         const response = await axios.post('/register', data);
         if (response.data.error) {

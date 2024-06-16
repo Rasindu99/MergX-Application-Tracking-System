@@ -45,16 +45,16 @@ export default function ApprovedJobs() {
     };
 
     return (
-        <div style={{ width: '100%', display: 'flex', textAlign: 'left', maxHeight:"600px" }}>
-            <div style={{ width: '32.5%', margin: 0 }}>
-                <div style={{ width: '100%', margin: 0 }}>
-                    <div style={{ display: 'flex', flexDirection: 'column', width: '95%', margin: 0 }}>
+        <div className="w-full flex text-left max-h-[600px]">
+            <div className="w-[32.5%] m-0">
+                <div className="w-full m-0">
+                    <div className="flex flex-col w-[95%] m-0">
                         {jobPostings.map(job => (
-                            <div key={job._id} className="meeting_container" style={{ width: '100%', display: 'flex', cursor:'pointer', borderBottom:'1px solid white', padding:'10px' }}>
-                                <div className="title" style={{ width: '100%', display: 'flex', justifyContent: 'space-between' }} >
+                            <div key={job._id} className="meeting_container w-full flex cursor-pointer border-b border-white p-[10px]">
+                                <div className="title w-full flex justify-between" >
                                     <div className='flex'>
                                         <PiBriefcase size={25} className='text-white opacity-25' />
-                                        <p style={{ fontSize: 14 }}>{job.jobTitle}</p>
+                                        <p className="text-[14px]">{job.jobTitle}</p>
                                     </div>
                                     <div className='flex'>
                                         <div><MdOutlineRemoveRedEye size={25} className='text-white opacity-25 cursor-pointer' onClick={() => handleJobBarClick(job)}/></div>
@@ -67,46 +67,46 @@ export default function ApprovedJobs() {
             </div>
 
 
-            <div style={{ width: '67.5%', padding: '1em', borderLeft: '1px solid rgb(234, 113, 34, 0.25) ' }}>
+            <div className='w-[67.5%] p-[1em] border-l-[1px] border-l-[rgba(234,113,34,0.25)]'>
                 {selectedJob && (
                     <>
-                        <div style={{ width: '100%' }}>
-                            <div style={{ width: '100%', display: 'flex' }}>
-                                <div style={{ width: '50%', color: '#fff', opacity: '0.25' }}>Job Title</div>
-                                <div style={{ width: '5%', color: '#fff', opacity: '0.25' }}>-</div>
-                                <div style={{ width: '45%', color: '#fff' }}>{selectedJob.jobTitle}</div>
+                        <div className='w-full'>
+                            <div className="w-full flex">
+                                <div className="w-1/2 text-white opacity-25">Job Title</div>
+                                <div className="w-[5%] text-white opacity-25">-</div>
+                                <div className="w-[45%] text-white">{selectedJob.jobTitle}</div>
                             </div>
                         </div>
 
-                        <div style={{ width: '100%' }}>
-                            <div style={{ width: '100%', display: 'flex' }}>
-                                <div style={{ width: '50%', color: '#fff', opacity: '0.25' }}>Required Experience (Years)</div>
-                                <div style={{ width: '5%', color: '#fff', opacity: '0.25' }}>-</div>
-                                <div style={{ width: '45%', color: '#fff' }}>{selectedJob.requiredExperience}</div>
+                        <div className='w-full'>
+                            <div className="w-full flex">
+                                <div className="w-1/2 text-white opacity-25">Required Experience (Years)</div>
+                                <div className="w-[5%] text-white opacity-25">-</div>
+                                <div className="w-[45%] text-white">{selectedJob.requiredExperience}</div>
                             </div>
                         </div>
 
-                        <div style={{ width: '100%' }}>
-                            <div style={{ width: '100%', display: 'flex' }}>
-                                <div style={{ width: '50%', color: '#fff', opacity: '0.25' }}>Required Skills</div>
-                                <div style={{ width: '5%', color: '#fff', opacity: '0.25' }}>-</div>
-                                <div style={{ width: '45%', color: '#fff' }}>{selectedJob.requiredSkills.join(', ')}</div>
+                        <div className='w-full'>
+                            <div className="w-full flex">
+                                <div className="w-1/2 text-white opacity-25">Required Skills</div>
+                                <div className="w-[5%] text-white opacity-25">-</div>
+                                <div className="w-[45%] text-white">{selectedJob.requiredSkills.join(', ')}</div>
                             </div>
                         </div>
 
-                        <div style={{ width: '100%', textAlign: 'center', justifyContent: 'center', padding: '2em' }}>
+                        <div className="w-full text-center justify-center p-8">
                             {selectedJob.description}
                         </div>
 
-                        <div style={{ width: '100%', display: 'flex', justifyContent: 'space-between', fontWeight: 'bold' }}>
+                        <div className="w-full flex justify-between font-bold">
                             <Card title="Vacancies" value={"0" + selectedJob.vacancies} />
                             <Card title="Selected Candidates" value="01" />
                             <Card title="Now Available Vacancies" value={"0" + Math.max(selectedJob.vacancies - 1, 0)} />
                         </div>
 
 
-                        <div style={{ display: 'flex', alignItems: 'center', marginTop: '1rem', justifyContent:'center' }}>
-                            <label htmlFor="expiredCheckbox" style={{ marginRight:"2px" }}>Expired:</label>
+                        <div className="flex items-center mt-4 justify-center">
+                            <label htmlFor="expiredCheckbox" className="mr-[2px]">Expired:</label>
                             <input type="checkbox" id="expired" checked={selectedJob.expired} onChange={(e) => handleExpiredChange(selectedJob._id, e.target.checked)} />
                         </div>
 
