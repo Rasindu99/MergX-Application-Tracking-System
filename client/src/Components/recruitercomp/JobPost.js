@@ -92,7 +92,7 @@ export default function JobPost({ fetchPendingJobPostings }) {
 
   return (
     <div>
-      <div style={{ textAlign: "left", paddingLeft: "6%" }}>
+      <div className="text-left pl-[6%]">
         <form onSubmit={jobposting}>
           <div className="flex w-full p-4">
             <div className="w-[50%]">
@@ -201,7 +201,7 @@ export default function JobPost({ fetchPendingJobPostings }) {
               Submit
             </button>
           </div>
-          {error && <p style={{ color: "red" }}>{error}</p>}
+          {error && <p className="text-red-500">{error}</p>}
         </form>
       </div>
     </div>
