@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Navbar from '../../Components/hiringManagerCompo/Navbar.jsx';
+
 import Topbar from '../../Components/hiringManagerCompo/Topbar.jsx'
 import PostTag from '../../Components/hiringManagerCompo/PostTag.jsx';
 import PieCharts from '../../Components/hiringManagerCompo/PieCharts.jsx';
@@ -7,9 +7,7 @@ import ProgressTimeline from '../../Components/hiringManagerCompo/ProgressTimeli
 import HiringmanagerNav from '../../Components/hiringManagerCompo/HiringManagerNav';
 
 export default function InterviewFeedback() {
-  const name='Kavindrika Piyushan';
-  const post='Hiring Manager';    
-  const{jsxNavbar, isOpened}= Navbar({name,post});
+  
   const [feedbackTab,setFeedbackTab]=useState(0);
 
   const handleClick = (value) => {
@@ -55,16 +53,17 @@ return (
       feedbackTab ===1 ? 'block' : 'hidden'
     } `}>
                  
-              <div className='flex flex-col  md:flex-row justify-evenly pb-[10px]'>
-              <div className='flex flex-col m-auto mb-[20px]'>
+              <div className='flex flex-col justify-center gap-48  md:flex-row  pb-[10px]'>
+              <div className='flex flex-col mb-[20px]'>
               <PieCharts percentage='65'  topic='Communication'></PieCharts>
               <p className='text-white m-auto'>Problem Solution</p>
               </div>
-              <div className='flex flex-col m-auto mb-[20px]'>
+              <div className='flex flex-col mb-[20px]'>
               <PieCharts percentage='65'  topic='Communication'></PieCharts>
               <p className='text-white m-auto'>Effective Collaboration</p>
               </div>
               </div> 
+ 
 
               <div className='flex flex-col md:flex-row justify-around'>
               <div className='flex flex-col m-auto mb-[20px]'> 
@@ -89,7 +88,7 @@ return (
       feedbackTab ===0 ? 'block' : 'hidden'
     } `}>
                <div className='flex flex-col m-auto mb-[20px]'> 
-                <PieCharts percentage='45' topic='Problem Solution' ></PieCharts>
+                <PieCharts percentage='99' topic='Problem Solution' ></PieCharts>
                 <p className='text-white m-auto'>Problem Solution</p>
             </div>
             <div className='flex flex-col m-auto mb-[20px]'> 

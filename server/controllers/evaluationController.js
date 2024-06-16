@@ -1,27 +1,46 @@
-const Evaluationmodel = require('../models/evaluation');
+const Evalationmodel = require('../models/evaluation')
 
-//evaluation post endpoint
-const createevaluation = async (req, res) => {
-    try {
-        const { username, candidate} = req.body;
-        if(!username ||  !candidate) {
-            return res.status(400).json({error: 'missing field'})
+// Post evaluation
+
+const createEvalautions = async (req,res)=>{
+    try{
+        const {candidatename,candidateid,candidateemail,interviewername,interviewerid,problemsolution,languageproficiency,interviewercomments,addcomment,collaboration,adoptability,decisionmaking,leadership,clarity,activelistening,empathy,presentationskills,technical,cultural,communication,overallcomment} = req.body;
+        if(!candidatename || !candidateid || !candidateemail || !interviewername || !interviewerid || !problemsolution || !languageproficiency || !interviewercomments || !addcomment || !collaboration || !adoptability || !decisionmaking || !leadership || !clarity || !activelistening || !empathy || !presentationskills || !technical || !cultural || !communication || !overallcomment){
+           return res.status(400).json({error:'Missing required fields'})
         };
-
-        //create database
         const evaluation = await Evaluationmodel.create({
-            username,
-            candidate
+            candidatename,
+            candidateid,
+            candidateemail,
+            interviewername,
+            interviewerid,
+            problemsolution,
+            languageproficiency,
+            interviewercomments,
+            addcomment,
+            collaboration,
+            adoptability,
+            decisionmaking,
+            leadership,
+            clarity,
+            activelistening,
+            empathy,
+            presentationskills,
+            technical,
+            cultural,
+            communication,
+            overallcomment
         });
-        return res.status(200).json({error: 'complete'})
-
-    } catch (error) {
-        console.error(error);
-        return res.status(500).json({error: 'server error'})
-
-    }
+        return res.status(200).jsoon({message:'Evaluation created successfully',evaluation});
+       
+      
+    } catch(error){
+            console.error(error);
+            return res.status(500).json({
+                error:'Server Error'
+            })
+        }
 }
-
-module.exports = {
-    createevaluation
+module.exports={
+    createEvalautions
 }

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import ReactApexChart from 'react-apexcharts';
 
-const PieCharts = ({percentage,topic}) => {
+const InputPieCharts = ({percentage,topic}) => {
   const intValue = parseInt(percentage, 10);
   const restValue = 100 - intValue;
   const [options, setOptions] = useState({
@@ -115,4 +115,4 @@ const PieCharts = ({percentage,topic}) => {
   );
 }
 
-export default PieCharts;
+export default InputPieCharts;

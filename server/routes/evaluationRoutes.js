@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const cors = require('cors');
 
-const { createevaluation } = require('../controllers/evaluationController');
+const { createEvalautions } = require('../controllers/evaluationController');
 
 router.use(
     cors({
@@ -11,6 +11,6 @@ router.use(
     })
 );
 
-router.post('/createevaluation',createevaluation);
+router.post('/createevaluation',createEvalautions);
 
 module.exports = router;
