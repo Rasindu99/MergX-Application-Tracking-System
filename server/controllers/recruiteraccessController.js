@@ -132,64 +132,64 @@ const putSendInvitation = async(req, res) => {
 }
 
 
-// GET create_user_account
-const getCreateUserAccount = async (req, res) => {
+// GET create_job_post access
+const getCreatejobpost = async (req, res) => {
     try {
-        const adminAccess = await Adminaccessmodel.findOne(); // You might want to add a condition here based on your criteria
+        const recruiterAccess = await Recruiteraccessmodel.findOne(); // You might want to add a condition here based on your criteria
 
-        if (!adminAccess) {
-            return res.status(404).json({ error: 'Admin access settings not found' });
+        if (!recruiterAccess) {
+            return res.status(404).json({ error: 'Recruiter access settings not found' });
         }
 
-        return res.status(200).json({ create_user_account: adminAccess.create_user_account });
+        return res.status(200).json({ create_job_post: recruiterAccess.create_job_post });
     } catch (error) {
         console.error(error);
         return res.status(500).json({ error: 'Server error' });
     }
 };
 
-//get modify access
-const getModifyUserAccount = async (req, res) => {
+//get create stts access
+const getStatusCreate = async (req, res) => {
     try {
-        const adminAccess = await Adminaccessmodel.findOne(); // You might want to add a condition here based on your criteria
+        const recruiterAccess = await Recruiteraccessmodel.findOne(); // You might want to add a condition here based on your criteria
 
-        if (!adminAccess) {
-            return res.status(404).json({ error: 'Admin access settings not found' });
+        if (!recruiterAccess) {
+            return res.status(404).json({ error: 'Recruiter access settings not found' });
         }
 
-        return res.status(200).json({ modify_user_account: adminAccess.modify_user_account });
+        return res.status(200).json({ create_status: recruiterAccess.create_status });
     } catch (error) {
         console.error(error);
         return res.status(500).json({ error: 'Server error' });
     }
 };
 
-//get role update access
-const getupdateRole = async (req, res) => {
+//get access anouncement
+const getCreateAnnouncement = async (req, res) => {
     try {
-        const adminAccess = await Adminaccessmodel.findOne(); // You might want to add a condition here based on your criteria
+        const recruiterAccess = await Recruiteraccessmodel.findOne(); // You might want to add a condition here based on your criteria
 
-        if (!adminAccess) {
-            return res.status(404).json({ error: 'Admin access settings not found' });
+        if (!recruiterAccess) {
+            return res.status(404).json({ error: 'Recruiter access settings not found' });
         }
 
-        return res.status(200).json({role_update: adminAccess.role_update });
+        return res.status(200).json({ create_announcement: recruiterAccess.create_announcement });
     } catch (error) {
         console.error(error);
         return res.status(500).json({ error: 'Server error' });
     }
 };
 
-//get user delete access
-const getDeleteUserAccount = async (req, res) => {
+//get access send invitation
+const getSendInvitation = async (req, res) => {
     try {
-        const adminAccess = await Adminaccessmodel.findOne(); // You might want to add a condition here based on your criteria
+        const recruiterAccess = await Recruiteraccessmodel.findOne(); // You might want to add a condition here based on your criteria
 
-        if (!adminAccess) {
-            return res.status(404).json({ error: 'Admin access settings not found' });
+        if (!recruiterAccess) {
+            return res.status(404).json({ error: 'Recruiter access settings not found' });
         }
 
-        return res.status(200).json({delete_user_account: adminAccess.delete_user_account });
+        return res.status(200).json({ send_invitation: recruiterAccess.send_invitation });
     } catch (error) {
         console.error(error);
         return res.status(500).json({ error: 'Server error' });
@@ -202,5 +202,10 @@ module.exports = {
     putCreateJobPost,
     putStatusCreate,
     putCreateAnnouncement,
-    putSendInvitation
+    putSendInvitation,
+
+    getCreatejobpost,
+    getStatusCreate,
+    getCreateAnnouncement,
+    getSendInvitation
 }

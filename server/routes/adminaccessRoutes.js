@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const cors = require('cors');
 const { postaccess, putCreateUserAccount,  getCreateUserAccount, putModifyUserAccount, updateRole, getModifyUserAccount, getupdateRole, getDeleteUserAccount, putDeleteUserAccount } = require('../controllers/adminaccessController');
-const { postrecruiteraccess, putCreateJobPost, putStatusCreate, putCreateAnnouncement, putSendInvitation } = require('../controllers/recruiteraccessController')
+const { postrecruiteraccess, putCreateJobPost, putStatusCreate, putCreateAnnouncement, putSendInvitation, getCreatejobpost, getStatusCreate, getCreateAnnouncement, getSendInvitation } = require('../controllers/recruiteraccessController')
 
 router.use(
     cors({
@@ -28,6 +28,11 @@ router.put('/createjobpostaccess', putCreateJobPost);
 router.put('/createstatusaccess',putStatusCreate );
 router.put('/createannouncementaccess', putCreateAnnouncement);
 router.put('/sendinvitationaccess', putSendInvitation);
+
+router.get('/getcreatejobpostaccess',getCreatejobpost);
+router.get('/getcreatestatusaccess',getStatusCreate );
+router.get('/getcreateannouncementaccess',getCreateAnnouncement);
+router.get('/getsendinvitationaccess',getSendInvitation );
 
 
 module.exports = router;
