@@ -1,15 +1,31 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { UserContext } from '../../Context/UserContext';
 import InterviewNav from '../../Components/interviewercomp/InterviewNav'
 import './custom.css';
 import Header from '../../Components/interviewercomp/InterviewerHeader';
 import Card from '../../Components/interviewercomp/Card';
 import InterviewBar from '../../Components/interviewercomp/InterviewBar';
+import axios from 'axios';
 
 
 export default function Interviewerdash() {
 
   const { user } = useContext(UserContext);
+  const [interviews, setInterviews] = useState([]);
+
+  useEffect(() => {
+    
+    const fetchInterviews = async () => {
+      try {
+        const response = await axios.get('http://localhost:8000/interview');
+        setInterviews(response.data); 
+      } catch (error) {
+        console.error('Error fetching interviews:', error);
+      }
+    };
+
+    fetchInterviews(); 
+  }, []); 
 
   return (
     <div>
@@ -32,31 +48,14 @@ export default function Interviewerdash() {
               <p className='text-left ml-8 mt-8 text-xl'>Today's Interviews</p>
             </div>
             <div id='bar-container' className='mt-5 max-h-80 overflow-y-auto'>
-              <InterviewBar
-                interviewTitle="SE Interview"
-                interviewDate="12/02/2024"
-                interviewTime="9.00 AM"
-              />
-              <InterviewBar
-                interviewTitle="UI Interview"
-                interviewDate="12/02/2024"
-                interviewTime="9.00 AM"
-              />
-              <InterviewBar
-                interviewTitle="PM Interview"
-                interviewDate="12/02/2024"
-                interviewTime="9.00 AM"
-              />
-              <InterviewBar
-                interviewTitle="QA Interview"
-                interviewDate="12/02/2024"
-                interviewTime="9.00 AM"
-              />
-              <InterviewBar
-                interviewTitle="SE Interview"
-                interviewDate="12/02/2024"
-                interviewTime="9.00 AM"
-              />
+            {interviews.map((interview, index) => (
+                  <InterviewBar
+                    key={index}
+                    interviewTitle={interview.name}
+                    interviewDate={interview.date}
+                    interviewTime={interview.time}
+                  />
+                ))}
             </div>
           </div>
         </div>

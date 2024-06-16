@@ -43,3 +43,10 @@
     max-height: 80vh;
     overflow-y: auto;
 }
+
+#pop-bg{
+    width: 60rem;
+    height: 40rem;
+    border: 1px solid #EA712287;
+    border-radius: 30px;
+}

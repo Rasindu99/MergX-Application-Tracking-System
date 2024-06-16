@@ -8,7 +8,6 @@ import { FaFileSignature } from 'react-icons/fa';
 import { FaRegCalendarAlt } from "react-icons/fa";
 import { CiLogout } from 'react-icons/ci';
 import { MdMessage } from 'react-icons/md';
-//import proImg from '../../Images/pro1.png'
 
 export default function InterviewNav() {
     const [activeItem, setActiveItem] = useState(null);
