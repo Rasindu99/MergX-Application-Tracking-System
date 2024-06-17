@@ -53,7 +53,7 @@ const interviewScheduleSchema = new mongoose.Schema({
         type: Boolean,
         default: false
     }
-});
+}, { timestamps: true });
 
 const InterviewSchedule = mongoose.model('InterviewSchedule', interviewScheduleSchema);
 module.exports = InterviewSchedule;
