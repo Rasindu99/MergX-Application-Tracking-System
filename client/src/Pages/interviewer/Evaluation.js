@@ -1,17 +1,25 @@
-import React,{useContext,useState} from 'react';
+import React,{useContext,useState,useEffect} from 'react';
 import axios from 'axios';
 import InterviewNav from '../../Components/interviewercomp/InterviewNav';
 import { UserContext } from '../../Context/UserContext';
 import Topbar from '../../Components/hiringManagerCompo/Topbar.jsx'
 import PieCharts from '../../Components/interviewercomp/InputPieCharts';
-import { FaS } from 'react-icons/fa6';
+
+
 
 
 export default function Evaluation() {
-  const name = 'Evaluation';
+  const [selected,setselected]=useState(null);
   const { users, setUsers } = useContext(UserContext); 
   const [feedbackTab,setFeedbackTab]=useState(0);
   const [showDetails,setshowDetails]=useState(false);
+  const [existEvolution,setexistEvolution] = useState([]);
+  
+
+  useEffect(() => {
+    console.log(data);
+  });
+    
 
   const handleClick = (value) => {
     setFeedbackTab(value);
@@ -79,6 +87,125 @@ export default function Evaluation() {
     } 
 
   }
+  
+  //updating evolutions
+
+  const updateEvaluation = async(event,evaluationId)=>{
+    event.preventDefault();
+    try{
+      const response = await axios.put(`http://localhost:8000/evaluations/updateevaluation/${evaluationId}`,data);
+      if(response.data.error){
+        console.error("Error in updating Evaluations");
+      }
+      else{
+        setData({
+          candidatename:'', 
+          candidateid:'',
+          candidateemail:'',
+          interviewername:'',
+          interviewerid:'',
+          problemsolution:0,
+          languageproficiency:0,
+          interviewercomments:'',
+          addcomment:0,
+          collaboration:0,
+          adoptability:0,
+          decisionmaking:0,
+          leadership:0,
+          clarity:0,
+          activelistening:0,
+          empathy:0,
+          presentationskills:0,
+          technical:0,
+          cultural:0,
+          communication:0,
+          overallcomment:''
+        });
+        console.log('Evaluations Created Successfully');
+      }
+    }
+    catch(error){
+      console.error(error);
+
+    }
+  }
+
+  // Fething evolutions
+
+
+  useEffect(() => {
+    const fetchEvaluation = async () => {
+      if (showDetails && selected._id) { // Check if showDetails is true and selected._id is defined before fetching
+        try {
+          console.log('Fetching evaluation for candidate ID:', selected._id); // Debug log
+          const response = await axios.get(`http://localhost:8000/evaluation?candidateid=${selected._id}`);
+          if (response.data) {
+            setexistEvolution(response.data);
+            setData(response.data); // Use response.data directly
+          }
+        } catch (error) {
+          console.error(error);
+          clear();
+          
+        }
+      }
+    };
+  
+    fetchEvaluation();
+  }, [showDetails, selected]); // Add showDetails and selected._id as dependencies
+   // Add showDetails and selected._id as dependencies
+  
+
+const handleInputChange = (event) => {
+  const { name, value } = event.target;
+  setData((prevData) => ({
+      ...prevData,
+      [name]: value
+  }));
+};
+const clear = ()=>{
+  setData({
+    candidatename:'', 
+    candidateid:'',
+    candidateemail:'',
+    interviewername:'',
+    interviewerid:'',
+    problemsolution:0,
+    languageproficiency:0,
+    interviewercomments:'',
+    addcomment:0,
+    collaboration:0,
+    adoptability:0,
+    decisionmaking:0,
+    leadership:0,
+    clarity:0,
+    activelistening:0,
+    empathy:0,
+    presentationskills:0,
+    technical:0,
+    cultural:0,
+    communication:0,
+    overallcomment:''
+  });
+ 
+}
+const setcandidate = ()=>{
+  data.candidatename=selected.fname;
+  data.candidateid=selected._id;
+  data.candidateemail='@gmail.com';
+}
+const setinterviewer = () =>{
+  data.interviewername=user.fname;
+  data.interviewerid=user._id;
+}
+
+useEffect(() => {
+  if (showDetails) {
+    setcandidate();
+    setinterviewer();
+  }
+}, [showDetails]);
+   
 
   return (
     <div>
@@ -96,7 +223,7 @@ export default function Evaluation() {
           <div className={`max-h-[100vh] flex justify-center overflow-y-auto ${showDetails===false ? 'w-[600px]' :null}`}  >
           <div>
     {users.map((user) => (
-      <button  onClick={()=>{setshowDetails(true)}}   className={` hover:scale-110 accLabel m-[10px] my-[5px]  flex flex-row   bg-[#2b2b2b] sm:pl-[5px]  items-center   rounded-[30px]  sm:gap-[4px] esm:w-[110px] esm:h-[25px] 450px:w-[140px] 450px:h-[35px]   sm:w-[150px] sm:h-[45px]  lg:rounded-[25px]  lg:gap-[12px] lg:w-[200px] lg:h-[60px] sm:gap-[6px] sm:w-[180px] sm:h-[50px] sm:rounded-[30px] esm:w-[fit-content] ${showDetails===false ? 'lg:w-[500px] justify-between hover:scale-105' :null}`}>
+      <button key={user._id}  onClick={()=>{setshowDetails(true);setselected(user)}}   className={` hover:scale-110 accLabel m-[10px] my-[5px]  flex flex-row   bg-[#2b2b2b] sm:pl-[5px]  items-center   rounded-[30px]  sm:gap-[4px] esm:w-[110px] esm:h-[25px] 450px:w-[140px] 450px:h-[35px]   sm:w-[150px] sm:h-[45px]  lg:rounded-[25px]  lg:gap-[12px] lg:w-[200px] lg:h-[60px] sm:gap-[6px] sm:w-[180px] sm:h-[50px] sm:rounded-[30px] esm:w-[fit-content] ${showDetails===false ? 'lg:w-[500px] justify-between hover:scale-105' :null}`}>
            <div className={` ${showDetails===false ? 'flex justify-evenly gap-[12px]' :' flex flex-row  gap-[12px] justify-start'} `}>
             <img src={user.image} alt="" className='userImg  rounded-[50%] border-[solid] border-[#ffffff] ml-[0.7rem] esm:w-[20px] esm:h-[20px]  450px:w-[30px] 450px:h-[30px]  sm:w-[35px] sm:h-[35px] border-[1.5px]  lg:w-[40px] lg:h-[40px] lg:border-[2px] md:w-[37px] md:h-[37px] md:border-[2px] sm:m-1 esm:m-[3px]' />
            <div className='block '>
@@ -116,10 +243,10 @@ export default function Evaluation() {
 
         {showDetails ? (<div className='description flex flex-col w-full box-border'>
         <div  className='flex flex-row py-[20px] justify-center gap-5 border-[grey]  border-b-[2px] '>
-              <img src={user.image} alt="" className=' userImg  rounded-[50%] border-[solid] border-[#ffffff] ml-[0.7rem] esm:w-[20px] esm:h-[20px]  450px:w-[30px] 450px:h-[30px]  sm:w-[35px] sm:h-[35px] border-[1.5px]  lg:w-[100px] lg:h-[100px] lg:border-[2px] md:w-[37px] md:h-[37px] md:border-[2px] sm:m-1 esm:m-[3px]' />
+              <img src={selected.image} alt="" className=' userImg  rounded-[50%] border-[solid] border-[#ffffff] ml-[0.7rem] esm:w-[20px] esm:h-[20px]  450px:w-[30px] 450px:h-[30px]  sm:w-[35px] sm:h-[35px] border-[1.5px]  lg:w-[100px] lg:h-[100px] lg:border-[2px] md:w-[37px] md:h-[37px] md:border-[2px] sm:m-1 esm:m-[3px]' />
              <div className='details flex flex-col justify-evenly  '>
-              <p className='text-left'>Rasindu Ranavaka</p>
-              <p className='text-left text-[#ffffff] opacity-[30%] '>Software Engineer</p>
+              <p className='text-left'>{selected.fname}</p>
+              <p className='text-left text-[#ffffff] opacity-[30%] '>{selected.role}</p>
               <p className='text-left text-[#ffffff] opacity-[30%] '>System Rank: </p>
              </div>
              </div>
@@ -141,13 +268,13 @@ export default function Evaluation() {
                  
               <div className='flex flex-col justify-center gap-48  md:flex-row  pb-[10px]'>
               <div className='flex flex-col mb-[20px]'>
-              <PieCharts percentage='65'  topic='Communication'></PieCharts>
-              <input type="text" name="" id="" className='border-none w-[40px] text-black text-center font-bold  m-auto bottom-0 flex justify-center rounded-[10px] ' />
-              <p className='text-white m-auto'>Problem Solution</p>
+              <PieCharts percentage={data.addcomment}  ></PieCharts>
+              <input type="text"   value={data.addcomment} onChange={handleInputChange} name="addcomment" id="" className='border-none w-[40px] text-black text-center font-bold  m-auto bottom-0 flex justify-center rounded-[10px] ' />
+              <p className='text-white m-auto'>Add Comment</p>
               </div>
               <div className='flex flex-col mb-[20px]'>
-              <PieCharts percentage='65'  topic='Communication'></PieCharts>
-              <input type="text" name="" id="" className='border-none w-[40px] text-black text-center font-bold  m-auto bottom-0 flex justify-center rounded-[10px] ' />
+              <PieCharts percentage={data.collaboration}  ></PieCharts>
+              <input type="text" value={data.collaboration} name="collaboration" onChange={handleInputChange} id="" className='border-none w-[40px] text-black text-center font-bold  m-auto bottom-0 flex justify-center rounded-[10px] ' />
               <p className='text-white m-auto'>Effective Collaboration</p>
               </div>
              
@@ -157,23 +284,32 @@ export default function Evaluation() {
 
               <div className='flex flex-col md:flex-row justify-around'>
               <div className='flex flex-col m-auto mb-[20px]'> 
-              <PieCharts percentage='75' topic='Technical details' ></PieCharts>
-              <input type="text" name="" id="" className='border-none w-[40px] text-black text-center font-bold  m-auto bottom-0 flex justify-center rounded-[10px] ' />
+              <PieCharts percentage={data.adoptability}  ></PieCharts>
+              <input type="text" name="adoptability" value={data.adoptability} onChange={handleInputChange} id="" className='border-none w-[40px] text-black text-center font-bold  m-auto bottom-0 flex justify-center rounded-[10px] ' />
               <p className='text-white m-auto'>Adoptability</p>
             </div>
             <div className='flex flex-col m-auto mb-[20px]'> 
-              <PieCharts percentage='45' topic='Culteral Fit'></PieCharts>
-              <input type="text" name="" id="" className='border-none w-[40px] text-black text-center font-bold  m-auto bottom-0 flex justify-center rounded-[10px] ' />
+              <PieCharts percentage={data.decisionmaking} ></PieCharts>
+              <input type="text" name="decisionmaking" value={data.decisionmaking}  onChange={handleInputChange} id="" className='border-none w-[40px] text-black text-center font-bold  m-auto bottom-0 flex justify-center rounded-[10px] ' />
               <p className='text-white m-auto'>Decision Making</p>
             </div>
             <div className='flex flex-col m-auto mb-[20px]'> 
-              <PieCharts percentage='65'  topic='Communication'></PieCharts>
-              <input type="text" name="" id="" className='border-none w-[40px] text-black text-center font-bold  m-auto bottom-0 flex justify-center rounded-[10px] ' />
+              <PieCharts percentage={data.leadership}  ></PieCharts>
+              <input type="text" name="leadership" value={data.leadership} onChange={handleInputChange} id="" className='border-none w-[40px] text-black text-center font-bold  m-auto bottom-0 flex justify-center rounded-[10px] ' />
               <p className='text-white m-auto'>Leadership Style</p>
             </div>
               </div>
               
-             
+              <div className='flex flex-raw  justify-center'> 
+              <button type='submit' onClick={createEvaluation} className="items-center mt-5 esm:mr-[15%] sm:mr-[7%] md:mr-[6%] 900px:mr-[5%] 1010px:mr-[4%] bg-[#EA7122] esm:w-[50px] esm:h-[15px] 350px:w-[60px] 350px:h-[18px] 500px:w-[80px] 500px:h-[20px] sm:w-[100px] sm:h-[25px] md:w-[110px] md:h-[30px] 1010px:w-[120px] 1010px:h-[32px] 1300px:w-[125px] 1300px:h-[34px] xl:w-[130px] xl:h-[35px] rounded-[30px] ">Submit</button>
+              {/* <button type='submit' onClick={clear} className="items-center mt-5 esm:mr-[15%] sm:mr-[7%] md:mr-[6%] 900px:mr-[5%] 1010px:mr-[4%] bg-[#4a362a] esm:w-[50px] esm:h-[15px] 350px:w-[60px] 350px:h-[18px] 500px:w-[80px] 500px:h-[20px] sm:w-[100px] sm:h-[25px] md:w-[110px] md:h-[30px] 1010px:w-[120px] 1010px:h-[32px] 1300px:w-[125px] 1300px:h-[34px] xl:w-[130px] xl:h-[35px] rounded-[30px] ">Clear</button> */}
+              {/* {existEvolution.some(evol => data.candidateid === selected.id ) ? (
+                <button type='submit' onClick={updateEvaluation} className="items-center mt-5 esm:mr-[15%] sm:mr-[7%] md:mr-[6%] 900px:mr-[5%] 1010px:mr-[4%] bg-[#EA7122] esm:w-[50px] esm:h-[15px] 350px:w-[60px] 350px:h-[18px] 500px:w-[80px] 500px:h-[20px] sm:w-[100px] sm:h-[25px] md:w-[110px] md:h-[30px] 1010px:w-[120px] 1010px:h-[32px] 1300px:w-[125px] 1300px:h-[34px] xl:w-[130px] xl:h-[35px] rounded-[30px] ">Update</button>
+            ) : (
+              <button type='submit' onClick={createEvaluation} className="items-center mt-5 esm:mr-[15%] sm:mr-[7%] md:mr-[6%] 900px:mr-[5%] 1010px:mr-[4%] bg-[#EA7122] esm:w-[50px] esm:h-[15px] 350px:w-[60px] 350px:h-[18px] 500px:w-[80px] 500px:h-[20px] sm:w-[100px] sm:h-[25px] md:w-[110px] md:h-[30px] 1010px:w-[120px] 1010px:h-[32px] 1300px:w-[125px] 1300px:h-[34px] xl:w-[130px] xl:h-[35px] rounded-[30px] ">Submit</button>
+            )} */}
+
+            </div>
               
               </div>
 
@@ -181,27 +317,28 @@ export default function Evaluation() {
       feedbackTab ===0 ? 'block' : 'hidden'
     } `}>       <div className='flex flex-row'>
                <div className='flex flex-col m-auto mb-[20px]'> 
-                <PieCharts percentage='45' topic='Problem Solution' ></PieCharts>
-                <input type="text" name="" id="" className='border-none w-[40px] text-black text-center font-bold  m-auto bottom-0 flex justify-center rounded-[10px] ' />
+                <PieCharts percentage={data.problemsolution} topic='Problem Solution' ></PieCharts>
+                <input type="text" name="problemsolution" value={data.problemsolution} onChange={handleInputChange} id="" className='border-none w-[40px] text-black text-center font-bold  m-auto bottom-0 flex justify-center rounded-[10px] ' />
                 <p className='text-white m-auto'>Problem Solution</p>
             </div>
             <div className='flex flex-col m-auto mb-[20px]'> 
-              <PieCharts percentage='15' topic='Language Proficiency'></PieCharts>
-              <input type="text" name="" id="" className='border-none w-[40px] text-black text-center font-bold  m-auto bottom-0 flex justify-center rounded-[10px] ' />
+              <PieCharts percentage={data.languageproficiency} topic='Language Proficiency'></PieCharts>
+              <input type="text" name="languageproficiency" value={data.languageproficiency} onChange={handleInputChange} id="" className='border-none w-[40px] text-black text-center font-bold  m-auto bottom-0 flex justify-center rounded-[10px] ' />
               <p className='text-white m-auto'>Language Proficiency</p>
             </div> 
             </div>
             <form >
              <div>
-              <p className='p-[20px]'>Interview Feedbacks</p>
+              <p className='p-[20px]'>Add Comments</p>
               <div className='p-[20px] m-[20px] rounded-[30px] bg-[#292929]'>
-                <textarea  name="" id="" defaultValue='Feedback'  className='bg-[#292929] h-[30vh] w-full border-none outline-none p-[10px] '  />
+                <textarea  name="interviewercomments" defaultValue='Notes'  value={data.interviewercomments} onChange={handleInputChange}    className='bg-[#292929] h-[30vh] w-full border-none outline-none p-[10px] '  />
               </div>
              </div>
-            
-            
-             <button type='submit' className="items-center mt-5 esm:mr-[15%] sm:mr-[7%] md:mr-[6%] 900px:mr-[5%] 1010px:mr-[4%] bg-[#EA7122] esm:w-[50px] esm:h-[15px] 350px:w-[60px] 350px:h-[18px] 500px:w-[80px] 500px:h-[20px] sm:w-[100px] sm:h-[25px] md:w-[110px] md:h-[30px] 1010px:w-[120px] 1010px:h-[32px] 1300px:w-[125px] 1300px:h-[34px] xl:w-[130px] xl:h-[35px] rounded-[30px] ">Submit</button>
-             </form>
+             </form> 
+             <div className='flex flex-raw  justify-center'> 
+              <button type='submit' onClick={clear} className="items-center mt-5 esm:mr-[15%] sm:mr-[7%] md:mr-[6%] 900px:mr-[5%] 1010px:mr-[4%] bg-[#4a362a] esm:w-[50px] esm:h-[15px] 350px:w-[60px] 350px:h-[18px] 500px:w-[80px] 500px:h-[20px] sm:w-[100px] sm:h-[25px] md:w-[110px] md:h-[30px] 1010px:w-[120px] 1010px:h-[32px] 1300px:w-[125px] 1300px:h-[34px] xl:w-[130px] xl:h-[35px] rounded-[30px] ">Clear</button>
+              <button type='submit' className="items-center mt-5 esm:mr-[15%] sm:mr-[7%] md:mr-[6%] 900px:mr-[5%] 1010px:mr-[4%] bg-[#EA7122] esm:w-[50px] esm:h-[15px] 350px:w-[60px] 350px:h-[18px] 500px:w-[80px] 500px:h-[20px] sm:w-[100px] sm:h-[25px] md:w-[110px] md:h-[30px] 1010px:w-[120px] 1010px:h-[32px] 1300px:w-[125px] 1300px:h-[34px] xl:w-[130px] xl:h-[35px] rounded-[30px] ">Submit</button>
+             </div>
               </div>
 
              <div className={`flex flex-col   justify-around   py-[50px] bg-[#1a1919] ${
@@ -209,32 +346,33 @@ export default function Evaluation() {
     }`}>
             <div  className='flex flex-row'>
             <div className='flex flex-col m-auto mb-[20px]'> 
-            <PieCharts percentage='75' topic='Technical details' ></PieCharts>
-            <input type="text" name="" id="" className='border-none w-[40px] text-black text-center font-bold  m-auto bottom-0 flex justify-center rounded-[10px] ' />
+            <PieCharts percentage={data.technical} topic='Technical details' ></PieCharts>
+            <input type="text" name="technical" value={data.technical} onChange={handleInputChange} id="" className='border-none w-[40px] text-black text-center font-bold  m-auto bottom-0 flex justify-center rounded-[10px] ' />
             <p className='text-white m-auto'>Technical Details</p>
             </div> 
             <div className='flex flex-col m-auto mb-[20px]'>
-              <PieCharts percentage='45' topic='Culteral Fit'></PieCharts>
-              <input type="text" name="" id="" className='border-none w-[40px] text-black text-center font-bold  m-auto bottom-0 flex justify-center rounded-[10px] ' />
+              <PieCharts percentage={data.cultural} topic='Culteral Fit'></PieCharts>
+              <input type="text" name="cultural" value={data.cultural} onChange={handleInputChange} id="" className='border-none w-[40px] text-black text-center font-bold  m-auto bottom-0 flex justify-center rounded-[10px] ' />
             <p className='text-white m-auto'>Culteral Fit </p>
             </div>
             <div className='flex flex-col m-auto mb-[20px]'>
-              <PieCharts percentage='65'  topic='Communication'></PieCharts>
-              <input type="text" name="" id="" className='border-none w-[40px] text-black text-center font-bold  m-auto bottom-0 flex justify-center rounded-[10px] ' />
+              <PieCharts percentage={data.communication}  topic='Communication'></PieCharts>
+              <input type="text" name="communication"value={data.communication} onChange={handleInputChange} id="" className='border-none w-[40px] text-black text-center font-bold  m-auto bottom-0 flex justify-center rounded-[10px] ' />
               <p className='text-white m-auto'>Communication</p>
               </div>
             </div>
               <form >
              <div>
-              <p className='p-[20px]'>Interview Feedbacks</p>
+              <p className='p-[20px]'>Additional Notes</p>
               <div className='p-[20px] m-[20px] rounded-[30px] bg-[#292929]'>
-                <textarea  name="" id="" defaultValue='Feedback'  className='bg-[#292929] h-[30vh] w-full border-none outline-none p-[10px] '  />
+                <textarea  name="overallcomment" value={data.overallcomment} onChange={handleInputChange} id=""  className='bg-[#292929] h-[30vh] w-full border-none outline-none p-[10px] '  />
               </div>
              </div>
-            
-            
-             <button type='submit' className="items-center mt-5 esm:mr-[15%] sm:mr-[7%] md:mr-[6%] 900px:mr-[5%] 1010px:mr-[4%] bg-[#EA7122] esm:w-[50px] esm:h-[15px] 350px:w-[60px] 350px:h-[18px] 500px:w-[80px] 500px:h-[20px] sm:w-[100px] sm:h-[25px] md:w-[110px] md:h-[30px] 1010px:w-[120px] 1010px:h-[32px] 1300px:w-[125px] 1300px:h-[34px] xl:w-[130px] xl:h-[35px] rounded-[30px] ">Submit</button>
-             </form>
+             </form> 
+             <div className='flex flex-raw  justify-center'> 
+              <button type='submit' onClick={clear} className="items-center mt-5 esm:mr-[15%] sm:mr-[7%] md:mr-[6%] 900px:mr-[5%] 1010px:mr-[4%] bg-[#4a362a] esm:w-[50px] esm:h-[15px] 350px:w-[60px] 350px:h-[18px] 500px:w-[80px] 500px:h-[20px] sm:w-[100px] sm:h-[25px] md:w-[110px] md:h-[30px] 1010px:w-[120px] 1010px:h-[32px] 1300px:w-[125px] 1300px:h-[34px] xl:w-[130px] xl:h-[35px] rounded-[30px] ">Clear</button>
+              <button type='submit' className="items-center mt-5 esm:mr-[15%] sm:mr-[7%] md:mr-[6%] 900px:mr-[5%] 1010px:mr-[4%] bg-[#EA7122] esm:w-[50px] esm:h-[15px] 350px:w-[60px] 350px:h-[18px] 500px:w-[80px] 500px:h-[20px] sm:w-[100px] sm:h-[25px] md:w-[110px] md:h-[30px] 1010px:w-[120px] 1010px:h-[32px] 1300px:w-[125px] 1300px:h-[34px] xl:w-[130px] xl:h-[35px] rounded-[30px] ">Submit</button>
+             </div>
               </div>
               
               <div className={`flex flex-col  py-[50px] bg-[#1a1919]   ${
@@ -243,29 +381,32 @@ export default function Evaluation() {
                  
               <div className='flex flex-col  md:flex-row justify-around'>
               <div className='flex flex-col m-auto mb-[20px]'>
-              <PieCharts percentage='65'  topic='Clarity'></PieCharts>
-              <input type="text" name="" id="" className='border-none w-[40px] text-black text-center font-bold  m-auto bottom-0 flex justify-center rounded-[10px] ' />
+              <PieCharts percentage={data.clarity}  topic='Clarity'></PieCharts>
+              <input type="text" name="clarity" value={data.clarity} onChange={handleInputChange} id="" className='border-none w-[40px] text-black text-center font-bold  m-auto bottom-0 flex justify-center rounded-[10px] ' />
               <p className='text-white m-auto'>Clarity</p>
               </div> 
               <div className='flex flex-col m-auto mb-[20px]'>
-              <PieCharts percentage='65'  topic='Active listening'></PieCharts>
-              <input type="text" name="" id="" className='border-none w-[40px] text-black text-center font-bold  m-auto bottom-0 flex justify-center rounded-[10px] ' />
+              <PieCharts percentage={data.activelistening}  topic='Active listening'></PieCharts>
+              <input type="text" name="activelistening" value={data.activelistening} onChange={handleInputChange} id="" className='border-none w-[40px] text-black text-center font-bold  m-auto bottom-0 flex justify-center rounded-[10px] ' />
               <p className='text-white m-auto'>Active listening</p>
               </div>
              
               <div className='flex flex-col m-auto mb-[20px]'>
-              <PieCharts percentage='75' topic='Empathy' ></PieCharts>
-              <input type="text" name="" id="" className='border-none w-[40px] text-black text-center font-bold  m-auto bottom-0 flex justify-center rounded-[10px] ' />
+              <PieCharts percentage={data.empathy} topic='Empathy' ></PieCharts>
+              <input type="text" name="empathy" value={data.empathy} onChange={handleInputChange} id="" className='border-none w-[40px] text-black text-center font-bold  m-auto bottom-0 flex justify-center rounded-[10px] ' />
               <p className='text-white m-auto'>Empathy</p>
               </div>
               <div className='flex flex-col m-auto mb-[20px]'>
-              <PieCharts percentage='45' topic='Presentation Skill'></PieCharts>
-              <input type="text" name="" id="" className='border-none w-[40px] text-black text-center font-bold  m-auto bottom-0 flex justify-center rounded-[10px] ' />
+              <PieCharts percentage={data.presentationskills} topic='Presentation Skill'></PieCharts>
+              <input type="text" name="presentationskills" value={data.presentationskills} onChange={handleInputChange} id="" className='border-none w-[40px] text-black text-center font-bold  m-auto bottom-0 flex justify-center rounded-[10px] ' />
               <p className='text-white m-auto'>Presenation Skill</p>
               </div>
               </div>
               
-             
+              <div className='flex flex-raw  justify-center'> 
+              <button type='submit' onClick={clear} className="items-center mt-5 esm:mr-[15%] sm:mr-[7%] md:mr-[6%] 900px:mr-[5%] 1010px:mr-[4%] bg-[#4a362a] esm:w-[50px] esm:h-[15px] 350px:w-[60px] 350px:h-[18px] 500px:w-[80px] 500px:h-[20px] sm:w-[100px] sm:h-[25px] md:w-[110px] md:h-[30px] 1010px:w-[120px] 1010px:h-[32px] 1300px:w-[125px] 1300px:h-[34px] xl:w-[130px] xl:h-[35px] rounded-[30px] ">Clear</button>
+              <button type='submit' className="items-center mt-5 esm:mr-[15%] sm:mr-[7%] md:mr-[6%] 900px:mr-[5%] 1010px:mr-[4%] bg-[#EA7122] esm:w-[50px] esm:h-[15px] 350px:w-[60px] 350px:h-[18px] 500px:w-[80px] 500px:h-[20px] sm:w-[100px] sm:h-[25px] md:w-[110px] md:h-[30px] 1010px:w-[120px] 1010px:h-[32px] 1300px:w-[125px] 1300px:h-[34px] xl:w-[130px] xl:h-[35px] rounded-[30px] ">Submit</button>
+             </div>
               
               </div>
               <div>
