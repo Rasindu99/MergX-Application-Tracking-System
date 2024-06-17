@@ -49,6 +49,70 @@ input[type="file"]::-webkit-file-upload-button {
   cursor: pointer;
 }
 
+.height-10 {
+ height: 10%;
+}
+
+.height-7 {
+  height: 6%;
+ }
+
+ .height-75 {
+  height: 75%;
+ }
+ 
+ ::-webkit-scrollbar {
+	width: 3px;
+}
+
+::-webkit-scrollbar-track {
+	background: rgb(115 115 115);
+}
+
+::-webkit-scrollbar-thumb {
+	background: rgb(234 88 12);
+	border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+	background: #242424;
+}
+
+.first {
+  height: 10px;
+}
+
+.button-container {
+  position: relative;
+}
+
+.search-button,
+.clear-button {
+  position: absolute;
+  bottom: 5;
+  right: 0;
+  transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+}
+
+.search-button.translated {
+  transform: translateX(-50px); /* Adjust the value as needed */
+}
+
+.clear-button {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.clear-button.visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(0); /* Ensure it stays in place */
+}
+
+
+
+
+
 
 
 
