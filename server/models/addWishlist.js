@@ -19,6 +19,10 @@ candidate_email:{
 createdAt: {
     type: Date,
     default: Date.now
+},
+submitted : {
+    type: Boolean,
+    default:false
 }
 
 });
