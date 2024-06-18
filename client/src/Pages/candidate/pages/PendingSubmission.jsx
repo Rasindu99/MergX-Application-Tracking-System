@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import Wishlist from '../../../Components/candidateComp/Wishlist/Wishlist';
+import SubmittedApplication from '../../../Components/candidateComp/Wishlist/SubmittedApplication';
 export default function PendingSubmission() {
   const [state, setState] = useState(1);
 
@@ -25,7 +26,7 @@ export default function PendingSubmission() {
                   </div>
                  
                   <div className={`  ${state === 2 ? ' text-white rounded-b-[30px] h-[650px]' : 'hidden'}`}>
-                      
+                      <SubmittedApplication/>
                   </div>
               </div>
 

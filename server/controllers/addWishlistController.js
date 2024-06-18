@@ -55,7 +55,50 @@ const getdetails = async (req, res) => {
     }
 };
 
+//get submitted false
+const getdetailssubmittedfalse = async (req, res) => {
+    try {
+        const items = await Addwishlistmodel.find({ submitted: false }).sort({ createdAt: -1 });
+
+        if (!items || items.length === 0) {
+            return res.status(404).json({ message: "No wishlist items found" });
+        }
+
+        // Return the array of wishlist items
+        return res.status(200).json({
+            message: "Successfully retrieved wishlist items",
+            data: items
+        });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: error.message });
+    }
+};
+
+//get submitted true
+const getdetailssubmittedtrue = async (req, res) => {
+    try {
+        const items = await Addwishlistmodel.find({ submitted: true }).sort({ createdAt: -1 });
+
+        if (!items || items.length === 0) {
+            return res.status(404).json({ message: "No wishlist items found" });
+        }
+
+        // Return the array of wishlist items
+        return res.status(200).json({
+            message: "Successfully retrieved wishlist items",
+            data: items
+        });
+    } catch (error) {
+        console.log(error);
+        return res.status(500).json({ message: error.message });
+    }
+};
+
+
 module.exports = {
     postwishlist,
-    getdetails
+    getdetails,
+    getdetailssubmittedfalse,
+    getdetailssubmittedtrue
 };
