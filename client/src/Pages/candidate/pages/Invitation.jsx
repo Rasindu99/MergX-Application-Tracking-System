@@ -85,11 +85,11 @@ const Invitation = () => {
   return (
     <div className='flex flex-col items-center justify-start w-full h-full bg-neutral-800'>
 
-      <div className='flex items-center justify-center bg-neutral-800 w-11/12 height-10'>
+      <div className='flex items-center justify-center w-11/12 bg-neutral-800 height-10'>
         <SearchBar filteredInterviews={filteredInterviews} />
       </div>
 
-      <div className='bg-neutral-800 w-11/12 height-7 divide-x divide-neutral-400'>
+      <div className='w-11/12 divide-x bg-neutral-800 height-7 divide-neutral-400'>
         <button
           onClick={() => setFilter('new')}
           className={`hover:bg-neutral-700 font-bold text-lg w-1/4 px-4 py-2 rounded-tl-2xl ${filter === 'new' ? 'bg-neutral-500 text-white' : 'bg-neutral-800'}`}
@@ -111,7 +111,7 @@ const Invitation = () => {
         >Deleted</button>
       </div>
 
-      <div className='overflow-x-hidden listContainer rounded-b-xl items-center height-75 w-11/12 bg-neutral-800 overflow-auto divide-y divide-neutral-600'>
+      <div className='items-center w-11/12 overflow-auto overflow-x-hidden divide-y listContainer rounded-b-xl height-75 bg-neutral-800 divide-neutral-600'>
         {(search ? searchedInterview : getFilteredInterviews()).map((interview) => {
           const isRead = readInterviews.includes(interview._id);
           return (
