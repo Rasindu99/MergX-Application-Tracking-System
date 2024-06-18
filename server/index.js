@@ -35,7 +35,7 @@ app.use('/evaluation', require('./routes/evaluationRoutes'));
 app.use('/invitation',require('./routes/jobinterviewinvitationRoutes'));
 app.use('/access',require('./routes/adminaccessRoutes'));
 app.use('/cv',require('./routes/applicationRoutes'))
-app.use('/wishlist', require('./routes/addWishlist'));
+app.use('/wishlist', require('./routes/addWishlistRoutes'));
 //app.use('/Protected', require('./routes/ProtectedRoute'));
 // Defining the port for the server to listen on
 const port = 8000;
