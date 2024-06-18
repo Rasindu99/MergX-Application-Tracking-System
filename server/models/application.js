@@ -26,8 +26,8 @@ const applicationSchema = new mongoose.Schema({
         required: true
     },
     approval: {
-        type: String,
-        required: true
+        type: Boolean,
+        default:false
     },
     createdAt: {
         type: Date,
