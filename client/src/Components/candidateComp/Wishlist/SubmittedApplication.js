@@ -20,7 +20,7 @@ export default function SubmittedApplication() {
    
 
     // Function to fetch wishlist items from backend
-    const fetchWishlistItems = async () => {
+    const fetchWishlistItemsfalse = async () => {
         try {
             const response = await axios.get('/wishlist/detailssubmittedtrue');
             setWishlistItems(response.data.data);
@@ -53,8 +53,9 @@ export default function SubmittedApplication() {
    
 
     useEffect(() => {
-        fetchWishlistItems();
+        fetchWishlistItemsfalse(true);
         getinvitationsendistrue();
+        
     }, []);
 
     const filterWishlistItems = wishlistItems.filter((item) => {

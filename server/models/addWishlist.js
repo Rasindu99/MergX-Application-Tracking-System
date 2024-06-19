@@ -25,6 +25,6 @@ submitted : {
     default:false
 }
 
-});
+}, {timestamps: true});
 const Addwishlistmodel = mongoose.model('Addwishlist', addwishlistSchema);
 module.exports = Addwishlistmodel;

@@ -61,7 +61,7 @@ const getdetailssubmittedfalse = async (req, res) => {
         const items = await Addwishlistmodel.find({ submitted: false }).sort({ createdAt: -1 });
 
         if (!items || items.length === 0) {
-            return res.status(404).json({ message: "No wishlist items found" });
+            console.log('wish list is empty')
         }
 
         // Return the array of wishlist items
@@ -81,7 +81,7 @@ const getdetailssubmittedtrue = async (req, res) => {
         const items = await Addwishlistmodel.find({ submitted: true }).sort({ createdAt: -1 });
 
         if (!items || items.length === 0) {
-            return res.status(404).json({ message: "No wishlist items found" });
+            console.log('submitted list is empty')
         }
 
         // Return the array of wishlist items
@@ -95,10 +95,29 @@ const getdetailssubmittedtrue = async (req, res) => {
     }
 };
 
+// PUT endpoint to update submitted status
+const updateSubmitted = async (req, res) => {
+    const { submitted } = req.body;
+    const { id } = req.params;
+
+    try {
+        const updatedItem = await Addwishlistmodel.findByIdAndUpdate(id, { submitted }, { new: true });
+        if (!updatedItem) {
+            return res.status(404).json({ success: false, message: 'Wishlist item not found' });
+        }
+
+        res.status(200).json({ success: true, message: 'Submitted status updated successfully', wishlistItem: updatedItem });
+    } catch (error) {
+        console.error('Error updating submitted status:', error);
+        res.status(500).json({ success: false, message: 'Internal server error' });
+    }
+};
+
 
 module.exports = {
     postwishlist,
     getdetails,
     getdetailssubmittedfalse,
-    getdetailssubmittedtrue
+    getdetailssubmittedtrue,
+    updateSubmitted
 };
