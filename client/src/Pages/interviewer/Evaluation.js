@@ -15,6 +15,7 @@ export default function Evaluation() {
   const [showDetails,setshowDetails]=useState(false);
   const [existEvolution,setexistEvolution] = useState([]);
   
+  
 
   useEffect(() => {
     console.log(data);
@@ -90,10 +91,10 @@ export default function Evaluation() {
   
   //updating evolutions
 
-  const updateEvaluation = async(event,evaluationId)=>{
+  const updateEvaluation = async(event)=>{
     event.preventDefault();
     try{
-      const response = await axios.put(`http://localhost:8000/evaluations/updateevaluation/${evaluationId}`,data);
+      const response = await axios.put(`http://localhost:8000/evaluation/updateevaluation/${existEvolution._id}`,data);
       if(response.data.error){
         console.error("Error in updating Evaluations");
       }
@@ -121,11 +122,11 @@ export default function Evaluation() {
           communication:0,
           overallcomment:''
         });
-        console.log('Evaluations Created Successfully');
+        console.log('Evaluations Updated Successfully');
       }
     }
     catch(error){
-      console.error(error);
+      console.error('Error updating evaluation:', error);
 
     }
   }
@@ -135,17 +136,20 @@ export default function Evaluation() {
 
   useEffect(() => {
     const fetchEvaluation = async () => {
-      if (showDetails && selected._id) { // Check if showDetails is true and selected._id is defined before fetching
+      if (showDetails && selected) { // Check if showDetails is true and selected._id is defined before fetching
         try {
           console.log('Fetching evaluation for candidate ID:', selected._id); // Debug log
           const response = await axios.get(`http://localhost:8000/evaluation?candidateid=${selected._id}`);
+          
           if (response.data) {
+           
             setexistEvolution(response.data);
             setData(response.data); // Use response.data directly
           }
         } catch (error) {
           console.error(error);
           clear();
+          console.log(selected);
           
         }
       }
@@ -190,21 +194,26 @@ const clear = ()=>{
  
 }
 const setcandidate = ()=>{
+  if (showDetails) {
   data.candidatename=selected.fname;
   data.candidateid=selected._id;
   data.candidateemail='@gmail.com';
 }
+
+}
 const setinterviewer = () =>{
+  if (showDetails) {
   data.interviewername=user.fname;
   data.interviewerid=user._id;
+  }
 }
 
 useEffect(() => {
-  if (showDetails) {
+ 
     setcandidate();
     setinterviewer();
-  }
-}, [showDetails]);
+  
+});
    
 
   return (
@@ -262,19 +271,19 @@ useEffect(() => {
 
               </div>
               
-              <div className={` flex flex-col py-[50px]  bg-[#1a1919]   ${
+              <div className={` flex flex-col py-[50px]  bg-[#1a1919]   ${ 
       feedbackTab ===1 ? 'block' : 'hidden'
     } `}>
                  
               <div className='flex flex-col justify-center gap-48  md:flex-row  pb-[10px]'>
               <div className='flex flex-col mb-[20px]'>
               <PieCharts percentage={data.addcomment}  ></PieCharts>
-              <input type="text"   value={data.addcomment} onChange={handleInputChange} name="addcomment" id="" className='border-none w-[40px] text-black text-center font-bold  m-auto bottom-0 flex justify-center rounded-[10px] ' />
+              <input type="number"   value={data.addcomment} onChange={handleInputChange} name="addcomment" id="" className='border-none w-[40px] text-black text-center font-bold  m-auto bottom-0 flex justify-center rounded-[10px] ' />
               <p className='text-white m-auto'>Add Comment</p>
               </div>
               <div className='flex flex-col mb-[20px]'>
               <PieCharts percentage={data.collaboration}  ></PieCharts>
-              <input type="text" value={data.collaboration} name="collaboration" onChange={handleInputChange} id="" className='border-none w-[40px] text-black text-center font-bold  m-auto bottom-0 flex justify-center rounded-[10px] ' />
+              <input type="number" value={data.collaboration} name="collaboration" onChange={handleInputChange} id="" className='border-none w-[40px] text-black text-center font-bold  m-auto bottom-0 flex justify-center rounded-[10px] ' />
               <p className='text-white m-auto'>Effective Collaboration</p>
               </div>
              
@@ -285,29 +294,26 @@ useEffect(() => {
               <div className='flex flex-col md:flex-row justify-around'>
               <div className='flex flex-col m-auto mb-[20px]'> 
               <PieCharts percentage={data.adoptability}  ></PieCharts>
-              <input type="text" name="adoptability" value={data.adoptability} onChange={handleInputChange} id="" className='border-none w-[40px] text-black text-center font-bold  m-auto bottom-0 flex justify-center rounded-[10px] ' />
+              <input type="number" name="adoptability" value={data.adoptability} onChange={handleInputChange} id="" className='border-none w-[40px] text-black text-center font-bold  m-auto bottom-0 flex justify-center rounded-[10px] ' />
               <p className='text-white m-auto'>Adoptability</p>
             </div>
             <div className='flex flex-col m-auto mb-[20px]'> 
               <PieCharts percentage={data.decisionmaking} ></PieCharts>
-              <input type="text" name="decisionmaking" value={data.decisionmaking}  onChange={handleInputChange} id="" className='border-none w-[40px] text-black text-center font-bold  m-auto bottom-0 flex justify-center rounded-[10px] ' />
+              <input type="number" name="decisionmaking" value={data.decisionmaking}  onChange={handleInputChange} id="" className='border-none w-[40px] text-black text-center font-bold  m-auto bottom-0 flex justify-center rounded-[10px] ' />
               <p className='text-white m-auto'>Decision Making</p>
             </div>
             <div className='flex flex-col m-auto mb-[20px]'> 
               <PieCharts percentage={data.leadership}  ></PieCharts>
-              <input type="text" name="leadership" value={data.leadership} onChange={handleInputChange} id="" className='border-none w-[40px] text-black text-center font-bold  m-auto bottom-0 flex justify-center rounded-[10px] ' />
+              <input type="number" name="leadership" value={data.leadership} onChange={handleInputChange} id="" className='border-none w-[40px] text-black text-center font-bold  m-auto bottom-0 flex justify-center rounded-[10px] ' />
               <p className='text-white m-auto'>Leadership Style</p>
             </div>
               </div>
               
               <div className='flex flex-raw  justify-center'> 
-              <button type='submit' onClick={createEvaluation} className="items-center mt-5 esm:mr-[15%] sm:mr-[7%] md:mr-[6%] 900px:mr-[5%] 1010px:mr-[4%] bg-[#EA7122] esm:w-[50px] esm:h-[15px] 350px:w-[60px] 350px:h-[18px] 500px:w-[80px] 500px:h-[20px] sm:w-[100px] sm:h-[25px] md:w-[110px] md:h-[30px] 1010px:w-[120px] 1010px:h-[32px] 1300px:w-[125px] 1300px:h-[34px] xl:w-[130px] xl:h-[35px] rounded-[30px] ">Submit</button>
-              {/* <button type='submit' onClick={clear} className="items-center mt-5 esm:mr-[15%] sm:mr-[7%] md:mr-[6%] 900px:mr-[5%] 1010px:mr-[4%] bg-[#4a362a] esm:w-[50px] esm:h-[15px] 350px:w-[60px] 350px:h-[18px] 500px:w-[80px] 500px:h-[20px] sm:w-[100px] sm:h-[25px] md:w-[110px] md:h-[30px] 1010px:w-[120px] 1010px:h-[32px] 1300px:w-[125px] 1300px:h-[34px] xl:w-[130px] xl:h-[35px] rounded-[30px] ">Clear</button> */}
-              {/* {existEvolution.some(evol => data.candidateid === selected.id ) ? (
-                <button type='submit' onClick={updateEvaluation} className="items-center mt-5 esm:mr-[15%] sm:mr-[7%] md:mr-[6%] 900px:mr-[5%] 1010px:mr-[4%] bg-[#EA7122] esm:w-[50px] esm:h-[15px] 350px:w-[60px] 350px:h-[18px] 500px:w-[80px] 500px:h-[20px] sm:w-[100px] sm:h-[25px] md:w-[110px] md:h-[30px] 1010px:w-[120px] 1010px:h-[32px] 1300px:w-[125px] 1300px:h-[34px] xl:w-[130px] xl:h-[35px] rounded-[30px] ">Update</button>
-            ) : (
-              <button type='submit' onClick={createEvaluation} className="items-center mt-5 esm:mr-[15%] sm:mr-[7%] md:mr-[6%] 900px:mr-[5%] 1010px:mr-[4%] bg-[#EA7122] esm:w-[50px] esm:h-[15px] 350px:w-[60px] 350px:h-[18px] 500px:w-[80px] 500px:h-[20px] sm:w-[100px] sm:h-[25px] md:w-[110px] md:h-[30px] 1010px:w-[120px] 1010px:h-[32px] 1300px:w-[125px] 1300px:h-[34px] xl:w-[130px] xl:h-[35px] rounded-[30px] ">Submit</button>
-            )} */}
+              <button type='submit' onClick={clear} className="items-center mt-5 esm:mr-[15%] sm:mr-[7%] md:mr-[6%] 900px:mr-[5%] 1010px:mr-[4%] bg-[#4a362a] esm:w-[50px] esm:h-[15px] 350px:w-[60px] 350px:h-[18px] 500px:w-[80px] 500px:h-[20px] sm:w-[100px] sm:h-[25px] md:w-[110px] md:h-[30px] 1010px:w-[120px] 1010px:h-[32px] 1300px:w-[125px] 1300px:h-[34px] xl:w-[130px] xl:h-[35px] rounded-[30px] ">Clear</button>
+             
+            <button type='submit'  onClick={() => handleClick(2)} className="items-center mt-5 esm:mr-[15%] sm:mr-[7%] md:mr-[6%] 900px:mr-[5%] 1010px:mr-[4%] bg-[#EA7122] esm:w-[50px] esm:h-[15px] 350px:w-[60px] 350px:h-[18px] 500px:w-[80px] 500px:h-[20px] sm:w-[100px] sm:h-[25px] md:w-[110px] md:h-[30px] 1010px:w-[120px] 1010px:h-[32px] 1300px:w-[125px] 1300px:h-[34px] xl:w-[130px] xl:h-[35px] rounded-[30px] ">next</button>
+            
 
             </div>
               
@@ -318,12 +324,12 @@ useEffect(() => {
     } `}>       <div className='flex flex-row'>
                <div className='flex flex-col m-auto mb-[20px]'> 
                 <PieCharts percentage={data.problemsolution} topic='Problem Solution' ></PieCharts>
-                <input type="text" name="problemsolution" value={data.problemsolution} onChange={handleInputChange} id="" className='border-none w-[40px] text-black text-center font-bold  m-auto bottom-0 flex justify-center rounded-[10px] ' />
+                <input type="number" name="problemsolution" value={data.problemsolution} onChange={handleInputChange} id="" className='border-none w-[40px] text-black text-center font-bold  m-auto bottom-0 flex justify-center rounded-[10px] ' />
                 <p className='text-white m-auto'>Problem Solution</p>
             </div>
             <div className='flex flex-col m-auto mb-[20px]'> 
               <PieCharts percentage={data.languageproficiency} topic='Language Proficiency'></PieCharts>
-              <input type="text" name="languageproficiency" value={data.languageproficiency} onChange={handleInputChange} id="" className='border-none w-[40px] text-black text-center font-bold  m-auto bottom-0 flex justify-center rounded-[10px] ' />
+              <input type="number" name="languageproficiency" value={data.languageproficiency} onChange={handleInputChange} id="" className='border-none w-[40px] text-black text-center font-bold  m-auto bottom-0 flex justify-center rounded-[10px] ' />
               <p className='text-white m-auto'>Language Proficiency</p>
             </div> 
             </div>
@@ -337,7 +343,7 @@ useEffect(() => {
              </form> 
              <div className='flex flex-raw  justify-center'> 
               <button type='submit' onClick={clear} className="items-center mt-5 esm:mr-[15%] sm:mr-[7%] md:mr-[6%] 900px:mr-[5%] 1010px:mr-[4%] bg-[#4a362a] esm:w-[50px] esm:h-[15px] 350px:w-[60px] 350px:h-[18px] 500px:w-[80px] 500px:h-[20px] sm:w-[100px] sm:h-[25px] md:w-[110px] md:h-[30px] 1010px:w-[120px] 1010px:h-[32px] 1300px:w-[125px] 1300px:h-[34px] xl:w-[130px] xl:h-[35px] rounded-[30px] ">Clear</button>
-              <button type='submit' className="items-center mt-5 esm:mr-[15%] sm:mr-[7%] md:mr-[6%] 900px:mr-[5%] 1010px:mr-[4%] bg-[#EA7122] esm:w-[50px] esm:h-[15px] 350px:w-[60px] 350px:h-[18px] 500px:w-[80px] 500px:h-[20px] sm:w-[100px] sm:h-[25px] md:w-[110px] md:h-[30px] 1010px:w-[120px] 1010px:h-[32px] 1300px:w-[125px] 1300px:h-[34px] xl:w-[130px] xl:h-[35px] rounded-[30px] ">Submit</button>
+              <button type='submit'  onClick={() => handleClick(1)} className="items-center mt-5 esm:mr-[15%] sm:mr-[7%] md:mr-[6%] 900px:mr-[5%] 1010px:mr-[4%] bg-[#EA7122] esm:w-[50px] esm:h-[15px] 350px:w-[60px] 350px:h-[18px] 500px:w-[80px] 500px:h-[20px] sm:w-[100px] sm:h-[25px] md:w-[110px] md:h-[30px] 1010px:w-[120px] 1010px:h-[32px] 1300px:w-[125px] 1300px:h-[34px] xl:w-[130px] xl:h-[35px] rounded-[30px] ">next</button>
              </div>
               </div>
 
@@ -347,17 +353,17 @@ useEffect(() => {
             <div  className='flex flex-row'>
             <div className='flex flex-col m-auto mb-[20px]'> 
             <PieCharts percentage={data.technical} topic='Technical details' ></PieCharts>
-            <input type="text" name="technical" value={data.technical} onChange={handleInputChange} id="" className='border-none w-[40px] text-black text-center font-bold  m-auto bottom-0 flex justify-center rounded-[10px] ' />
+            <input type="number" name="technical" value={data.technical} onChange={handleInputChange} id="" className='border-none w-[40px] text-black text-center font-bold  m-auto bottom-0 flex justify-center rounded-[10px] ' />
             <p className='text-white m-auto'>Technical Details</p>
             </div> 
             <div className='flex flex-col m-auto mb-[20px]'>
               <PieCharts percentage={data.cultural} topic='Culteral Fit'></PieCharts>
-              <input type="text" name="cultural" value={data.cultural} onChange={handleInputChange} id="" className='border-none w-[40px] text-black text-center font-bold  m-auto bottom-0 flex justify-center rounded-[10px] ' />
+              <input type="number" name="cultural" value={data.cultural} onChange={handleInputChange} id="" className='border-none w-[40px] text-black text-center font-bold  m-auto bottom-0 flex justify-center rounded-[10px] ' />
             <p className='text-white m-auto'>Culteral Fit </p>
             </div>
             <div className='flex flex-col m-auto mb-[20px]'>
               <PieCharts percentage={data.communication}  topic='Communication'></PieCharts>
-              <input type="text" name="communication"value={data.communication} onChange={handleInputChange} id="" className='border-none w-[40px] text-black text-center font-bold  m-auto bottom-0 flex justify-center rounded-[10px] ' />
+              <input type="number" name="communication"value={data.communication} onChange={handleInputChange} id="" className='border-none w-[40px] text-black text-center font-bold  m-auto bottom-0 flex justify-center rounded-[10px] ' />
               <p className='text-white m-auto'>Communication</p>
               </div>
             </div>
@@ -371,7 +377,28 @@ useEffect(() => {
              </form> 
              <div className='flex flex-raw  justify-center'> 
               <button type='submit' onClick={clear} className="items-center mt-5 esm:mr-[15%] sm:mr-[7%] md:mr-[6%] 900px:mr-[5%] 1010px:mr-[4%] bg-[#4a362a] esm:w-[50px] esm:h-[15px] 350px:w-[60px] 350px:h-[18px] 500px:w-[80px] 500px:h-[20px] sm:w-[100px] sm:h-[25px] md:w-[110px] md:h-[30px] 1010px:w-[120px] 1010px:h-[32px] 1300px:w-[125px] 1300px:h-[34px] xl:w-[130px] xl:h-[35px] rounded-[30px] ">Clear</button>
-              <button type='submit' className="items-center mt-5 esm:mr-[15%] sm:mr-[7%] md:mr-[6%] 900px:mr-[5%] 1010px:mr-[4%] bg-[#EA7122] esm:w-[50px] esm:h-[15px] 350px:w-[60px] 350px:h-[18px] 500px:w-[80px] 500px:h-[20px] sm:w-[100px] sm:h-[25px] md:w-[110px] md:h-[30px] 1010px:w-[120px] 1010px:h-[32px] 1300px:w-[125px] 1300px:h-[34px] xl:w-[130px] xl:h-[35px] rounded-[30px] ">Submit</button>
+              {/* <button type='submit' onClick={createEvaluation} className="items-center mt-5 esm:mr-[15%] sm:mr-[7%] md:mr-[6%] 900px:mr-[5%] 1010px:mr-[4%] bg-[#EA7122] esm:w-[50px] esm:h-[15px] 350px:w-[60px] 350px:h-[18px] 500px:w-[80px] 500px:h-[20px] sm:w-[100px] sm:h-[25px] md:w-[110px] md:h-[30px] 1010px:w-[120px] 1010px:h-[32px] 1300px:w-[125px] 1300px:h-[34px] xl:w-[130px] xl:h-[35px] rounded-[30px] ">submit</button> */}
+              
+              {data.overallcomment !=='' ? (
+        <button
+          type='submit'
+          onClick={updateEvaluation}
+          className="items-center mt-5 esm:mr-[15%] sm:mr-[7%] md:mr-[6%] 900px:mr-[5%] 1010px:mr-[4%] bg-[#EA7122] esm:w-[50px] esm:h-[15px] 350px:w-[60px] 350px:h-[18px] 500px:w-[80px] 500px:h-[20px] sm:w-[100px] sm:h-[25px] md:w-[110px] md:h-[30px] 1010px:w-[120px] 1010px:h-[32px] 1300px:w-[125px] 1300px:h-[34px] xl:w-[130px] xl:h-[35px] rounded-[30px]"
+        >
+          Update
+        </button>
+      ) : (
+        <button
+          type='submit'
+          onClick={createEvaluation}
+          className="items-center mt-5 esm:mr-[15%] sm:mr-[7%] md:mr-[6%] 900px:mr-[5%] 1010px:mr-[4%] bg-[#EA7122] esm:w-[50px] esm:h-[15px] 350px:w-[60px] 350px:h-[18px] 500px:w-[80px] 500px:h-[20px] sm:w-[100px] sm:h-[25px] md:w-[110px] md:h-[30px] 1010px:w-[120px] 1010px:h-[32px] 1300px:w-[125px] 1300px:h-[34px] xl:w-[130px] xl:h-[35px] rounded-[30px]"
+        >
+          Submit
+        </button>
+      )}
+
+
+              
              </div>
               </div>
               
@@ -382,30 +409,30 @@ useEffect(() => {
               <div className='flex flex-col  md:flex-row justify-around'>
               <div className='flex flex-col m-auto mb-[20px]'>
               <PieCharts percentage={data.clarity}  topic='Clarity'></PieCharts>
-              <input type="text" name="clarity" value={data.clarity} onChange={handleInputChange} id="" className='border-none w-[40px] text-black text-center font-bold  m-auto bottom-0 flex justify-center rounded-[10px] ' />
+              <input type="number" name="clarity" value={data.clarity} onChange={handleInputChange} id="" className='border-none w-[40px] text-black text-center font-bold  m-auto bottom-0 flex justify-center rounded-[10px] ' />
               <p className='text-white m-auto'>Clarity</p>
               </div> 
               <div className='flex flex-col m-auto mb-[20px]'>
               <PieCharts percentage={data.activelistening}  topic='Active listening'></PieCharts>
-              <input type="text" name="activelistening" value={data.activelistening} onChange={handleInputChange} id="" className='border-none w-[40px] text-black text-center font-bold  m-auto bottom-0 flex justify-center rounded-[10px] ' />
+              <input type="number" name="activelistening" value={data.activelistening} onChange={handleInputChange} id="" className='border-none w-[40px] text-black text-center font-bold  m-auto bottom-0 flex justify-center rounded-[10px] ' />
               <p className='text-white m-auto'>Active listening</p>
               </div>
              
               <div className='flex flex-col m-auto mb-[20px]'>
               <PieCharts percentage={data.empathy} topic='Empathy' ></PieCharts>
-              <input type="text" name="empathy" value={data.empathy} onChange={handleInputChange} id="" className='border-none w-[40px] text-black text-center font-bold  m-auto bottom-0 flex justify-center rounded-[10px] ' />
+              <input type="number" name="empathy" value={data.empathy} onChange={handleInputChange} id="" className='border-none w-[40px] text-black text-center font-bold  m-auto bottom-0 flex justify-center rounded-[10px] ' />
               <p className='text-white m-auto'>Empathy</p>
               </div>
               <div className='flex flex-col m-auto mb-[20px]'>
               <PieCharts percentage={data.presentationskills} topic='Presentation Skill'></PieCharts>
-              <input type="text" name="presentationskills" value={data.presentationskills} onChange={handleInputChange} id="" className='border-none w-[40px] text-black text-center font-bold  m-auto bottom-0 flex justify-center rounded-[10px] ' />
+              <input type="number" name="presentationskills" value={data.presentationskills} onChange={handleInputChange} id="" className='border-none w-[40px] text-black text-center font-bold  m-auto bottom-0 flex justify-center rounded-[10px] ' />
               <p className='text-white m-auto'>Presenation Skill</p>
               </div>
               </div>
               
               <div className='flex flex-raw  justify-center'> 
               <button type='submit' onClick={clear} className="items-center mt-5 esm:mr-[15%] sm:mr-[7%] md:mr-[6%] 900px:mr-[5%] 1010px:mr-[4%] bg-[#4a362a] esm:w-[50px] esm:h-[15px] 350px:w-[60px] 350px:h-[18px] 500px:w-[80px] 500px:h-[20px] sm:w-[100px] sm:h-[25px] md:w-[110px] md:h-[30px] 1010px:w-[120px] 1010px:h-[32px] 1300px:w-[125px] 1300px:h-[34px] xl:w-[130px] xl:h-[35px] rounded-[30px] ">Clear</button>
-              <button type='submit' className="items-center mt-5 esm:mr-[15%] sm:mr-[7%] md:mr-[6%] 900px:mr-[5%] 1010px:mr-[4%] bg-[#EA7122] esm:w-[50px] esm:h-[15px] 350px:w-[60px] 350px:h-[18px] 500px:w-[80px] 500px:h-[20px] sm:w-[100px] sm:h-[25px] md:w-[110px] md:h-[30px] 1010px:w-[120px] 1010px:h-[32px] 1300px:w-[125px] 1300px:h-[34px] xl:w-[130px] xl:h-[35px] rounded-[30px] ">Submit</button>
+              <button type='submit'  onClick={() => handleClick(3)} className="items-center mt-5 esm:mr-[15%] sm:mr-[7%] md:mr-[6%] 900px:mr-[5%] 1010px:mr-[4%] bg-[#EA7122] esm:w-[50px] esm:h-[15px] 350px:w-[60px] 350px:h-[18px] 500px:w-[80px] 500px:h-[20px] sm:w-[100px] sm:h-[25px] md:w-[110px] md:h-[30px] 1010px:w-[120px] 1010px:h-[32px] 1300px:w-[125px] 1300px:h-[34px] xl:w-[130px] xl:h-[35px] rounded-[30px] ">next</button>
              </div>
               
               </div>
