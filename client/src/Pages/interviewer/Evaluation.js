@@ -14,6 +14,7 @@ export default function Evaluation() {
   const [feedbackTab,setFeedbackTab]=useState(0);
   const [showDetails,setshowDetails]=useState(false);
   const [existEvolution,setexistEvolution] = useState([]);
+  const [isexistevaluation,setisexistevaluation]=useState(false);
   
   
 
@@ -53,7 +54,7 @@ export default function Evaluation() {
   const createEvaluation = async (event)=>{
     event.preventDefault();
     try{
-      const response = await axios.post('/evaluation/createevaluation',data);
+      const response = await axios.post('http://localhost:8000/evaluation/createevaluation',data);
       if(response.data.error){
         console.error("Error in creating Evaluations");
       }else{
@@ -146,11 +147,13 @@ export default function Evaluation() {
             setexistEvolution(response.data);
             setData(response.data); // Use response.data directly
           }
+         
+          setisexistevaluation(true);
         } catch (error) {
           console.error(error);
           clear();
           console.log(selected);
-          
+          setisexistevaluation(false);
         }
       }
     };
@@ -162,10 +165,14 @@ export default function Evaluation() {
 
 const handleInputChange = (event) => {
   const { name, value } = event.target;
-  setData((prevData) => ({
-      ...prevData,
-      [name]: value
-  }));
+  if (!isNaN(value) && Number(value) >= 0 && Number(value) <= 100) {
+    setData({
+      ...data,
+      [name]: Number(value) // Convert value to number
+    });
+    
+  }
+
 };
 const clear = ()=>{
   setData({
@@ -337,7 +344,10 @@ useEffect(() => {
              <div>
               <p className='p-[20px]'>Add Comments</p>
               <div className='p-[20px] m-[20px] rounded-[30px] bg-[#292929]'>
-                <textarea  name="interviewercomments" defaultValue='Notes'  value={data.interviewercomments} onChange={handleInputChange}    className='bg-[#292929] h-[30vh] w-full border-none outline-none p-[10px] '  />
+                <textarea  name="interviewercomments" defaultValue='Notes'  value={data.interviewercomments} onChange={(e)=>{ setData((prevData) => ({
+      ...prevData,
+      interviewercomments: e.target.value
+  }));}}   className='bg-[#292929] h-[30vh] w-full border-none outline-none p-[10px] '  />
               </div>
              </div>
              </form> 
@@ -371,7 +381,10 @@ useEffect(() => {
              <div>
               <p className='p-[20px]'>Additional Notes</p>
               <div className='p-[20px] m-[20px] rounded-[30px] bg-[#292929]'>
-                <textarea  name="overallcomment" value={data.overallcomment} onChange={handleInputChange} id=""  className='bg-[#292929] h-[30vh] w-full border-none outline-none p-[10px] '  />
+                <textarea  name="overallcomment" value={data.overallcomment} onChange={(e)=>{ setData((prevData) => ({
+      ...prevData,
+      overallcomment: e.target.value
+  }));}} id=""  className='bg-[#292929] h-[30vh] w-full border-none outline-none p-[10px] '  />
               </div>
              </div>
              </form> 
@@ -379,7 +392,7 @@ useEffect(() => {
               <button type='submit' onClick={clear} className="items-center mt-5 esm:mr-[15%] sm:mr-[7%] md:mr-[6%] 900px:mr-[5%] 1010px:mr-[4%] bg-[#4a362a] esm:w-[50px] esm:h-[15px] 350px:w-[60px] 350px:h-[18px] 500px:w-[80px] 500px:h-[20px] sm:w-[100px] sm:h-[25px] md:w-[110px] md:h-[30px] 1010px:w-[120px] 1010px:h-[32px] 1300px:w-[125px] 1300px:h-[34px] xl:w-[130px] xl:h-[35px] rounded-[30px] ">Clear</button>
               {/* <button type='submit' onClick={createEvaluation} className="items-center mt-5 esm:mr-[15%] sm:mr-[7%] md:mr-[6%] 900px:mr-[5%] 1010px:mr-[4%] bg-[#EA7122] esm:w-[50px] esm:h-[15px] 350px:w-[60px] 350px:h-[18px] 500px:w-[80px] 500px:h-[20px] sm:w-[100px] sm:h-[25px] md:w-[110px] md:h-[30px] 1010px:w-[120px] 1010px:h-[32px] 1300px:w-[125px] 1300px:h-[34px] xl:w-[130px] xl:h-[35px] rounded-[30px] ">submit</button> */}
               
-              {data.overallcomment !=='' ? (
+              {isexistevaluation ===true ? (
         <button
           type='submit'
           onClick={updateEvaluation}

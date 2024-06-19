@@ -3,7 +3,7 @@ const router = express.Router();
 const cors = require('cors');
 
 const {
-     createEvalautions, 
+    createEvalautions, 
     //  updateEvaluation,
       getEvaluation } = require('../controllers/evaluationController');
 

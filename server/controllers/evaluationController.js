@@ -114,7 +114,7 @@ const getEvaluation = async (req,res)=>{
 
 }
 module.exports={
-    createEvalautions,
+  createEvalautions,
     // updateEvaluation,
     getEvaluation
 }
