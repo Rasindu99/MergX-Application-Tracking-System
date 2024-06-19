@@ -10,9 +10,11 @@ export default function Wishlist() {
     const { user } = useContext(UserContext);
     const [searchQuery, setSearchQuery] = useState('');
     const [wishlistItems, setWishlistItems] = useState([]);
+    
     const [interviewschedulesData, setinterviewschedules] = useState([]);
     const [showjob, setShowjob] = useState(false);
     const [selectedjobinvitation, setSelectedjobinvitation] = useState(null);
+    const [selectedWishlistItemId, setSelectedWishlistItemId] = useState(null);
     const [showapplicationupload, setShowapplicationupload] = useState(false);
     const [cv, setCv] = useState(null);
 
@@ -20,6 +22,17 @@ export default function Wishlist() {
     const handleFileChange = (e) => {
         setCv(e.target.files[0]);
     };
+
+    const updatesubmitted = async (id) => {
+        try {
+            await axios.put(`/wishlist/updatesubmitted/${id}`, { submitted: true });
+            console.log('Submitted status updated successfully');
+            
+            fetchWishlistItems(); // Re-fetch the wishlist items to get the updated list
+        } catch (error) {
+            console.error('Error updating submitted status:', error);
+        }
+    }
 
     // Function to upload application
     const uploadApplication = async (e) => {
@@ -32,7 +45,7 @@ export default function Wishlist() {
         formData.append('user_name', user.fname);
         formData.append('user_email', user.email);
         formData.append('cv', cv);
-
+        
         try {
             const response = await axios.post('/cv/uploadapplication', formData, {
                 headers: {
@@ -46,24 +59,30 @@ export default function Wishlist() {
                 toast.success('Application submitted successfully!');
                 setShowapplicationupload(false);
                 setSelectedjobinvitation(null);
+                setSelectedWishlistItemId(null);
                 setCv(null);
+                // Update the submitted status using the wishlist item ID
+                updatesubmitted(selectedWishlistItemId);
+                
             }
+            
         } catch (error) {
             console.error('Error submitting application:', error);
             toast.error('Error submitting application');
         }
     };
-
+    
     // Function to fetch wishlist items from backend
     const fetchWishlistItems = async () => {
         try {
-            const response = await axios.get('/wishlist/detailssubmittedfalse');
+            const response = await axios.get('wishlist/detailssubmittedfalse'); // Ensure the URL is correct
             setWishlistItems(response.data.data);
         } catch (error) {
             console.error('Error fetching wishlist items:', error);
         }
     };
 
+   
     const getinvitationsendistrue = async () => {
         try {
             const response = await axios.get('/interview/getinterviewschedule');
@@ -77,6 +96,7 @@ export default function Wishlist() {
     const handleModalClose = () => {
         setShowjob(false);
         setSelectedjobinvitation(null);
+        setSelectedWishlistItemId(null);
         setShowapplicationupload(false);
         setCv(null);
     };
@@ -86,8 +106,9 @@ export default function Wishlist() {
         setShowjob(true);
     };
 
-    const handleApplicationSubmit = (invitation) => {
+    const handleApplicationSubmit = (invitation, wishlistItemId) => {
         setSelectedjobinvitation(invitation);
+        setSelectedWishlistItemId(wishlistItemId);
         setShowapplicationupload(true);
     };
 
@@ -107,10 +128,9 @@ export default function Wishlist() {
         
         const jobTitle = InterviewSchedule.jobtitle ? InterviewSchedule.jobtitle.toLowerCase() : '';
         const subject = InterviewSchedule.subject ? InterviewSchedule.subject.toLowerCase() : '';
-        //const description = InterviewSchedule.description ? InterviewSchedule.description.toLowerCase() : '';
         
         const query = searchQuery.toLowerCase();
-        return jobTitle.includes(query) || subject.includes(query) ;
+        return jobTitle.includes(query) || subject.includes(query);
     });
 
     return (
@@ -159,7 +179,7 @@ export default function Wishlist() {
                                             </button>
                                         </td>
                                         <td className='pr-12'>
-                                            <button onClick={() => handleApplicationSubmit(InterviewSchedule)} className='h-10 bg-orange-500 w-[250px] rounded-lg hover:opacity-40'>
+                                            <button onClick={() => handleApplicationSubmit(InterviewSchedule, item._id)} className='h-10 bg-orange-500 w-[250px] rounded-lg hover:opacity-40'>
                                                 Submit Application (CV)
                                             </button>
                                         </td>
