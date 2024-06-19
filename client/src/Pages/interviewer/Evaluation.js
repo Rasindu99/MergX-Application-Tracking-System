@@ -4,6 +4,7 @@ import InterviewNav from '../../Components/interviewercomp/InterviewNav';
 import { UserContext } from '../../Context/UserContext';
 import Topbar from '../../Components/hiringManagerCompo/Topbar.jsx'
 import PieCharts from '../../Components/interviewercomp/InputPieCharts';
+import { toast } from 'react-hot-toast';
 
 
 
@@ -57,6 +58,7 @@ export default function Evaluation() {
       const response = await axios.post('http://localhost:8000/evaluation/createevaluation',data);
       if(response.data.error){
         console.error("Error in creating Evaluations");
+        toast.error('System Error ');
       }else{
         setData({
           candidatename:'', 
@@ -82,10 +84,12 @@ export default function Evaluation() {
           overallcomment:''
         });
         console.log('Evaluations Created Successfully');
+        toast.success( 'Successsfully submitted.')
       }
     }
     catch(error){
       console.error(error);
+      toast.error('All field must be filled.');
     } 
 
   }
@@ -98,6 +102,7 @@ export default function Evaluation() {
       const response = await axios.put(`http://localhost:8000/evaluation/updateevaluation/${existEvolution._id}`,data);
       if(response.data.error){
         console.error("Error in updating Evaluations");
+        toast.error('System Error');
       }
       else{
         setData({
@@ -124,10 +129,12 @@ export default function Evaluation() {
           overallcomment:''
         });
         console.log('Evaluations Updated Successfully');
+        toast.success( 'Successsfully updated.')
       }
     }
     catch(error){
       console.error('Error updating evaluation:', error);
+      toast.error('All field must be filled.');
 
     }
   }
