@@ -1,18 +1,21 @@
-import React, { useState } from 'react';
-
+import React, { useContext, useState } from 'react';
 import Topbar from '../../Components/hiringManagerCompo/Topbar.jsx'
-import PostTag from '../../Components/hiringManagerCompo/PostTag.jsx';
 import PieCharts from '../../Components/hiringManagerCompo/PieCharts.jsx';
 import ProgressTimeline from '../../Components/hiringManagerCompo/ProgressTimeline.jsx';
 import HiringmanagerNav from '../../Components/hiringManagerCompo/HiringManagerNav';
+import { UserContext } from '../../Context/UserContext.js';
 
 export default function InterviewFeedback() {
+  const [selected,setselected]=useState(null);
+  const { users, setUsers } = useContext(UserContext);
+  const [showDetails,setshowDetails]=useState(false); 
   
   const [feedbackTab,setFeedbackTab]=useState(0);
 
   const handleClick = (value) => {
     setFeedbackTab(value);
 };
+
 
   
 
@@ -23,33 +26,56 @@ return (
       </div>
       <div className='w-screen lg:ml-[320px] md:ml-72 ml-[260px] '>
        
-      <Topbar msg='Interview Feedback' name='Piyushan'  post='Hiring Manager' ></Topbar>
-      <div className='content text-white flex flex-row p-[0px]  bg-[#2b2b2b] m-[30px]  h-fit rounded-[30px] 320px:text-[0.5rem]  450px:text-[0.8rem] sm:text-[0.9rem]   900px:text-[1.1rem]  1010px:text-[1.2rem]  '>
+      <Topbar  title='Interview Feedback' ></Topbar>
+      <div className={`content  text-white flex flex-row p-[0px]   bg-[#212121] m-[30px]  h-fit rounded-[30px] 320px:text-[0.5rem]  450px:text-[0.8rem] sm:text-[0.9rem]   900px:text-[1.1rem]  1010px:text-[1.2rem]  ${showDetails===false ? ' justify-center' :null}`} >
         <div className='candidates  flex flex-col gap-[10px] bg-[#1E1E1E] rounded-[30px] esm:p-[10px] 450px:p-[15px] sm:p-[25px]  sm:w-auto 450px:w-[165px] 500px:w-[175px] esm:w-[140px]'>
           <p className='text-center text-[#FFFFFF] esm:p-[4px] 450px:p-[6px] sm:p-[10px] font-general-sans pt-[0px]'>Interviewed Candidates</p>
-          <PostTag></PostTag>
+          {/* <PostTag></PostTag> */}
+          <div>
+    {users.map((user) => (
+      <button key={user._id}  onClick={()=>{setshowDetails(true);setselected(user)}}   className={` hover:scale-110 accLabel m-[10px] my-[5px]  flex flex-row   bg-[#2b2b2b] sm:pl-[5px]  items-center   rounded-[30px]  sm:gap-[4px] esm:w-[110px] esm:h-[25px] 450px:w-[140px] 450px:h-[35px]   sm:w-[150px] sm:h-[45px]  lg:rounded-[25px]  lg:gap-[12px] lg:w-[200px] lg:h-[60px] sm:gap-[6px] sm:w-[180px] sm:h-[50px] sm:rounded-[30px] esm:w-[fit-content] ${showDetails===false ? 'lg:w-[500px] justify-between hover:scale-105' :null}`}>
+           <div className={` ${showDetails===false ? 'flex justify-evenly gap-[12px]' :' flex flex-row  gap-[12px] justify-start'} `}>
+            <img src={user.image} alt="" className='userImg  rounded-[50%] border-[solid] border-[#ffffff] ml-[0.7rem] esm:w-[20px] esm:h-[20px]  450px:w-[30px] 450px:h-[30px]  sm:w-[35px] sm:h-[35px] border-[1.5px]  lg:w-[40px] lg:h-[40px] lg:border-[2px] md:w-[37px] md:h-[37px] md:border-[2px] sm:m-1 esm:m-[3px]' />
+           <div className='block '>
+           <p className='name text-left text-[#ffffff] mb-[-2px] md:mb-[-4px] text-[0.7rem] lg:text-[1rem]  md:text-[0.9rem] 320px:text-[0.5rem]'>{user.fname} </p>
+            <p className='post text-left text-[#ffffff] opacity-[30%]  mt-[-2px] md:mt-[-4px] text-[0.7rem] lg:text-[1rem]  md:text-[0.9rem] 320px:text-[0.5rem]'>{user.role}</p>
+           </div>
+           </div>
+           <p className={`post ${showDetails === false ? 'block' :'hidden'} mr-[60px] text-[#ffffff] opacity-[30%]  mt-[-2px] md:mt-[-4px] text-[0.7rem] lg:text-[1rem]  md:text-[0.9rem] 320px:text-[0.5rem]`} >System Rank: </p>
+          </button>
+    ) )}
+</div>
         
 
         </div>
+
+
+
+        {showDetails ? (
+
+
         <div className='description flex flex-col w-full pt-[20px] box-border'>
-             <div className='details  border-[grey]  border-b-[2px] '>
-              <p className='p-[20px] pt-0 '>Rasindu Ranavaka</p>
-              <p className='p-[20px] pt-0'>Software Engineer</p>
-              <p className='p-[20px] pt-0'>Interviewers : W.K.Piyushan</p>
+              <div  className='flex flex-row py-[20px] justify-center gap-5 border-[grey]  border-b-[2px] '>
+              <img src={selected.image} alt="" className=' userImg  rounded-[50%] border-[solid] border-[#ffffff] ml-[0.7rem] esm:w-[20px] esm:h-[20px]  450px:w-[30px] 450px:h-[30px]  sm:w-[35px] sm:h-[35px] border-[1.5px]  lg:w-[100px] lg:h-[100px] lg:border-[2px] md:w-[37px] md:h-[37px] md:border-[2px] sm:m-1 esm:m-[3px]' />
+             <div className='details flex flex-col justify-evenly  '>
+              <p className='text-left'>{selected.fname}</p>
+              <p className='text-left text-[#ffffff] opacity-[30%] '>{selected.role}</p>
+              <p className='text-left text-[#ffffff] opacity-[30%] '>System Rank: </p>
+             </div>
              </div>
              <div className='' >
               
-                <p className='pl-[20px] pt-[10px]'>Interview Feedback</p>
+             <p className='  bg-[#2b2b2b] pl-[20px] py-[15px]'>Interview Feedback</p>
               
-              <div className='flex esm:flex-col md:flex-row esm:text-center '>
-                <div className={`technical esm:p-[5px] 450px:p-[10px] sm:p-[15px] w-full m-auto hover:bg-[#1a1919]`} style={{backgroundColor:feedbackTab === 0  ? '#1a1919':'#1f1f1f'}} onClick={() => handleClick(0)}><p>Technical</p></div>
+             <div className='flex esm:flex-col md:flex-row esm:text-center  border-[grey]  border-t-[2px]  '>
+             <div className={`technical esm:p-[5px] 450px:p-[10px] sm:p-[15px] w-full m-auto hover:bg-[#1a1919]`} style={{backgroundColor:feedbackTab === 0  ? '#1a1919':'#1f1f1f'}} onClick={() => handleClick(0)}><p>Technical</p></div>
                 <div className="cultural esm:p-[5px] 450px:p-[10px] sm:p-[15px] w-full m-auto hover:bg-[#1a1919]" style={{backgroundColor:feedbackTab === 1  ? '#1a1919':'#1f1f1f'}} onClick={() => handleClick(1)}><p>Culturel Fit</p></div>
                 <div className='communication esm:p-[5px] 450px:p-[10px] sm:p-[15px] w-full m-auto hover:bg-[#1a1919]' style={{backgroundColor:feedbackTab === 2  ? '#1a1919':'#1f1f1f'}} onClick={() => handleClick(2)}><p>Communication</p></div>
                 <div className="overall 450px:p-[10px] esm:p-[5px] sm:p-[15px] w-full m-auto hover:bg-[#1a1919]" style={{backgroundColor:feedbackTab === 3  ? '#1a1919':'#1f1f1f'}} onClick={() => handleClick(3)}><p>Overall</p></div>
 
               </div>
               
-              <div className={` flex flex-col pt-[10px] bg-[#1a1919] xl:pt-[20px] xl:pb-[20px] 2xl:pt-[25px]  ${
+              <div className={` flex flex-col py-[50px]  bg-[#1a1919]   ${ 
       feedbackTab ===1 ? 'block' : 'hidden'
     } `}>
                  
@@ -84,10 +110,14 @@ return (
               
               </div>
 
-              <div className={`flex flex-col md:flex-row justify-around  pt-[10px] bg-[#1a1919] xl:pt-[20px] xl:pb-[20px] 2xl:pt-[25px] 2xl:pb-[25px]  ${
-      feedbackTab ===0 ? 'block' : 'hidden'
-    } `}>
-               <div className='flex flex-col m-auto mb-[20px]'> 
+              <div className={`flex flex-col  justify-around  py-[50px] bg-[#1a1919]   ${
+      feedbackTab ===0 ? 'block' : 'hidden'  } `}>    
+
+      <div className='flex flex-row'> 
+
+
+       
+        <div className='flex flex-col m-auto mb-[20px]'> 
                 <PieCharts percentage='99' topic='Problem Solution' ></PieCharts>
                 <p className='text-white m-auto'>Problem Solution</p>
             </div>
@@ -95,12 +125,12 @@ return (
               <PieCharts percentage='15' topic='Language Proficiency'></PieCharts>
               <p className='text-white m-auto'>Language Proficiency</p>
             </div> 
-              
+            </div>
               </div>
 
-             <div className={`flex flex-col  md:flex-row esm:flex-col md:flex-row justify-around  pt-[10px] bg-[#1a1919] xl:pt-[20px] xl:pb-[20px] 2xl:pt-[25px] 2xl:pb-[25px]  ${
+              <div className={`flex flex-col   justify-around   py-[50px] bg-[#1a1919] ${
       feedbackTab ===3 ? 'block' : 'hidden'
-    }`}>
+    }`}>    <div  className='flex flex-row'>
             <div className='flex flex-col m-auto mb-[20px]'> 
             <PieCharts percentage='75' topic='Technical details' ></PieCharts>
             <p className='text-white m-auto'>Technical Details</p>
@@ -114,7 +144,8 @@ return (
               <p className='text-white m-auto'>Communication</p>
               </div>
               </div>
-              <div className={`flex flex-col  pt-[10px] bg-[#1a1919] xl:pt-[20px] xl:pb-[20px] 2xl:pt-[25px] 2xl:pb-[25px]  ${
+              </div>
+              <div className={`flex flex-col  py-[50px] bg-[#1a1919]   ${
       feedbackTab ===2 ? 'block' : 'hidden'
     } `}>
                  
@@ -173,7 +204,7 @@ return (
           
              </div>
               <ProgressTimeline  ></ProgressTimeline>
-        </div>
+        </div>):(null)}
        
       </div>
       </div>

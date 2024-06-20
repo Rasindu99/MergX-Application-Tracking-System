@@ -58,7 +58,7 @@ export default function Evaluation() {
       const response = await axios.post('http://localhost:8000/evaluation/createevaluation',data);
       if(response.data.error){
         console.error("Error in creating Evaluations");
-        toast.error('System Error ');
+        toast.error('System Error');
       }else{
         setData({
           candidatename:'', 
