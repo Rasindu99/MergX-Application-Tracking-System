@@ -15,11 +15,6 @@ const interviewRoute = require('./routes/interviewRoutes');
 const messageRoutes = require('./routes/messageRoutes');
 const userRoutes = require('./routes/userRoutes');
 
-// Connecting to the database
-mongoose
-  .connect(process.env.REACT_APP_MONGO_URL)
-  .then(() => console.log('Database connected'))
-  .catch((err) => console.log('Database not connected', err));
 
 // Middleware setup
 app.use(express.json({ limit: '3mb' })); // Parsing JSON request bodies with increased payload size limit
@@ -99,6 +94,12 @@ const port = 8000;
 
 // starts listening for both regular HTTP requests (handled by Express) and WebSocket connections (handled by Socket.IO) on the specified port.
 server.listen(port, () => { 
+
+  mongoose
+  .connect(process.env.REACT_APP_MONGO_URL)
+  .then(() => console.log('Database connected'))
+  .catch((err) => console.log('Database not connected', err));
+  
   console.log(`Server is running on port ${port}`);
 });
 //  server.listen(PORT) instead of app.listen(PORT),

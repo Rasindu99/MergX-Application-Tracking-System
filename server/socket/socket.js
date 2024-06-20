@@ -11,7 +11,6 @@ const io = new Server(server , {
   cors: {
     origin: ["http://localhost:3000"],
     methods: ["GET", "POST"],
-    credentials: true
   }
 });
 
@@ -25,7 +24,6 @@ const userSocketMap = {} // {userId : socketId}
 
 io.on('connection', (socket) => {
   console.log("User connected : ", socket.id);  // this event Listent to this code ( socket = io("http://localhost:8000", {} )
-
   const userId = socket.handshake.query.userId;
 
   if(userId != "undefined") {

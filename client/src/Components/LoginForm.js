@@ -8,6 +8,7 @@ import { MdOutlinePassword } from "react-icons/md";
 import { toast } from 'react-hot-toast';
 import axios from 'axios';
 import { UserContext } from '../Context/UserContext';
+import { useAuthContext } from '../Context/AuthContext';
 
 function LoginForm() {
   const navigate = useNavigate();
@@ -16,6 +17,7 @@ function LoginForm() {
     email: '',
     password: ''
   });
+  const { setAuthUser } = useAuthContext;
 
   const loginUser = async (e) => {
     e.preventDefault();
@@ -28,6 +30,7 @@ function LoginForm() {
       } else {
         setData({ email: '', password: '' }); // Clear input fields
         setUser(userData); // Set user data in context
+        setAuthUser(userData);
 
         // Save token and user details in local storage
         //localStorage.setItem('token', userData.token);
