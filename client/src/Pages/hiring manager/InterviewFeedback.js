@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Navbar from '../../Components/hiringManagerCompo/Navbar.jsx';
+
 import Topbar from '../../Components/hiringManagerCompo/Topbar.jsx'
 import PostTag from '../../Components/hiringManagerCompo/PostTag.jsx';
 import PieCharts from '../../Components/hiringManagerCompo/PieCharts.jsx';
@@ -7,9 +7,7 @@ import ProgressTimeline from '../../Components/hiringManagerCompo/ProgressTimeli
 import HiringmanagerNav from '../../Components/hiringManagerCompo/HiringManagerNav';
 
 export default function InterviewFeedback() {
-  const name='Kavindrika Piyushan';
-  const post='Hiring Manager';    
-  const{jsxNavbar, isOpened}= Navbar({name,post});
+  
   const [feedbackTab,setFeedbackTab]=useState(0);
 
   const handleClick = (value) => {
@@ -29,7 +27,7 @@ return (
       <div className='content text-white flex flex-row p-[0px]  bg-[#2b2b2b] m-[30px]  h-fit rounded-[30px] 320px:text-[0.5rem]  450px:text-[0.8rem] sm:text-[0.9rem]   900px:text-[1.1rem]  1010px:text-[1.2rem]  '>
         <div className='candidates  flex flex-col gap-[10px] bg-[#1E1E1E] rounded-[30px] esm:p-[10px] 450px:p-[15px] sm:p-[25px]  sm:w-auto 450px:w-[165px] 500px:w-[175px] esm:w-[140px]'>
           <p className='text-center text-[#FFFFFF] esm:p-[4px] 450px:p-[6px] sm:p-[10px] font-general-sans pt-[0px]'>Interviewed Candidates</p>
-          <PostTag  ></PostTag>
+          <PostTag></PostTag>
         
 
         </div>
@@ -55,16 +53,17 @@ return (
       feedbackTab ===1 ? 'block' : 'hidden'
     } `}>
                  
-              <div className='flex flex-col  md:flex-row justify-evenly pb-[10px]'>
-              <div className='flex flex-col m-auto mb-[20px]'>
+              <div className='flex flex-col justify-center gap-48  md:flex-row  pb-[10px]'>
+              <div className='flex flex-col mb-[20px]'>
               <PieCharts percentage='65'  topic='Communication'></PieCharts>
               <p className='text-white m-auto'>Problem Solution</p>
               </div>
-              <div className='flex flex-col m-auto mb-[20px]'>
+              <div className='flex flex-col mb-[20px]'>
               <PieCharts percentage='65'  topic='Communication'></PieCharts>
               <p className='text-white m-auto'>Effective Collaboration</p>
               </div>
               </div> 
+ 
 
               <div className='flex flex-col md:flex-row justify-around'>
               <div className='flex flex-col m-auto mb-[20px]'> 
@@ -89,7 +88,7 @@ return (
       feedbackTab ===0 ? 'block' : 'hidden'
     } `}>
                <div className='flex flex-col m-auto mb-[20px]'> 
-                <PieCharts percentage='45' topic='Problem Solution' ></PieCharts>
+                <PieCharts percentage='99' topic='Problem Solution' ></PieCharts>
                 <p className='text-white m-auto'>Problem Solution</p>
             </div>
             <div className='flex flex-col m-auto mb-[20px]'> 

@@ -3,6 +3,7 @@ import ReactApexChart from 'react-apexcharts';
 
 const PieCharts = ({percentage,topic}) => {
   const intValue = parseInt(percentage, 10);
+  const restValue = 100 - intValue;
   const [options, setOptions] = useState({
     chart: {
       width: 300,
@@ -25,7 +26,6 @@ const PieCharts = ({percentage,topic}) => {
               }
             },
             topic: {
-               
               fontSize: '16px',
               offsetY: 20,
               formatter: function(val) {
@@ -69,7 +69,7 @@ const PieCharts = ({percentage,topic}) => {
     }],
   });
 
-  const [series, setSeries] = useState([intValue, 30]);
+  const [series, setSeries] = useState([intValue, restValue]);
 
   return (
     <div style={{ width: '200px' }}>

@@ -5,9 +5,9 @@ const InterviewBar = ({ interviewTitle, interviewDate, interviewTime }) => {
   return (
     <div className='interview-bar flex items-center justify-between px-8'>
       <FaRegCalendarAlt size={30} className="text-white" />
-      <p className='max-w-40 min-w-40'>{interviewTitle}</p>
-      <p className='max-w-40 min-w-40'>Date - {interviewDate}</p>
-      <p className='max-w-40 min-w-40'>Time - {interviewTime}</p>
+      <p className='max-w-64 min-w-64 text-left'>{interviewTitle}</p>
+      <p className='max-w-40 min-w-40 text-left'>Date - {interviewDate}</p>
+      <p className='max-w-40 min-w-40 text-left'>Time - {interviewTime}</p>
     </div>
   );
 };
