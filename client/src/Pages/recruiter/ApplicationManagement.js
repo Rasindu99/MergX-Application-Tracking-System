@@ -19,19 +19,19 @@ export default function ApplicationManagement() {
             <div className='w-1/4  border-solid border-r-[3px]' style={{borderImage: 'linear-gradient(to bottom, #383838,rgb(56, 56, 56,0)) 1'}}>
               <p className="text-center text-white w-full bg-[#1E1E1E] p-[25px]">New</p>
               <div className="flex flex-col items-center justify-center mt-6">
-              <div className="mb-2"><PostTag name='Rasindu' post='Software Engineer' ></PostTag></div>
+              <div className="mb-2"><PostTag name='Rasindu' post='Software Engineer' section='new' ></PostTag></div>
               </div>
             </div>
             <div className='w-1/4  border-solid border-r-[3px]' style={{borderImage: 'linear-gradient(to bottom, #383838,rgb(56, 56, 56,0)) 1'}}>
               <p className="text-center text-white w-full bg-[#1E1E1E] p-[25px]">Rejected</p>
               <div className="flex flex-col items-center justify-center mt-6">
-              <div className="mb-2"><PostTag name='Rasindu' post='Software Engineer' ></PostTag></div>
+              <div className="mb-2"><PostTag name='Rasindu' post='Software Engineer' section='rejected' ></PostTag></div>
               </div>
             </div>
             <div className='w-1/4'>
             <p className="text-center text-white w-full bg-[#1E1E1E] p-[25px] rounded-tr-[30px]">Accepted</p>
             <div className="flex flex-col items-center justify-center mt-6">
-            <div className="mb-2"><PostTag name='Rasindu' post='Software Engineer' ></PostTag></div>
+            <div className="mb-2"><PostTag name='Rasindu' post='Software Engineer' section='accepted' ></PostTag></div>
               </div>
             </div>
           </div>
