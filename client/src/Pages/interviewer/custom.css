@@ -34,6 +34,18 @@
     margin-left: 4rem;
 }
 
+.scheduled-interview-bar{
+    width: 90%;
+    height: 80px; 
+    background: linear-gradient(
+        to bottom,
+        rgba(98, 92, 88, 0.13) 13.6%,
+        rgba(48, 48, 48, 0.20) 20%
+    );
+    border: 1px solid rgba(255, 255, 255, 0.043);
+    margin-left: 4rem;
+}
+
 #interview-item{
     background-color: rgba(255, 255, 255, 0.04);
     border: 1px solid rgba(255, 255, 255, 0.04);
@@ -43,3 +55,74 @@
     max-height: 80vh;
     overflow-y: auto;
 }
+
+#pop-bg{
+    width: 60rem;
+    height: 40rem;
+    border: 1px solid #EA712287;
+    border-radius: 30px;
+}
+
+/* Calendar.css */
+
+.react-calendar {
+    border: 2px solid #EA712287 !important;  
+    border-radius: 10px; 
+    background: linear-gradient(to bottom, #2B2B2B 0%, rgba(43, 43, 43, 0) 10%) !important; 
+    font-family: Arial, Helvetica, sans-serif;
+    width: 450px !important;
+    height: 450px !important;
+    padding: 30px 20px !important;
+  }
+  
+  .react-calendar__navigation button {
+    color: #ffffff;  
+    background-color: linear-gradient(to bottom, #2B2B2B 0%, rgba(43, 43, 43, 0) 10%) !important;  
+    border: 2px solid #EA712287 !important;
+    border-radius: 5px;  
+    padding: 5px 10px;
+    margin: 5px !important;
+  }
+
+  .react-calendar__navigation button:enabled:hover,
+  .react-calendar__navigation button:enabled:focus {
+    background-color: linear-gradient(to bottom, #2B2B2B 0%, rgba(43, 43, 43, 0) 10%) !important;  
+  }
+  
+  .react-calendar__tile {
+    border: 1px solid #ddd;  
+    background-color: #ffffff; 
+    color: white !important;  
+    padding: 20px !important;
+  }
+
+  .react-calendar__tile:hover {
+    color: black !important;  
+  }
+  
+  
+  .react-calendar__tile--active {
+    background-color: #EA712287 !important; 
+    color: white !important;
+  }
+  
+  .react-calendar__tile--now {
+    background: linear-gradient(to bottom, #2B2B2B 0%, rgba(43, 43, 43, 0) 10%) !important;
+    border: 2px solid #EA712287 !important;
+    color: white !important;
+  }
+
+  .react-calendar__tile--now:hover {
+    background: linear-gradient(to bottom, #2B2B2B 0%, rgba(43, 43, 43, 0) 10%) !important;
+    border: 2px solid #EA712287 !important;
+    color: white !important;
+  }
+  
+  .react-calendar__month-view__days__day--weekend {
+    color: #e74c3c !important; 
+  }
+  
+  .react-calendar__tile--range {
+    background-color: #85c1e9;
+    color: white !important;
+  }

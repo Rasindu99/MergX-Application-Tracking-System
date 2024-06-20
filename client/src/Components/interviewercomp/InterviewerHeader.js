@@ -1,9 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import Popup from '../../Components/interviewercomp/Popup'
 import { MdOutlineNotificationsActive } from "react-icons/md";
 import Greatings from '../../Components/Greatings';
+import { UserContext } from '../../Context/UserContext';
 
 const Header = () => {
+
+const { user } = useContext(UserContext);
 
   return (
     <div>
@@ -13,7 +16,11 @@ const Header = () => {
           </div>
           <div className='flex items-center justify-between'>
             <MdOutlineNotificationsActive size={50} className="hover:text-white hover:opacity-70 mt-4"/>
-            <Popup />
+            {!!user && <Popup
+              img = {user.image}
+              name = {user?.lname}
+              role = {user?.role}
+             />}
           </div>
         </div>
     </div>

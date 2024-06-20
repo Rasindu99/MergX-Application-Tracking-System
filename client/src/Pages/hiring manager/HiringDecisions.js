@@ -1,5 +1,4 @@
 import React from 'react';
-import Navbar from '../../Components/hiringManagerCompo/Navbar.jsx';
 import Topbar from '../../Components/hiringManagerCompo/Topbar.jsx';
 import PostTag from '../../Components/hiringManagerCompo/PostTag.jsx';
 import ProgressLine from '../../Components/hiringManagerCompo/ProgressLine.jsx';
@@ -9,7 +8,7 @@ import HiringmanagerNav from '../../Components/hiringManagerCompo/HiringManagerN
 export default function HiringDecision() {
   const name='Kavindrika Piyushan';
   const post='Hiring Manager';    
-  const{jsxNavbar, isOpened}= Navbar({name,post});
+  
 
   
 

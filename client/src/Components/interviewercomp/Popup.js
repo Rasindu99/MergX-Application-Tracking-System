@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import profileImg from '../../Images/pro1.png'
 
-const PopUp = () => {
+const PopUp = ( {img, name, role} ) => {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
@@ -15,12 +14,12 @@ const PopUp = () => {
         }`}
       ></div>
       <div className="box-border h-10 w-10 rounded-full border-orange-500 bg-center bg-cover overflow-hidden mr-2 absolute ml-1">
-        <img src={profileImg} alt='profilepic'/>
+        <img src={img} alt='profilepic'/>
       </div>
 
       <p className='flex flex-col mr-1 mb-2'>
-        <span className='text-sm font-bold text-neutral-200'>Gangamina</span>
-        <span className='font-bold text-xs text-neutral-500'>Interviewer</span>
+      <span className='text-sm font-bold text-neutral-200'>{name}</span>
+      <span className='font-bold text-xs text-neutral-500 text-left'>{role}</span>
       </p>
 
     </div>

@@ -3,6 +3,7 @@ import axios from 'axios';
 import { FcInvite } from "react-icons/fc";
 import { GrFormView } from "react-icons/gr";
 import { IoMdClose } from "react-icons/io";
+import { toast } from 'react-hot-toast';
 
 export default function SendJobInvitation() {
     const [invitationsendisfalseData, setInvitationsendisfalseData] = useState([]);
@@ -10,6 +11,24 @@ export default function SendJobInvitation() {
     const [showInvitation, setShowInvitation] = useState(false);
     const [showsentInvitation, setShowsentInvitation] = useState(false);
     const [selectedInvitation, setSelectedInvitation] = useState(null);
+
+    //get invitation send access
+    const [accessSendInvitation,setAccessSendInvitation] = useState(false);
+    
+    useEffect(() => {
+        // Fetch the current state of send invitation access from the backend
+        const fetchAccessStatusUpdate = async () => {
+          try {
+            const response = await axios.get('/access/getsendinvitationaccess');
+            setAccessSendInvitation(response.data.send_invitation);
+          } catch (error) {
+            console.error('Error fetching create status state:', error);
+          }
+        };
+        fetchAccessStatusUpdate();
+        
+      }, []);
+    
 
     const handleModalClose = () => {
         setShowInvitation(false);
@@ -49,6 +68,10 @@ export default function SendJobInvitation() {
     };
 
     const updateSendStatus = async (id) => {
+        if (!accessSendInvitation) {
+            toast.error('Admin blocked temporarily');
+            return;
+          }
         try {
             await axios.put(`/invitation/send/${id}`, { send: true });
             console.log('Invitation sent successfully');
@@ -58,6 +81,7 @@ export default function SendJobInvitation() {
 
              // Close the modal if it was sent from there
              handleModalClose();
+             toast.success( 'sent invitation Successsfully')
         } catch (error) {
             console.error('Error:', error);
         }

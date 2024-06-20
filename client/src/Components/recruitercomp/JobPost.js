@@ -15,6 +15,23 @@ export default function JobPost({ fetchPendingJobPostings }) {
   const [requiredExperience, setRequiredExperience] = useState("");
   const [requiredSkills, setRequiredSkills] = useState("");
   const [error, setError] = useState("");
+  
+  //access check
+  const [accessCreateJobPost, setAccessCreateJobPost] = useState(false);
+
+  useEffect(() => {
+    // Fetch the current state of create_user_account from the backend
+    const fetchCreateJobPostAccess = async () => {
+      try {
+        const response = await axios.get('/access/getcreatejobpostaccess');
+        setAccessCreateJobPost(response.data.create_job_post);
+      } catch (error) {
+        console.error('Error fetching create user account state:', error);
+      }
+    };
+
+    fetchCreateJobPostAccess();
+  }, []);
 
   useEffect(() => {
     if (user && user.email) {
@@ -35,6 +52,13 @@ export default function JobPost({ fetchPendingJobPostings }) {
 
   const jobposting = async (e) => {
     e.preventDefault();
+
+    //recruiter access
+    if (!accessCreateJobPost) {
+      toast.error('Admin blocked temporarily');
+      return;
+    }
+    
     try {
       if (!jobTitle) {
         toast.error("Please fill in the Job Title field.");
@@ -92,7 +116,7 @@ export default function JobPost({ fetchPendingJobPostings }) {
 
   return (
     <div>
-      <div style={{ textAlign: "left", paddingLeft: "6%" }}>
+      <div className="text-left pl-[6%]">
         <form onSubmit={jobposting}>
           <div className="flex w-full p-4">
             <div className="w-[50%]">
@@ -201,7 +225,7 @@ export default function JobPost({ fetchPendingJobPostings }) {
               Submit
             </button>
           </div>
-          {error && <p style={{ color: "red" }}>{error}</p>}
+          {error && <p className="text-red-500">{error}</p>}
         </form>
       </div>
     </div>

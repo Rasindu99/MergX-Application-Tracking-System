@@ -106,36 +106,16 @@ export default function PendingJobs({ jobPostings, setJobPostings, fetchPendingJ
   };
 
   return (
-    <div
-      style={{
-        display: "flex",
-        width: "100%",
-        margin: 0,
-        textAlign: "left",
-        maxHeight: "600px",
-      }}
-    >
-      <div style={{ width: "32.5%", margin: 0 }}>
-        <div style={{ display: "flex", flexDirection: "column", width: "95%" }}>
+    <div className="flex w-full m-0 text-left max-h-[600px]">
+      <div className="w-[32.5%] m-0">
+        <div className="flex flex-col w-[95%]">
           {jobPostings.map((job) => (
             <div
               key={job._id}
-              className="meeting_container"
-              style={{
-                width: "100%",
-                display: "flex",
-                padding: "10px",
-                borderBottom: "1px solid white",
-                cursor: "pointer",
-              }}
+              className="meeting_container w-full flex p-2 border-b-[1px] border-white cursor-pointer"
             >
               <div
-                className="title"
-                style={{
-                  width: "100%",
-                  display: "flex",
-                  justifyContent: "space-between",
-                }}
+                className="title w-full flex justify-between"
               >
                 <div className="flex">
                   <PiBriefcase
@@ -145,8 +125,7 @@ export default function PendingJobs({ jobPostings, setJobPostings, fetchPendingJ
                     }`}
                   />
                   <p
-                    style={{ fontSize: 14 }}
-                    className={`text-white ${
+                    className={`text-[14px] text-white ${
                       editModeJobs[job._id] ? "1" : "opacity-25"
                     }`}
                     onClick={() => handleJobBarClick(job)}
@@ -160,8 +139,7 @@ export default function PendingJobs({ jobPostings, setJobPostings, fetchPendingJ
                   <div>
                     <FaRegEdit
                       size={25}
-                      style={{ opacity: editModeJobs[job._id] ? 1 : 0.25 }}
-                      className={`text-white cursor-pointer`}
+                      className={`text-white cursor-pointer ${editModeJobs[job._id] ? 'opacity-100' : 'opacity-25'}`}
                       onClick={() => toggleEditMode(job._id)}
                     />
                   </div>
@@ -184,10 +162,7 @@ export default function PendingJobs({ jobPostings, setJobPostings, fetchPendingJ
       </div>
 
       <div
-        style={{
-          width: "67.5%",
-          borderLeft: "1px solid rgb(234, 113, 34, 0.25) ",
-        }}
+       className="w-[67.5%] border-l border-l-[1px] border-l-[rgba(234,113,34,0.25)]"
       >
         {selectedJob && (
           <div>
@@ -201,10 +176,9 @@ export default function PendingJobs({ jobPostings, setJobPostings, fetchPendingJ
                     type="text"
                     value={selectedJob.jobTitle}
                     onChange={(e) => handleInputChange(e, "jobTitle")}
-                    className={`rounded-[10px] px-4 py-2 bg-white bg-opacity-5 w-[80%]`}
-                    style={{
-                      opacity: editModeJobs[selectedJob._id] ? 1 : 0.25,
-                    }}
+                    className={`rounded-[10px] px-4 py-2 bg-white bg-opacity-5 w-[80%] ${
+                      editModeJobs[selectedJob._id] ? "opacity-100" : "opacity-25"
+                    }`}
                     disabled={!editModeJobs[selectedJob._id]}
                   />
                 </div>
@@ -218,10 +192,9 @@ export default function PendingJobs({ jobPostings, setJobPostings, fetchPendingJ
                     type="number"
                     value={selectedJob.vacancies}
                     onChange={(e) => handleInputChange(e, "vacancies")}
-                    className={`rounded-[10px] px-4 py-2 bg-white bg-opacity-5 w-[80%]`}
-                    style={{
-                      opacity: editModeJobs[selectedJob._id] ? 1 : 0.25,
-                    }}
+                    className={`rounded-[10px] px-4 py-2 bg-white bg-opacity-5 w-[80%] ${
+                      editModeJobs[selectedJob._id] ? "opacity-100" : "opacity-25"
+                    }`}
                     disabled={!editModeJobs[selectedJob._id]}
                     min="0"
                   />
@@ -236,8 +209,9 @@ export default function PendingJobs({ jobPostings, setJobPostings, fetchPendingJ
                 <textarea
                   value={selectedJob.description}
                   onChange={(e) => handleInputChange(e, "description")}
-                  className={`rounded-[10px] px-4 py-2 bg-white bg-opacity-5 w-[90%]`}
-                  style={{ opacity: editModeJobs[selectedJob._id] ? 1 : 0.25 }}
+                  className={`rounded-[10px] px-4 py-2 bg-white bg-opacity-5 w-[90%] ${
+                    editModeJobs[selectedJob._id] ? "opacity-100" : "opacity-25"
+                  }`}
                   disabled={!editModeJobs[selectedJob._id]}
                 />
               </div>
@@ -252,10 +226,9 @@ export default function PendingJobs({ jobPostings, setJobPostings, fetchPendingJ
                     type="number"
                     value={selectedJob.salary}
                     onChange={(e) => handleInputChange(e, "salary")}
-                    className={`rounded-[10px] px-4 py-2 bg-white bg-opacity-5 w-[80%]`}
-                    style={{
-                      opacity: editModeJobs[selectedJob._id] ? 1 : 0.25,
-                    }}
+                    className={`rounded-[10px] px-4 py-2 bg-white bg-opacity-5 w-[80%] ${
+                      editModeJobs[selectedJob._id] ? "opacity-100" : "opacity-25"
+                    }`}
                     disabled={!editModeJobs[selectedJob._id]}
                     min="0"
                   />
@@ -270,10 +243,9 @@ export default function PendingJobs({ jobPostings, setJobPostings, fetchPendingJ
                     type="number"
                     value={selectedJob.requiredExperience}
                     onChange={(e) => handleInputChange(e, "requiredExperience")}
-                    className={`rounded-[10px] px-4 py-2 bg-white bg-opacity-5 w-[80%]`}
-                    style={{
-                      opacity: editModeJobs[selectedJob._id] ? 1 : 0.25,
-                    }}
+                    className={`rounded-[10px] px-4 py-2 bg-white bg-opacity-5 w-[80%] ${
+                      editModeJobs[selectedJob._id] ? "opacity-100" : "opacity-25"
+                    }`}
                     disabled={!editModeJobs[selectedJob._id]}
                     min="0"
                   />
@@ -289,8 +261,9 @@ export default function PendingJobs({ jobPostings, setJobPostings, fetchPendingJ
                   rows="5"
                   value={selectedJob.requiredSkills.join("\n")}
                   onChange={(e) => handleInputChange(e, "requiredSkills")}
-                  className={`rounded-[10px] px-4 py-2 bg-white bg-opacity-5 w-[90%]`}
-                  style={{ opacity: editModeJobs[selectedJob._id] ? 1 : 0.25 }}
+                  className={`rounded-[10px] px-4 py-2 bg-white bg-opacity-5 w-[90%] ${
+                    editModeJobs[selectedJob._id] ? "opacity-100" : "opacity-25"
+                  }`}
                   disabled={!editModeJobs[selectedJob._id]}
                 />
               </div>

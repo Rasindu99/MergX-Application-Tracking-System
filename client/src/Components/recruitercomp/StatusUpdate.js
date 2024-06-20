@@ -4,7 +4,7 @@ import { UserContext } from '../../Context/UserContext';
 import StatusUpdatePopup from './StatusUpdatePopup';
 import { MdDeleteForever } from "react-icons/md";
 import { GrFormView } from "react-icons/gr";
-import { IoMdSettings } from "react-icons/io";
+//import { IoMdSettings } from "react-icons/io";
 import moment from 'moment';
 import AnnouncementUpdatePopup from './AnnouncementUpdatePopup';
 import { toast } from 'react-hot-toast';
@@ -22,11 +22,48 @@ export default function StatusUpdate() {
   const [showAnnouncement, setShowAnnouncement] = useState(false);
   const [selectedAnnouncement,setSelectedAnnouncement] = useState(null);
 
+  //access get status and announcement
+  const[accesStatusUpdate, setAccessStatusUpdate] = useState(false);
+  const[accessAnnouncement,setAccessAnnouncement] = useState(false);
+  
+  useEffect(() => {
+    // Fetch the current state of status update access from the backend
+    const fetchAccessStatusUpdate = async () => {
+      try {
+        const response = await axios.get('/access/getcreatestatusaccess');
+        setAccessStatusUpdate(response.data.create_status);
+      } catch (error) {
+        console.error('Error fetching create status state:', error);
+      }
+    };
+
+    // Fetch the current state of announcement update access from the backend
+    const fetchAccessAnnouncementUpdate = async () => {
+      try {
+        const response = await axios.get('/access/getcreateannouncementaccess');
+        setAccessAnnouncement(response.data.create_announcement);
+      } catch (error) {
+        console.error('Error fetching create announcement state:', error);
+      }
+    };
+
+    fetchAccessStatusUpdate();
+    fetchAccessAnnouncementUpdate();
+  }, []);
+
   const handleStatusUpdate = () => {
+    if (!accesStatusUpdate) {
+      toast.error('Admin blocked temporarily');
+      return;
+    }
     setShowModalStatus(true);
   };
 
   const handleAnnouncementUpdate = () => {
+    if (!accessAnnouncement) {
+      toast.error('Admin blocked temporarily');
+      return;
+    }
     setShowModalAnnoucement(true)
   };
 

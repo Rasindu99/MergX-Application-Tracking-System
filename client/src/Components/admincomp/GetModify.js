@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import axios from 'axios'; // Import axios
 import { UserContext } from '../../Context/UserContext';
 import { GrFormView } from "react-icons/gr";
@@ -18,14 +18,27 @@ export default function GetModify() {
   const [showModal2, setShowModal2] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
   const [searchQuery, setSearchQuery] = useState('');
+  const [modifyUserAccount, setModifyUserAccount] = useState(false);
+  const [roleUpdateAccess, setroleUpdateAccess] = useState(false);
+  const [deleteUserAccess, setDeleteUserAccess] = useState(false);
 
   const handleUserUpdate = (user) => {
+    
+    if (!modifyUserAccount) {
+      toast.error('Admin blocked temporarily');
+      return;
+    }
+    
     setSelectedUser(user);
     setShowModal1(true);
     
   }
 
   const handleRole = (user) => {
+    if (!roleUpdateAccess) {
+      toast.error('Admin blocked temporarily');
+      return;
+    }
     setSelectedUser(user);
     setShowModal2(true);
   }
@@ -60,6 +73,10 @@ export default function GetModify() {
   });
   
   const handleDeleteUser = async (userId) => {
+    if (!deleteUserAccess) {
+      toast.error('Admin blocked temporarily');
+      return;
+    }
     try {
       await axios.delete(`/deleteuser/${userId}`);
 
@@ -72,6 +89,41 @@ export default function GetModify() {
       console.error('Error deleting user:', error);
     }
   };
+
+  useEffect(() => {
+   //fetch the modify_user account  from the backend
+   const fetchModifyUserAccount = async () => {
+    try {
+      const response = await axios.get('/access/getmodifyuseraccount');
+      setModifyUserAccount(response.data.modify_user_account);
+    } catch (error) {
+      console.error('Error fetching create user account state:', error);
+    }
+  };
+
+   //fetch the role update  from the backend
+   const fetchRoleUpdate = async () => {
+    try {
+      const response = await axios.get('/access/getupdaterole');
+      setroleUpdateAccess(response.data.role_update);
+    } catch (error) {
+      console.error('Error fetching create user account state:', error);
+    }
+  };
+  
+  //fetch get delete user
+  const fetchDeleteUserAccount = async () => {
+    try {
+      const response = await axios.get('/access/getdeleteaccount');
+      setDeleteUserAccess(response.data.delete_user_account);
+    } catch (error) {
+      console.error('Error fetching create user account state:', error);
+    }
+  };
+    fetchModifyUserAccount();
+    fetchRoleUpdate();
+    fetchDeleteUserAccount();
+  }, []);
   
 
   return (
@@ -169,7 +221,7 @@ export default function GetModify() {
             user={selectedUser}
           />
         </div>
-        
+        <div></div>
       </div>
     </div>
   );
