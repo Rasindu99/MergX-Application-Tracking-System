@@ -21,6 +21,7 @@ export default function Candidatedash() {
     <div className='relative flex'>
       <Sidebar />
       <RightContainer />
+      
       <div className='fixed bottom-0 flex justify-end w-full pr-12 mb-8'>
         <div>
           <button 

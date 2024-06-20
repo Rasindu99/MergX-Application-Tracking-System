@@ -1,22 +1,26 @@
 import React from 'react';
 import InterviewNav from '../../Components/interviewercomp/InterviewNav';
 import Description from '../../Components/interviewercomp/InterviewerDes';
+import Home from '../../Components/InternalChatComp/home/Home';
 
-export default function Message() {  
-const name = 'Message';
+export default function Message() {
+  const name = 'Good Moning, Gangamina';
 
   return (
-    <div>
-        <div className='flex'>
+    <div className=''>
+      <div className='flex'>
         <div>
-          <InterviewNav/>
+          <InterviewNav />
         </div>
-        <div>
-          <Description name={name} />
+        <div className='flex flex-col justify-around items-center w-full'>
+          <div className='h-auto bg-blue-300 z-20 w-full'>
+            <Description name={name} />
+          </div>
+          <div className='flex h-5/6 w-5/6 '>
+            <Home />
+          </div>
         </div>
-        </div>
-
-      
+      </div>
     </div>
   )
 }

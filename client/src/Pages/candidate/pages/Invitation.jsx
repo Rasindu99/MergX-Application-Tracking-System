@@ -89,7 +89,7 @@ const Invitation = () => {
         <SearchBar filteredInterviews={filteredInterviews} />
       </div>
 
-      <div className='bg-neutral-800 w-11/12 height-7 divide-x divide-neutral-400'>
+      <div className='bg-neutral-800 w-11/12 height-7 divide-x divide-neutral-400 border-2 border-neutral-600 rounded-t-2xl'>
         <button
           onClick={() => setFilter('new')}
           className={`hover:bg-neutral-700 font-bold text-lg w-1/4 px-4 py-2 rounded-tl-2xl ${filter === 'new' ? 'bg-neutral-500 text-white' : 'bg-neutral-800'}`}

@@ -4,10 +4,9 @@ const dotenv = require('dotenv').config(); // Configuration management
 const cors = require('cors'); // Middleware for enabling CORS
 const mongoose = require('mongoose'); // MongoDB ORM
 const cookieParser = require('cookie-parser'); // Middleware for parsing cookies
-const JWT = require('jsonwebtoken')
+const JWT = require('jsonwebtoken');
 
-// Creating an instance of express application
-const app = express();
+const {app, server} = require('../server/socket/socket');
 
 // Connecting to the database
 mongoose
@@ -29,12 +28,19 @@ app.use('/chatbot',require('./routes/chatRoutes'));
 app.use('/interview', require('./routes/interviewscheduleRoutes'));
 app.use('/evaluation', require('./routes/evaluationRoutes'));
 app.use('/invitation',require('./routes/jobinterviewinvitationRoutes'));
+app.use('/message', require('./routes/messageRoutes'));
+app.use('/candidatedash', require('./routes/candidateRoutes'));
+app.use('/users', require('./routes/userRoutes'));
+
 //app.use('/Protected', require('./routes/ProtectedRoute'));
 // Defining the port for the server to listen on
 const port = 8000;
 
-// Starting the server
-app.listen(port, () => {
+// starts listening for both regular HTTP requests (handled by Express) and WebSocket connections (handled by Socket.IO) on the specified port.
+server.listen(port, () => { 
   console.log(`Server is running on port ${port}`);
 });
-
+//  server.listen(PORT) instead of app.listen(PORT),
+// you're instructing the combined HTTP server (which includes both Express and Socket.IO) 
+// to listen on the specified port for both regular HTTP requests and WebSocket connections. 
+// This setup allows you to use both Express routes and Socket.IO functionality in the same application.

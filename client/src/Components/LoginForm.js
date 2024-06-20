@@ -33,6 +33,10 @@ function LoginForm() {
         //localStorage.setItem('token', userData.token);
         localStorage.setItem('user', JSON.stringify(userData));
 
+        //For purpose of Internal chat
+        localStorage.setItem("chat-user", JSON.stringify(userData));
+        console.log('Login fucked', userData);
+
         const role = userData.role; // Extract role from response data
 
         // Redirect based on role

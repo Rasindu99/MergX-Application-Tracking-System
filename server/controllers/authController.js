@@ -69,7 +69,7 @@ const registerUser = async (req, res) => {
 
         return res.json(user);
     } catch (error) {
-        console.log(error);
+        console.log("Error in signup controller", error.message);
         return res.status(500).json({ error: 'Server error' });
     }
 };
@@ -91,10 +91,12 @@ const loginUser = async (req, res) => {
         const match = await comparePassword(password, user.password);
         if (match) {
             //return res.json('Password match');
+
             jwt.sign({ id: user._id,fname: user.fname, lname: user.lname ,gender: user.gender, dob: user.dob, role : user.role  },process.env.REACT_APP_JWT_SECRET, {}, (err,token) => {
                 if(err) throw err;
                 res.cookie('token',token).json(user)
             })
+
         } else {
             return res.json({ error: 'Incorrect password' });
         }

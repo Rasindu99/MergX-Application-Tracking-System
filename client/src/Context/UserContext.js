@@ -37,6 +37,7 @@ export default function UserContextProvider({ children }) {
         setUser(null);
         // Remove user from local storage
         localStorage.removeItem('user');
+        localStorage.removeItem('chat-user');
       })
       .catch(err => console.log(err));
   };

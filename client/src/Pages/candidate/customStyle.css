@@ -49,6 +49,14 @@ input[type="file"]::-webkit-file-upload-button {
   cursor: pointer;
 }
 
+body {
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-position: center;
+  background-attachment: fixed;
+}
+
+
 .height-10 {
  height: 10%;
 }
