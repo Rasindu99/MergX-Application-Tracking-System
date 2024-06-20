@@ -5,16 +5,15 @@ const cors = require('cors'); // Middleware for enabling CORS
 const mongoose = require('mongoose'); // MongoDB ORM
 const cookieParser = require('cookie-parser'); // Middleware for parsing cookies
 const JWT = require('jsonwebtoken')
-
-
-
-
-
-
-
-
-
 const {app, server} = require('../server/socket/socket');
+
+const bodyParser = require('body-parser');
+const feedbackRoute = require('./routes/feedbackRoutes');
+const interviewRoute = require('./routes/interviewRoutes');
+
+
+const messageRoutes = require('./routes/messageRoutes');
+const userRoutes = require('./routes/userRoutes');
 
 // Connecting to the database
 mongoose
@@ -36,21 +35,10 @@ app.use('/status', require('./routes/statusRoutes'));
 app.use('/announcement', require('./routes/announcementRoutes'));
 app.use('/chatbot',require('./routes/chatRoutes'));
 app.use('/interview', require('./routes/interviewscheduleRoutes'));
-
-
-
-
-
-
-
-
-
-
-
-
-
 app.use('/evaluation', require('./routes/evaluationRoutes'));
 app.use('/invitation',require('./routes/jobinterviewinvitationRoutes'));
+app.use('/message', messageRoutes);
+app.use('/users', userRoutes);
 //app.use('/Protected', require('./routes/ProtectedRoute'));
 // Defining the port for the server to listen on
 
