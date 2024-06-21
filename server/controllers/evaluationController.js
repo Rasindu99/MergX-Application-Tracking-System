@@ -29,7 +29,8 @@ const createEvalautions = async (req,res)=>{
             technical,
             cultural,
             communication,
-            overallcomment
+            overallcomment,
+            
         });
         return res.status(200).json({message:'Evaluation created successfully',evaluation});
        
