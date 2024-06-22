@@ -39,6 +39,8 @@ app.use('/interview', require('./routes/interviewscheduleRoutes'));
 app.use('/evaluation', require('./routes/evaluationRoutes'));
 app.use('/invitation',require('./routes/jobinterviewinvitationRoutes'));
 app.use('/access',require('./routes/adminaccessRoutes'));
+app.use('/cv',require('./routes/applicationRoutes'))
+app.use('/wishlist', require('./routes/addWishlistRoutes'));
 app.use('/hmfeedback',require('./routes/HmRoutes.js'));
 //app.use('/Protected', require('./routes/ProtectedRoute'));
 // Defining the port for the server to listen on

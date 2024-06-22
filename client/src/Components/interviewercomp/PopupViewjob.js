@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { IoMdClose } from "react-icons/io";
 import axios from 'axios';
 import { UserContext } from '../../Context/UserContext';
+import { useInterviewContext } from '../../Context/InterviewContext';
 
 export default function PopupViewjob({ visible, onClose }) {
     const { user } = useContext(UserContext);
@@ -22,6 +23,7 @@ export default function PopupViewjob({ visible, onClose }) {
         skills: '',
         description: ''
     });
+    const { triggerUpdate , updateFlag} = useInterviewContext();
 
     const getnonexpiredjobs = async () => {
         try {
@@ -37,6 +39,8 @@ export default function PopupViewjob({ visible, onClose }) {
         event.preventDefault();
         try {
             const response = await axios.post('/interview/interviewschedule', data);
+            triggerUpdate();
+            console.log('lastCheck',updateFlag)
             if (response.data.error) {
                 console.error('error');
             } else {
