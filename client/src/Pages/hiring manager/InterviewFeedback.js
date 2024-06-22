@@ -135,7 +135,7 @@ export default function InterviewFeedback() {
             {/* <PostTag></PostTag> */}
             <div
               className={`max-h-[220vh] flex justify-center overflow-y-auto ${
-                showDetails === false ? "w-[600px]" : null
+                showDetails === false ? "w-[600px] max-h-[75vh]" : null
               }`}
             >
               <div>

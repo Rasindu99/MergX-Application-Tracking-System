@@ -38,9 +38,9 @@ export default function Hiringmanagerdash() {
                 </div> 
 
             </div>
-            <div className="middle flex 320px:flex-col 900px:max-[]: 900px:flex-row 900px:flex-row pl-[20px] pr-[20px] justify-between bg-transparent">
+            <div className=" flex mb-[20px] justify-around bg-transparent">
                
-               <div className="meetings scrollable-content overflow-auto w-[400px] h-[400px] p-[5px]"> 
+               <div className="meetings  mb-[20px]  scrollable-content overflow-auto w-[400px] h-[400px] p-[5px]"> 
                    <h1 className='text-[#ffffff] 320px:text-[0.7rem]  450px:text-[0.8rem] sm:text-[0.9rem]   900px:text-[1.1rem]  1010px:text-[1.2rem] mb-2'>Today's Meeting</h1>
                    <Meeting />
                    <Meeting />
