@@ -29,6 +29,10 @@ const applicationSchema = new mongoose.Schema({
         type: Boolean,
         default:false
     },
+    rejected:{
+        type: Boolean,
+        default:false
+    },
     createdAt: {
         type: Date,
         default: Date.now
@@ -36,6 +40,10 @@ const applicationSchema = new mongoose.Schema({
     updatedAt: {
         type: Date,
         default: Date.now
+    },
+    isjoined:{
+        type:Boolean,
+        default: false
     }
 });
 

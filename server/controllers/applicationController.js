@@ -1,16 +1,19 @@
 const Application = require('../models/application');
 
+
 const uploadApplication = async (req, res) => {
     try {
         if (!req.file) {
             return res.status(400).json({ message: 'No file uploaded' });
         }
 
-        // Assuming req.body contains other necessary fields like invitation_id, job_id, etc.
         const { invitation_id, job_id, user_id, user_name, user_email, approval } = req.body;
 
-        // Get the file key from S3 upload (assuming you are using AWS S3 based on previous discussions)
-        const cv = req.file.key;
+        // Get the file key from S3 upload
+        const fileKey = req.file.key;
+
+        // Construct the full URL for the uploaded file
+        const cvUrl = `https://application-mergx.s3.ap-south-1.amazonaws.com/${fileKey}`;
 
         // Create new application instance
         const newApplication = new Application({
@@ -19,7 +22,7 @@ const uploadApplication = async (req, res) => {
             user_id,
             user_name,
             user_email,
-            cv,
+            cv: cvUrl,
             approval
         });
 
@@ -33,6 +36,88 @@ const uploadApplication = async (req, res) => {
     }
 };
 
+
+const getApplicationsGroupedByJobId = async (req, res) => {
+    try {
+        // Use the MongoDB aggregation framework to group applications by job_id
+        const groupedApplications = await Application.aggregate([
+            {
+                $group: {
+                    _id: '$job_id', // Group by job_id
+                    job_id: { $first: '$job_id' },
+                    applications: {
+                        $push: {
+                            _id :'$_id',
+                            invitation_id: '$invitation_id',
+                            user_id: '$user_id',
+                            user_name: '$user_name',
+                            user_email: '$user_email',
+                            cv: '$cv',
+                            approval: '$approval',
+                            rejected: '$rejected',
+                            createdAt: '$createdAt'
+                        }
+                    },
+                    count: { $sum: 1 }
+                }
+            },
+            {
+                $sort: { _id: 1 }
+            }
+        ]);
+
+        res.status(200).json(groupedApplications);
+    } catch (error) {
+        console.error('Error in getting applications grouped by job_id:', error);
+        res.status(500).json({ message: 'Failed to get applications grouped by job_id' });
+    }
+};
+
+const approveApplication = async (req, res) => {
+    try {
+        const applicationId = req.params.id;
+
+        const updatedApplication = await Application.findByIdAndUpdate(
+            applicationId,
+            { approval: true, rejected: false },
+            { new: true } // This option returns the updated document
+        );
+
+        if (!updatedApplication) {
+            return res.status(404).json({ message: 'Application not found' });
+        }
+
+        res.status(200).json({ message: 'Application approved successfully', application: updatedApplication });
+    } catch (error) {
+        console.error('Error in approving application:', error);
+        res.status(500).json({ message: 'Failed to approve application' });
+    }
+};
+
+const rejectApplication = async (req, res) => {
+    try {
+        const applicationId = req.params.id;
+
+        const updatedApplication = await Application.findByIdAndUpdate(
+            applicationId,
+            { approval: false, rejected: true },
+            { new: true } // This option returns the updated document
+        );
+
+        if (!updatedApplication) {
+            return res.status(404).json({ message: 'Application not found' });
+        }
+
+        res.status(200).json({ message: 'Application approved successfully', application: updatedApplication });
+    } catch (error) {
+        console.error('Error in approving application:', error);
+        res.status(500).json({ message: 'Failed to approve application' });
+    }
+};
+
 module.exports = {
-    uploadApplication
+    uploadApplication,
+    getApplicationsGroupedByJobId,
+    approveApplication,
+    rejectApplication
 };
