@@ -117,7 +117,33 @@ body {
   transform: translateX(0); /* Ensure it stays in place */
 }
 
+input:hover+.radio-tile label, 
+input:hover+.radio-tile .icon-style  {
+  color: rgb(212 212 212);
+}
 
+.input-container:hover {
+  border-color: white;
+  background-color: rgb(64 64 64);
+}
+
+input:checked+.radio-tile .icon-style,
+input:checked+.radio-tile label {
+  color: white;
+}
+
+.input-container:has(input:checked) {
+  border-color: rgb(229 229 229);
+}
+
+/* styles defined in index.css will be available to all components in the application, regardless of whether they import the CSS file or not.
+
+
+ This global styling approach is commonly used for defining base styles, 
+ such as default font styles, color schemes, or global layout configurations, 
+ that are applied consistently across all components in the application.  
+
+*/
 
 
 

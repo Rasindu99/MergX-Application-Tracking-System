@@ -13,7 +13,7 @@ import { NavLink } from 'react-router-dom';
 
 const Sidebar = () => {
 
-  const navLinkStyles = ({isActive}) => {
+  const navLinkStyles = ({ isActive }) => {
     return {
       color: isActive ? 'rgb(156 163 175)' : 'rgb(82 82 82)',
       fontWeight: isActive ? 'bold' : 'normal',
@@ -22,61 +22,61 @@ const Sidebar = () => {
   }
 
   return (
-    
+
     <div className='flex flex-col items-center justify-between w-2/12 h-screen bg-neutral-800'>
-      <Avatar />
-      <div className='flex flex-col w-full divide-y divide-neutral-600 mb-9'>
+      <div className='w-full h-2/5'><Avatar /></div>
+      
+      <div className='flex flex-col w-full h-2/5 mb-9 p-1'>
 
         <NavLink style={navLinkStyles} to="/candidatedash/landingPage" >
-          <div className='flex justify-start py-3 pt-3 pl-8 hover:bg-neutral-700 hover:text-gray-400'>
-            <LuLayoutDashboard className='mr-5 text-2xl'/>
+          <div className='flex justify-start text-[18px] py-3 pt-3 pl-8 hover:bg-gray-100 hover:text-gray-400 hover:bg-opacity-10 dark:hover:text-neutral-300'>
+            <LuLayoutDashboard className='mr-5 text-3xl' />
             Dashboard
           </div>
         </NavLink>
 
         <NavLink style={navLinkStyles} to='/candidatedash/editProfile'>
-          <div className='flex justify-start py-3 pt-3 pl-8 hover:bg-neutral-700 hover:text-gray-400'>
-            <TbUserEdit className='mr-5 text-2xl'/>
+          <div className='flex justify-start py-3 text-[18px] pt-3 pl-8 hover:bg-gray-100 hover:text-gray-400 hover:bg-opacity-10 dark:hover:text-neutral-300'>
+            <TbUserEdit className='mr-5 text-3xl' />
             Edit Profile
           </div>
         </NavLink>
 
         <NavLink style={navLinkStyles} to='/candidatedash/statusPage'>
-          <div className='flex justify-start py-3 pt-3 pl-8 hover:bg-neutral-700 hover:text-gray-400'>  
-            <PiCircleDashedBold className='mr-5 text-2xl ' />
+          <div className='flex justify-start text-[18px] py-3 pt-3 pl-8 hover:bg-gray-100 hover:text-gray-400 hover:bg-opacity-10 dark:hover:text-neutral-300'>
+            <PiCircleDashedBold className='mr-5 text-3xl ' />
             Status Updates
           </div>
         </NavLink>
 
         <NavLink style={navLinkStyles} to='/candidatedash/invitationPage'>
-          <div className='flex justify-start py-3 pt-3 pl-8 hover:bg-neutral-700 hover:text-gray-400'>
-            <RiInboxArchiveLine className='mr-5 text-2xl ' />
+          <div className='flex justify-start text-[18px] py-3 pt-3 pl-8 hover:bg-gray-100 hover:text-gray-400 hover:bg-opacity-10 dark:hover:text-neutral-300'>
+            <RiInboxArchiveLine className='mr-5 text-3xl ' />
             Interview Invitations
           </div>
         </NavLink>
 
         <NavLink style={navLinkStyles} to='/candidatedash/submissionPage'>
-          <div className='flex justify-start py-3 pt-3 pl-8 hover:bg-neutral-700 hover:text-gray-400'>
-            <RiFolderUploadLine className='mr-5 text-2xl ' />
+          <div className='flex justify-start text-[18px] py-3 pt-3 pl-8 hover:bg-gray-100 hover:text-gray-400 hover:bg-opacity-10 dark:hover:text-neutral-300'>
+            <RiFolderUploadLine className='mr-5 text-3xl ' />
             Submit Application
           </div>
         </NavLink>
 
         <NavLink style={navLinkStyles} to='/candidatedash/sessionPage'>
-          <div className='flex justify-start py-3 pt-3 pl-8 hover:bg-neutral-700 hover:text-gray-400'>
-            <BsPersonVideo3 className='mr-5 text-2xl ' />
+          <div className='flex justify-start text-[18px] py-3 pt-3 pl-8 hover:bg-gray-100 hover:text-gray-400 hover:bg-opacity-10 dark:hover:text-neutral-300'>
+            <BsPersonVideo3 className='mr-5 text-3xl ' />
             Join Interview
           </div>
         </NavLink>
-
-        <div className='flex justify-center pt-20 '>
-          <Logout />
-        </div>
-       
       </div>
-      
+
+      <div className='flex items-end justify-end w-full h-2/5 '>
+        <Logout />
+      </div>
+
     </div>
-    
+
   )
 }
 

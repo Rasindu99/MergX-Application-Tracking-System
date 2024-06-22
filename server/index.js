@@ -14,6 +14,8 @@ const interviewRoute = require('./routes/interviewRoutes');
 
 const messageRoutes = require('./routes/messageRoutes');
 const userRoutes = require('./routes/userRoutes');
+const candidateRoutes = require('./routes/candidateRoutes');
+const authRoutes = require('./routes/authRoutes');
 
 
 // Middleware setup
@@ -34,6 +36,8 @@ app.use('/evaluation', require('./routes/evaluationRoutes'));
 app.use('/invitation',require('./routes/jobinterviewinvitationRoutes'));
 app.use('/message', messageRoutes);
 app.use('/users', userRoutes);
+app.use('/candidatedash', candidateRoutes); 
+app.use('/', authRoutes);
 //app.use('/Protected', require('./routes/ProtectedRoute'));
 // Defining the port for the server to listen on
 

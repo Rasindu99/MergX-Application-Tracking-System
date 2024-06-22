@@ -12,13 +12,12 @@ const getSingleUser = async (req, res) => {
 const editProfile = async (req, res) => {
   try {
     const user = req.user;
-    console.log(req.body);
     const updatedUser = await User.findByIdAndUpdate(user.id, { ...req.body }, { new: true });
+    console.log(updatedUser);
     res.status(200).json(updatedUser);
   } catch (error) {
     res.status(500).json({ message: 'Error updating user', error });
   }
-
 }
 
 

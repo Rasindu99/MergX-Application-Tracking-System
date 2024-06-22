@@ -17,7 +17,7 @@ function LoginForm() {
     email: '',
     password: ''
   });
-  const { setAuthUser } = useAuthContext;
+  const { setAuthUser } = useAuthContext();
 
   const loginUser = async (e) => {
     e.preventDefault();

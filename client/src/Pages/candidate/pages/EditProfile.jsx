@@ -1,286 +1,312 @@
-import React, { useContext, useState, useEffect } from 'react';
-import { UserContext } from '../../../Context/UserContext';
+import { useForm } from 'react-hook-form';
+import * as yup from 'yup';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { toast } from 'react-hot-toast';
+
+import { BsGenderFemale } from "react-icons/bs";
+import { BsGenderMale } from "react-icons/bs";
+import { BsGenderAmbiguous } from "react-icons/bs";
+import { BiSolidCamera } from "react-icons/bi";
+import { BsPersonAdd } from "react-icons/bs";
+import toast, { Toaster } from 'react-hot-toast';
 
 
 const EditProfile = () => {
-  const { user } = useContext(UserContext);
-  const [image, setImage] = useState(null);
-  const [showForm] = useState(() => {
-    const urlParams = new URLSearchParams(window.location.search);
-    return urlParams.get('showForm') === 'true';
-  });
-  const [formData, setFormData] = useState(() => {
-    const storedFormData = localStorage.getItem('formData');
-    return storedFormData ? JSON.parse(storedFormData) : {
-      fname: '',
-      lname: '',
-      email: '',
-      phone_number: '',
-      role: '',
-      education: '',
-      bio: '',
-      dob: '',
-      gender: '',
-      image: '',
-    };
+
+  const [formData, setFormData] = useState({
+    fname: '',
+    lname: '',
+    email: '',
+    phone_number: '',
+    dob: '',
+    gender: '',
+    education: '',
+    bio: '',
+    image: '',
   });
 
-  
+  const [loading, setLoading] = useState(false);
+
+  const [profileImage, setProfileImage] = useState(null);
+
+  const schema = yup.object().shape({
+    fname: yup.string().required("First Name is required"),
+    lname: yup.string().required("Second Name is required"),
+    email: yup.string().email("Invalid email").required("Email is required"),
+    phone_number: yup
+      .string()
+      .matches(/^\d+$/, "Invalid telephone number")
+      .min(10, "Telephone number must be at least 10 digits")
+      .required("Telephone number is required"),
+    dob: yup.date()
+      .required("Date of Birth is required")
+      .max(new Date(), "Date of Birth cannot be in the future"),
+    gender: yup.string()
+      .oneOf(['male', 'female', 'other'], "Invalid gender")
+      .required("Gender is required"),
+    education: yup.string().max(500, "Education cannot exceed 500 characters"),
+    bio: yup.string().max(500, "Description cannot exceed 500 characters"),
+  });
+
+
+  // {errors}: This part of the destructuring assignment specifically extracts the errors property from the formState.
+  // formState - This property contains various state-related information about the form, including errors, touched fields, dirty fields, etc.
+  // errors - This property contains an object containing all the validation errors that have occurred in the form.
+
+  const { register, handleSubmit, setValue, formState: { errors } } = useForm({
+    resolver: yupResolver(schema),
+  });
+  // Before invoking the provided callback function (onSubmit), 
+  // handleSubmit performs form validation using the validation rules defined in the Yup schema.
+  // If there are validation errors, the form submission is prevented,
+  // If there are no validation errors, 
+  // the provided callback function (onSubmit) is called with the form data as its argument.
+
   useEffect(() => {
-    if (user) {
-      setFormData({
-        fname: user.fname || '',
-        lname: user.lname || '',
-        email: user.email || '',
-        phone_number: user.phone_number || '',
-        role: user.role || '',
-        education: user.education || '',
-        bio: user.bio || '',
-        dob: user.dob || '',
-        gender: user.gender || '',
-        image: user.image || '',
-      });
-      setImage(user.image || '');
-    }
-  }, [user]);
+    const fetchUserData = async () => {
+      try {
+        const response = await axios.get('/profile/');
+        const userData = response.data;
 
-  const handleSubmit = async (e) => {
+        console.log('useEffect', userData);
+        setFormData(userData);
+
+        setValue('fname', userData.fname);
+        setValue('lname', userData.lname);
+        setValue('email', userData.email);
+        setValue('phone_number', userData.phone_number);
+
+        const date = new Date(userData.dob);
+        const utcDate = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
+        const formattedDate = utcDate.toISOString().split('T')[0];
+        setValue('dob', formattedDate);
+
+        setValue('gender', userData.gender);
+        setValue('education', userData.education);
+        setValue('bio', userData.bio);
+        setValue('image', userData.image);
+
+        if (userData.image) {
+          setProfileImage(userData.image);
+        }
+
+        setLoading(false);
+
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    }
+
+    fetchUserData();
+
+  }, [setValue]);
+
+
+  const onSubmit = async (data, e) => {
     e.preventDefault();
-    if (!user || !user._id) {
-      console.error('User ID is not available.');
-      return;
-    }
+    setLoading(true);
+
     try {
-      await axios.put(`/users/${user._id}`, formData);
-      localStorage.removeItem('formData'); // Clear local storage after successful submission
-      toast.success('Updated successfully');
-     // window.location.reload(); // Refresh the page
+      console.log('submission Data - ', data.image instanceof FileList ? 'Data added with FileList obj' : 'Data added without new image');
+
+      let UpdatedData = {...formData, ...data};
+
+      if (data.image instanceof FileList && data.image.length > 0) {
+        const file = data.image[0];
+
+        const toBase64 = (file) => {
+          return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onloadend = () => {
+              resolve(reader.result);
+            };
+            reader.onerror = reject;
+          });
+        };
+
+        const base64Image = await toBase64(file);
+        UpdatedData = { ...UpdatedData, image: base64Image };
+
+        setProfileImage(base64Image);
+
+        console.log('Base64 UpdatedData -', UpdatedData);
+        setFormData(UpdatedData);
+      } else {
+        UpdatedData = { ...UpdatedData, image: formData.image };
+        setFormData(UpdatedData);
+      }
+
+      const response = await axios.put('/candidatedash/editProfile', UpdatedData,
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+      const updatedUser = response.data
+      console.log('Response from server :',updatedUser);
+      console.log('setFormData - ', formData);
+      setLoading(false);
+      toast.success('Profile updated Successfull!');
     } catch (error) {
-      console.error('Error updating user:', error);
+      console.error('Error updating profile:', error);
     }
   };
 
-  useEffect(() => {
-    // Store formData in local storage whenever it changes
-    localStorage.setItem('formData', JSON.stringify(formData));
-  }, [formData]);
 
-  const handleInputChange = (e) => {
-    const { name, value, type, files } = e.target;
-    if (type === 'file') {
-      const file = files[0];
-      const reader = new FileReader();
+  // if (loading) {
+  //   return <div>Loading...</div>;
+  // }
 
-      reader.readAsDataURL(file);
-      reader.onload = () => {
-        setImage(reader.result);
-        setFormData({ ...formData, [name]: reader.result });
-      };
-    } else {
-      setFormData({
-        ...formData,
-        [name]: value,
-      });
+  const handleRemoveImage = async () => {
+    try {
+      const response = await axios.put('/candidatedash/editProfile', { image: '' });
+      setProfileImage(null);
+      console.log('profile Removed',response.data);
+    } catch (error) {
+      console.error('Error removing profile image:', error);
     }
   };
 
-  const handleYesClick = () => {
-    const currentUrl = window.location.href;
-    const newUrl = currentUrl.includes('?')
-      ? `${currentUrl}&showForm=true`
-      : `${currentUrl}?showForm=true`;
-    window.location.href = newUrl;
-  };
-  
-  
-
-  if (!user) {
-    return <div>Loading...</div>;
-  }
-
-  console.log(formData.fname);
-  console.log(formData.phone_number);
-  
-  
 
   return (
-    <div className='flex items-center justify-center h-full'>
-      {!showForm ? (
-        <div className=''>
-          <div className=''><h1 className='text-4xl'>Do you want to update your details?</h1></div> 
-          <div className='pt-8'><button onClick={handleYesClick} className='px-4 py-2 font-bold text-white bg-orange-600 rounded hover:bg-orange-400'>Yes update !</button></div>
-        </div>
-      ) : (
-        
-        <div className=''>
-          
-          <form onSubmit={handleSubmit}>
+    <div className='flex items-center justify-center h-full overflow-y-auto'>
+      <form onSubmit={handleSubmit(onSubmit)} className='flex flex-col items-start justify-start w-3/5 gap-1 text-neutral-900 bg-neutral-800 h-full mt-10'>
+        <div className='flex items-center justify-around w-full px-1 bg-neutral-800'>
+          <div className='flex flex-col justify-center w-full gap-1'>
 
-            <div className='flex justify-between'>
-            
-            <div>
-            <div className='flex justify-center pl-10 pr-10 mt-8 text-start'>
-              <div>
-                <div className='flex justify-between w-full'>
-                  <div className='pb-2'>
-                    <label className='opacity-40'>First Name:</label>
-                    <div className='pt-1 pl-0'>
-                      <input
-                        className="bg-[#2a2a2a] w-[170px] h-10 rounded-lg pl-4"
-                        type='text'
-                        name='fname'
-                        placeholder='First Name'
-                        value={formData.fname}
-                        onChange={handleInputChange}
-                      />
-                    </div>
-                  </div>
-                  <div className='pb-2'>
-                    <label className='opacity-40'>Last Name:</label>
-                    <div className='pt-1 pl-0'>
-                      <input
-                        className="bg-[#2a2a2a] w-[170px] h-10 rounded-lg pl-4"
-                        type='text'
-                        name='lname'
-                        placeholder='Last Name'
-                        value={formData.lname}
-                        onChange={handleInputChange}
-                      />
-                    </div>
+            <div className='bg-neutral-800 w-full flex iems-center justify-around py-2'>
+              <label className='text-neutral-500 font-semibold text-lg bg-neutral-800 w-1/3 text-left'>First Name </label>
+              <input type="text" placeholder='FirstName' {...register("fname")}
+                className='px-3 py-2 text-white transition duration-200 border border-neutral-700 rounded bg-neutral-600 bg-opacity-10 focus:outline-none focus:bg-neutral-600 focus:bg-opacity-30 focus:border-1 focus:border-neutral-400' />
+              <p className='text-red-500'>{errors.firstName?.message}</p>
+            </div>
+
+            <div className='w-full flex iems-center justify-around py-2'>
+              <label className='text-neutral-500 font-semibold text-lg bg-neutral-800 w-1/3 text-left'>Last Name</label>
+              <input type="text" placeholder='SecondName' {...register("lname")}
+                className='px-3 py-2 text-white transition duration-200 border border-neutral-700 rounded bg-neutral-600 bg-opacity-10 focus:outline-none focus:bg-neutral-600 focus:bg-opacity-30 focus:border-1 focus:border-neutral-400' />
+              <p className='text-red-500'>{errors.secondName?.message}</p>
+            </div>
+
+            <div className='bg-neutral-800 w-full flex iems-center justify-around py-2'>
+              <label className='text-neutral-500 font-semibold text-lg bg-neutral-800 w-1/3 text-left'>Email</label>
+              <input type="email" placeholder='Email' {...register("email")}
+                className='px-3 py-2 text-white transition duration-200 border border-neutral-700 rounded bg-neutral-600 bg-opacity-10 focus:outline-none focus:bg-neutral-600 focus:bg-opacity-30 focus:border-1 focus:border-neutral-400' />
+              <p className='text-red-500'>{errors.email?.message}</p>
+            </div>
+
+            <div className='w-full flex iems-center justify-around py-2'>
+              <label className='text-neutral-500 font-semibold text-lg bg-neutral-800 w-1/3 text-left'>Telephone</label>
+              <input type="tel" placeholder='Telephone' {...register("phone_number")}
+                className='px-3 py-2 text-white transition duration-200 border border-neutral-700 rounded bg-neutral-600 bg-opacity-10 focus:outline-none focus:bg-neutral-600 focus:bg-opacity-30 focus:border-1 focus:border-neutral-400' />
+              <p className='text-red-500'>{errors.telephone?.message}</p>
+            </div>
+
+            <div className='bg-neutral-800 w-full flex iems-center  py-2 '>
+              <label className='text-neutral-500 font-semibold text-lg bg-neutral-800 w-1/3 text-left ml-5 mr-10'>Date of Birth</label>
+              <input type="date" placeholder='Date of Birth' {...register("dob")}
+                className='px-3 py-2 text-white transition duration-200 border border-neutral-700 rounded bg-neutral-600 bg-opacity-10 focus:outline-none focus:bg-neutral-600 focus:bg-opacity-30 focus:border-1 focus:border-neutral-400' />
+              <p className='text-red-500'>{errors.dob?.message}</p>
+            </div>
+
+            <div className='container flex flex-col items-between justify-start gap-2 ml-5 bg-neutral-800'>
+              <label className='text-neutral-500 font-semibold text-lg bg-neutral-800 w-1/3 text-left'>Gender</label>
+              <div class="radio-tile-group flex justify-between flex-wrap bg-neutral-800 ml-auto">
+
+                <div className='input-container relative m-2 w-20 h-11 flex border rounded border-neutral-700 '>
+                  <input type="radio" value="male" id="male" {...register("gender")} className='absolute h-full w-full m-0 cursor-pointer z-2 opacity-0' />
+                  <div className='radio-tile flex justify-around items-center h-full w-full genderLabel transition-all duration-300	ease-linear'>
+                    <label htmlFor='male' className='w-3/12 text-neutral-500 tracking-wide '> Male</label>
+                    <BsGenderMale className='icon-style text-neutral-500 ' />
                   </div>
                 </div>
-                <div className='pb-2'>
-                  <label className='opacity-40'>Email:</label>
-                  <div className='pt-1 pl-10'>
-                    <input
-                      className="bg-[#2a2a2a] w-[400px] h-10 rounded-lg pl-4"
-                      type='email'
-                      name='email'
-                      placeholder='Email'
-                      value={formData.email}
-                      onChange={handleInputChange}
-                    />
+
+                <div className='input-container relative m-2 w-20 h-11 flex border rounded focus:border-1 border-neutral-700 '>
+                  <input type="radio" value="female" id="female" {...register("gender")} className='absolute h-full w-full m-0 cursor-pointer z-2 opacity-0' />
+                  <div className='radio-tile flex items-center h-full w-full genderLabel transition-all duration-300	ease-linear justify-between'>
+                    <label htmlFor='male' className='w-3/12 text-neutral-500 tracking-wide  ml-1'> Female</label>
+                    <BsGenderFemale className='icon-style text-neutral-500 mr-1 ' />
                   </div>
                 </div>
-                <div className='pb-2'>
-              <label  className='opacity-40'>Mobile Number : </label>
-                <div className='pt-1 pl-10'>
+
+                <div className='input-container relative m-2 w-20 h-11 flex border rounded border-neutral-700'>
+                  <input type="radio" value="other" id="other" {...register("gender")} className='absolute h-full w-full m-0 cursor-pointer z-2 opacity-0' />
+                  <div className='radio-tile flex justify-around items-center h-full w-full genderLabel transition-all duration-300	ease-linear'>
+                    <label htmlFor='male' className='w-3/12 text-neutral-500 tracking-wide'> Other</label>
+                    <BsGenderAmbiguous className='icon-style text-neutral-500 ' />
+                  </div>
+                </div>
+
+              </div>
+            </div>
+
+            <p className='text-red-500'>{errors.gender?.message}</p>
+          </div>
+
+
+          <div className='bg-neutral-800 w-full flex flex-col justify-between items-center gap-5 '>
+            <div className='upload bg-neutral-800'>
+              {profileImage ? (
+                <img src={profileImage} alt="Profile" className='h-48 w-48 rounded-full ' />
+              ) : (
+                <div className="flex justify-center items-center h-48 w-48 rounded-full border-3 border-neutral-300 bg-center bg-cover overflow-hidden bg-neutral-400 ">
+                  <BsPersonAdd className='text-8xl' />
+                </div>
+              )}
+
+              <div className='flex justify-center  items-center round '>
+                <label htmlFor="fileInput" className='cursor-pointer '>
                   <input
-                    className="bg-[#2a2a2a] w-[400px] h-10 rounded-lg pl-4"
-                    type='text'
-                    name='phone_number'
-                    placeholder='Phone number'
-                    value={formData.phone_number}
-                    onChange={handleInputChange}
+                    id="fileInput"
+                    type="file"
+                    accept='image/'
+                    className='hidden'
+                    {...register("image")}
                   />
-                </div>
-                
-              </div>
-
-              <div className='pb-2'>
-                    <label className='opacity-40'>Date of Birth:</label>
-                    <div className='pt-1 pl-10'>
-                      <input
-                        className="bg-[#2a2a2a] w-[400px] h-10 rounded-lg pl-4"
-                        type='date'
-                        name='dob'
-                        placeholder='Birth Day'
-                        value={formData.dob}
-                        onChange={handleInputChange}
-                      />
-                    </div>
+                  <div className="rounded-full bg-orange-500 p-3 hover:bg-orange-200 hover:border-2 transition duration-300">
+                    <BiSolidCamera className='hover:border-orange-500 transition duration-300' />
                   </div>
-                  
-                  <div className='text-left'>
-                    <label className='opacity-40'>Gender:</label>
-                    <div className='pt-1 pl-10'>
-                      <select
-                        name='gender'
-                        className='h-10 text-left rounded-lg bg-opacity-10 md:48 optional:bg-[#2a2a2a] w-[400px] pl-4'
-                        value={formData.gender}
-                        onChange={handleInputChange}
-                      >
-                        <option value='male' className='text-white bg-black bg-opacity-90'>Male</option>
-                        <option value='female' className='text-white bg-black bg-opacity-90'>Female</option>
-                        <option value='other' className='text-white bg-black bg-opacity-90'>Other</option>
-                      </select>
-                    </div>
-                  </div>
-                
-              </div>
-            </div>
-            </div>
-            
-            <div className='pl-8 border-l border-orange-500'>
-                <div className='flex justify-center '>
-                  {image ? (
-                    <div>
-                      <img src={image} alt='' className='rounded-full h-[200px] w-[200px] border-[2px]'></img>
-                    </div>
-                  ) : (
-                    <img src={formData.image} alt='' className='rounded-full h-[200px] w-[200px] border-[2px]'></img>
-                  )}
-                </div>
-                <div>
-                  <input
-                    accept='image/*'
-                    type='file'
-                    name='image'
-                    className=''
-                    onChange={handleInputChange}
-                  />
-                </div> 
-
-                <div className=''>
-                    <div>
-                    <label className='flex text-left opacity-40'>Education:</label>
-                    </div>
-                    <div className='pt-1 pl-10'>
-                      <textarea
-                        className='bg-[#2a2a2a] w-[400px] h-10 rounded-lg pl-4'
-                        type='text'
-                        name='education'
-                        value={formData.education}
-                        onChange={handleInputChange}
-                      >
-                        
-                      </textarea>
-                    </div>
+                </label>
               </div>
 
-              <div className=''>
-                    <div>
-                    <label className='flex text-left opacity-40'>Bio:</label>
-                    </div>
-                    <div className='pt-1 pl-10'>
-                      <textarea
-                        className='bg-[#2a2a2a] w-[400px] h-20 rounded-lg pl-4'
-                        type='text'
-                        name='bio'
-                        value={formData.bio}
-                        onChange={handleInputChange}
-                      >
-                        
-                      </textarea>
-                    </div>
-                </div>
-
-            </div>
-              
             </div>
 
-            <div className='pt-8'>
-              <button type='submit' className='px-4 py-2 font-bold text-white bg-orange-600 rounded hover:bg-orange-400'>
-                Update
-              </button>
-            </div>
-          </form>
+
+            <button
+              className='h-10 w-28 bg-amber-800 bg-opacity-15 border-orange-700 border-2 rounded-xl text-white px-2 font-semibold hover:bg-amber-700 hover:border-white transition duration-200 text-xs'
+              onClick={handleRemoveImage}>
+              Remove Profile
+            </button>
+          </div>
+
         </div>
-      )}
+
+        <div className=' flex flex-col justify-between w-full h-2/5 px-1 py-1 bg-red-00 gap-2 bg-neutral-800 ml-2'>
+          <div className='flex justify-center items-start text-black  w-full py-2'>
+            <label className='bg-neutral-800 font-semibold text-lg mx-auto w-1/5 text-neutral-500 text-left'>Education</label>
+            <textarea className='w-3/4 p-3 mx-auto text-white border resize-none border-neutral-700 rounded bg-neutral-600 bg-opacity-10 focus:outline-none focus:bg-neutral-600 focus:bg-opacity-30 focus:border-1 focus:border-neutral-400'
+              placeholder='Education Qualification' {...register("education")} />
+            <p className='text-red-500'>{errors.education?.message}</p>
+          </div>
+
+          <div className='flex justify-center items-start w-full'>
+            <label className='text-neutral-500 font-semibold text-lg mx-auto w-1/5 bg-neutral-800 text-left'>Bio</label>
+            <textarea className='w-3/4 p-3 mx-auto text-white border resize-none border-neutral-700 rounded bg-neutral-600 bg-opacity-10 focus:outline-none focus:bg-neutral-600 focus:bg-opacity-30 focus:border-1 focus:border-neutral-400'
+              placeholder='I am SystemChanger' {...register("bio")} />
+            <p className='text-red-500'>{errors.description?.message}</p>
+          </div>
+
+          <button type="submit" className='h-10 bg-amber-800 bg-opacity-35 text-white py-2 px-3 z-20 border-orange-700 border-2 rounded-xl mx-auto mt-5 hover:bg-amber-700 hover:border-white transition duration-200 flex justify-center items-center font-semibold text-sm'>
+             {loading ? <span className="loading loading-spinner mr-2"></span> : ''}
+             {loading ? 'loading' : 'submit' }
+          </button>
+        </div>
+      </form>
+
     </div>
-  );
-};
+  )
+}
 
 export default EditProfile;
