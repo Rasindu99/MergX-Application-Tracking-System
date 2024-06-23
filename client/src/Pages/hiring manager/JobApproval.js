@@ -26,6 +26,7 @@ export default function JobApproval() {
       });
   }, []);
 
+ 
   return (
     <div className='flex w-screen'>
       <div className='fixed'>
@@ -48,6 +49,7 @@ export default function JobApproval() {
                   {jobpostings.map((jobposting) => (
                     <PendingJobs
                       key={jobposting._id}
+                      id={jobposting._id}
                       post={jobposting.jobTitle}
                       date={jobposting.updatedAt}
                       sallary={jobposting.salary}

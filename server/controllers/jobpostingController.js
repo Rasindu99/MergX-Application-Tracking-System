@@ -142,18 +142,41 @@ const updateExpiredStatus = async(req,res) => {
 //get expire = false jobs
 const getNotExpiredJobposting = async (req, res) => {
     try {
-        const jobPostings = await JobPosting.find({ expired : false }).sort({ createdAt: -1 });
+        const jobPostings = await JobPosting.find({ 
+            expired: false, 
+            approved: true 
+        }).sort({ createdAt: -1 });
 
-        if (!jobPostings || jobPostings.length === 0) {
-            return res.status(404).json({ message: "All are expired job " });
+        if (jobPostings.length === 0) {
+            return res.status(404).json({ message: "No active job postings found" });
         }
 
         // Return the array of job postings
         return res.status(200).json(jobPostings);
     } catch (error) {
-       console.log(error);
-       return res.status(500).json({message: error.message}) 
+        console.error('Error fetching non-expired job postings:', error);
+        return res.status(500).json({ message: "Internal server error", error: error.message });
     }
+};
+
+//put accept-true
+
+const updateAcceptTrue = async(req,res) => {
+    const jobId = req.params.id;
+  const { approved } = req.body;
+
+  try {
+    const updatedJob = await JobPosting.findByIdAndUpdate(jobId, { approved }, { new: true });
+
+    if (!updatedJob) {
+      return res.status(404).json({ success: false, message: 'Job not found' });
+    }
+
+    res.status(200).json({ success: true, message: 'Job approved updated successfully', job: updatedJob });
+  } catch (error) {
+    console.error('Error updating job approved:', error);
+    res.status(500).json({ success: false, message: 'Internal server error' });
+  }
 }
 
 
@@ -165,5 +188,6 @@ module.exports = {
     updateJobPosting,
     deleteJobPosting,
     updateExpiredStatus,
-    getNotExpiredJobposting
+    getNotExpiredJobposting,
+    updateAcceptTrue
 };
