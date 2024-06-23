@@ -1,5 +1,6 @@
 const Evaluationmodel = require('../models/evaluation')
-
+const User =  require('../models/user');
+const JobPosting =require('../models/jobposting');
 // Post evaluation
 
 const createEvalautions = async (req,res)=>{
@@ -114,8 +115,50 @@ const getEvaluation = async (req,res)=>{
   }
 
 }
+
+const getimg = async (req, res) => {
+  const { _id } = req.params; // Extracting _id from path parameters
+
+  if (!_id) {
+    return res.status(400).json({ error: 'user_id path parameter is required' });
+  }
+
+  try {
+    const candidate = await User.findOne({ _id }, { image: 1 });
+    if (!candidate) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+    res.json(candidate);
+  } catch (error) {
+    console.error('Error in getimg:', error); // Log the error for debugging
+    res.status(500).json({ error: 'Server error' });
+  }
+};
+
+const getpost = async  (req,res)=>{
+  const _id = req.params;
+  
+  if(!_id){
+    return res.status(400).json({ error: 'job_id path parameter is required' });
+  }
+  try{
+    const jobPost = await JobPosting.findOne({ _id }, { jobTitle: 1 });
+    if (!jobPost) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+    res.json(jobPost);
+
+  }catch (error) {
+    console.error('Error in getimg:', error); // Log the error for debugging
+    res.status(500).json({ error: 'Server error' });
+  }
+}
+
+
 module.exports={
   createEvalautions,
     // updateEvaluation,
-    getEvaluation
+    getEvaluation,
+    getimg,
+    getpost
 }

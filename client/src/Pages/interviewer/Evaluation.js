@@ -14,13 +14,70 @@ export default function Evaluation() {
   const [existEvolution, setexistEvolution] = useState([]);
   const [isexistevaluation, setisexistevaluation] = useState(false);
 
+  const [application, setapplication] = useState([]);
+  const [candidates, setCandidate] = useState([]);
+
+  const getApplications = async () => {
+    try {
+      const response = await axios.get('http://localhost:8000/cv/getapplications');
+      setapplication(response.data.applications);
+    } catch (error) {
+      console.error('Error fetching applications:', error);
+    }
+  };
+
+  const getImg = async (user_id) => {
+    try {
+      const response = await axios.get(`http://localhost:8000/evaluation/getimg/${user_id}`);
+      setCandidate(prevState => prevState.map(candidate =>
+        candidate.user_id === user_id ? { ...candidate, image: response.data.image } : candidate
+      ));
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const getPost = async (job_id) => {
+    try {
+      const response = await axios.get(`http://localhost:8000/evaluation/getpost/${job_id}`);
+      setCandidate(prevState => prevState.map(candidate =>
+        candidate.job_id === job_id ? { ...candidate, position: response.data.jobTitle } : candidate
+      ));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const processApplications = () => {
+    application.forEach(app => {
+      const { job_id, user_id, user_name, user_email } = app;
+      setCandidate(prevState => [...prevState, {
+        job_id,
+        user_id,
+        username: user_name,
+        email: user_email,
+        image: '', // initial placeholder value
+        position: '' // initial placeholder value
+      }]);
+      getImg(user_id);
+      getPost(job_id);
+    });
+  };
+
   useEffect(() => {
-    console.log(data);
-  });
+    getApplications();
+  }, []);
+
+  useEffect(() => {
+    if (application.length > 0) {
+      processApplications();
+    }
+  }, [application]);
 
   const handleClick = (value) => {
     setFeedbackTab(value);
   };
+
   const { user } = useContext(UserContext);
   const [data, setData] = useState({
     candidatename: "",
@@ -81,15 +138,13 @@ export default function Evaluation() {
           overallcomment: "",
         });
         console.log("Evaluations Created Successfully");
-        toast.success("Successsfully submitted.");
+        toast.success("Successfully submitted.");
       }
     } catch (error) {
       console.error(error);
-      toast.error("All field must be filled.");
+      toast.error("All fields must be filled.");
     }
   };
-
-  //updating evolutions
 
   const updateEvaluation = async (event) => {
     event.preventDefault();
@@ -126,29 +181,26 @@ export default function Evaluation() {
           overallcomment: "",
         });
         console.log("Evaluations Updated Successfully");
-        toast.success("Successsfully updated.");
+        toast.success("Successfully updated.");
       }
     } catch (error) {
       console.error("Error updating evaluation:", error);
-      toast.error("All field must be filled.");
+      toast.error("All fields must be filled.");
     }
   };
-
-  // Fething evolutions
 
   useEffect(() => {
     const fetchEvaluation = async () => {
       if (showDetails && selected) {
-        // Check if showDetails is true and selected._id is defined before fetching
         try {
-          console.log("Fetching evaluation for candidate ID:", selected._id); // Debug log
+          console.log("Fetching evaluation for candidate ID:", selected._id);
           const response = await axios.get(
             `http://localhost:8000/evaluation?candidateid=${selected._id}`
           );
 
           if (response.data) {
             setexistEvolution(response.data);
-            setData(response.data); // Use response.data directly
+            setData(response.data);
           }
 
           setisexistevaluation(true);
@@ -162,18 +214,18 @@ export default function Evaluation() {
     };
 
     fetchEvaluation();
-  }, [showDetails, selected]); // Add showDetails and selected._id as dependencies
-  // Add showDetails and selected._id as dependencies
+  }, [showDetails, selected]);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     if (!isNaN(value) && Number(value) >= 0 && Number(value) <= 100) {
       setData({
         ...data,
-        [name]: Number(value), // Convert value to number
+        [name]: Number(value),
       });
     }
   };
+
   const clear = () => {
     setData({
       candidatename: "",
@@ -199,24 +251,32 @@ export default function Evaluation() {
       overallcomment: "",
     });
   };
+
   const setcandidate = () => {
     if (showDetails) {
-      data.candidatename = selected.fname;
-      data.candidateid = selected._id;
-      data.candidateemail = "@gmail.com";
+      setData(prevState => ({
+        ...prevState,
+        candidatename: selected.fname,
+        candidateid: selected._id,
+        candidateemail: "@gmail.com"
+      }));
     }
   };
+
   const setinterviewer = () => {
     if (showDetails) {
-      data.interviewername = user.fname;
-      data.interviewerid = user._id;
+      setData(prevState => ({
+        ...prevState,
+        interviewername: user.fname,
+        interviewerid: user._id
+      }));
     }
   };
 
   useEffect(() => {
     setcandidate();
     setinterviewer();
-  });
+  }, [showDetails, selected]);
 
   return (
     <div>
@@ -225,19 +285,19 @@ export default function Evaluation() {
           <InterviewNav />
         </div>
 
-        <div className="w-screen lg:ml-[320px] md:ml-72 ml-[260px] ">
+        <div className="w-screen lg:ml-[320px] md:ml-72 ml-[260px]">
           <Topbar
             msg="Interview Feedback"
             name="Piyushan"
             post="Hiring Manager"
-          ></Topbar>
+          />
           <div
-            className={`content max-h-[100vh] overflow-y-auto text-white flex flex-row p-[0px]  bg-[#1E1E1E] m-[30px]  h-fit rounded-[30px] 320px:text-[0.5rem]  450px:text-[0.8rem] sm:text-[0.9rem]   900px:text-[1.1rem]  1010px:text-[1.2rem]  ${
+            className={`content max-h-[100vh] overflow-y-auto text-white flex flex-row p-[0px] bg-[#1E1E1E] m-[30px] h-fit rounded-[30px] 320px:text-[0.5rem] 450px:text-[0.8rem] sm:text-[0.9rem] 900px:text-[1.1rem] 1010px:text-[1.2rem] ${
               showDetails === false ? " justify-center" : null
             }`}
           >
             <div
-              className={`  candidates  flex flex-col gap-[10px] bg-[#1E1E1E] rounded-[30px] rounded-tr-[0px] rounded-br-[0px] esm:p-[10px] 450px:p-[15px] sm:p-[25px]  sm:w-auto 450px:w-[165px] 500px:w-[175px] esm:w-[140px]`}
+              className={`candidates flex flex-col gap-[10px] bg-[#1E1E1E] rounded-[30px] rounded-tr-[0px] rounded-br-[0px] esm:p-[10px] 450px:p-[15px] sm:p-[25px] sm:w-auto 450px:w-[165px] 500px:w-[175px] esm:w-[140px]`}
             >
               <p className="text-center text-[#FFFFFF] esm:p-[4px] 450px:p-[6px] sm:p-[10px] font-general-sans pt-[0px]">
                 Interviewed Candidates
@@ -248,52 +308,49 @@ export default function Evaluation() {
                 }`}
               >
                 <div>
-                  {users.map((user) => (
+                  {candidates.map(candidate => (
                     <button
-                      key={user._id}
+                      key={candidate.email}
                       onClick={() => {
                         setshowDetails(true);
-                        setselected(user);
+                        setselected(candidate);
                       }}
-                      className={` hover:scale-110 accLabel m-[10px] my-[5px]  flex flex-row   bg-[#2b2b2b] sm:pl-[5px]  items-center   rounded-[30px]  sm:gap-[4px] esm:w-[110px] esm:h-[25px] 450px:w-[140px] 450px:h-[35px]   sm:w-[150px] sm:h-[45px]  lg:rounded-[25px]  lg:gap-[12px] lg:w-[200px] lg:h-[60px] sm:gap-[6px] sm:w-[180px] sm:h-[50px] sm:rounded-[30px] esm:w-[fit-content] ${
-                        showDetails === false
-                          ? "lg:w-[500px] justify-between hover:scale-105"
-                          : null
+                      className={`hover:scale-110 accLabel m-[10px] my-[5px] flex flex-row bg-[#2b2b2b] sm:pl-[5px] items-center rounded-[30px] sm:gap-[4px] esm:w-[110px] esm:h-[25px] 450px:w-[140px] 450px:h-[35px] sm:w-[150px] sm:h-[45px] lg:rounded-[25px] lg:gap-[12px] lg:w-[200px] lg:h-[60px] sm:gap-[6px] sm:w-[180px] sm:h-[50px] sm:rounded-[30px] esm:w-[fit-content] ${
+                        showDetails === false ? "lg:w-[500px] justify-between hover:scale-105" : null
                       }`}
                     >
                       <div
-                        className={` ${
-                          showDetails === false
-                            ? "flex justify-evenly gap-[12px]"
-                            : " flex flex-row  gap-[12px] justify-start"
-                        } `}
+                        className={`${
+                          showDetails === false ? "flex justify-evenly gap-[12px]" : "flex flex-row gap-[12px] justify-start"
+                        }`}
                       >
                         <img
-                          src={user.image}
+                          src={candidate.image}
                           alt=""
-                          className="userImg  rounded-[50%] border-[solid] border-[#ffffff] ml-[0.7rem] esm:w-[20px] esm:h-[20px]  450px:w-[30px] 450px:h-[30px]  sm:w-[35px] sm:h-[35px] border-[1.5px]  lg:w-[40px] lg:h-[40px] lg:border-[2px] md:w-[37px] md:h-[37px] md:border-[2px] sm:m-1 esm:m-[3px]"
+                          className="userImg rounded-[50%] border-[solid] border-[#ffffff] ml-[0.7rem] esm:w-[20px] esm:h-[20px] 450px:w-[30px] 450px:h-[30px] sm:w-[35px] sm:h-[35px] border-[1.5px] lg:w-[40px] lg:h-[40px] lg:border-[2px] md:w-[37px] md:h-[37px] md:border-[2px] sm:m-1 esm:m-[3px]"
                         />
-                        <div className="block ">
-                          <p className="name text-left text-[#ffffff] mb-[-2px] md:mb-[-4px] text-[0.7rem] lg:text-[1rem]  md:text-[0.9rem] 320px:text-[0.5rem]">
-                            {user.fname}{" "}
+                        <div className="block">
+                          <p className="name text-left text-[#ffffff] mb-[-2px] md:mb-[-4px] text-[0.7rem] lg:text-[1rem] md:text-[0.9rem] 320px:text-[0.5rem]">
+                            {candidate.username}
                           </p>
-                          <p className="post text-left text-[#ffffff] opacity-[30%]  mt-[-2px] md:mt-[-4px] text-[0.7rem] lg:text-[1rem]  md:text-[0.9rem] 320px:text-[0.5rem]">
-                            {user.role}
+                          <p className="post text-left text-[#ffffff] opacity-[30%] mt-[-2px] md:mt-[-4px] text-[0.7rem] lg:text-[1rem] md:text-[0.9rem] 320px:text-[0.5rem]">
+                            {candidate.position}
                           </p>
                         </div>
                       </div>
                       <p
                         className={`post ${
                           showDetails === false ? "block" : "hidden"
-                        } mr-[60px] text-[#ffffff] opacity-[30%]  mt-[-2px] md:mt-[-4px] text-[0.7rem] lg:text-[1rem]  md:text-[0.9rem] 320px:text-[0.5rem]`}
+                        } mr-[60px] text-[#ffffff] opacity-[30%] mt-[-2px] md:mt-[-4px] text-[0.7rem] lg:text-[1rem] md:text-[0.9rem] 320px:text-[0.5rem]`}
                       >
-                        System Rank:{" "}
+                         {candidate.email}
                       </p>
                     </button>
                   ))}
                 </div>
               </div>
             </div>
+
 
             {showDetails ? (
               <div className="description flex flex-col w-full box-border">
@@ -303,13 +360,13 @@ export default function Evaluation() {
                     alt=""
                     className=" userImg  rounded-[50%] border-[solid] border-[#ffffff] ml-[0.7rem] esm:w-[20px] esm:h-[20px]  450px:w-[30px] 450px:h-[30px]  sm:w-[35px] sm:h-[35px] border-[1.5px]  lg:w-[100px] lg:h-[100px] lg:border-[2px] md:w-[37px] md:h-[37px] md:border-[2px] sm:m-1 esm:m-[3px]"
                   />
-                  <div className="details flex flex-col justify-evenly  ">
-                    <p className="text-left">{selected.fname}</p>
+                  <div className="details flex flex-col justify-evenly w-[250px] ">
+                    <p className="text-left">{selected.username}</p>
                     <p className="text-left text-[#ffffff] opacity-[30%] ">
-                      {selected.role}
+                      {selected.position}
                     </p>
                     <p className="text-left text-[#ffffff] opacity-[30%] ">
-                      System Rank:{" "}
+                     {selected.email}
                     </p>
                   </div>
                 </div>
