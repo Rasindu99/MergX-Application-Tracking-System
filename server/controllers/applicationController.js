@@ -1,4 +1,5 @@
 const Application = require('../models/application');
+const InterviewSchedule = require('../models/interviewSchedule');
 
 
 const uploadApplication = async (req, res) => {
@@ -115,9 +116,38 @@ const rejectApplication = async (req, res) => {
     }
 };
 
+//get approved true data
+const getapprovedtruedata = async (req, res) => {
+    try {
+        const applications = await Application.find({ 
+            approval: true
+        }).sort({ createdAt: -1 });
+
+        if (applications.length === 0) {
+            return res.status(404).json({ message: "No approved applications found" });
+        }
+
+        // Fetch corresponding interview schedules
+        const applicationWithSchedules = await Promise.all(applications.map(async (application) => {
+            const interviewSchedule = await InterviewSchedule.findById(application.invitation_id);
+            return {
+                ...application.toObject(),
+                interviewSchedule: interviewSchedule ? interviewSchedule.toObject() : null
+            };
+        }));
+
+        res.status(200).json(applicationWithSchedules);
+    } catch (error) {
+        console.error('Error fetching approved applications:', error);
+        return res.status(500).json({ message: "Internal server error", error: error.message });
+    }
+}
+
+
 module.exports = {
     uploadApplication,
     getApplicationsGroupedByJobId,
     approveApplication,
-    rejectApplication
+    rejectApplication,
+    getapprovedtruedata
 };
