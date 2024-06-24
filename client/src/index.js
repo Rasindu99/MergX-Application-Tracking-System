@@ -9,11 +9,11 @@ import { InterviewContextProvider } from './Context/InterviewContext';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <BrowserRouter>
-    <React.StrictMode>
+    {/* <React.StrictMode> */}
       <InterviewContextProvider>
         <App />
       </InterviewContextProvider>
-    </React.StrictMode>
+    {/* </React.StrictMode> */}
   </BrowserRouter>
 
 );

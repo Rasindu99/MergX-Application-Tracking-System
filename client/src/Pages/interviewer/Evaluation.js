@@ -8,77 +8,14 @@ import { toast } from "react-hot-toast";
 
 export default function Evaluation() {
   const [selected, setselected] = useState(null);
-  const { users, setUsers } = useContext(UserContext);
   const [feedbackTab, setFeedbackTab] = useState(0);
   const [showDetails, setshowDetails] = useState(false);
   const [existEvolution, setexistEvolution] = useState([]);
   const [isexistevaluation, setisexistevaluation] = useState(false);
-
-  const [application, setapplication] = useState([]);
+  const { user } = useContext(UserContext);
+  const [application, setApplication] = useState([]);
   const [candidates, setCandidate] = useState([]);
 
-  const getApplications = async () => {
-    try {
-      const response = await axios.get('http://localhost:8000/cv/getapplications');
-      setapplication(response.data.applications);
-    } catch (error) {
-      console.error('Error fetching applications:', error);
-    }
-  };
-
-  const getImg = async (user_id) => {
-    try {
-      const response = await axios.get(`http://localhost:8000/evaluation/getimg/${user_id}`);
-      setCandidate(prevState => prevState.map(candidate =>
-        candidate.user_id === user_id ? { ...candidate, image: response.data.image } : candidate
-      ));
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const getPost = async (job_id) => {
-    try {
-      const response = await axios.get(`http://localhost:8000/evaluation/getpost/${job_id}`);
-      setCandidate(prevState => prevState.map(candidate =>
-        candidate.job_id === job_id ? { ...candidate, position: response.data.jobTitle } : candidate
-      ));
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const processApplications = () => {
-    application.forEach(app => {
-      const { job_id, user_id, user_name, user_email } = app;
-      setCandidate(prevState => [...prevState, {
-        job_id,
-        user_id,
-        username: user_name,
-        email: user_email,
-        image: '', // initial placeholder value
-        position: '' // initial placeholder value
-      }]);
-      getImg(user_id);
-      getPost(job_id);
-    });
-  };
-
-  useEffect(() => {
-    getApplications();
-  }, []);
-
-  useEffect(() => {
-    if (application.length > 0) {
-      processApplications();
-    }
-  }, [application]);
-
-  const handleClick = (value) => {
-    setFeedbackTab(value);
-  };
-
-  const { user } = useContext(UserContext);
   const [data, setData] = useState({
     candidatename: "",
     candidateid: "",
@@ -103,6 +40,76 @@ export default function Evaluation() {
     overallcomment: "",
   });
 
+  const handleClick = (value) => {
+    setFeedbackTab(value);
+  };
+
+
+  
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    if (!isNaN(value) && Number(value) >= 0 && Number(value) <= 100) {
+      setData((prevState)=>({
+        ...prevState,
+        [name]: Number(value),
+      }));
+    }
+  };
+
+  const getPost = async (job_id) => {
+    try {
+      const response = await axios.get(`http://localhost:8000/evaluation/getpost/${job_id}`);
+      setCandidate(prevState => prevState.map(candidate =>
+        candidate.job_id === job_id ? { ...candidate, position: response.data.jobTitle } : candidate
+      ));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const getImg = async (user_id) => {
+    try {
+      const response = await axios.get(`http://localhost:8000/evaluation/getimg/${user_id}`);
+      setCandidate(prevState => prevState.map(candidate =>
+        candidate.user_id === user_id ? { ...candidate, image: response.data.image } : candidate
+      ));
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  
+  const getApplications = async () => {
+    try {
+      const response = await axios.get('http://localhost:8000/cv/getapplications');
+      setApplication(response.data.applications);
+      application.map(application => {
+        console.log(application);
+      }
+      );
+    } catch (error) {
+      console.error('Error fetching applications:', error);
+    }
+  };
+
+  const processApplications = () => {
+    application.forEach(app => {
+      const { job_id, user_id, user_name, user_email } = app;
+      setCandidate(prevState => [...prevState, {
+        job_id,
+        user_id,
+        username: user_name,
+        email: user_email,
+        image: '', // initial placeholder value
+        position: '' // initial placeholder value
+      }]);
+      getPost(job_id);
+      getImg(user_id);
+
+    });
+  };
+  
+
   const createEvaluation = async (event) => {
     event.preventDefault();
     try {
@@ -114,35 +121,15 @@ export default function Evaluation() {
         console.error("Error in creating Evaluations");
         toast.error("System Error");
       } else {
-        setData({
-          candidatename: "",
-          candidateid: "",
-          candidateemail: "",
-          interviewername: "",
-          interviewerid: "",
-          problemsolution: 0,
-          languageproficiency: 0,
-          interviewercomments: "",
-          addcomment: 0,
-          collaboration: 0,
-          adoptability: 0,
-          decisionmaking: 0,
-          leadership: 0,
-          clarity: 0,
-          activelistening: 0,
-          empathy: 0,
-          presentationskills: 0,
-          technical: 0,
-          cultural: 0,
-          communication: 0,
-          overallcomment: "",
-        });
+          clear();
         console.log("Evaluations Created Successfully");
         toast.success("Successfully submitted.");
+        console.log(data);
       }
     } catch (error) {
       console.error(error);
       toast.error("All fields must be filled.");
+      console.log(data);
     }
   };
 
@@ -157,72 +144,13 @@ export default function Evaluation() {
         console.error("Error in updating Evaluations");
         toast.error("System Error");
       } else {
-        setData({
-          candidatename: "",
-          candidateid: "",
-          candidateemail: "",
-          interviewername: "",
-          interviewerid: "",
-          problemsolution: 0,
-          languageproficiency: 0,
-          interviewercomments: "",
-          addcomment: 0,
-          collaboration: 0,
-          adoptability: 0,
-          decisionmaking: 0,
-          leadership: 0,
-          clarity: 0,
-          activelistening: 0,
-          empathy: 0,
-          presentationskills: 0,
-          technical: 0,
-          cultural: 0,
-          communication: 0,
-          overallcomment: "",
-        });
+        clear();
         console.log("Evaluations Updated Successfully");
         toast.success("Successfully updated.");
       }
     } catch (error) {
       console.error("Error updating evaluation:", error);
       toast.error("All fields must be filled.");
-    }
-  };
-
-  useEffect(() => {
-    const fetchEvaluation = async () => {
-      if (showDetails && selected) {
-        try {
-          console.log("Fetching evaluation for candidate ID:", selected._id);
-          const response = await axios.get(
-            `http://localhost:8000/evaluation?candidateid=${selected._id}`
-          );
-
-          if (response.data) {
-            setexistEvolution(response.data);
-            setData(response.data);
-          }
-
-          setisexistevaluation(true);
-        } catch (error) {
-          console.error(error);
-          clear();
-          console.log(selected);
-          setisexistevaluation(false);
-        }
-      }
-    };
-
-    fetchEvaluation();
-  }, [showDetails, selected]);
-
-  const handleInputChange = (event) => {
-    const { name, value } = event.target;
-    if (!isNaN(value) && Number(value) >= 0 && Number(value) <= 100) {
-      setData({
-        ...data,
-        [name]: Number(value),
-      });
     }
   };
 
@@ -252,31 +180,88 @@ export default function Evaluation() {
     });
   };
 
-  const setcandidate = () => {
-    if (showDetails) {
-      setData(prevState => ({
-        ...prevState,
-        candidatename: selected.fname,
-        candidateid: selected._id,
-        candidateemail: "@gmail.com"
-      }));
-    }
-  };
-
-  const setinterviewer = () => {
-    if (showDetails) {
-      setData(prevState => ({
-        ...prevState,
-        interviewername: user.fname,
-        interviewerid: user._id
-      }));
-    }
-  };
 
   useEffect(() => {
-    setcandidate();
-    setinterviewer();
-  }, [showDetails, selected]);
+    const fetchEvaluation = async () => {
+      if (showDetails && selected) {
+        try {
+          console.log("Fetching evaluation for candidate ID:", selected.user_id);
+          const response = await axios.get(
+            `http://localhost:8000/evaluation?candidateid=${selected.user_id}`
+          );
+
+          if (response.data) {
+            setexistEvolution(response.data);
+            setData(response.data);
+          }
+
+          setisexistevaluation(true);
+        //  console.log(selected.username);
+        } catch (error) {
+          console.error(error);
+          clear();
+          if (showDetails && selected) {
+            setData((prevState) => ({
+              ...prevState,
+              candidatename: selected.username,
+              candidateid: selected.user_id,
+              candidateemail: selected.email,
+              interviewername: user.fname,
+              interviewerid: user._id,
+            }));
+            console.log("interviewername",data.interviewername);
+          }
+      
+      //    console.log(selected);
+          setisexistevaluation(false);
+        }
+      }
+    };
+
+    if (showDetails && selected) {
+      setData((prevState) => ({
+        ...prevState,
+        candidatename: selected.username,
+        candidateid: selected.user_id,
+        candidateemail: selected.email,
+        interviewername: user.fname,
+        interviewerid: user._id,
+      }));
+      console.log("interviewername",data.interviewername);
+    }
+
+    fetchEvaluation();
+
+     
+    
+
+  }, [showDetails, selected,application]);
+
+  useEffect(() => {
+    getApplications();
+  }, []); // Empty dependency array means it runs once on mount
+
+useEffect(() => {
+  processApplications();
+ 
+},[application]);
+
+
+
+useEffect(() => { 
+  console.log(candidates);
+}
+,[candidates]);
+useEffect(() => { 
+  console.log(data);
+}
+,[data]);
+
+
+
+   
+
+ 
 
   return (
     <div>
@@ -308,12 +293,13 @@ export default function Evaluation() {
                 }`}
               >
                 <div>
-                  {candidates.map(candidate => (
+                  {candidates.map((candidate,index) => (
                     <button
-                      key={candidate.email}
+                      key={index}
                       onClick={() => {
                         setshowDetails(true);
                         setselected(candidate);
+                       
                       }}
                       className={`hover:scale-110 accLabel m-[10px] my-[5px] flex flex-row bg-[#2b2b2b] sm:pl-[5px] items-center rounded-[30px] sm:gap-[4px] esm:w-[110px] esm:h-[25px] 450px:w-[140px] 450px:h-[35px] sm:w-[150px] sm:h-[45px] lg:rounded-[25px] lg:gap-[12px] lg:w-[200px] lg:h-[60px] sm:gap-[6px] sm:w-[180px] sm:h-[50px] sm:rounded-[30px] esm:w-[fit-content] ${
                         showDetails === false ? "lg:w-[500px] justify-between hover:scale-105" : null
@@ -556,7 +542,6 @@ export default function Evaluation() {
                         <div className="p-[20px] m-[20px] rounded-[30px] bg-[#292929]">
                           <textarea
                             name="interviewercomments"
-                            defaultValue="Notes"
                             value={data.interviewercomments}
                             onChange={(e) => {
                               setData((prevData) => ({
