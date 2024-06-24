@@ -4,7 +4,7 @@ import profileImg from '../../../Images/Profile.jpg'
 const Avatar = () => {
   return (
     <div className=" flex flex-col items-center  font-sans mb-3 ">
-      <div className=" h-48 w-48 rounded-full border-2 border-zinc-500 bg-center bg-cover mt-5 mb-4 overflow-hidden ">
+      <div className=" h-[250px] w-[250px] rounded-full border-2 border-zinc-500 bg-center bg-cover mt-5 mb-4 overflow-hidden ">
         <img src={profileImg} alt='prifilepic'/>
       </div>
       <div className='bg-neutral-800 '>

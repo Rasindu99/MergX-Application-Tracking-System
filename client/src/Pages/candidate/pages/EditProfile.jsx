@@ -159,10 +159,12 @@ const EditProfile = () => {
   //   return <div>Loading...</div>;
   // }
 
-  const handleRemoveImage = async () => {
+  const handleRemoveImage = async (e) => {
+    e.preventDefault(e);
     try {
       const response = await axios.put('/candidatedash/editProfile', { image: '' });
       setProfileImage(null);
+      setFormData(response.data);
       console.log('profile Removed',response.data);
     } catch (error) {
       console.error('Error removing profile image:', error);
@@ -213,7 +215,7 @@ const EditProfile = () => {
 
             <div className='container flex flex-col items-between justify-start gap-2 ml-5 bg-neutral-800'>
               <label className='text-neutral-500 font-semibold text-lg bg-neutral-800 w-1/3 text-left'>Gender</label>
-              <div class="radio-tile-group flex justify-between flex-wrap bg-neutral-800 ml-auto">
+              <div className="radio-tile-group flex justify-between flex-wrap bg-neutral-800 ml-auto">
 
                 <div className='input-container relative m-2 w-20 h-11 flex border rounded border-neutral-700 '>
                   <input type="radio" value="male" id="male" {...register("gender")} className='absolute h-full w-full m-0 cursor-pointer z-2 opacity-0' />

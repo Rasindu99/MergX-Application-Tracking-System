@@ -58,17 +58,14 @@ export default function Status() {
   };
 
   return (
-    <div className='items-center'>
-      <div className='pb-8'>
-        <h1 className='text-3xl'>Statuses & Announcements</h1>
-      </div>
+    <div className='items-center h-full w-full overflow-hidden overflow-y-hidden bg-yellow-300'>
+      <div className='flex w-full h-full mx-auto mt-3 bg-orange-500'>
 
-      <div className='flex w-[1400px] h-[700px] mx-auto mt-6'>
-        <div className='border-r w-[700px] border-orange-500'>
-          <div>
+        <div className='border-r w-1/2 h-full bg-slate-400'>
+          <div className='h-1/5'>
             <h1 className='text-2xl opacity-45'>Status</h1>
           </div>
-          <div className='pt-12'>
+          <div className='pt-12 h-4/5'>
             <table className='mx-auto'>
               <tbody>
                 {localStatusData.slice().reverse().map((status, index) => {
@@ -84,15 +81,12 @@ export default function Status() {
             </table>
           </div>
         </div>
-        <div className=' w-[700px]'>
-          <div>
-            <h1 className='text-2xl opacity-45'>Announcements</h1>
-            <div className='flex justify-center pt-2 '>
-              <hr className='w-[200px] justify-center opacity-25'></hr>
-            </div>
 
+        <div className=' w-1/2 h-2/12 overflow-hidden bg-red-200'>
+          <div>
+            <h1 className='text-2xl opacity-45 h-2/5'>Announcements</h1>
           </div>
-          <div className='pt-12'>
+          <div className='overflow-y-auto bg-green-600 h-3/5'>
             <table className='mx-auto'>
               <tbody>
                 {announcementData.slice().reverse().map((announcement, index) => {
@@ -108,7 +102,9 @@ export default function Status() {
             </table>
           </div>
         </div>
+
       </div>
+
       <div>
         <StatusView
           visible={showStatus}
