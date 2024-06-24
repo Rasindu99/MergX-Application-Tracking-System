@@ -18,6 +18,8 @@ export const InterviewContextProvider = ({ children }) => {
   const [updateFlag, setUpdateFlag] = useState(false); // Flag for triggering updates
   const [allInterviews, setAllInterviews] = useState([]);
 
+  const [localStatusData, setLocalStatusData] = useState([]);
+
   const triggerUpdate = () => {
     setUpdateFlag(prev => !prev); // Toggle the flag to trigger an update
   };
@@ -41,7 +43,9 @@ export const InterviewContextProvider = ({ children }) => {
         setReadInterviews,
         allInterviews,
         setAllInterviews,
-        triggerUpdate
+        triggerUpdate,
+        localStatusData, 
+        setLocalStatusData
       }}
     >
       {children}

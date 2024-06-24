@@ -32,7 +32,7 @@ export default function CandidateCommunication() {
                 <div>
                   
                     <div className={` ${state === 1 ? 'bg-gradient-to-b from-[#272727] to-[#17171A] text-white rounded-b-[30px] h-[730px]' : 'hidden'}`}>
-                      <StatusUpdate/>
+                      <StatusUpdate/> 
                     </div>
                     <div className={`  ${state === 2 ? 'bg-gradient-to-b from-[#272727] to-[#17171A] text-white rounded-b-[30px] h-[730px]' : 'hidden'}`}>
                       <SendJobInvitation/>  

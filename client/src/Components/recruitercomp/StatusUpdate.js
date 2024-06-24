@@ -10,6 +10,7 @@ import AnnouncementUpdatePopup from './AnnouncementUpdatePopup';
 import { toast } from 'react-hot-toast';
 import StatusView from '../../Components/candidateComp/StatusView';
 import AnnouncementView from '../../Components/candidateComp/AnnouncementView';
+import { useInterviewContext } from '../../Context/InterviewContext';
 
 export default function StatusUpdate() {
   const { user } = useContext(UserContext);
@@ -25,6 +26,8 @@ export default function StatusUpdate() {
   //access get status and announcement
   const[accesStatusUpdate, setAccessStatusUpdate] = useState(false);
   const[accessAnnouncement,setAccessAnnouncement] = useState(false);
+
+  const { localStatusData, setLocalStatusData } = useInterviewContext();
   
   useEffect(() => {
     // Fetch the current state of status update access from the backend
@@ -134,6 +137,7 @@ export default function StatusUpdate() {
 
       const response = await axios.get('/announcement/getannouncement');
       setAnnouncementData(response.data);
+
     } catch (error) {
       console.error('Error deleting Announcement:',error);
     }
@@ -146,6 +150,10 @@ export default function StatusUpdate() {
         //after deletion, i want refresh my status list
         const response = await axios.get('/status/getstatus');
         setStatusData(response.data);
+
+        const updatedStatus = [...localStatusData, response.data];
+        setLocalStatusData(updatedStatus);
+        window.localStorage.setItem('statusData', JSON.stringify(updatedStatus));
 
         console.log('deleted')
 

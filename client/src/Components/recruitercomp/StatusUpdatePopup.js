@@ -5,9 +5,11 @@ import toast from 'react-hot-toast';
 import dayjs from 'dayjs'; // Import dayjs library
 
 import { UserContext } from '../../Context/UserContext';
+import { useInterviewContext } from '../../Context/InterviewContext';
 
 export default function StatusUpdatePopup({ visible, onClose }) {
     const { user } = useContext(UserContext);
+    const { localStatusData, setLocalStatusData } = useInterviewContext();
 
     const [image, setImage] = useState(null);
     const [data, setData] = useState({
@@ -72,6 +74,11 @@ export default function StatusUpdatePopup({ visible, onClose }) {
                 if (response.data.error) {
                     toast.error(response.data.error);
                 } else {
+
+                    const updatedStatus = [...localStatusData, response.data];
+                    setLocalStatusData(updatedStatus);
+                    window.localStorage.setItem('statusData', JSON.stringify(updatedStatus));
+
                     setData({
                         user_id: 'asd',
                         user_fname: user.fname,

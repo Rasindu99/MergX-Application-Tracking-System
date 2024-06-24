@@ -18,7 +18,7 @@ export default function Candidatedash() {
   };
 
   return (
-    <div className='relative flex'>
+    <div className='relative flex h-full'>
       <Sidebar />
       <RightContainer />
       

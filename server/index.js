@@ -34,6 +34,7 @@ app.use('/chatbot',require('./routes/chatRoutes'));
 app.use('/interview', require('./routes/interviewscheduleRoutes'));
 app.use('/evaluation', require('./routes/evaluationRoutes'));
 app.use('/invitation',require('./routes/jobinterviewinvitationRoutes'));
+app.use('/access',require('./routes/adminaccessRoutes'));
 app.use('/message', messageRoutes);
 app.use('/users', userRoutes);
 app.use('/candidatedash', candidateRoutes); 
