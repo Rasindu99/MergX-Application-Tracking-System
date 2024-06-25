@@ -1,24 +1,24 @@
 // Status.js
-import React, { useContext, useEffect, useState } from 'react';
-import { UserContext } from '../../../Context/UserContext';
+import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
 import StatusView from '../../../Components/candidateComp/StatusView';
 import AnnouncementView from '../../../Components/candidateComp/AnnouncementView';
 import SingleAnouncement from '../../../Components/candidateComp/Status_Page/SingleAnouncement';
 import SingleStatus from '../../../Components/candidateComp/Status_Page/SingleStatus';
 import { useInterviewContext } from '../../../Context/InterviewContext';
+import { UserContext } from '../../../Context/UserContext';
 
 export default function Status() {
-  const { user } = useContext(UserContext);
   
-  const [announcementData, setAnnouncementData] = useState([]);
+  const { user } = useContext(UserContext);
   const [showStatus, setShowStatus] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState(null);
-  const [showAnnouncement, setShowAnnouncement] = useState(false);
+  const [showAnnouncement, setShowAnnouncement] = useState(true);
   const [selectedAnnouncement, setSelectedAnnouncement] = useState(null);
   const [ read, setRead] = useState(false);
 
   const { localStatusData, setLocalStatusData } = useInterviewContext();
+  const { localAnouncementData, setLocalAnouncementData } = useInterviewContext();
 
   const fetchData = async () => {
     try {
@@ -28,9 +28,10 @@ export default function Status() {
       ]);
 
       setLocalStatusData(statusResponse.data);
-      setAnnouncementData(announcementResponse.data);
+      setLocalAnouncementData(announcementResponse.data);
 
       window.localStorage.setItem('statusData', JSON.stringify(localStatusData));
+      window.localStorage.setItem('announcementData', JSON.stringify(localAnouncementData));
 
     } catch (error) {
       console.error('Error fetching data:', error);
@@ -47,7 +48,7 @@ export default function Status() {
     setRead(true);
   };
 
-  const handleViewAnnouncement = (announcements) => {
+  const handleViewAnnouncement = (announcements) =>{
     setSelectedAnnouncement(announcements);
     setShowAnnouncement(true);
   }
@@ -58,54 +59,48 @@ export default function Status() {
   };
 
   return (
-    <div className='items-center h-full w-full overflow-hidden overflow-y-hidden bg-yellow-300'>
-      <div className='flex w-full h-full mx-auto mt-3 bg-orange-500'>
+    <div className='items-center h-full w-full overflow-hidden overflow-y-hidden '>
+      <div className='flex w-full h-full mx-auto '>
 
-        <div className='border-r w-1/2 h-full bg-slate-400'>
-          <div className='h-1/5'>
-            <h1 className='text-2xl opacity-45'>Status</h1>
+        <div className='border-r- w-1/2 h-full border-neutral-700 bg-gradient-to-b from-[#2c2c2c] to-[#181818]'>
+          <div className='flex items-center justify-center h-1/6 '>
+            <h1 className='text-2xl font-bold text-neutral-200'>Status</h1>
           </div>
-          <div className='pt-12 h-4/5'>
-            <table className='mx-auto'>
-              <tbody>
-                {localStatusData.slice().reverse().map((status, index) => {
-                  return (
-                    <SingleStatus
-                      status={status}
-                      index={index}
-                      handleViewStatus={handleViewStatus}
-                    />
-                  );
-                })}
-              </tbody>
-            </table>
+          <div className='h-4/6 '>
+            <div className="mx-auto  w-4/5 overflow-hidden rounded-lg">
+              {localStatusData.slice().reverse().map((status, index) => (
+                <SingleStatus
+                  key={index}
+                  status={status}
+                  index={index}
+                  handleViewStatus={handleViewStatus}
+                />
+              ))}
+            </div>
           </div>
         </div>
 
-        <div className=' w-1/2 h-2/12 overflow-hidden bg-red-200'>
-          <div>
-            <h1 className='text-2xl opacity-45 h-2/5'>Announcements</h1>
+        <div className='w-1/2 h-full'>
+          <div className='flex items-center justify-center h-1/6 bg-neutral-800'>
+            <h1 className='text-2xl font-bold text-neutral-200'>Announcements</h1>
           </div>
-          <div className='overflow-y-auto bg-green-600 h-3/5'>
-            <table className='mx-auto'>
-              <tbody>
-                {announcementData.slice().reverse().map((announcement, index) => {
-                  return (
-                    <SingleAnouncement
-                      announcement={announcement}
-                      index={index}
-                      handleViewAnnouncement={handleViewAnnouncement}
-                    />
-                  );
-                })}
-              </tbody>
-            </table>
+          <div className='overflow-y-auto h-4/6'>
+            <div className='mx-auto w-4/5'>
+              {localAnouncementData.slice().reverse().map((announcement, index) => (
+                <SingleAnouncement
+                  key={index}
+                  announcement={announcement}
+                  index={index}
+                  handleViewAnnouncement={handleViewAnnouncement}
+                />
+              ))}
+            </div>
           </div>
-        </div>
+</div>
 
       </div>
-
-      <div>
+     
+      <div >
         <StatusView
           visible={showStatus}
           onClose={handleModalstatusClose}
@@ -116,7 +111,7 @@ export default function Status() {
         <AnnouncementView
           visible={showAnnouncement}
           onClose={handleModalstatusClose}
-          anouncement={selectedAnnouncement}
+          announcements={selectedAnnouncement}
         />
       </div>
     </div>
