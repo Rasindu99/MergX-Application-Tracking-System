@@ -188,17 +188,17 @@ export default function Evaluation() {
       if (showDetails && selected) {
         try {
           console.log("Fetching evaluation for candidate ID:", selected.user_id);
+          // Include the position in the query string
           const response = await axios.get(
-            `http://localhost:8000/evaluation?candidateid=${selected.user_id}`
+            `http://localhost:8000/evaluation?candidateid=${selected.user_id}&position=${encodeURIComponent(selected.position)}`
           );
-
+    
           if (response.data) {
             setexistEvolution(response.data);
             setData(response.data);
           }
-
+    
           setisexistevaluation(true);
-        //  console.log(selected.username);
         } catch (error) {
           console.error(error);
           clear();
@@ -208,14 +208,13 @@ export default function Evaluation() {
               candidatename: selected.username,
               candidateid: selected.user_id,
               candidateemail: selected.email,
-              position:selected.position,
+              position: selected.position,
               interviewername: user.fname,
               interviewerid: user._id,
             }));
-            console.log("interviewername",data.interviewername);
+            console.log("interviewername", data.interviewername);
           }
-      
-      //    console.log(selected);
+    
           setisexistevaluation(false);
         }
       }

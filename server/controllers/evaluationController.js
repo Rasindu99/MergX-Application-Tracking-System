@@ -98,24 +98,26 @@ const createEvalautions = async (req,res)=>{
 //   }
 // }
 
-const getEvaluation = async (req,res)=>{
-    
-    const { candidateid } = req.query;
-  if (!candidateid) {
-    return res.status(400).json({ error: 'candidateid query parameter is required' });
+const getEvaluation = async (req, res) => {
+  const { candidateid, position } = req.query;
+  if (!candidateid || !position) {
+    return res.status(400).json({ error: 'Both candidateid and position query parameters are required' });
   }
 
   try {
-    const evaluation = await Evaluationmodel.findOne({ candidateid });
+    const evaluation = await Evaluationmodel.findOne({ candidateid, position });
     if (!evaluation) {
       return res.status(404).json({ error: 'Evaluation not found' });
     }
     res.json(evaluation);
   } catch (error) {
+    console.error('Error fetching evaluation:', error);
     res.status(500).json({ error: 'Server error' });
   }
-
 }
+
+
+
 
 const getEvaCandidates = async (req,res)=>{
   try{

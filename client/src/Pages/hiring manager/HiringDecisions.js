@@ -94,7 +94,9 @@ useEffect(() => {
     if (showDetails && selected) { // Check if showDetails is true and selected._id is defined before fetching
       try {
         console.log('Fetching evaluation for candidate ID:', selected.userid); // Debug log
-        const response = await axios.get(`http://localhost:8000/evaluation?candidateid=${selected.userid}`);
+        const response = await axios.get(
+          `http://localhost:8000/evaluation?candidateid=${selected.userid}&position=${encodeURIComponent(selected.post)}`
+        );
         console.log('Evaluation response:', response); // Debug log
         
         if (response.data) {
@@ -130,7 +132,7 @@ const updateEvaluation = async (event) => {
     } else {
      
       console.log("send data to database" ,data);
-      toast.success("Successsfully submitted.");
+      toast.success("Hired");
     }
   } catch (error) {
     console.error("Error updating evaluation:", error);

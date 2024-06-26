@@ -102,7 +102,7 @@ export default function InterviewFeedback() {
         try {
           console.log("Fetching evaluation for candidate ID:", selected.userid); // Debug log
           const response = await axios.get(
-            `http://localhost:8000/evaluation?candidateid=${selected.userid}`
+            `http://localhost:8000/evaluation?candidateid=${selected.userid}&position=${encodeURIComponent(selected.post)}`
           );
           console.log("Evaluation response:", response); // Debug log
 

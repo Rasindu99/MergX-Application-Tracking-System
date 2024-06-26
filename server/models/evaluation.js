@@ -102,7 +102,7 @@ const evaluationSchema = new mongoose.Schema({
     // fill by hiringmanager
     hiringManagerComment:{
         type:String,
-        required : true
+        default:' '
     },
 
     // fill by recruiter
