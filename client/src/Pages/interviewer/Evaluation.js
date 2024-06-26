@@ -20,6 +20,7 @@ export default function Evaluation() {
     candidatename: "",
     candidateid: "",
     candidateemail: "",
+    position:"",
     interviewername: "",
     interviewerid: "",
     problemsolution: 0,
@@ -159,6 +160,7 @@ export default function Evaluation() {
       candidatename: "",
       candidateid: "",
       candidateemail: "",
+      position:"",
       interviewername: "",
       interviewerid: "",
       problemsolution: 0,
@@ -206,6 +208,7 @@ export default function Evaluation() {
               candidatename: selected.username,
               candidateid: selected.user_id,
               candidateemail: selected.email,
+              position:selected.position,
               interviewername: user.fname,
               interviewerid: user._id,
             }));
@@ -224,6 +227,7 @@ export default function Evaluation() {
         candidatename: selected.username,
         candidateid: selected.user_id,
         candidateemail: selected.email,
+        position:selected.position,
         interviewername: user.fname,
         interviewerid: user._id,
       }));

@@ -14,6 +14,8 @@ export default function HiringDecision() {
   const { users, setUsers } = useContext(UserContext);
   const [showDetails,setshowDetails]=useState(false); 
   const [existEvolution, setexistEvolution] = useState([]);
+  const [evoluations, setEvoluations] = useState([]);
+  const [candidates, setCandidate] = useState([]);
   const [data,setData]=useState({
     candidatename:'',
     candidateid:'',
@@ -42,13 +44,57 @@ export default function HiringDecision() {
   });
   
 
+  const getInterviewdCandidates = async () => {
+    try{
+      const resposne = await axios.get('http://localhost:8000/evaluation/getEvaCandidates');
+      setEvoluations(resposne.data);
+      
+    }
+    catch(error){
+      console.error(" Can't get evoluations",error);
+    }
+    };
+  
+      const getImg = async (user_id) => {
+        if (!user_id){
+          console.error("User ID is required");
+          return;
+        }
+      try {
+        const response = await axios.get(`http://localhost:8000/evaluation/getimg/${user_id}`);
+        setCandidate(prevState => prevState.map(candidate =>
+          candidate.userid === user_id ? { ...candidate, image: response.data.image } : candidate
+        ));
+  
+        
+      } catch (error) {
+        console.error(error);
+      }
+    };
+  
+      const processCandidates = async () => {
+      
+      evoluations.forEach((evoluation)=>{
+        const { candidateid, candidatename, candidateemail, position} = evoluation;
+        setCandidate(prevState => [...prevState, {
+          userid:candidateid,
+          username: candidatename,
+          email: candidateemail,
+          image: '', // initial placeholder value
+          post: position // initial placeholder value
+        }]);
+        getImg(candidateid);
+        console.log("Candidates data:",candidates);
+      });
+  
+    };
 
 useEffect(() => {
   const fetchEvaluation = async () => {
     if (showDetails && selected) { // Check if showDetails is true and selected._id is defined before fetching
       try {
-        console.log('Fetching evaluation for candidate ID:', selected._id); // Debug log
-        const response = await axios.get(`http://localhost:8000/evaluation?candidateid=${selected._id}`);
+        console.log('Fetching evaluation for candidate ID:', selected.userid); // Debug log
+        const response = await axios.get(`http://localhost:8000/evaluation?candidateid=${selected.userid}`);
         console.log('Evaluation response:', response); // Debug log
         
         if (response.data) {
@@ -107,6 +153,25 @@ const reject = async (event) => {
   await updateEvaluation(event);
 };
 
+useEffect(()=>{
+  getInterviewdCandidates();
+  
+},[]);
+useEffect(() => {
+  console.log("Evoluations data:",evoluations);
+}
+,[evoluations]);
+
+useEffect(() => {
+  processCandidates();
+}, [evoluations]);
+
+useEffect(() => {
+  console.log("Candidates data:",candidates);
+}
+,[candidates]);
+
+
 
 return (
   <div className='flex w-screen'>
@@ -123,16 +188,16 @@ return (
           <div className={`max-h-[75vh] flex justify-center overflow-y-auto ${showDetails===false ? 'w-[600px]' :null}`}  >
 
           <div>
-    {users.map((user) => (
-      <button key={user._id}  onClick={()=>{setshowDetails(true);setselected(user)}}   className={` hover:scale-110 accLabel m-[10px] my-[5px]  flex flex-row   bg-[#2b2b2b] sm:pl-[5px]  items-center   rounded-[30px]  sm:gap-[4px] esm:w-[110px] esm:h-[25px] 450px:w-[140px] 450px:h-[35px]   sm:w-[150px] sm:h-[45px]  lg:rounded-[25px]  lg:gap-[12px] lg:w-[200px] lg:h-[60px] sm:gap-[6px] sm:w-[180px] sm:h-[50px] sm:rounded-[30px] esm:w-[fit-content] ${showDetails===false ? 'lg:w-[500px] justify-between hover:scale-105' :null}`}>
+    {candidates.map((candidate,index) => (
+      <button k  key={index} onClick={()=>{setshowDetails(true);setselected(candidate)}}   className={` hover:scale-110 accLabel m-[10px] my-[5px]  flex flex-row   bg-[#2b2b2b] sm:pl-[5px]  items-center   rounded-[30px]  sm:gap-[4px] esm:w-[110px] esm:h-[25px] 450px:w-[140px] 450px:h-[35px]   sm:w-[150px] sm:h-[45px]  lg:rounded-[25px]  lg:gap-[12px] lg:w-[200px] lg:h-[60px] sm:gap-[6px] sm:w-[180px] sm:h-[50px] sm:rounded-[30px] esm:w-[fit-content] ${showDetails===false ? 'lg:w-[500px] justify-between hover:scale-105' :null}`}>
            <div className={` ${showDetails===false ? 'flex justify-evenly gap-[12px]' :' flex flex-row  gap-[12px] justify-start'} `}>
-            <img src={user.image} alt="" className='userImg  rounded-[50%] border-[solid] border-[#ffffff] ml-[0.7rem] esm:w-[20px] esm:h-[20px]  450px:w-[30px] 450px:h-[30px]  sm:w-[35px] sm:h-[35px] border-[1.5px]  lg:w-[40px] lg:h-[40px] lg:border-[2px] md:w-[37px] md:h-[37px] md:border-[2px] sm:m-1 esm:m-[3px]' />
+            <img src={candidate.image} alt="" className='userImg  rounded-[50%] border-[solid] border-[#ffffff] ml-[0.7rem] esm:w-[20px] esm:h-[20px]  450px:w-[30px] 450px:h-[30px]  sm:w-[35px] sm:h-[35px] border-[1.5px]  lg:w-[40px] lg:h-[40px] lg:border-[2px] md:w-[37px] md:h-[37px] md:border-[2px] sm:m-1 esm:m-[3px]' />
            <div className='block '>
-           <p className='name text-left text-[#ffffff] mb-[-2px] md:mb-[-4px] text-[0.7rem] lg:text-[1rem]  md:text-[0.9rem] 320px:text-[0.5rem]'>{user.fname} </p>
-            <p className='post text-left text-[#ffffff] opacity-[30%]  mt-[-2px] md:mt-[-4px] text-[0.7rem] lg:text-[1rem]  md:text-[0.9rem] 320px:text-[0.5rem]'>{user.role}</p>
+           <p className='name text-left text-[#ffffff] mb-[-2px] md:mb-[-4px] text-[0.7rem] lg:text-[1rem]  md:text-[0.9rem] 320px:text-[0.5rem]'>{candidate.username} </p>
+            <p className='post text-left text-[#ffffff] opacity-[30%]  mt-[-2px] md:mt-[-4px] text-[0.7rem] lg:text-[1rem]  md:text-[0.9rem] 320px:text-[0.5rem]'>{candidate.post}</p>
            </div>
            </div>
-           <p className={`post ${showDetails === false ? 'block' :'hidden'} mr-[60px] text-[#ffffff] opacity-[30%]  mt-[-2px] md:mt-[-4px] text-[0.7rem] lg:text-[1rem]  md:text-[0.9rem] 320px:text-[0.5rem]`} >System Rank: </p>
+           <p className={`post ${showDetails === false ? 'block' :'hidden'} mr-[60px] text-[#ffffff] opacity-[30%]  mt-[-2px] md:mt-[-4px] text-[0.7rem] lg:text-[1rem]  md:text-[0.9rem] 320px:text-[0.5rem]`} >{candidate.email} </p>
           </button>
     ) )}
 </div>
@@ -145,9 +210,9 @@ return (
         <div  className='flex flex-row py-[20px] justify-center gap-5 border-[grey]  border-b-[2px] '>
               <img src={selected.image} alt="" className=' userImg  rounded-[50%] border-[solid] border-[#ffffff] ml-[0.7rem] esm:w-[20px] esm:h-[20px]  450px:w-[30px] 450px:h-[30px]  sm:w-[35px] sm:h-[35px] border-[1.5px]  lg:w-[100px] lg:h-[100px] lg:border-[2px] md:w-[37px] md:h-[37px] md:border-[2px] sm:m-1 esm:m-[3px]' />
              <div className='details flex flex-col justify-evenly  '>
-              <p className='text-left'>{selected.fname}</p>
-              <p className='text-left text-[#ffffff] opacity-[30%] '>{selected.role}</p>
-              <p className='text-left text-[#ffffff] opacity-[30%] '>System Rank: </p>
+              <p className='text-left'>{selected.username}</p>
+              <p className='text-left text-[#ffffff] opacity-[30%] '>{selected.post}</p>
+              <p className='text-left text-[#ffffff] opacity-[30%] '> Interviewer Name:{data.interviewername}</p>
              </div>
              </div>
          

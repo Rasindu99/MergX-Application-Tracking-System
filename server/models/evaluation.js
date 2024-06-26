@@ -12,6 +12,11 @@ const evaluationSchema = new mongoose.Schema({
         type: String,
         required : true
     },
+    position:{
+        type: String,
+        required : true
+
+    },
     interviewername:{
         type: String,
         required : true
@@ -97,7 +102,7 @@ const evaluationSchema = new mongoose.Schema({
     // fill by hiringmanager
     hiringManagerComment:{
         type:String,
-        default:''
+        required : true
     },
 
     // fill by recruiter

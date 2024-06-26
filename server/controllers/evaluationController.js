@@ -5,14 +5,15 @@ const JobPosting =require('../models/jobposting');
 
 const createEvalautions = async (req,res)=>{
     try{
-        const {candidatename,candidateid,candidateemail,interviewername,interviewerid,problemsolution,languageproficiency,interviewercomments,addcomment,collaboration,adoptability,decisionmaking,leadership,clarity,activelistening,empathy,presentationskills,technical,cultural,communication,overallcomment} = req.body;
-        if(!candidatename || !candidateid || !candidateemail || !interviewername || !interviewerid || !problemsolution || !languageproficiency || !interviewercomments || !addcomment || !collaboration || !adoptability || !decisionmaking || !leadership || !clarity || !activelistening || !empathy || !presentationskills || !technical || !cultural || !communication || !overallcomment){
+        const {candidatename,candidateid,candidateemail,position,interviewername,interviewerid,problemsolution,languageproficiency,interviewercomments,addcomment,collaboration,adoptability,decisionmaking,leadership,clarity,activelistening,empathy,presentationskills,technical,cultural,communication,overallcomment} = req.body;
+        if(!candidatename || !candidateid || !candidateemail || !position || !interviewername || !interviewerid || !problemsolution || !languageproficiency || !interviewercomments || !addcomment || !collaboration || !adoptability || !decisionmaking || !leadership || !clarity || !activelistening || !empathy || !presentationskills || !technical || !cultural || !communication || !overallcomment){
            return res.status(400).json({error:'Missing required fields'})
         };
         const evaluation = await Evaluationmodel.create({
             candidatename,
             candidateid,
             candidateemail,
+            position,
             interviewername,
             interviewerid,
             problemsolution,
@@ -116,6 +117,21 @@ const getEvaluation = async (req,res)=>{
 
 }
 
+const getEvaCandidates = async (req,res)=>{
+  try{
+    const candidates = await Evaluationmodel.find();
+    if(!candidates){
+      return res.status(404).json({error:'Candidates not found'});
+    }
+    res.json(candidates);
+  }
+  catch(error){
+    console.error('Error in getEvaCandidates:', error); // Log the error for debugging
+    res.status(500).json({ error: 'Server error' });
+  }
+}
+
+
 const getimg = async (req, res) => {
   const { _id } = req.params; // Extracting _id from path parameters
 
@@ -160,5 +176,6 @@ module.exports={
     // updateEvaluation,
     getEvaluation,
     getimg,
-    getpost
+    getpost,
+    getEvaCandidates
 }

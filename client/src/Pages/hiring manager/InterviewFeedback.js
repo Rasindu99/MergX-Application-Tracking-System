@@ -13,10 +13,14 @@ export default function InterviewFeedback() {
   const [showDetails, setshowDetails] = useState(false);
   const [feedbackTab, setFeedbackTab] = useState(0);
   const [existEvolution, setexistEvolution] = useState([]);
+  const [evoluations, setEvoluations] = useState([]);
+  const [candidates, setCandidate] = useState([]);
+
   const [data, setData] = useState({
     candidatename: "",
     candidateid: "",
     candidateemail: "",
+    position:"",
     interviewername: "",
     interviewerid: "",
     problemsolution: 0,
@@ -40,24 +44,52 @@ export default function InterviewFeedback() {
     isHired:false
   });
 
-  // useEffect(()=>{
-  //   const getInterviewdCandidates=async()=>{
-  //     try{
-  //       const response = await axios.get('http://localhost:8000/evaluation');
-  //       if(response.data){
-  //         setUsers(response.data);
-  //       }
-  //       if(response.data.error){
-  //         console.error("Error in getting data",response.data.error);
-  //         return toast.error("No evoluation found",response.data.error);
-  //     }}
-  //     catch(error){
-  //       console.error("System error",error);
-  //        return toast.error("System Error");
-  //     }
-  //   }
+
+ const getInterviewdCandidates = async () => {
+  try{
+    const resposne = await axios.get('http://localhost:8000/evaluation/getEvaCandidates');
+    setEvoluations(resposne.data);
     
-  // })
+  }
+  catch(error){
+    console.error(" Can't get evoluations",error);
+  }
+  };
+
+    const getImg = async (user_id) => {
+      if (!user_id){
+        console.error("User ID is required");
+        return;
+      }
+    try {
+      const response = await axios.get(`http://localhost:8000/evaluation/getimg/${user_id}`);
+      setCandidate(prevState => prevState.map(candidate =>
+        candidate.userid === user_id ? { ...candidate, image: response.data.image } : candidate
+      ));
+
+      
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+    const processCandidates = async () => {
+    
+    evoluations.forEach((evoluation)=>{
+      const { candidateid, candidatename, candidateemail, position} = evoluation;
+      setCandidate(prevState => [...prevState, {
+        userid:candidateid,
+        username: candidatename,
+        email: candidateemail,
+        image: '', // initial placeholder value
+        post: position // initial placeholder value
+      }]);
+      getImg(candidateid);
+      console.log("Candidates data:",candidates);
+    });
+
+  };
+
 
   const handleClick = (value) => {
     setFeedbackTab(value);
@@ -68,9 +100,9 @@ export default function InterviewFeedback() {
       if (showDetails && selected) {
         // Check if showDetails is true and selected._id is defined before fetching
         try {
-          console.log("Fetching evaluation for candidate ID:", selected._id); // Debug log
+          console.log("Fetching evaluation for candidate ID:", selected.userid); // Debug log
           const response = await axios.get(
-            `http://localhost:8000/evaluation?candidateid=${selected._id}`
+            `http://localhost:8000/evaluation?candidateid=${selected.userid}`
           );
           console.log("Evaluation response:", response); // Debug log
 
@@ -113,8 +145,26 @@ export default function InterviewFeedback() {
   }
 };
 
+  useEffect(()=>{
+    getInterviewdCandidates();
+    
+  },[]);
+  useEffect(() => {
+    console.log("Evoluations data:",evoluations);
+  }
+  ,[evoluations]);
 
-  
+  useEffect(() => {
+    processCandidates();
+  }, [evoluations]);
+
+  useEffect(() => {
+    console.log("Candidates data:",candidates);
+  }
+  ,[candidates]);
+
+ 
+
 
   return (
     <div className="flex w-screen">
@@ -139,12 +189,12 @@ export default function InterviewFeedback() {
               }`}
             >
               <div>
-                {users.map((user) => (
+                {candidates.map((candidate,index) => (
                   <button
-                    key={user._id}
+                    key={index}
                     onClick={() => {
                       setshowDetails(true);
-                      setselected(user);
+                      setselected(candidate);
                     }}
                     className={` hover:scale-110 accLabel m-[10px] my-[5px]  flex flex-row   bg-[#2b2b2b] sm:pl-[5px]  items-center   rounded-[30px]  sm:gap-[4px] esm:w-[110px] esm:h-[25px] 450px:w-[140px] 450px:h-[35px]   sm:w-[150px] sm:h-[45px]  lg:rounded-[25px]  lg:gap-[12px] lg:w-[200px] lg:h-[60px] sm:gap-[6px] sm:w-[180px] sm:h-[50px] sm:rounded-[30px] esm:w-[fit-content] ${
                       showDetails === false
@@ -160,16 +210,16 @@ export default function InterviewFeedback() {
                       } `}
                     >
                       <img
-                        src={user.image}
+                        src={candidate.image}
                         alt=""
                         className="userImg  rounded-[50%] border-[solid] border-[#ffffff] ml-[0.7rem] esm:w-[20px] esm:h-[20px]  450px:w-[30px] 450px:h-[30px]  sm:w-[35px] sm:h-[35px] border-[1.5px]  lg:w-[40px] lg:h-[40px] lg:border-[2px] md:w-[37px] md:h-[37px] md:border-[2px] sm:m-1 esm:m-[3px]"
                       />
                       <div className="block ">
                         <p className="name text-left text-[#ffffff] mb-[-2px] md:mb-[-4px] text-[0.7rem] lg:text-[1rem]  md:text-[0.9rem] 320px:text-[0.5rem]">
-                          {user.fname}{" "}
+                          {candidate.username}{" "}
                         </p>
                         <p className="post text-left text-[#ffffff] opacity-[30%]  mt-[-2px] md:mt-[-4px] text-[0.7rem] lg:text-[1rem]  md:text-[0.9rem] 320px:text-[0.5rem]">
-                          {user.role}
+                          {candidate.post}
                         </p>
                       </div>
                     </div>
@@ -178,7 +228,7 @@ export default function InterviewFeedback() {
                         showDetails === false ? "block" : "hidden"
                       } mr-[60px] text-[#ffffff] opacity-[30%]  mt-[-2px] md:mt-[-4px] text-[0.7rem] lg:text-[1rem]  md:text-[0.9rem] 320px:text-[0.5rem]`}
                     >
-                      System Rank:{" "}
+                      {candidate.email}
                     </p>
                   </button>
                 ))}
@@ -195,12 +245,12 @@ export default function InterviewFeedback() {
                   className=" userImg  rounded-[50%] border-[solid] border-[#ffffff] ml-[0.7rem] esm:w-[20px] esm:h-[20px]  450px:w-[30px] 450px:h-[30px]  sm:w-[35px] sm:h-[35px] border-[1.5px]  lg:w-[100px] lg:h-[100px] lg:border-[2px] md:w-[37px] md:h-[37px] md:border-[2px] sm:m-1 esm:m-[3px]"
                 />
                 <div className="details flex flex-col justify-evenly  ">
-                  <p className="text-left">{selected.fname}</p>
+                  <p className="text-left">{selected.username}</p>
                   <p className="text-left text-[#ffffff] opacity-[30%] ">
-                    {selected.role}
+                    {selected.post}
                   </p>
                   <p className="text-left text-[#ffffff] opacity-[30%] ">
-                    System Rank:{" "}
+                    Interviewer Name:{data.interviewername}
                   </p>
                 </div>
               </div>
