@@ -3,7 +3,7 @@ const router = express.Router();
 const cors = require('cors');
 const { postaccess, putCreateUserAccount,  getCreateUserAccount, putModifyUserAccount, updateRole, getModifyUserAccount, getupdateRole, getDeleteUserAccount, putDeleteUserAccount } = require('../controllers/adminaccessController');
 const { postrecruiteraccess, putCreateJobPost, putStatusCreate, putCreateAnnouncement, putSendInvitation, getCreatejobpost, getStatusCreate, getCreateAnnouncement, getSendInvitation } = require('../controllers/recruiteraccessController')
-const { postaccesshiringmanager } = require('../controllers/hiringmanageraccessController')
+const { postaccesshiringmanager, putjobapproval, putviewfeedback, putmakedecision } = require('../controllers/hiringmanageraccessController')
 router.use(
     cors({
         credentials: true,
@@ -35,7 +35,9 @@ router.get('/getcreateannouncementaccess',getCreateAnnouncement);
 router.get('/getsendinvitationaccess',getSendInvitation );
 
 //hiringmanager access
-router.post('/posthmaccess', postaccesshiringmanager)
-
+router.post('/posthmaccess', postaccesshiringmanager);
+router.put('/updatejobapproval', putjobapproval);
+router.put('/updateviewfeedback',putviewfeedback)
+router.put('/updatemakedecision', putmakedecision)
 
 module.exports = router;
