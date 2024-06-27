@@ -10,7 +10,7 @@ const interviewScheduleSchema = new mongoose.Schema({
         required: true
     },
     creatorId: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
         required: true
     },
     date: {

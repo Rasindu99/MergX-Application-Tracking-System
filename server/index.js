@@ -5,8 +5,6 @@ const cors = require('cors'); // Middleware for enabling CORS
 const mongoose = require('mongoose'); // MongoDB ORM
 const cookieParser = require('cookie-parser'); // Middleware for parsing cookies
 const JWT = require('jsonwebtoken')
-const feedbackRoute = require('./routes/feedbackRoutes');
-const interviewRoute = require('./routes/interviewRoutes');
 const bodyParser = require('body-parser');
 
 // const Evaluationmodel = require('../server/models/evaluation');
@@ -29,13 +27,13 @@ app.use(express.urlencoded({ limit: '3mb', extended: false })); // Parsing URL-e
 app.use(bodyParser.json());
 // Routes setup
 app.use('/', require('./routes/authRoutes')); // Mounting auth routes
-app.use('/feedback', feedbackRoute);
-app.use('/interview', interviewRoute);
+app.use('/feedback', require('./routes/feedbackRoutes'));
+app.use('/interview', require('./routes/interviewRoutes'));
 app.use('/job',  require('./routes/jobPostingRoutes'));
 app.use('/status', require('./routes/statusRoutes'));
 app.use('/announcement', require('./routes/announcementRoutes'));
 app.use('/chatbot',require('./routes/chatRoutes'));
-app.use('/interview', require('./routes/interviewscheduleRoutes'));
+app.use('/schedule', require('./routes/interviewscheduleRoutes'));
 app.use('/evaluation', require('./routes/evaluationRoutes'));
 app.use('/invitation',require('./routes/jobinterviewinvitationRoutes'));
 app.use('/access',require('./routes/adminaccessRoutes'));
