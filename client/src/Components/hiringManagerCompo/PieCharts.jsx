@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ReactApexChart from 'react-apexcharts';
 
-const PieCharts = ({percentage,topic}) => {
+const InputPieCharts = ({ percentage, topic }) => {
   const intValue = parseInt(percentage, 10);
   const restValue = 100 - intValue;
+
   const [options, setOptions] = useState({
     chart: {
       width: 300,
@@ -21,55 +22,64 @@ const PieCharts = ({percentage,topic}) => {
               show: true,
               showAlways: true,
               label: topic,
-              formatter: function(w) {
+              formatter: function (w) {
                 return w.globals.series[0] + '%';
-              }
+              },
             },
             topic: {
               fontSize: '16px',
               offsetY: 20,
-              formatter: function(val) {
+              formatter: function (val) {
                 return val;
-              }
+              },
             },
             percentage: {
               fontSize: '14px',
               offsetY: -20,
-              formatter: function(val) {
+              formatter: function (val) {
                 return val + '%';
-              }
+              },
             },
-          }
-        }
-      }
+          },
+        },
+      },
     },
     dataLabels: {
-      enabled: false
+      enabled: false,
     },
     fill: {
       type: 'solid',
     },
     colors: ['#EA7122', '#ffffff'],
     legend: {
-      formatter: function(val, opts) {
-        return val + " - " + opts.w.globals.series[opts.seriesIndex]
-      }
+      formatter: function (val, opts) {
+        return val + ' - ' + opts.w.globals.series[opts.seriesIndex];
+      },
     },
     title: {},
-    responsive: [{
-      breakpoint: 480,
-      options: {
-        chart: {
-          width: 200
+    responsive: [
+      {
+        breakpoint: 480,
+        options: {
+          chart: {
+            width: 200,
+          },
+          legend: {
+            position: 'bottom',
+          },
         },
-        legend: {
-          position: 'bottom'
-        }
-      }
-    }],
+      },
+    ],
   });
 
   const [series, setSeries] = useState([intValue, restValue]);
+
+  // Use useEffect to update series when percentage prop changes
+  useEffect(() => {
+    const newIntValue = parseInt(percentage, 10);
+    const newRestValue = 100 - newIntValue;
+    setSeries([newIntValue, newRestValue]);
+  }, [percentage]);
 
   return (
     <div style={{ width: '200px' }}>
@@ -113,6 +123,6 @@ const PieCharts = ({percentage,topic}) => {
       </style>
     </div>
   );
-}
+};
 
-export default PieCharts;
+export default InputPieCharts;

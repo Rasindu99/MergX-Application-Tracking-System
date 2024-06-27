@@ -45,6 +45,11 @@ const applicationSchema = new mongoose.Schema({
         type:Boolean,
         default: false
     }
+    ,isjoined : {
+        type: Boolean,
+        default:false
+    }
+
 });
 
 const Applicationmodel = mongoose.model('Application', applicationSchema);

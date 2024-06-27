@@ -7,9 +7,8 @@ import HiringmanagerNav from '../../Components/hiringManagerCompo/HiringManagerN
 
 
 export default function JobApproval() {
-  const name = "Kavindrika Piyushan";
-  const post = "Hiring Manager";
-  const { jsxNavbar, isOpened } = Navbar({ name, post });
+
+  
   const [jobpostings, setJobPostings] = useState([]);
 
 
@@ -35,12 +34,10 @@ export default function JobApproval() {
       <div className='w-screen lg:ml-[320px] md:ml-72 ml-[260px] '>
 
       <div   >
-            <Topbar
-              msg="Job Approval"
-              name="Piyushan"
-              post="Hiring Manager"
+            <Topbar 
+              title='Job Approval'
             ></Topbar>
-            <div className="content text-white p-[30px] bg-[linear-gradient(180deg,_rgba(43,_43,_43,_0.5)_0%,_rgba(43,_43,_43,_0)_100%)] m-[30px] h-fit rounded-[30px] ">
+            <div className="content text-white p-[30px] bg-[#212121] m-[30px] h-fit rounded-[30px] ">
               <p className="pb-[20px] 320px:text-[0.5rem]  450px:text-[0.8rem] sm:text-[0.9rem]   900px:text-[1.1rem]  1010px:text-[1.2rem] ">
                 Pending jobs
               </p>

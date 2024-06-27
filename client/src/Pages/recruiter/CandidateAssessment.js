@@ -1,200 +1,488 @@
-import React, { useState } from 'react';
-import PostTag from '../../Components/recruitercomp/PostTag.js';
+import React, { useContext, useState, useEffect } from "react";
+import PieCharts from "../../Components/hiringManagerCompo/PieCharts.jsx";
+import axios from "axios";
+import { UserContext } from "../../Context/UserContext.js";
+import { toast } from "react-hot-toast";
+
 // import PieCharts from '../Components/Shared/PieCharts.jsx';
 
 export default function CandidateAssessment() {
 
-  const [state, setState] = useState(1);
-  const action = (index) => {
-    setState(index);
+  const [selected, setselected] = useState(null);
+  const { users, setUsers } = useContext(UserContext);
+  const [showDetails, setshowDetails] = useState(false);
+  const [feedbackTab, setFeedbackTab] = useState(0);
+  const [existEvolution, setexistEvolution] = useState([]);
+  const [evoluations, setEvoluations] = useState([]);
+  const [candidates, setCandidate] = useState([]);
+
+  const [data, setData] = useState({
+    candidatename: "",
+    candidateid: "",
+    candidateemail: "",
+    position:"",
+    interviewername: "",
+    interviewerid: "",
+    problemsolution: 0,
+    languageproficiency: 0,
+    interviewercomments: "",
+    addcomment: 0,
+    collaboration: 0,
+    adoptability: 0,
+    decisionmaking: 0,
+    leadership: 0,
+    clarity: 0,
+    activelistening: 0,
+    empathy: 0,
+    presentationskills: 0,
+    technical: 0,
+    cultural: 0,
+    communication: 0,
+    overallcomment: "",
+    hiringManagerComment: "",
+    recruiterComment: "",
+    isHired:false
+  });
+
+
+ const getInterviewdCandidates = async () => {
+  try{
+    const resposne = await axios.get('http://localhost:8000/evaluation/getEvaCandidates');
+    setEvoluations(resposne.data);
+    
   }
-
-  return (
-
-    <div className='w-full bg-[#191919] pl-5 pr-5 pb-5' >
-      <div className='w-full bg-[#2B2B2B] rounded-[30px]'>
-      <div className="flex">
-      <div className="w-1/4">
-            <div className='candidates flex flex-col gap-[10px] bg-[#1E1E1E] rounded-[30px] esm:p-[10px] 450px:p-[15px] sm:p-[25px] h-[94vh] sm:w-auto 450px:w-[165px] 500px:w-[175px] esm:w-[140px]'>
-              <p className='text-center text-[#FFFFFF] esm:p-[4px] 450px:p-[6px] sm:p-[10px] font-general-sans pt-[0px]'>Interviewed Candidates</p>
-              <PostTag name='Rasindu' post='Software Engineer' ></PostTag>
-            </div>
-          </div>
-          <div className="w-3/4">
-          <div className="details text-white mt-8 pl-8 text-left">
-          <p className="pb-2">Rasindu Ranavaka</p>
-          <p className="pb-2">Software Engineer</p>
-          <p className="pb-2">Interviewers : W.K.Piyushan</p>
-            </div>
-
-            <div className="flex items-center justify-between bg-[#2B2B2B] bg-opacity-90 w-full h-20 text-center text-[15px] mt-4">
-              <div onClick={() => action(1)} className={`text-center flex-1 cursor-pointer ${state === 1 ? 'bg-[#1E1E1E] text-white h-full flex items-center justify-center' : 'text-white opacity-25'}`}>
-                Technical Details
-              </div>
-              <div onClick={() => action(2)} className={`text-center flex-1 cursor-pointer ${state === 2 ? 'bg-[#1E1E1E] text-white h-full flex items-center justify-center' : 'text-white opacity-25'}`}>
-                Cultural Fit
-              </div>
-              <div onClick={() => action(3)} className={`text-center flex-1 cursor-pointer ${state === 3 ? 'bg-[#1E1E1E] text-white h-full flex items-center justify-center' : 'text-white opacity-25'}`}>
-                Communication
-              </div>
-              <div onClick={() => action(4)} className={`text-center flex-1 cursor-pointer ${state === 4 ? 'bg-[#1E1E1E] text-white h-full flex items-center justify-center' : 'text-white opacity-25'}`}>
-                Overall Impression
-              </div>
-            </div>
-
-            <div>
-              <div className={`pl-5 pr-5 pb-5 ${state === 1 ? 'bg-[#1E1E1E] text-white ' : 'hidden'}`}>
-                <TechnicalDetails />
-              </div>
-              <div className={`p-5  ${state === 2 ? 'bg-[#1E1E1E] text-white ' : 'hidden'}`}>
-                <CulturalFit />
-              </div>
-              <div className={`p-5  ${state === 3 ? 'bg-[#1E1E1E] text-white ' : 'hidden'}`}>
-                <Communication />
-              </div>
-              <div className={`p-5  ${state === 4 ? 'bg-[#1E1E1E] text-white' : 'hidden'}`}>
-                <OverallImpression />
-              </div>
-            </div>
-
-            <div className="ml-4 mt-2">
-            <p className="text-white text-[15px]">Add Comment</p>
-              <div className="flex mt-4">
-                <div className="w-3/4">
-                  <textarea rows={3} placeholder='Type Here' className="w-full bg-white bg-opacity-5 border-2 border-white border-opacity-[0.27] rounded-[10px] text-white p-4 outline-none"></textarea>
-                </div>
-                <div className="w-1/4 flex flex-col ml-4"> 
-                  <button className='w-[100px] h-[50px] rounded-[10px] mr-5 bg-[#CC6600] bg-opacity-[0.16] mb-2' >Clear</button>
-                  <button className='bg-[#EA7122] w-[100px] h-[50px] rounded-[10px] mr-5'>Submit</button>
-                </div>
-              </div>
-
-            </div>
-
-          </div>
-        </div>
-      </div>
-    </div>
-  )
-}
-
-function TechnicalDetails() {
-  return (
-    <div>
-    <div className="flex">
-    <div className="w-2/5 flex justify-end">
-        <CircularProgress skilltype="Problem Solution" percentage="60" circleWidth="200"/>
-      </div>
-      <div className="w-3/5 flex justify-center">
-        <CircularProgress skilltype="Language Proficiency" percentage="85" circleWidth="200"/>
-      </div>
-    </div>
-      <div className='w-full'>
-        <textarea rows={3} placeholder='Type Here'   className="w-full bg-white bg-opacity-5 border-2 border-white border-opacity-[0.27] rounded-[10px] text-white p-4 outline-none"></textarea>
-      </div>
-    </div>
-  )
-}
-
-function CulturalFit() {
-  return (
-    <div>
-      <div className="flex justify-between">
-        <CircularProgress skilltype="Problem Solution" percentage="60" circleWidth="180"/>
-        <CircularProgress skilltype="Ability to collaborate effectively with team members" percentage="85" circleWidth="180"/>
-        <CircularProgress skilltype="Adoptability" percentage="60" circleWidth="180"/>
-      </div>
-      <div className='flex'>
-      <div className="w-2/5 flex justify-end">
-          <CircularProgress skilltype="Decision Making Approach" percentage="60" circleWidth="180"/>
-        </div>
-        <div className="w-3/5 flex justify-center">
-          <CircularProgress skilltype="Leadership Style" percentage="85" circleWidth="180"/>
-        </div>
-      </div>
-      <div className='w-full'>
-        <textarea rows={3} placeholder='Type Here' className="w-full bg-white bg-opacity-5 border-2 border-white border-opacity-[0.27] rounded-[10px] text-white p-4 outline-none"></textarea>
-      </div>
-    </div>
-  )
-}
-
-function Communication() {
-  return (
-    <div>
-      <div className="flex justify-between">
-      <CircularProgress skilltype="Clarity" percentage="60" circleWidth="200"/>
-      <CircularProgress skilltype="Active Listening" percentage="60" circleWidth="200"/>
-      <CircularProgress skilltype="Empathy" percentage="60" circleWidth="200"/>
-      <CircularProgress skilltype="Presentation Skills" percentage="60" circleWidth="200"/>
-      </div>
-      <div className='w-full'>
-        <textarea rows={3} placeholder='Type Here' className="w-full bg-white bg-opacity-5 border-2 border-white border-opacity-[0.27] rounded-[10px] text-white p-4 outline-none"></textarea>
-      </div>
-    </div>
-  )
-}
-
-function OverallImpression() {
-  return (
-    <div>
-      <div className="flex justify-between">
-      <CircularProgress skilltype="Technical Details" percentage="60" circleWidth="200"/>
-      <CircularProgress skilltype="Cultural Fit" percentage="60" circleWidth="200"/>
-      <CircularProgress skilltype="Communication" percentage="60" circleWidth="200"/>
-      </div>
-      <div className='w-full'>
-        <textarea rows={3} placeholder='Type Here' className="w-full bg-white bg-opacity-5 border-2 border-white border-opacity-[0.27] rounded-[10px] text-white p-4 outline-none"></textarea>
-      </div>
-    </div>
-  )
-}
-
-const CircularProgress = ({ skilltype, percentage, circleWidth }) => {
-  const radius = 80;
-  const dashArray = radius * Math.PI * 2;
-  const dashOffset = dashArray - (dashArray * percentage) / 100;
-
-  const splitText = (text) => {
-    const words = text.split(' ');
-    const maxLength = 23; // Maximum characters per line
-    let lines = [''];
-    let currentLine = 0;
-
-    words.forEach(word => {
-      if ((lines[currentLine] + ' ' + word).length <= maxLength || lines[currentLine].split(' ').length === 1) {
-        // Add word to current line if it fits within maxLength or if it's the first word of a new line
-        if (lines[currentLine]) {
-          lines[currentLine] += ' ' + word;
-        } else {
-          lines[currentLine] = word;
-        }
-      } else {
-        // Start a new line with the current word
-        lines.push(word);
-        currentLine++;
-      }
-    });
-
-    return lines.map((line, index) => <tspan key={index} x="50%" dy={`${index ? 1 : 0}em`} textAnchor="middle">{line}</tspan>);
+  catch(error){
+    console.error(" Can't get evoluations",error);
+  }
   };
 
-  const skilltypeHeight = splitText(skilltype).length * 0.5;
+    const getImg = async (user_id) => {
+      if (!user_id){
+        console.error("User ID is required");
+        return;
+      }
+    try {
+      const response = await axios.get(`http://localhost:8000/evaluation/getimg/${user_id}`);
+      setCandidate(prevState => prevState.map(candidate =>
+        candidate.userid === user_id ? { ...candidate, image: response.data.image } : candidate
+      ));
+
+      
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+    const processCandidates = async () => {
+    
+    evoluations.forEach((evoluation)=>{
+      const { candidateid, candidatename, candidateemail, position} = evoluation;
+      setCandidate(prevState => [...prevState, {
+        userid:candidateid,
+        username: candidatename,
+        email: candidateemail,
+        image: '', // initial placeholder value
+        post: position // initial placeholder value
+      }]);
+      getImg(candidateid);
+      console.log("Candidates data:",candidates);
+    });
+
+  };
+
+
+  const handleClick = (value) => {
+    setFeedbackTab(value);
+  };
+
+  useEffect(() => {
+    const fetchEvaluation = async () => {
+      if (showDetails && selected) {
+        // Check if showDetails is true and selected._id is defined before fetching
+        try {
+          console.log("Fetching evaluation for candidate ID:", selected.userid); // Debug log
+          const response = await axios.get(
+            `http://localhost:8000/evaluation?candidateid=${selected.userid}&position=${encodeURIComponent(selected.post)}`
+          );
+          console.log("Evaluation response:", response); // Debug log
+
+          if (response.data) {
+            setData(response.data);
+            setexistEvolution(response.data);
+            console.log(" geting data from databse",response.data)
+            // Use response.data directly
+          }
+        } catch (error) {
+          console.error(error);
+          console.log(selected);
+        }
+      }
+    };
+
+    fetchEvaluation();
+  }, [showDetails, selected]);
+
+ //updating evolutions
+
+ const updateEvaluation = async (event) => {
+  event.preventDefault();
+  if(data.recruiterComment.trim() === ""){
+    toast.error("Please enter your comment");
+    return;
+}
+
+  try {
+    const response = await axios.put(
+      `http://localhost:8000/hmfeedback/update/${existEvolution._id}`,
+      data
+    );
+    if (response.data.error) {
+      console.error("Error in updating Evaluations");
+      toast.error("Error.Not updated",response.data.error);
+    } else {
+     
+      console.log("send data to database" ,data);
+      toast.success("Successsfully submitted.");
+    }
+  } catch (error) {
+    console.error("Error updating evaluation:", error);
+    toast.error("System Error");
+  }
+};
+
+  useEffect(()=>{
+    getInterviewdCandidates();
+    
+  },[]);
+  useEffect(() => {
+    console.log("Evoluations data:",evoluations);
+  }
+  ,[evoluations]);
+
+  useEffect(() => {
+    processCandidates();
+  }, [evoluations]);
+
+  useEffect(() => {
+    console.log("Candidates data:",candidates);
+  }
+  ,[candidates]);
+
+ 
+
+
 
 
   return (
-    <div>
-      <svg width={circleWidth} height={circleWidth} viewBox={`0 0 ${circleWidth} ${circleWidth}`}>
-        <circle cx={circleWidth / 2} cy={circleWidth / 2} strokeWidth="15px" r={radius} className="fill-none stroke-[#FFFFFF]" />
-        <circle cx={circleWidth / 2} cy={circleWidth / 2} strokeWidth="15px" r={radius} className="fill-none stroke-[#EA7122]" style={{ strokeDasharray: dashArray, strokeDashoffset: dashOffset, strokeLinecap: "round", strokeLinejoin: "round" }} transform={`rotate(-90 ${circleWidth / 2} ${circleWidth / 2})`}/>
-        <text x="50%" y={`${45 - (skilltypeHeight * 7)}%`} textAnchor="middle" className="font-bold fill-white text-[0.9rem]">
-          {splitText(skilltype)}
-        </text>
-        <text x="50%" y={`${50 + (skilltypeHeight * 4)}%`} dy="1em" textAnchor="middle" className="font-bold fill-white opacity-25">
-          {percentage}%
-        </text>
-      </svg>
+
+    <div
+    className={`content ml-[350px]  text-white flex flex-row p-[0px] h-fit  bg-[#212121] m-[30px]   rounded-[30px] 320px:text-[0.5rem]  450px:text-[0.8rem] sm:text-[0.9rem]   900px:text-[1.1rem]  1010px:text-[1.2rem]  ${
+      showDetails === false ? " justify-center h-[90vh] " : null
+    }`}
+  >
+    <div className="candidates  flex flex-col gap-[10px] bg-[#1E1E1E] rounded-[30px] esm:p-[10px] 450px:p-[15px] sm:p-[25px]  sm:w-auto 450px:w-[165px] 500px:w-[175px] esm:w-[140px]">
+      <p className="text-center text-[#FFFFFF] esm:p-[4px] 450px:p-[6px] sm:p-[10px] font-general-sans pt-[0px]">
+        Interviewed Candidates
+      </p>
+      {/* <PostTag></PostTag> */}
+      <div
+        className={`max-h-[220vh] flex justify-center overflow-y-auto ${
+          showDetails === false ? "w-[600px] max-h-[75vh]" : null
+        }`}
+      >
+        <div>
+          {candidates.map((candidate,index) => (
+            <button
+              key={index}
+              onClick={() => {
+                setshowDetails(true);
+                setselected(candidate);
+              }}
+              className={` hover:scale-110 accLabel m-[10px] my-[5px]  flex flex-row   bg-[#2b2b2b] sm:pl-[5px]  items-center   rounded-[30px]  sm:gap-[4px] esm:w-[110px] esm:h-[25px] 450px:w-[140px] 450px:h-[35px]   sm:w-[150px] sm:h-[45px]  lg:rounded-[25px]  lg:gap-[12px] lg:w-[200px] lg:h-[60px] sm:gap-[6px] sm:w-[180px] sm:h-[50px] sm:rounded-[30px] esm:w-[fit-content] ${
+                showDetails === false
+                  ? "lg:w-[500px] justify-between hover:scale-105"
+                  : null
+              }`}
+            >
+              <div
+                className={` ${
+                  showDetails === false
+                    ? "flex justify-evenly gap-[12px]"
+                    : " flex flex-row  gap-[12px] justify-start"
+                } `}
+              >
+                <img
+                  src={candidate.image}
+                  alt=""
+                  className="userImg  rounded-[50%] border-[solid] border-[#ffffff] ml-[0.7rem] esm:w-[20px] esm:h-[20px]  450px:w-[30px] 450px:h-[30px]  sm:w-[35px] sm:h-[35px] border-[1.5px]  lg:w-[40px] lg:h-[40px] lg:border-[2px] md:w-[37px] md:h-[37px] md:border-[2px] sm:m-1 esm:m-[3px]"
+                />
+                <div className="block ">
+                  <p className="name text-left text-[#ffffff] mb-[-2px] md:mb-[-4px] text-[0.7rem] lg:text-[1rem]  md:text-[0.9rem] 320px:text-[0.5rem]">
+                    {candidate.username}{" "}
+                  </p>
+                  <p className="post text-left text-[#ffffff] opacity-[30%]  mt-[-2px] md:mt-[-4px] text-[0.7rem] lg:text-[1rem]  md:text-[0.9rem] 320px:text-[0.5rem]">
+                    {candidate.post}
+                  </p>
+                </div>
+              </div>
+              <p
+                className={`post ${
+                  showDetails === false ? "block" : "hidden"
+                } mr-[60px] text-[#ffffff] opacity-[30%]  mt-[-2px] md:mt-[-4px] text-[0.7rem] lg:text-[1rem]  md:text-[0.9rem] 320px:text-[0.5rem]`}
+              >
+                {candidate.email}
+              </p>
+            </button>
+          ))}
+        </div>
+      </div>
     </div>
-  );
+
+    {showDetails ? (
+      <div className="description flex flex-col w-full pt-[20px] box-border">
+        <div className="flex flex-row py-[20px] justify-center gap-5 border-[grey]  border-b-[2px] ">
+          <img
+            src={selected.image}
+            alt=""
+            className=" userImg  rounded-[50%] border-[solid] border-[#ffffff] ml-[0.7rem] esm:w-[20px] esm:h-[20px]  450px:w-[30px] 450px:h-[30px]  sm:w-[35px] sm:h-[35px] border-[1.5px]  lg:w-[100px] lg:h-[100px] lg:border-[2px] md:w-[37px] md:h-[37px] md:border-[2px] sm:m-1 esm:m-[3px]"
+          />
+          <div className="details flex flex-col justify-evenly  ">
+            <p className="text-left">{selected.username}</p>
+            <p className="text-left text-[#ffffff] opacity-[30%] ">
+              {selected.post}
+            </p>
+            <p className="text-left text-[#ffffff] opacity-[30%] ">
+              Interviewer Name:{data.interviewername}
+            </p>
+          </div>
+        </div>
+        <div className="">
+          <p className="  bg-[#2b2b2b] pl-[20px] py-[15px]">
+            Interview Feedback
+          </p>
+
+          <div className="flex esm:flex-col md:flex-row esm:text-center  border-[grey]  border-t-[2px]  ">
+            <div
+              className={`technical esm:p-[5px] 450px:p-[10px] sm:p-[15px] w-full m-auto hover:bg-[#1a1919]`}
+              style={{
+                backgroundColor:
+                  feedbackTab === 0 ? "#1a1919" : "#1f1f1f",
+              }}
+              onClick={() => handleClick(0)}
+            >
+              <p>Technical</p>
+            </div>
+            <div
+              className="cultural esm:p-[5px] 450px:p-[10px] sm:p-[15px] w-full m-auto hover:bg-[#1a1919]"
+              style={{
+                backgroundColor:
+                  feedbackTab === 1 ? "#1a1919" : "#1f1f1f",
+              }}
+              onClick={() => handleClick(1)}
+            >
+              <p>Culturel Fit</p>
+            </div>
+            <div
+              className="communication esm:p-[5px] 450px:p-[10px] sm:p-[15px] w-full m-auto hover:bg-[#1a1919]"
+              style={{
+                backgroundColor:
+                  feedbackTab === 2 ? "#1a1919" : "#1f1f1f",
+              }}
+              onClick={() => handleClick(2)}
+            >
+              <p>Communication</p>
+            </div>
+            <div
+              className="overall 450px:p-[10px] esm:p-[5px] sm:p-[15px] w-full m-auto hover:bg-[#1a1919]"
+              style={{
+                backgroundColor:
+                  feedbackTab === 3 ? "#1a1919" : "#1f1f1f",
+              }}
+              onClick={() => handleClick(3)}
+            >
+              <p>Overall</p>
+            </div>
+          </div>
+
+          <div
+            className={` flex flex-col py-[50px]  bg-[#1a1919]   ${
+              feedbackTab === 1 ? "block" : "hidden"
+            } `}
+          >
+            <div className="flex flex-col justify-center gap-48  md:flex-row  pb-[10px]">
+              <div className="flex flex-col mb-[20px]">
+                <PieCharts percentage={data.addcomment}></PieCharts>
+                <p className="text-white m-auto">Add Comment</p>
+              </div>
+              <div className="flex flex-col mb-[20px]">
+                <PieCharts percentage={data.collaboration}></PieCharts>
+                <p className="text-white m-auto">
+                  Effective Collaboration
+                </p>
+              </div>
+            </div>
+
+            <div className="flex flex-col md:flex-row justify-around">
+              <div className="flex flex-col m-auto mb-[20px]">
+                <PieCharts percentage={data.adoptability}></PieCharts>
+                <p className="text-white m-auto">Adoptability</p>
+              </div>
+              <div className="flex flex-col m-auto mb-[20px]">
+                <PieCharts percentage={data.decisionmaking}></PieCharts>
+                <p className="text-white m-auto">Decision Making</p>
+              </div>
+              <div className="flex flex-col m-auto mb-[20px]">
+                <PieCharts percentage={data.leadership}></PieCharts>
+                <p className="text-white m-auto">Leadership Style</p>
+              </div>
+            </div>
+          </div>
+
+          <div
+            className={`flex flex-col  justify-around  py-[50px] bg-[#1a1919]   ${
+              feedbackTab === 0 ? "block" : "hidden"
+            } `}
+          >
+            <div className="flex flex-row">
+              <div className="flex flex-col m-auto mb-[20px]">
+                <PieCharts
+                  percentage={data.problemsolution}
+                  topic="Problem Solution"
+                ></PieCharts>
+                <p className="text-white m-auto">Problem Solution</p>
+              </div>
+              <div className="flex flex-col m-auto mb-[20px]">
+                <PieCharts
+                  percentage={data.languageproficiency}
+                  topic="Language Proficiency"
+                ></PieCharts>
+                <p className="text-white m-auto">Language Proficiency</p>
+              </div>
+            </div>
+          </div>
+
+          <div
+            className={`flex flex-col   justify-around   py-[50px] bg-[#1a1919] ${
+              feedbackTab === 3 ? "block" : "hidden"
+            }`}
+          >
+            {" "}
+            <div className="flex flex-row">
+              <div className="flex flex-col m-auto mb-[20px]">
+                <PieCharts
+                  percentage={data.technical}
+                  topic="Technical details"
+                ></PieCharts>
+                <p className="text-white m-auto">Technical Details</p>
+              </div>
+              <div className="flex flex-col m-auto mb-[20px]">
+                <PieCharts
+                  percentage={data.cultural}
+                  topic="Culteral Fit"
+                ></PieCharts>
+                <p className="text-white m-auto">Culteral Fit </p>
+              </div>
+              <div className="flex flex-col m-auto mb-[20px]">
+                <PieCharts
+                  percentage={data.communication}
+                  topic="Communication"
+                ></PieCharts>
+                <p className="text-white m-auto">Communication</p>
+              </div>
+            </div>
+          </div>
+          <div
+            className={`flex flex-col  py-[50px] bg-[#1a1919]   ${
+              feedbackTab === 2 ? "block" : "hidden"
+            } `}
+          >
+            <div className="flex flex-col  md:flex-row justify-around">
+              <div className="flex flex-col m-auto mb-[20px]">
+                <PieCharts
+                  percentage={data.clarity}
+                  topic="Clarity"
+                ></PieCharts>
+                <p className="text-white m-auto">Clarity</p>
+              </div>
+              <div className="flex flex-col m-auto mb-[20px]">
+                <PieCharts
+                  percentage={data.activelistening}
+                  topic="Active listening"
+                ></PieCharts>
+                <p className="text-white m-auto">Active listening</p>
+              </div>
+
+              <div className="flex flex-col m-auto mb-[20px]">
+                <PieCharts
+                  percentage={data.empathy}
+                  topic="Empathy"
+                ></PieCharts>
+                <p className="text-white m-auto">Empathy</p>
+              </div>
+              <div className="flex flex-col m-auto mb-[20px]">
+                <PieCharts
+                  percentage={data.presentationskills}
+                  topic="Presentation Skill"
+                ></PieCharts>
+                <p className="text-white m-auto">Presenation Skill</p>
+              </div>
+            </div>
+          </div>
+          <div></div>
+
+          <form>
+            <div>
+              <p className="bg-[#2b2b2b] pl-[20px] py-[15px] text-left  border-[grey]  border-y-[2px]">
+                Interview Feedbacks
+              </p>
+              <p className="p-[20px]">Feedbacks</p>
+              <div className="px-[20px] mx-[20px] rounded-[30px] bg-[#292929] ">
+                <p className="bg-[#292929] h-[30vh] w-full border-none outline-none p-[10px] text-left ">
+                  {data.interviewercomments}{" "}
+                </p>
+              </div>
+              <p className="p-[20px]">Additional notes</p>
+              <div className="px-[20px] mx-[20px] rounded-[30px] bg-[#292929] mb-[20px]">
+                <p className="bg-[#292929] h-[30vh] w-full border-none outline-none p-[10px] text-left ">
+                  {" "}
+                  {data.overallcomment}
+                </p>
+              </div>
+            </div>
+           
+            <div>
+              <p className="bg-[#2b2b2b] pl-[20px] py-[15px] text-left  border-[grey]  border-y-[2px]">
+                Enter Your Comment
+              </p>
+              <div className="p-[20px] m-[20px] rounded-[30px] bg-[#292929]">
+                <textarea
+                  name=""
+                  id=""
+                  value={data.recruiterComment}
+                  onChange={(e) => {
+                    setData((prevData) => ({
+                      ...prevData,
+                      recruiterComment: e.target.value,
+                    }));
+                  }}
+                  className="bg-[#292929] h-[30vh] w-full border-none outline-none p-[10px] "
+                />
+              </div>
+            </div>
+            <button
+              type="submit"
+              onClick={updateEvaluation}
+              className="mb-5 float-right esm:mr-[15%] sm:mr-[7%] md:mr-[6%] 900px:mr-[5%] 1010px:mr-[4%] bg-[#EA7122] esm:w-[50px] esm:h-[15px] 350px:w-[60px] 350px:h-[18px] 500px:w-[80px] 500px:h-[20px] sm:w-[100px] sm:h-[25px] md:w-[110px] md:h-[30px] 1010px:w-[120px] 1010px:h-[32px] 1300px:w-[125px] 1300px:h-[34px] xl:w-[130px] xl:h-[35px] rounded-[30px] "
+            >
+              Submit
+            </button>
+          </form>
+
+          <br />
+        </div>
+        {/* <ProgressTimeline  ></ProgressTimeline> */}
+      </div>
+    ) : null}
+  </div>  );
 };
 

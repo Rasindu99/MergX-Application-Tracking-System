@@ -195,12 +195,46 @@ const updateisjoinedtrue = async(req, res) =>{
 
 
 
+const getApplications = async (req, res) => {
+    try {
+      const applications = await Application.find(
+        { isjoined: true }, // Query condition
+        { job_id: 1, user_id: 1, user_name: 1, user_email: 1, _id: 0 } // Field selection
+      );
+      
+      console.log('Applications found:', applications); // Log the result
+  
+      if (applications.length === 0) {
+        console.log('No applications found that match the query conditions.');
+      }
+  
+      res.status(200).json({ applications });
+    } catch (error) {
+      console.error('Error in getting applications:', error);
+      res.status(500).json({ message: 'Failed to get applications' });
+    }
+  };
+
+
+  const getAllApplicationCount = async(req,res)=>{
+    try{
+        const count = await Application.countDocuments({});
+        res.status(200).json({ total: count });
+    }catch(err){
+        res.status(500).json({ error: 'Error counting documents', details: err });
+    }
+  }
+  
+
 module.exports = {
     uploadApplication,
     getApplicationsGroupedByJobId,
     approveApplication,
     rejectApplication,
+    getApplications,
+    rejectApplication,
     getapprovedtruedata,
     getisjoinedtrue,
     updateisjoinedtrue
+
 };

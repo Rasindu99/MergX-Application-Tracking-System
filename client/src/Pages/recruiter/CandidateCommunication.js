@@ -15,7 +15,7 @@ export default function CandidateCommunication() {
     }
 
   return (
-    <div className='  ml-[70px] bg-gradient-to-b from-[#272727] to-[#17171A] rounded-[30px]  h-[800px] w-[1400px] mr-[70px]'>
+    <div className=' ml-[350px]   bg-gradient-to-b from-[#272727] to-[#17171A] rounded-[30px]  h-[800px] w-[1400px] mr-[70px]'>
       
       <div className=''>
             <div className='w-full bg-[#525252] h-200 rounded-[30px]'>

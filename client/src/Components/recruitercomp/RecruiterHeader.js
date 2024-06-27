@@ -20,7 +20,7 @@ const RecruiterHeader = () => {
   };
 
   return (
-    <div className="flex pb-5">
+    <div className="flex pb-5 ml-[350px]">
       <div className="header">
         <p>
           {getGreeting()}, <span>Pramudi</span>

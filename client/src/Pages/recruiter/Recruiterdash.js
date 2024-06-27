@@ -5,7 +5,7 @@ export default function Recruiterdash()
 {
   return (
     <div>
-      <h1 className='text-5xl'>Recruiter</h1>
+      <h1 className=' ml-[350px] text-5xl'>Recruiter</h1>
       <div className='pt-12'>
         <Logout/>
       </div>

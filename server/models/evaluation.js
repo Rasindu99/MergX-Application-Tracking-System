@@ -12,6 +12,11 @@ const evaluationSchema = new mongoose.Schema({
         type: String,
         required : true
     },
+    position:{
+        type: String,
+        required : true
+
+    },
     interviewername:{
         type: String,
         required : true
@@ -93,6 +98,25 @@ const evaluationSchema = new mongoose.Schema({
         type:String,
         required : true
     },
+    
+    // fill by hiringmanager
+    hiringManagerComment:{
+        type:String,
+        default:' '
+    },
+
+    // fill by recruiter
+    recruiterComment:{
+        type:String,
+        default:' '
+    },
+
+    //fill by Hiring manager
+    isHired:{
+        type:Boolean,
+        default:false
+    },
+
 })
 const Evaluationmodel= mongoose.model('evaluation',evaluationSchema);
 module.exports= Evaluationmodel;

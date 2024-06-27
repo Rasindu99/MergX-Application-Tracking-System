@@ -5,7 +5,7 @@ const cors = require('cors');
 const {
     createEvalautions, 
     //  updateEvaluation,
-      getEvaluation } = require('../controllers/evaluationController');
+      getEvaluation,getimg,getpost,getEvaCandidates} = require('../controllers/evaluationController');
 
 router.use(
     cors({
@@ -17,5 +17,8 @@ router.use(
 router.post('/createevaluation',createEvalautions);
 // router.put('/updateevaluation/:_id',updateEvaluation);
 router.get('/',getEvaluation);
+router.get('/getimg/:_id',getimg);
+router.get('/getpost/:_id',getpost);
+router.get('/getEvaCandidates',getEvaCandidates);
 
 module.exports = router;
