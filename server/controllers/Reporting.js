@@ -1,4 +1,5 @@
 const EvaluationModel = require('../models/evaluation');
+const Application = require('../models/application');
 
 const getAllHiredCount = async (req, res) => {
     try {
@@ -30,8 +31,18 @@ const getTotalEvaluationsCount = async (req, res) => {
     }
 };
 
+const getAllApplicationCount = async(req,res)=>{
+    try{
+        const count = await Application.countDocuments({});
+        res.status(200).json({ total: count });
+    }catch(err){
+        res.status(500).json({ error: 'Error counting documents', details: err });
+    }
+  }
+
 module.exports = {
     getAllHiredCount,
     getHiredCountByPosition,
-    getTotalEvaluationsCount
+    getTotalEvaluationsCount,
+    getAllApplicationCount
 };

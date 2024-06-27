@@ -132,7 +132,11 @@ const updateEvaluation = async (event) => {
     } else {
      
       console.log("send data to database" ,data);
+      if(data.isHired===false){
+        toast.error("Rejected");
+      }else{
       toast.success("Hired");
+      }
     }
   } catch (error) {
     console.error("Error updating evaluation:", error);

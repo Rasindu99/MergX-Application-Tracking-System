@@ -163,6 +163,16 @@ const getApplications = async (req, res) => {
       res.status(500).json({ message: 'Failed to get applications' });
     }
   };
+
+
+  const getAllApplicationCount = async(req,res)=>{
+    try{
+        const count = await Application.countDocuments({});
+        res.status(200).json({ total: count });
+    }catch(err){
+        res.status(500).json({ error: 'Error counting documents', details: err });
+    }
+  }
   
 
 module.exports = {
