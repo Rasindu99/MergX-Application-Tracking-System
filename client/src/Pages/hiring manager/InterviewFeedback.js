@@ -126,6 +126,11 @@ export default function InterviewFeedback() {
 
  const updateEvaluation = async (event) => {
   event.preventDefault();
+   if(data.hiringManagerComment===""){
+    toast.error("Please enter your comment");
+    return;
+   }
+
   try {
     const response = await axios.put(
       `http://localhost:8000/hmfeedback/update/${existEvolution._id}`,

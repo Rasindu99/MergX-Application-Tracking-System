@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const cors = require('cors');
-const { uploadApplication, getApplicationsGroupedByJobId, approveApplication, rejectApplication,getApplications} = require('../controllers/applicationController');
+const { uploadApplication, getApplicationsGroupedByJobId, approveApplication, rejectApplication,getApplications,getapprovedtruedata} = require('../controllers/applicationController');
 const upload = require('../helpers/upload');
 
 router.use(
@@ -17,6 +17,7 @@ router.get('/getjobgroup',getApplicationsGroupedByJobId );
 router.put('/approveapplication/:id', approveApplication);
 router.put('/rejectapplication/:id', rejectApplication );
 router.get('/getapplications' ,getApplications)
+router.get('/getapprovedapplication',getapprovedtruedata)
 
 
 

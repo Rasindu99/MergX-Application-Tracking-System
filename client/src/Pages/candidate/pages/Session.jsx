@@ -1,9 +1,10 @@
 import React from 'react'
+import InterviewLinkCard from '../../../Components/candidateComp/InterviewLinkCrad/InterviewLinkCard'
 
 const Session = () => {
   return (
     <div>
-      <h1 className='temp'>Session Page</h1>
+      <InterviewLinkCard/>
     </div>
   )
 }

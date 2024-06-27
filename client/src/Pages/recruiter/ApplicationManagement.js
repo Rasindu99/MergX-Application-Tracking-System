@@ -3,7 +3,7 @@ import ApplicationManagementComp from '../../Components/recruitercomp/Applicatio
 
 export default function ApplicationManagement() {
   return (
-    <div>
+    <div className=' ml-[350px]'>
       <ApplicationManagementComp/>
     </div>
   )
