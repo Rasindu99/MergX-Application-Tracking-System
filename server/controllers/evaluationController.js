@@ -45,6 +45,43 @@ const createEvalautions = async (req,res)=>{
         }
 }
 
+
+const getImage = async (req, res) => {
+ const { _id } = req.params;
+  if (!_id) {
+    return res.status(400).json({ error: 'candidateid query parameter is required' });
+  }
+
+  try {
+    const candidate = await User.findOne({_id},{image:1});
+    if (!candidate) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+    res.json(candidate);
+  } catch (error) {
+    res.status(500).json({ error: 'Server error' });
+  }
+}
+
+const getPost =  async(req,res)=>{
+  const { _id } =req.params;
+  if (!_id) {
+    return res.status(400).json({ error: 'jobid query parameter is required' });
+  }
+
+  try {
+    const job = await jobposting.findOne({ _id },{jobTitle:1});
+    if (!job) {
+      return res.status(404).json({ error: 'Job not found' });
+    }
+    res.json(job);
+  } catch (error) {
+    res.status(500).json({ error: 'Server error' });
+  }
+
+}
+
+
 // const updateEvaluation =  async (req, res) => {
 //   try {
 //     const  _id  = req.params._id.trim();
