@@ -17,7 +17,8 @@ export const SocketContextProvider = ({ children }) => {
   useEffect(() => {
 
     if(authUser) {
-      // This will creates connection with backend server
+      // This will creates connection with backend server / this sends a message to the backend as soon as it is created
+      // backend's 'connection' Event listen to this function to complete as soon as this function complete it sends socket object to backend 
       const socket = io("http://localhost:8000", {
         query: {
           userId: authUser._id,

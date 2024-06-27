@@ -4,7 +4,7 @@ import Description from '../../Components/interviewercomp/InterviewerDes';
 import Home from '../../Components/InternalChatComp/home/Home';
 
 export default function Message() {
-  const name = 'Good Moning, Gangamina';
+  const name = 'Good Morning, Gangamina';
 
   return (
     <div className=''>
@@ -16,7 +16,7 @@ export default function Message() {
           <div className='h-auto bg-blue-300 z-20 w-full'>
             <Description name={name} />
           </div>
-          <div className='flex h-5/6 w-5/6 '>
+          <div className='flex h-5/6 w-5/6 overflow-y-auto'>
             <Home />
           </div>
         </div>

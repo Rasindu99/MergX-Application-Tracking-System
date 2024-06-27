@@ -1,4 +1,5 @@
 const Status = require('../models/status');
+const {io} = require('../socket/socket');
 
 const statusset = (req, res) => {
     res.json('test is working');
@@ -36,6 +37,8 @@ const updatestatus = async (req, res) => {
             image,
             description,
         });
+
+        io.emit('status_update', status);
 
         // Schedule deletion of status after 6 hours
         setTimeout(() => {

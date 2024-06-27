@@ -1,5 +1,5 @@
 // Status.js
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState, useContext, useRef } from 'react';
 import axios from 'axios';
 import StatusView from '../../../Components/candidateComp/StatusView';
 import AnnouncementView from '../../../Components/candidateComp/AnnouncementView';
@@ -7,6 +7,10 @@ import SingleAnouncement from '../../../Components/candidateComp/Status_Page/Sin
 import SingleStatus from '../../../Components/candidateComp/Status_Page/SingleStatus';
 import { useInterviewContext } from '../../../Context/InterviewContext';
 import { UserContext } from '../../../Context/UserContext';
+import {useSocketContext}  from '../../../Context/SocketContext';
+import useListenStatus from '../../../hooks/useListenStatus';
+
+
 
 export default function Status() {
   
@@ -20,6 +24,10 @@ export default function Status() {
   const { localStatusData, setLocalStatusData } = useInterviewContext();
   const { localAnouncementData, setLocalAnouncementData } = useInterviewContext();
 
+  useListenStatus();
+
+  
+
   const fetchData = async () => {
     try {
       const [statusResponse, announcementResponse] = await Promise.all([
@@ -30,17 +38,18 @@ export default function Status() {
       setLocalStatusData(statusResponse.data);
       setLocalAnouncementData(announcementResponse.data);
 
-      window.localStorage.setItem('statusData', JSON.stringify(localStatusData));
-      window.localStorage.setItem('announcementData', JSON.stringify(localAnouncementData));
+      window.localStorage.setItem('statusData', JSON.stringify(statusResponse.data));
+      window.localStorage.setItem('announcementData', JSON.stringify(announcementResponse.data));
 
     } catch (error) {
-      console.error('Error fetching data:', error);
+      console.error('Error fetching data :', error);
     }
   };
 
+
   useEffect(() => {
     fetchData();
-  }, [localStatusData]);
+  }, []);
 
   const handleViewStatus = (status) => {
     setSelectedStatus(status);
@@ -66,7 +75,7 @@ export default function Status() {
           <div className='flex items-center justify-center h-1/6 '>
             <h1 className='text-2xl font-bold text-neutral-200'>Status</h1>
           </div>
-          <div className='h-4/6 '>
+          <div className='overflow-y-auto h-5/6 rounded-lg'>
             <div className="mx-auto  w-4/5 overflow-hidden rounded-lg">
               {localStatusData.slice().reverse().map((status, index) => (
                 <SingleStatus
@@ -85,7 +94,7 @@ export default function Status() {
             <h1 className='text-2xl font-bold text-neutral-200'>Announcements</h1>
           </div>
           <div className='overflow-y-auto h-4/6'>
-            <div className='mx-auto w-4/5'>
+            <div className='mx-auto w-4/5 '>
               {localAnouncementData.slice().reverse().map((announcement, index) => (
                 <SingleAnouncement
                   key={index}
