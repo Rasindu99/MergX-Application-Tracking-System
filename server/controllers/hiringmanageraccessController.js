@@ -106,10 +106,62 @@ const putmakedecision = async(req, res) =>{
     }
 }
 
+//get job approval
+const getjobapproval = async(req, res) => {
+    try {
+        const hiringManagerAccess = await Hiringmanageraccessmodel.findOne();
+        
+        if(! hiringManagerAccess){
+            return res.status(404).json({error: 'hiring manager access not found'});
+        }
+
+        return res.status(200).json({job_approval: hiringManagerAccess.job_approval});
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({error :'server error'});
+    }
+}
+
+//getview feedback
+const getviewfeedback = async(req, res)=>{
+    try {
+        const hiringmanagerAccess = await Hiringmanageraccessmodel.findOne();
+
+        if(!hiringmanagerAccess){
+            return res.status(404).json({error :'hiring manager access not found'});
+        }
+
+        return res.status(200).json({view_feedback: hiringmanagerAccess.view_feedback});
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({error :'server error'});
+    }
+}
+
+//get make decision
+const getmakedecision =async (req, res)=>{
+    try {
+        const hiringmanagerAccess = await Hiringmanageraccessmodel.findOne();
+
+        if(! hiringmanagerAccess){
+            return res.status(404).json({error:'hiring manager access not found'});
+
+        }
+
+        return res.status(200).json({make_decision: hiringmanagerAccess.make_decision});
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({error :'server error'});
+    }
+}
+
 
 module.exports = {
     postaccesshiringmanager,
     putjobapproval,
     putviewfeedback,
-    putmakedecision
+    putmakedecision,
+    getjobapproval,
+    getviewfeedback,
+    getmakedecision
 }
