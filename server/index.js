@@ -44,6 +44,7 @@ app.use('/wishlist', require('./routes/addWishlistRoutes'));
 app.use('/hmfeedback',require('./routes/HmRoutes.js'));
 //app.use('/Protected', require('./routes/ProtectedRoute'));
 // Defining the port for the server to listen on
+app.use('/reporting', require('./routes/ReportingRoutes'));
 
 app.put('/evaluation/updateevaluation/:_id', async (req, res) => {
   try {
