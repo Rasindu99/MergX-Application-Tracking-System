@@ -4,7 +4,7 @@ const cors = require('cors');
 
 
 
-const { uploadApplication, getApplicationsGroupedByJobId, approveApplication, rejectApplication, getapprovedtruedata, getisjoinedtrue, updateisjoinedtrue} = require('../controllers/applicationController');
+const { uploadApplication, getApplicationsGroupedByJobId, getApplications, approveApplication, rejectApplication, getapprovedtruedata, getisjoinedtrue, updateisjoinedtrue} = require('../controllers/applicationController');
 
 const upload = require('../helpers/upload');
 
@@ -21,7 +21,7 @@ router.get('/getjobgroup',getApplicationsGroupedByJobId );
 router.put('/approveapplication/:id', approveApplication);
 router.put('/rejectapplication/:id', rejectApplication );
 
-router.get('/getapplications' ,getApplications)
+router.get('/getapplications' , getApplications)
 router.get('/getapprovedapplication',getapprovedtruedata)
 router.get('/getapprovedisjoinedtrue', getisjoinedtrue);
 
