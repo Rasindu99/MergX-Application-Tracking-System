@@ -126,7 +126,7 @@ export default function InterviewFeedback() {
 
  const updateEvaluation = async (event) => {
   event.preventDefault();
-   if(data.hiringManagerComment===""){
+   if(data.hiringManagerComment.trim()===""){
     toast.error("Please enter your comment");
     return;
    }

@@ -126,10 +126,10 @@ export default function CandidateAssessment() {
 
  const updateEvaluation = async (event) => {
   event.preventDefault();
-   if(data.recruiterComment===" "){
+  if(data.recruiterComment.trim() === ""){
     toast.error("Please enter your comment");
     return;
-   }
+}
 
   try {
     const response = await axios.put(
@@ -176,8 +176,8 @@ export default function CandidateAssessment() {
   return (
 
     <div
-    className={`content ml-[350px]  text-white flex flex-row p-[0px]   bg-[#212121] m-[30px]   rounded-[30px] 320px:text-[0.5rem]  450px:text-[0.8rem] sm:text-[0.9rem]   900px:text-[1.1rem]  1010px:text-[1.2rem] h-[90vh]  ${
-      showDetails === false ? " justify-center" : null
+    className={`content ml-[350px]  text-white flex flex-row p-[0px] h-fit  bg-[#212121] m-[30px]   rounded-[30px] 320px:text-[0.5rem]  450px:text-[0.8rem] sm:text-[0.9rem]   900px:text-[1.1rem]  1010px:text-[1.2rem]  ${
+      showDetails === false ? " justify-center h-[90vh] " : null
     }`}
   >
     <div className="candidates  flex flex-col gap-[10px] bg-[#1E1E1E] rounded-[30px] esm:p-[10px] 450px:p-[15px] sm:p-[25px]  sm:w-auto 450px:w-[165px] 500px:w-[175px] esm:w-[140px]">
