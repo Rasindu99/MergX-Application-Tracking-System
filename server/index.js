@@ -33,7 +33,10 @@ app.use('/job',  require('./routes/jobPostingRoutes'));
 app.use('/status', require('./routes/statusRoutes'));
 app.use('/announcement', require('./routes/announcementRoutes'));
 app.use('/chatbot',require('./routes/chatRoutes'));
+app.use('/interview', require('./routes/interviewscheduleRoutes'));
+//change schedule api ->
 app.use('/schedule', require('./routes/interviewscheduleRoutes'));
+
 app.use('/evaluation', require('./routes/evaluationRoutes'));
 app.use('/invitation',require('./routes/jobinterviewinvitationRoutes'));
 app.use('/access',require('./routes/adminaccessRoutes'));
