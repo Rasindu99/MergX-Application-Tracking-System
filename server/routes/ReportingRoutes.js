@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const cors = require('cors');
-const {getAllHiredCount,getTotalEvaluationsCount,getHiredCountByPosition,getAllApplicationCount,getTotalEvaluationsCountByPosition,getAllApplicationCountByJobId,getJobDetails,getTotalAcceptedApplicationsByPosition} = require('../controllers/Reporting');
+const {getAllHiredCount,getTotalEvaluationsCount,getHiredCountByPosition,getAllApplicationCount,getTotalEvaluationsCountByPosition,getAllApplicationCountByJobId,getJobDetails,getTotalAcceptedApplicationsByPosition,getAllApprovedJobPostingsId,getAllAcceptedApplicationCount} = require('../controllers/Reporting');
 
 router.use(
     cors({
@@ -18,5 +18,7 @@ router.get('/gettotalevaluationscountbyposition/:jobId',getTotalEvaluationsCount
 router.get('/getallapplicationcountbyjobid/:jobId',getAllApplicationCountByJobId);
 router.get('/getjobdetails/:jobid',getJobDetails);
 router.get('/gettotalacceptedapplicationsbyposition/:jobId',getTotalAcceptedApplicationsByPosition);
+router.get('/getallapprovedjobpostingsid',getAllApprovedJobPostingsId);
+router.get('/getallacceptedapplicationcount',getAllAcceptedApplicationCount);
 
 module.exports = router;
