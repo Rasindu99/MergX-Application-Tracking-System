@@ -4,7 +4,7 @@ const cors = require('cors');
 
 
 
-const { uploadApplication, getApplicationsGroupedByJobId, approveApplication, rejectApplication, getapprovedtruedata, getisjoinedtrue, updateisjoinedtrue} = require('../controllers/applicationController');
+const { uploadApplication, getApplicationsGroupedByJobId, approveApplication, rejectApplication, getapprovedtruedata, getisjoinedtrue,getApplications} = require('../controllers/applicationController');
 
 const upload = require('../helpers/upload');
 
