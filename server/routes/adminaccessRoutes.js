@@ -4,6 +4,7 @@ const cors = require('cors');
 const { postaccess, putCreateUserAccount,  getCreateUserAccount, putModifyUserAccount, updateRole, getModifyUserAccount, getupdateRole, getDeleteUserAccount, putDeleteUserAccount } = require('../controllers/adminaccessController');
 const { postrecruiteraccess, putCreateJobPost, putStatusCreate, putCreateAnnouncement, putSendInvitation, getCreatejobpost, getStatusCreate, getCreateAnnouncement, getSendInvitation } = require('../controllers/recruiteraccessController')
 const { postaccesshiringmanager, putjobapproval, putviewfeedback, putmakedecision, getjobapproval, getviewfeedback, getmakedecision } = require('../controllers/hiringmanageraccessController')
+const { postintervieweraccees, putInterviewScheduling, putJoinInterview, putSubmitEvaluation, putFeedbackSubmission, getInterviewScheduling, getJoinInterview, getSubmitEvaluation, getFeedbackSubmission } = require('../controllers/intervieweraccessController');
 router.use(
     cors({
         credentials: true,
@@ -42,6 +43,19 @@ router.put('/updatemakedecision', putmakedecision);
 
 router.get('/getjobapproval',getjobapproval);
 router.get('/getviewfeedback',getviewfeedback);
-router.get('/getmakedecision', getmakedecision)
+router.get('/getmakedecision', getmakedecision);
+
+//interviewer access
+router.post('/postintervieweraccess',postintervieweraccees);
+
+router.put('/createinterviewschedule', putInterviewScheduling);
+router.put('/joininterview',putJoinInterview );
+router.put('/submitevalution', putSubmitEvaluation);
+router.put('/feedbacksubmission', putFeedbackSubmission);
+
+router.get('/interviewscheduleget',getInterviewScheduling);
+router.get('/joininterviewget', getJoinInterview);
+router.get('/submitevalutionget', getSubmitEvaluation);
+router.get('/feedbacksubmissionget',getFeedbackSubmission);
 
 module.exports = router;
