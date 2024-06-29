@@ -11,7 +11,7 @@ export default function Layout() {
       <RecruiterNav />
       <div className='flex-1'>
         <RecruiterHeader />
-        <div>{<Outlet />}</div>
+        <div className='pt-20'>{<Outlet />}</div>
       </div>
     </div>
   )
