@@ -67,9 +67,80 @@ const getHiredCountByPosition = async (jobId) => {
 
 }
 
+// facedcountbyposition
+
+const getTotalEvaluationsCountByPosition = async (jobId) => {
+  try{
+      const response = await axios.get(`/reporting/gettotalevaluationscountbyposition/${jobId}`);  
+      setsource(prevState=>({...prevState, facedcountbyposition:response.data.count}));
+  }
+  catch(error){
+    console.log('Error fetching faced count by position:', error);
+  }
+}
+
+// totalsubmittedapplications
+
+const getAllApplicationCount = async () => {
+  try{
+     const response = await axios.get('/reporting/getallapplicationcount');
+      setsource(prevState=>({...prevState, totalsubmittedapplications:response.data.total}));
+  }catch(error){
+    console.log('Error fetching all application count:', error);
+  
+  }
+}
+
+// submittedapplicationsbyposition
+
+const getAllApplicationCountByJobId = async (jobId) => {
+  try{
+    const response = await axios.get(`/reporting/getallapplicationcountbyjobid/${jobId}`);
+    setsource(prevState=>({...prevState, submittedapplicationsbyposition:response.data.count}));
+
+  }catch(error){
+    console.log('Error fetching submitted applications by position:', error);
+  }
+}
+
+// totalacceptedapplications
+const getAllAcceptedApplicationCount = async () => {
+  try{
+        const response = await axios.get('/reporting/getallacceptedapplicationcount');
+        setsource(prevState=>({...prevState, totalacceptedapplications:response.data.total}));
+  }
+  catch(error){
+    console.log('Error fetching all accepted application count:', error);
+  }
+}
+
+// acceptedapplicationsbyposition
+const getTotalAcceptedApplicationsByPosition = async (jobId) => {
+  try{
+      const response = await axios.get(`/reporting/gettotalacceptedapplicationsbyposition/${jobId}`);
+      setsource(prevState=>({...prevState, acceptedapplicationsbyposition:response.data.count}));
+  }catch(error){
+    console.log('Error fetching accepted applications by position:', error);
+  }
+}
+
+// get job details
+const getJobDetails = async (jobId) => {
+
+  try{
+    const response = await axios.get(`/reporting/getjobdetails/${jobId}`);
+    setsource(prevState=>({...prevState, salary:response.data.salary, vacancies:response.data.vacancies, createdAt:response.data.createdAt, updatedAt:response.data.updatedAt}));
+  }catch(error){
+    console.log('Error fetching job details:', error);
+  }
+}
+
  useEffect(()=>{
   getApprovedJobs();
   getAllHiredCount();
+  getAllApplicationCount();
+  getAllAcceptedApplicationCount();
+  
   
  },[]);
 
@@ -82,6 +153,11 @@ const getHiredCountByPosition = async (jobId) => {
           console.log('Selected job:', selectedJob);
           if(selectedJob){
             getHiredCountByPosition(selectedJob._id);
+            getTotalEvaluationsCountByPosition(selectedJob._id);
+            getAllApplicationCountByJobId(selectedJob._id);
+            getJobDetails(selectedJob._id);
+            getTotalAcceptedApplicationsByPosition(selectedJob._id);
+
           }
  },[selectedJob]);
 
@@ -124,15 +200,15 @@ const getHiredCountByPosition = async (jobId) => {
 
         <div className='description flex flex-col w-full pt-[20px] box-border mb-[20px]'>
              <div className='details flex flex-row justify-around pb-[20px] '>
-             <CardEsm name="Hire" val="4 " numSize={'0.8rem'}/>
-             <CardEsm name="Applications per hire" val="2 " numSize='20px'/>
-             <CardEsm name="Days to hire" val="4 " numSize='20px'/>
+             <CardEsm name="Hired" val={source.hiredcountbyposition} numSize={'0.8rem'}/>
+             <CardEsm name="Approved Applications" val={source.acceptedapplicationsbyposition} numSize='20px'/>
+             <CardEsm name="vacancies" val={source.vacancies-source.hiredcountbyposition} numSize='20px'/>
              </div>
 
              <p className='bg-[#242424] pl-[20px] pt-[10px] pb-[10px] rounded-[20px]'>Recruitment Funnel</p>
              
              <div>
-           <BarChart></BarChart>
+           <BarChart vacancies={source.vacancies} hired={source.hiredcountbyposition} faced={source.facedcountbyposition} accepted={source.acceptedapplicationsbyposition} totalapp={source.submittedapplicationsbyposition} ></BarChart>
            </div>  
            <p className='bg-[#242424] pl-[20px] pt-[10px] pb-[10px] rounded-[20px]'>Recruitment Timeline(Days to Hire)</p>
            <p className='pl-[20px] pt-[20px] pb-[20px]'>Total days to Hire</p>
