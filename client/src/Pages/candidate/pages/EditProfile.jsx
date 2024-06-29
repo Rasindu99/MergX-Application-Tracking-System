@@ -31,8 +31,8 @@ const EditProfile = () => {
   const [profileImage, setProfileImage] = useState(null);
 
   const schema = yup.object().shape({
-    fname: yup.string().required("First Name is required"),
-    lname: yup.string().required("Second Name is required"),
+    fname: yup.string().required("First Name is required").matches(/^[A-Za-z\s]+$/, "First Name can only contain letters and spaces"),
+    lname: yup.string().required("Second Name is required").matches(/^[A-Za-z\s]+$/, "First Name can only contain letters and spaces"),
     email: yup.string().email("Invalid email").required("Email is required"),
     phone_number: yup
       .string()
@@ -182,14 +182,14 @@ const EditProfile = () => {
               <label className='text-neutral-500 font-semibold text-lg bg-neutral-800 w-1/3 text-left'>First Name </label>
               <input type="text" placeholder='FirstName' {...register("fname")}
                 className='px-3 py-2 text-white transition duration-200 border border-neutral-700 rounded bg-neutral-600 bg-opacity-10 focus:outline-none focus:bg-neutral-600 focus:bg-opacity-30 focus:border-1 focus:border-neutral-400' />
-              <p className='text-red-500'>{errors.firstName?.message}</p>
+              <p className='text-red-500'>{errors.fname?.message}</p>
             </div>
 
             <div className='w-full flex iems-center justify-around py-2'>
               <label className='text-neutral-500 font-semibold text-lg bg-neutral-800 w-1/3 text-left'>Last Name</label>
               <input type="text" placeholder='SecondName' {...register("lname")}
                 className='px-3 py-2 text-white transition duration-200 border border-neutral-700 rounded bg-neutral-600 bg-opacity-10 focus:outline-none focus:bg-neutral-600 focus:bg-opacity-30 focus:border-1 focus:border-neutral-400' />
-              <p className='text-red-500'>{errors.secondName?.message}</p>
+              <p className='text-red-500'>{errors.lname?.message}</p>
             </div>
 
             <div className='bg-neutral-800 w-full flex iems-center justify-around py-2'>
@@ -203,7 +203,7 @@ const EditProfile = () => {
               <label className='text-neutral-500 font-semibold text-lg bg-neutral-800 w-1/3 text-left'>Telephone</label>
               <input type="tel" placeholder='Telephone' {...register("phone_number")}
                 className='px-3 py-2 text-white transition duration-200 border border-neutral-700 rounded bg-neutral-600 bg-opacity-10 focus:outline-none focus:bg-neutral-600 focus:bg-opacity-30 focus:border-1 focus:border-neutral-400' />
-              <p className='text-red-500'>{errors.telephone?.message}</p>
+              <p className='text-red-500'>{errors.phone_number?.message}</p>
             </div>
 
             <div className='bg-neutral-800 w-full flex iems-center  py-2 '>
