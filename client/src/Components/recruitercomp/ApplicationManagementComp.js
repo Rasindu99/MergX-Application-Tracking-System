@@ -88,7 +88,7 @@ export default function ApplicationManagementComp() {
       return (
         <div
           key={app._id}
-          className=" flex items-center justify-center pt-2 pb-2 mt-1 mb-2 cursor-pointer"
+          className="flex items-center justify-center pt-2 pb-2 mt-1 mb-2 cursor-pointer"
           onClick={() => handleApplicationClick(app)}
         >
           <div className='flex items-center bg-[#1e1e1e] rounded-2xl w-[250px] justify-center pt-2 pb-2'>
@@ -114,15 +114,17 @@ export default function ApplicationManagementComp() {
   };
 
   return (
-    <div className='mx-[70px] bg-gradient-to-b from-[#272727] to-[#17171A] rounded-[30px] h-[780px] p-8'>
-      <div className='flex justify-between'>
+    <div>
+      <div className='w-full bg-[#191919] pl-5 pr-5' >
+        <div className='w-full bg-[#525252] h-200 rounded-[30px]'>
+          <div className='flex'>
 
         {/* Job List Column */}
-        <div className='w-1/4 '>
-          <div className='h-[60px] bg-[#1b1b1b] rounded-tl-2xl flex items-center justify-center'>
+        <div className='w-1/4  border-solid border-r-[3px]' style={{borderImage: 'linear-gradient(to bottom, #383838,rgb(56, 56, 56,0)) 1'}} >
+          <div className='h-[60px] bg-[#1b1b1b] rounded-tl-[30px] flex items-center justify-center'>
             <h1>Job List</h1>
           </div>
-          <div className='bg-[#1b1b1b]  h-[650px] overflow-y-auto'>
+          <div className='bg-[#1b1b1b] rounded-bl-[30px] h-[730px] overflow-y-auto'>
             {jobGroups.map((jobGroup) => {
               const jobDetail = jobDetails.find(job => job._id === jobGroup.job_id);
               const isSelected = selectedJob === jobGroup.job_id;
@@ -145,11 +147,11 @@ export default function ApplicationManagementComp() {
         </div>
 
         {/* New Applications Column */}
-        <div className='w-1/4 bg-gradient-to-b from-[#272727] to-[#9c9c9c10] bg-opacity-5 border-r border-orange-500'>
+        <div className='w-1/4 bg-[#2B2B2B] border-solid border-r-[3px]' style={{borderImage: 'linear-gradient(to bottom, #383838,rgb(56, 56, 56,0)) 1'}}>
           <div className='h-[60px] bg-[#1b1b1b] flex items-center justify-center'>
             <h1>New</h1>
           </div>
-          <div className='h-[650px]'>
+          <div className='h-[730px]'>
             <div className=' h-[650px] overflow-y-auto'>
               {selectedJob && renderApplications(
                 jobGroups.find(jg => jg.job_id === selectedJob).applications,
@@ -161,7 +163,7 @@ export default function ApplicationManagementComp() {
         </div>
 
         {/* Rejected Applications Column */}
-        <div className='w-1/4  bg-gradient-to-b from-[#272727] to-[#9c9c9c10] bg-opacity-5 border-r border-orange-500'>
+        <div className='w-1/4 bg-[#2B2B2B] border-solid border-r-[3px]' style={{borderImage: 'linear-gradient(to bottom, #383838,rgb(56, 56, 56,0)) 1'}}>
           <div className='h-[60px] bg-[#1b1b1b] flex items-center justify-center'>
             <h1>Rejected</h1>
           </div>
@@ -174,8 +176,8 @@ export default function ApplicationManagementComp() {
         </div>
 
         {/* Accepted Applications Column */}
-        <div className='w-1/4  bg-gradient-to-b from-[#272727] to-[#9c9c9c10] bg-opacity-5 rounded-tr-2xl'>
-          <div className='h-[60px] bg-[#1b1b1b] rounded-tr-2xl flex items-center justify-center'>
+        <div className='w-1/4 bg-[#2B2B2B] rounded-tr-[30px] rounded-br-[30px]'>
+          <div className='h-[60px] bg-[#1b1b1b] rounded-tr-[30px] flex items-center justify-center'>
             <h1>Accepted</h1>
           </div>
           <div className='h-[650px] overflow-y-auto'>
@@ -267,6 +269,8 @@ export default function ApplicationManagementComp() {
           </div>
         )}
 
+</div>
+        </div>
       </div>
     </div>
   );
