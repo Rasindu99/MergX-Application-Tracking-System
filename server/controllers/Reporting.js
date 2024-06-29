@@ -136,7 +136,7 @@ const getTotalAcceptedApplicationsByPosition = async (req, res) => {
 const getJobDetails = async (req, res) => {
     const { jobid } = req.params; // Assuming jobid is passed as a URL parameter
     try {
-        const job = await JobPosting.findOne({ _id: jobid }, 'salary vacancies createdAt updatedAt');
+        const job = await JobPosting.findOne({ _id: jobid }, 'salary vacancies createdAt updatedAt requiredExperience');
         if (!job) {
             return res.status(404).json({ error: 'Job not found' });
         }
