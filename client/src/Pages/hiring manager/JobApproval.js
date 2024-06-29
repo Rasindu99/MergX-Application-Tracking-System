@@ -37,7 +37,7 @@ export default function JobApproval() {
             <Topbar 
               title='Job Approval'
             ></Topbar>
-            <div className="content text-white p-[30px] bg-[#212121] m-[30px] h-fit rounded-[30px] ">
+            <div className="content text-white p-[30px] bg-[#212121] m-[30px]  h-[85vh] rounded-[30px] ">
               <p className="pb-[20px] 320px:text-[0.5rem]  450px:text-[0.8rem] sm:text-[0.9rem]   900px:text-[1.1rem]  1010px:text-[1.2rem] ">
                 Pending jobs
               </p>
