@@ -40,7 +40,7 @@ const SearchInput = () => {
 
 
 	return (
-		<form className='flex items-center gap-5' onSubmit={handleSubmit} >
+		<form className='flex items-center gap-1' onSubmit={handleSubmit} >
 			<div className='flex justify-around items-center w-full relative'>
 				<input
 					type='text'

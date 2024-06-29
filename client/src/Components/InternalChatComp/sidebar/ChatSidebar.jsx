@@ -5,7 +5,7 @@ import SearchInput from '../sidebar/SearchInput';
 
 const ChatSidebar = () => {
   return (
-    <div className='border-r border-slate-700 p-4 w-3/12 flex flex-col bg-[#2a2a2a] opacity-85 h-screen'>
+    <div className='border-r border-slate-700 p-4 w-3/12 flex flex-col bg-[#2a2a2a] opacity-85 h-full overflow-auto'>
       <SearchInput />
       <div className='divider px-3'></div>
       <Conversations />

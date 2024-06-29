@@ -7,16 +7,16 @@ export default function Message() {
   const name = 'Good Morning, Gangamina';
 
   return (
-    <div className=''>
-      <div className='flex'>
+    <div className='h-screen bg-neutral-900'>
+      <div className='flex h-full'>
         <div>
           <InterviewNav />
         </div>
-        <div className='flex flex-col justify-around items-center w-full'>
-          <div className='h-auto bg-blue-300 z-20 w-full'>
+        <div className='flex flex-col justify-around items-center w-full h-full'>
+          <div className='w-full'>
             <Description name={name} />
           </div>
-          <div className='flex h-5/6 w-5/6 overflow-y-auto'>
+          <div className='flex justify-center overflow-y-auto items-center w-11/12 p-12 h-5/6 bg-[#232323] rounded-badge mx-2'>
             <Home />
           </div>
         </div>
