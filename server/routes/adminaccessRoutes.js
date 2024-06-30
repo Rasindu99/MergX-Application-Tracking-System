@@ -5,6 +5,25 @@ const { postaccess, putCreateUserAccount,  getCreateUserAccount, putModifyUserAc
 const { postrecruiteraccess, putCreateJobPost, putStatusCreate, putCreateAnnouncement, putSendInvitation, getCreatejobpost, getStatusCreate, getCreateAnnouncement, getSendInvitation } = require('../controllers/recruiteraccessController')
 const { postaccesshiringmanager, putjobapproval, putviewfeedback, putmakedecision, getjobapproval, getviewfeedback, getmakedecision } = require('../controllers/hiringmanageraccessController')
 const { postintervieweraccees, putInterviewScheduling, putJoinInterview, putSubmitEvaluation, putFeedbackSubmission, getInterviewScheduling, getJoinInterview, getSubmitEvaluation, getFeedbackSubmission } = require('../controllers/intervieweraccessController');
+const {
+    postCandidateAccess,
+    putAssistanceChatbot,
+    putAiChatbot,
+    putEditProfile,
+    putViewStatus,
+    putViewAnnouncement,
+    putAddWishlist,
+    putUploadCv,
+    putJoinInterviews,
+    getAssistanceChatbot,
+    getAiChatbot,
+    getEditProfile,
+    getViewStatus,
+    getViewAnnouncement,
+    getAddWishlist,
+    getUploadCv,
+    getJoinInterviews
+} = require('../controllers/candidateaccessController');
 router.use(
     cors({
         credentials: true,
@@ -57,5 +76,26 @@ router.get('/interviewscheduleget',getInterviewScheduling);
 router.get('/joininterviewget', getJoinInterview);
 router.get('/submitevalutionget', getSubmitEvaluation);
 router.get('/feedbacksubmissionget',getFeedbackSubmission);
+
+//candidate access
+router.post('/postcandidateaccess', postCandidateAccess);
+
+router.put('/updateassistancechatbot', putAssistanceChatbot);
+router.put('/updateaichatbot', putAiChatbot);
+router.put('/updateaditprofile', putEditProfile);
+router.put('/updateviewstatus', putViewStatus);
+router.put('/updateviewannouncement', putViewAnnouncement);
+router.put('/updateaddwishlist', putAddWishlist);
+router.put('/updateuploadcv', putUploadCv);
+router.put('/updatejoininterviews', putJoinInterviews);
+
+router.get('/getassistancechatbot', getAssistanceChatbot);
+router.get('/getaichatbot', getAiChatbot);
+router.get('/geteditprofile', getEditProfile);
+router.get('/getviewstatus', getViewStatus);
+router.get('/getviewannouncement', getViewAnnouncement);
+router.get('/getaddwishlist', getAddWishlist);
+router.get('/getuploadcv', getUploadCv);
+router.get('/getjoininterviews', getJoinInterviews);
 
 module.exports = router;
