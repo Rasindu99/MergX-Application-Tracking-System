@@ -193,7 +193,7 @@ export default function InterviewFeedback() {
                 showDetails === false ? "w-[600px] max-h-[75vh]" : null
               }`}
             >
-              <div>
+              <div className="h-[75vh] overflow-auto overflow-x-hidden">
                 {candidates.map((candidate,index) => (
                   <button
                     key={index}
@@ -242,7 +242,7 @@ export default function InterviewFeedback() {
           </div>
 
           {showDetails ? (
-            <div className="description flex flex-col w-full pt-[20px] box-border">
+            <div className="description flex flex-col w-full pt-[20px] box-border h-[85vh] overflow-auto overflow-x-hidden ">
               <div className="flex flex-row py-[20px] justify-center gap-5 border-[grey]  border-b-[2px] ">
                 <img
                   src={selected.image}
