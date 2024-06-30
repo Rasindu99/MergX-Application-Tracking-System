@@ -82,7 +82,7 @@ router.post('/postcandidateaccess', postCandidateAccess);
 
 router.put('/updateassistancechatbot', putAssistanceChatbot);
 router.put('/updateaichatbot', putAiChatbot);
-router.put('/updateaditprofile', putEditProfile);
+router.put('/updateeditprofile', putEditProfile);
 router.put('/updateviewstatus', putViewStatus);
 router.put('/updateviewannouncement', putViewAnnouncement);
 router.put('/updateaddwishlist', putAddWishlist);

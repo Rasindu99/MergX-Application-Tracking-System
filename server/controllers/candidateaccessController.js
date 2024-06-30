@@ -99,7 +99,7 @@ module.exports = {
     putJoinInterviews: updateField('join_interviews'),
     getAssistanceChatbot: getField('assistance_chatbot'),
     getAiChatbot: getField('ai_chatbot'),
-    getEditProfile: getField('adit_profile'),
+    getEditProfile: getField('edit_profile'),
     getViewStatus: getField('view_status'),
     getViewAnnouncement: getField('view_announcement'),
     getAddWishlist: getField('add_wishlist'),
