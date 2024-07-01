@@ -175,7 +175,7 @@ export default function CandidateAssessment() {
   return (
 
     <div
-    className={`content ml-[350px]  text-white flex flex-row p-[0px] h-fit  bg-[#212121] m-[30px]   rounded-[30px] 320px:text-[0.5rem]  450px:text-[0.8rem] sm:text-[0.9rem]   900px:text-[1.1rem]  1010px:text-[1.2rem]  ${
+    className={`content text-white flex flex-row p-[0px] h-fit  bg-[#212121] m-[30px]   rounded-[30px] 320px:text-[0.5rem]  450px:text-[0.8rem] sm:text-[0.9rem]   900px:text-[1.1rem]  1010px:text-[1.2rem]  ${
       showDetails === false ? " justify-center h-[85vh] " : null
     }`}
   >
