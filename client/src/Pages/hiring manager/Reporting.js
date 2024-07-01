@@ -164,7 +164,7 @@ export default function Dashboard() {
               {jobPostings.map((job, index) => (
                 <button key={index}
                   onClick={() => {setSelectedJob(job); setshowDetails(true);}}
-                  className='hover:scale-110 p-[10px] text-center text-[0.7rem] lg:text-[1rem] md:text-[0.9rem] 320px:text-[0.5rem] border-[1px] border-[solid] border-[grey] hover:bg-[#2b2b2b] m-[10px] my-[5px] items-center rounded-[30px] '>
+                  className='hover:scale-105 p-[10px] text-center text-[0.7rem] lg:text-[1rem] md:text-[0.9rem] 320px:text-[0.5rem] border-[1px] border-[solid] border-[grey] hover:bg-[#2b2b2b] m-[10px] my-[5px] items-center rounded-[30px] '>
                   <p>{job.jobTitle}</p>
                 </button>
               ))}
