@@ -1,6 +1,5 @@
 import React from 'react';
 import ReactApexChart from 'react-apexcharts';
-import ApexCharts from 'apexcharts';
 
 class BarCharts extends React.Component {
   constructor(props) {
@@ -8,7 +7,7 @@ class BarCharts extends React.Component {
 
     this.state = {
       series: [{
-        data: [400, 130, 348, 270, 540]
+        data: [props.vacancies, props.hired, props.faced, props.accepted, props.totalapp]
       }],
       options: {
         chart: {
@@ -25,12 +24,27 @@ class BarCharts extends React.Component {
           enabled: false
         },
         xaxis: {
-          categories: ['Application', 'Phone Screen', 'Interview', 'offer', 'Hire'
-          ],
+          categories: ['Created Vacancies', 'Hired', 'Faced Interview', 'Approved Applications', 'Total Applications'],
         },
         colors: ['#EA7122'] // Change fill color of the bars
       }
     };
+  }
+
+  componentDidUpdate(prevProps) {
+    if (
+      prevProps.vacancies !== this.props.vacancies ||
+      prevProps.hired !== this.props.hired ||
+      prevProps.faced !== this.props.faced ||
+      prevProps.accepted !== this.props.accepted ||
+      prevProps.totalapp !== this.props.totalapp
+    ) {
+      this.setState({
+        series: [{
+          data: [this.props.vacancies, this.props.hired, this.props.faced, this.props.accepted, this.props.totalapp]
+        }]
+      });
+    }
   }
 
   render() {
@@ -76,7 +90,6 @@ class BarCharts extends React.Component {
           .apexcharts-tooltip-text-y-label{
             display:none;
           }
-       
           `}
         </style>
       </div>

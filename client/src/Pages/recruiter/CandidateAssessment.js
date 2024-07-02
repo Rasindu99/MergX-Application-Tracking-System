@@ -4,7 +4,6 @@ import axios from "axios";
 import { UserContext } from "../../Context/UserContext.js";
 import { toast } from "react-hot-toast";
 
-// import PieCharts from '../Components/Shared/PieCharts.jsx';
 
 export default function CandidateAssessment() {
 
@@ -176,8 +175,8 @@ export default function CandidateAssessment() {
   return (
 
     <div
-    className={`content ml-[350px]  text-white flex flex-row p-[0px] h-fit  bg-[#212121] m-[30px]   rounded-[30px] 320px:text-[0.5rem]  450px:text-[0.8rem] sm:text-[0.9rem]   900px:text-[1.1rem]  1010px:text-[1.2rem]  ${
-      showDetails === false ? " justify-center h-[90vh] " : null
+    className={`content text-white flex flex-row p-[0px] h-fit  bg-[#212121] m-[30px]   rounded-[30px] 320px:text-[0.5rem]  450px:text-[0.8rem] sm:text-[0.9rem]   900px:text-[1.1rem]  1010px:text-[1.2rem]  ${
+      showDetails === false ? " justify-center h-[85vh] " : null
     }`}
   >
     <div className="candidates  flex flex-col gap-[10px] bg-[#1E1E1E] rounded-[30px] esm:p-[10px] 450px:p-[15px] sm:p-[25px]  sm:w-auto 450px:w-[165px] 500px:w-[175px] esm:w-[140px]">
@@ -190,7 +189,7 @@ export default function CandidateAssessment() {
           showDetails === false ? "w-[600px] max-h-[75vh]" : null
         }`}
       >
-        <div>
+        <div className="max-h-[700px] overflow-y-auto scrollbar-hidden">
           {candidates.map((candidate,index) => (
             <button
               key={index}
@@ -198,7 +197,7 @@ export default function CandidateAssessment() {
                 setshowDetails(true);
                 setselected(candidate);
               }}
-              className={` hover:scale-110 accLabel m-[10px] my-[5px]  flex flex-row   bg-[#2b2b2b] sm:pl-[5px]  items-center   rounded-[30px]  sm:gap-[4px] esm:w-[110px] esm:h-[25px] 450px:w-[140px] 450px:h-[35px]   sm:w-[150px] sm:h-[45px]  lg:rounded-[25px]  lg:gap-[12px] lg:w-[200px] lg:h-[60px] sm:gap-[6px] sm:w-[180px] sm:h-[50px] sm:rounded-[30px] esm:w-[fit-content] ${
+              className={` hover:scale-108 accLabel m-[10px] my-[5px]  flex flex-row   bg-[#2b2b2b] sm:pl-[5px]  items-center   rounded-[30px]  sm:gap-[4px] esm:w-[110px] esm:h-[25px] 450px:w-[140px] 450px:h-[35px]   sm:w-[150px] sm:h-[45px]  lg:rounded-[25px]  lg:gap-[12px] lg:w-[200px] lg:h-[60px] sm:gap-[6px] sm:w-[180px] sm:h-[50px] sm:rounded-[30px] esm:w-[fit-content] ${
                 showDetails === false
                   ? "lg:w-[500px] justify-between hover:scale-105"
                   : null
@@ -238,8 +237,20 @@ export default function CandidateAssessment() {
       </div>
     </div>
 
+    <style>
+      {`
+        .scrollbar-hidden::-webkit-scrollbar {
+          display: none;
+        }
+        .scrollbar-hidden {
+          scrollbar-width: none; /* Firefox */
+          -ms-overflow-style: none; /* IE and Edge */
+        }
+      `}
+    </style>
+
     {showDetails ? (
-      <div className="description flex flex-col w-full pt-[20px] box-border">
+      <div className="description flex flex-col w-full pt-[20px] box-border max-h-[800px] overflow-y-auto scrollbar-hidden">
         <div className="flex flex-row py-[20px] justify-center gap-5 border-[grey]  border-b-[2px] ">
           <img
             src={selected.image}
@@ -249,10 +260,10 @@ export default function CandidateAssessment() {
           <div className="details flex flex-col justify-evenly  ">
             <p className="text-left">{selected.username}</p>
             <p className="text-left text-[#ffffff] opacity-[30%] ">
-              {selected.post}
+              Position : {selected.post}
             </p>
             <p className="text-left text-[#ffffff] opacity-[30%] ">
-              Interviewer Name:{data.interviewername}
+              Interviewer Name : {data.interviewername}
             </p>
           </div>
         </div>
@@ -263,7 +274,7 @@ export default function CandidateAssessment() {
 
           <div className="flex esm:flex-col md:flex-row esm:text-center  border-[grey]  border-t-[2px]  ">
             <div
-              className={`technical esm:p-[5px] 450px:p-[10px] sm:p-[15px] w-full m-auto hover:bg-[#1a1919]`}
+              className={`technical esm:p-[5px] 450px:p-[10px] sm:p-[15px] w-full m-auto hover:bg-[#1a1919] cursor-pointer`}
               style={{
                 backgroundColor:
                   feedbackTab === 0 ? "#1a1919" : "#1f1f1f",
@@ -273,7 +284,7 @@ export default function CandidateAssessment() {
               <p>Technical</p>
             </div>
             <div
-              className="cultural esm:p-[5px] 450px:p-[10px] sm:p-[15px] w-full m-auto hover:bg-[#1a1919]"
+              className="cultural esm:p-[5px] 450px:p-[10px] sm:p-[15px] w-full m-auto hover:bg-[#1a1919] cursor-pointer"
               style={{
                 backgroundColor:
                   feedbackTab === 1 ? "#1a1919" : "#1f1f1f",
@@ -283,7 +294,7 @@ export default function CandidateAssessment() {
               <p>Culturel Fit</p>
             </div>
             <div
-              className="communication esm:p-[5px] 450px:p-[10px] sm:p-[15px] w-full m-auto hover:bg-[#1a1919]"
+              className="communication esm:p-[5px] 450px:p-[10px] sm:p-[15px] w-full m-auto hover:bg-[#1a1919] cursor-pointer"
               style={{
                 backgroundColor:
                   feedbackTab === 2 ? "#1a1919" : "#1f1f1f",
@@ -293,7 +304,7 @@ export default function CandidateAssessment() {
               <p>Communication</p>
             </div>
             <div
-              className="overall 450px:p-[10px] esm:p-[5px] sm:p-[15px] w-full m-auto hover:bg-[#1a1919]"
+              className="overall 450px:p-[10px] esm:p-[5px] sm:p-[15px] w-full m-auto hover:bg-[#1a1919] cursor-pointer"
               style={{
                 backgroundColor:
                   feedbackTab === 3 ? "#1a1919" : "#1f1f1f",
@@ -433,7 +444,7 @@ export default function CandidateAssessment() {
           <form>
             <div>
               <p className="bg-[#2b2b2b] pl-[20px] py-[15px] text-left  border-[grey]  border-y-[2px]">
-                Interview Feedbacks
+                Interviewer's Feedbacks
               </p>
               <p className="p-[20px]">Feedbacks</p>
               <div className="px-[20px] mx-[20px] rounded-[30px] bg-[#292929] ">
@@ -452,7 +463,7 @@ export default function CandidateAssessment() {
            
             <div>
               <p className="bg-[#2b2b2b] pl-[20px] py-[15px] text-left  border-[grey]  border-y-[2px]">
-                Enter Your Comment
+                Add Comment
               </p>
               <div className="p-[20px] m-[20px] rounded-[30px] bg-[#292929]">
                 <textarea
@@ -465,7 +476,7 @@ export default function CandidateAssessment() {
                       recruiterComment: e.target.value,
                     }));
                   }}
-                  className="bg-[#292929] h-[30vh] w-full border-none outline-none p-[10px] "
+                  className="bg-[#292929] h-[20vh] w-full border-none outline-none p-[10px] "
                 />
               </div>
             </div>

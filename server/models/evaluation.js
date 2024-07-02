@@ -1,4 +1,6 @@
-const mongoose= require('mongoose');
+const mongoose = require('mongoose');
+
+// Update evaluationSchema to include a reference to applicationSchema
 const evaluationSchema = new mongoose.Schema({
     candidatename:{
         type: String,
@@ -17,6 +19,10 @@ const evaluationSchema = new mongoose.Schema({
         required : true
 
     },
+    job_id:{
+        type: String,
+        default:''
+    },
     interviewername:{
         type: String,
         required : true
@@ -26,7 +32,7 @@ const evaluationSchema = new mongoose.Schema({
         required : true
     },
 
-    //Technical Details
+    // Technical Details
     problemsolution:{
         type:Number,
         required : true
@@ -40,7 +46,7 @@ const evaluationSchema = new mongoose.Schema({
         required : true
     },
 
-    //culturalfit
+    // Cultural Fit
     addcomment:{
         type:Number,
         required : true
@@ -62,8 +68,7 @@ const evaluationSchema = new mongoose.Schema({
         required : true
     },
 
-    //communication
-
+    // Communication
     clarity:{
         type:Number,
         required : true
@@ -81,7 +86,7 @@ const evaluationSchema = new mongoose.Schema({
         required : true
     },
 
-    //Overall
+    // Overall
     technical:{
         type:Number,
         required : true
@@ -99,24 +104,26 @@ const evaluationSchema = new mongoose.Schema({
         required : true
     },
     
-    // fill by hiringmanager
+    // Fill by Hiring Manager
     hiringManagerComment:{
         type:String,
         default:' '
     },
 
-    // fill by recruiter
+    // Fill by Recruiter
     recruiterComment:{
         type:String,
         default:' '
     },
 
-    //fill by Hiring manager
+    // Fill by Hiring Manager
     isHired:{
         type:Boolean,
         default:false
     },
 
-})
-const Evaluationmodel= mongoose.model('evaluation',evaluationSchema);
-module.exports= Evaluationmodel;
+    
+});
+
+const Evaluationmodel = mongoose.model('Evaluation', evaluationSchema);
+module.exports = Evaluationmodel;

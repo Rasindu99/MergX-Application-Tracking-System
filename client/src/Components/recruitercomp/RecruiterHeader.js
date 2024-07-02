@@ -1,47 +1,28 @@
-import React from "react";
-// import notification from "../../Images/notification.png";
-// import recruiter from "../../Images/recruiter.png";
+import React, {useContext } from 'react';
+import Popup from '../../Components/interviewercomp/Popup'
+import { MdOutlineNotificationsActive } from "react-icons/md";
+import Greatings from '../../Components/Greatings';
+import { UserContext } from '../../Context/UserContext';
 
 const RecruiterHeader = () => {
-  const currentTime = new Date().getHours();
 
-  const getGreeting = () => {
-    const ampm = currentTime >= 12 ? "PM" : "AM";
-    if (
-      (currentTime >= 5 && currentTime < 12) ||
-      (currentTime === 12 && ampm === "AM")
-    ) {
-      return "Good Morning";
-    } else if (currentTime === 12 || (currentTime === 12 && ampm === "PM")) {
-      return "Good Afternoon";
-    } else {
-      return "Good Evening";
-    }
-  };
+const { user } = useContext(UserContext);
 
   return (
-    <div className="flex pb-5 ml-[350px]">
-      <div className="header">
-        <p>
-          {getGreeting()}, <span>Pramudi</span>
-        </p>
-      </div>
-
-      <header>
-        {/* <div>
-          <img src={notification} alt="" />
+    <div>
+      <div id='header' className='flex justify-between'>
+          <div className='flex w-1/2'>
+            <Greatings/> <p className="text-3xl text-white font-medium ml-2">{user.fname}</p>
+          </div>
+          <div className='flex items-center justify-between'>
+            <MdOutlineNotificationsActive size={50} className="hover:text-white hover:opacity-70 mt-4"/>
+            {!!user && <Popup
+              img = {user.image}
+              name = {user?.fname}
+              role = {user?.role}
+             />}
+          </div>
         </div>
-        <div className="user">
-          <div className="user-img">
-            <img src={recruiter} alt="" />
-          </div>
-
-          <div className="user-txt">
-            <h3>Pramudi</h3>
-            <p>Recruiter</p>
-          </div>
-        </div> */}
-      </header>
     </div>
   );
 };

@@ -30,7 +30,7 @@ export default function JobPosting() {
   }, []);
 
   return (
-    <div className=" ml-[350px]  bg-[#191919] pl-5 pr-5">
+    <div className="w-full bg-[#191919] pl-5 pr-5">
       <div className="w-full bg-[#525252] h-200 rounded-[30px]">
         <div className="flex items-center justify-between bg-[#2B2B2B] bg-opacity-90 w-full h-20 rounded-t-[30px] text-center text-[18px]">
           <div
@@ -69,7 +69,7 @@ export default function JobPosting() {
           <div
             className={`pl-5 pr-5 pb-5 ${
               state === 1
-                ? "bg-[#2B2B2B] text-white rounded-b-[30px]"
+                ? "bg-[#2B2B2B] text-white rounded-b-[30px] h-[730px]"
                 : "hidden"
             }`}
           >
@@ -78,7 +78,7 @@ export default function JobPosting() {
           <div
             className={`p-5  ${
               state === 2
-                ? "bg-[#2B2B2B] text-white rounded-b-[30px]"
+                ? "bg-[#2B2B2B] text-white rounded-b-[30px] h-[730px]"
                 : "hidden"
             }`}
           >
@@ -91,7 +91,7 @@ export default function JobPosting() {
           <div
             className={`p-5  ${
               state === 3
-                ? "bg-[#2B2B2B] text-white rounded-b-[30px]"
+                ? "bg-[#2B2B2B] text-white rounded-b-[30px] h-[730px]"
                 : "hidden"
             }`}
           >
