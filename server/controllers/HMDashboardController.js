@@ -63,12 +63,42 @@ const getTotalVacancies = async (req,res )=>{
       }
 }
 
+const gettodayInterviews = async (req,res)=>{
+    const today = new Date();
+    const startOfDay = new Date(today.setHours(0, 0, 0, 0));
+    const endOfDay = new Date(today.setHours(23, 59, 59, 999));
 
+    try {
+        const count = await InterviewSchedule.countDocuments({
+            date: {
+                $gte: startOfDay,
+                $lt: endOfDay
+            }
+        });
+
+       res.status(200).json({todayInterviews:count});
+    } catch (error) {
+        res.status(500).json({error:"error in get today interviews count",details:error});
+    }
+};
+
+const getcandidatedetails = async (req,res)=>{
+    try{
+        const user = await User.find({role:'candidate'},{_id:0,fname:1,lname:1, email:1 ,phone_number:1,image:1});
+        res.status(200).json({candidatedetails: user});
+    }
+    catch(err){
+        res.status(500).json({error: 'Error counting documents', details: err});
+    }
+
+}
 
 module.exports ={
     getTotalJobPostings,
     getTotalPendingJobs,
     getcandidatecount,
     getTotalVacancies,
-    getEvaluationCount
+    getEvaluationCount,
+    gettodayInterviews,
+    getcandidatedetails
 }

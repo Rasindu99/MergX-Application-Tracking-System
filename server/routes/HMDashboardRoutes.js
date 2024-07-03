@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const cors = require('cors');
-const { getTotalJobPostings,getTotalPendingJobs,getcandidatecount,getTotalVacancies,getEvaluationCount } = require('../controllers/HMDashboardController');
+const { getTotalJobPostings,getTotalPendingJobs,getcandidatecount,getTotalVacancies,getEvaluationCount,gettodayInterviews,getcandidatedetails } = require('../controllers/HMDashboardController');
 
 router.use(
     cors({
@@ -15,6 +15,8 @@ router.get('/totalpendingjobcount', getTotalPendingJobs);
 router.get('/getcandidatecount', getcandidatecount);
 router.get('/totalvacancies', getTotalVacancies);
 router.get('/totalevaluations', getEvaluationCount);
+router.get('/gettodayinterview',gettodayInterviews);
+router.get('/getcandidatedetails',getcandidatedetails);
 
 
 
