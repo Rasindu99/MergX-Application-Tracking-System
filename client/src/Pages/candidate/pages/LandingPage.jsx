@@ -3,6 +3,7 @@ import Card from '../../../Components/candidateComp/LandingPage/Card'
 import AvatarBio from '../../../Components/candidateComp/LandingPage/AvatarBio'
 import Description from '../../../Components/candidateComp/LandingPage/Description'
 import Education from '../../../Components/candidateComp/LandingPage/Education'
+import CardS from '../../../Components/hiringManagerCompo/CardS'
 
 
 const LandingPage = () => {
@@ -14,9 +15,11 @@ const LandingPage = () => {
         <Description />
       </div>
       <div className='flex flex-wrap gap-9 justify-center mb-3'>
-        <Card />
-        <Card />
-        <Card />
+        <CardS name="New Messages" val='6' w={150} h={150} />
+        <CardS name="count" val='6' w={150} h={150} />
+        <CardS name="New Messages" val='6' w={150} h={150} />
+       
+       
       </div>
 
     </div>
