@@ -93,6 +93,66 @@ const getcandidatedetails = async (req,res)=>{
 
 }
 
+const getuserdetails = async (req,res)=>{
+    try{
+        const user = await User.find({},{_id:0,fname:1,lname:1, email:1 ,phone_number:1,image:1,role:1});
+        res.status(200).json({userdetails: user});
+    }
+    catch(err){
+        res.status(500).json({error: 'Error counting documents', details: err});
+    }
+
+
+}
+
+const getadmincount = async (req,res)=>{
+    try{
+        const count = await User.countDocuments({role:'admin'});
+        res.status(200).json({admincount: count});
+
+    }
+    catch(err){
+        res.status(500).json({error: 'Error counting documents', details: err});
+    
+    }
+}
+
+const getrecruitercount = async (req,res)=>{
+    try{
+        const count = await User.countDocuments({role:'recruiter'});
+        res.status(200).json({recruitercount: count});
+
+    }
+    catch(err){
+        res.status(500).json({error: 'Error counting documents', details: err});
+    
+    }
+
+}
+
+const gethiringmanagers = async (req,res)=>{
+    try{
+        const count = await User.countDocuments({role:'hiring manager'});
+        res.status(200).json({hiringmanagercount: count});
+
+    }
+    catch(err){
+        res.status(500).json({error: 'Error counting documents', details: err});
+    
+    }
+
+}
+
+const getinterviewercount = async (req,res)=>{
+    try{
+         const count = await User.countDocuments({role:'interviewer'});
+         res.status(200).json({interviewercount: count});
+    }catch(err){
+        res.status(500).json({error: 'Error counting documents', details: err});
+    }
+}
+
+
 module.exports ={
     getTotalJobPostings,
     getTotalPendingJobs,
@@ -100,5 +160,10 @@ module.exports ={
     getTotalVacancies,
     getEvaluationCount,
     gettodayInterviews,
-    getcandidatedetails
+    getcandidatedetails,
+    getuserdetails,
+    getadmincount,
+    getrecruitercount,
+    gethiringmanagers,
+    getinterviewercount
 }
