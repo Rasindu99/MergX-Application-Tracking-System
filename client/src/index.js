@@ -12,7 +12,8 @@ import { SocketContextProvider } from './Context/SocketContext';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <BrowserRouter>
-    <React.StrictMode>
+
+    {/* // <React.StrictMode> */}
       <AuthContextProvider>
         <SocketContextProvider>
           <InterviewContextProvider>
@@ -20,7 +21,7 @@ root.render(
           </InterviewContextProvider>
         </SocketContextProvider>
       </AuthContextProvider>
-    </React.StrictMode>
+    {/* // </React.StrictMode> */}
   </BrowserRouter>
 );
 

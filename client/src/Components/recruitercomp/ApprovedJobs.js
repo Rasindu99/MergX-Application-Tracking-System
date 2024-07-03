@@ -45,26 +45,39 @@ export default function ApprovedJobs() {
     };
 
     return (
-        <div className="w-full flex text-left max-h-[600px]">
-            <div className="w-[32.5%] m-0">
-                <div className="w-full m-0">
-                    <div className="flex flex-col w-[95%] m-0">
-                        {jobPostings.map(job => (
-                            <div key={job._id} className="meeting_container w-full flex cursor-pointer border-b border-white p-[10px]">
-                                <div className="title w-full flex justify-between" >
-                                    <div className='flex'>
-                                        <PiBriefcase size={25} className='text-white opacity-25' />
-                                        <p className="text-[14px]">{job.jobTitle}</p>
-                                    </div>
-                                    <div className='flex'>
-                                        <div><MdOutlineRemoveRedEye size={25} className='text-white opacity-25 cursor-pointer' onClick={() => handleJobBarClick(job)}/></div>
+        <div className="w-full flex text-left">
+                <div className="w-[32.5%] m-0">
+                    <div className="w-full m-0">
+                        <style>
+                            {`
+                                .scrollbar-hidden::-webkit-scrollbar {
+                                    display: none;
+                                }
+                                .scrollbar-hidden {
+                                    scrollbar-width: none; /* Firefox */
+                                    -ms-overflow-style: none; /* IE and Edge */
+                                }
+                            `}
+                        </style>
+                        <div className="flex flex-col w-[95%] m-0 max-h-[700px] overflow-y-auto scrollbar-hidden">
+                            {jobPostings.map(job => (
+                                <div key={job._id} className="meeting_container w-full flex cursor-pointer border-b border-white p-[10px]">
+                                    <div className="title w-full flex justify-between">
+                                        <div className='flex'>
+                                            <PiBriefcase size={25} className='text-white opacity-25' />
+                                            <p className="text-[14px]">{job.jobTitle}</p>
+                                        </div>
+                                        <div className='flex'>
+                                            <div>
+                                                <MdOutlineRemoveRedEye size={25} className='text-white opacity-25 cursor-pointer' onClick={() => handleJobBarClick(job)}/>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        ))}
+                            ))}
+                        </div>
                     </div>
                 </div>
-            </div>
 
 
             <div className='w-[67.5%] p-[1em] border-l-[1px] border-l-[rgba(234,113,34,0.25)]'>

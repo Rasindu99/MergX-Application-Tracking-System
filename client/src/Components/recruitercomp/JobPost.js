@@ -146,13 +146,13 @@ export default function JobPost({ fetchPendingJobPostings }) {
               />
             </div>
           </div>
-          <div className="w-full p-4">
+          <div className=" p-4">
             <div className="mb-3">
               <label htmlFor="description">Job Description</label>
             </div>
             <textarea
               id="description"
-              cols="160"
+              cols="150"
               rows="5"
               placeholder="Type here..."
               value={description}
@@ -160,7 +160,7 @@ export default function JobPost({ fetchPendingJobPostings }) {
               className="rounded-[10px] px-4 py-2 bg-white bg-opacity-5"
             ></textarea>
           </div>
-          <div className="flex w-full p-4 ">
+          <div className="flex p-4 ">
             <div className="w-[50%]">
               <div className="mb-3">
                 <label htmlFor="salary">Salary Package</label>
@@ -190,7 +190,7 @@ export default function JobPost({ fetchPendingJobPostings }) {
               />
             </div>
           </div>
-          <div className="w-full p-4">
+          <div className=" p-4">
             <div className="mb-3">
               <label htmlFor="requiredSkills">
                 Required Skills (comma separated)
@@ -198,12 +198,12 @@ export default function JobPost({ fetchPendingJobPostings }) {
             </div>
             <textarea
               id="requiredSkills"
-              cols="160"
+              cols="150"
               rows="5"
               placeholder="Type here..."
               value={requiredSkills}
               onChange={(e) => setRequiredSkills(e.target.value)}
-              className="rounded-[10px] px-4 py-2 bg-white bg-opacity-5"
+              className="rounded-[10px] w-fit px-4 py-2 bg-white bg-opacity-5"
             ></textarea>{" "}
           </div>
 

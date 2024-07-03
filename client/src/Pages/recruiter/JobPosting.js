@@ -69,7 +69,7 @@ export default function JobPosting() {
           <div
             className={`pl-5 pr-5 pb-5 ${
               state === 1
-                ? "bg-[#2B2B2B] text-white rounded-b-[30px]"
+                ? "bg-[#2B2B2B] text-white rounded-b-[30px] h-[730px]"
                 : "hidden"
             }`}
           >
@@ -78,7 +78,7 @@ export default function JobPosting() {
           <div
             className={`p-5  ${
               state === 2
-                ? "bg-[#2B2B2B] text-white rounded-b-[30px]"
+                ? "bg-[#2B2B2B] text-white rounded-b-[30px] h-[730px]"
                 : "hidden"
             }`}
           >
@@ -91,7 +91,7 @@ export default function JobPosting() {
           <div
             className={`p-5  ${
               state === 3
-                ? "bg-[#2B2B2B] text-white rounded-b-[30px]"
+                ? "bg-[#2B2B2B] text-white rounded-b-[30px] h-[730px]"
                 : "hidden"
             }`}
           >

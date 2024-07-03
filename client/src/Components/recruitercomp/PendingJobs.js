@@ -106,9 +106,20 @@ export default function PendingJobs({ jobPostings, setJobPostings, fetchPendingJ
   };
 
   return (
-    <div className="flex w-full m-0 text-left max-h-[600px]">
+    <div className="flex w-full m-0 text-left">
       <div className="w-[32.5%] m-0">
-        <div className="flex flex-col w-[95%]">
+      <style>
+                {`
+                    .scrollbar-hidden::-webkit-scrollbar {
+                        display: none;
+                    }
+                    .scrollbar-hidden {
+                        scrollbar-width: none; /* Firefox */
+                        -ms-overflow-style: none; /* IE and Edge */
+                    }
+                `}
+                </style>
+        <div className="flex flex-col w-[95%] max-h-[700px] overflow-y-auto scrollbar-hidden">
           {jobPostings.map((job) => (
             <div
               key={job._id}
