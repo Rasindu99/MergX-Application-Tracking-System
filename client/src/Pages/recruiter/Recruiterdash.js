@@ -21,19 +21,7 @@ export default function Recruiterdash() {
 });
 
 
-
-  // const candidates = [
-  //   { name: "Tharindu Dilshan", email: "dilshantharindu8@gmail.com", date: "07/12/2023" },
-  //   { name: "Nimasha Buddhini", email: "nimasha123456@gmail.com", date: "06/12/2023" },
-  //   { name: "Pawan Chamara", email: "Pawan2345@gmail.com", date: "04/12/2023" },
-  //   { name: "Pawan Chamara", email: "Pawan2345@gmail.com", date: "04/12/2023" },
-  //   { name: "Pawan Chamara", email: "Pawan2345@gmail.com", date: "04/12/2023" },
-  //   { name: "Pawan Chamara", email: "Pawan2345@gmail.com", date: "04/12/2023" },
-  //   { name: "Pawan Chamara", email: "Pawan2345@gmail.com", date: "04/12/2023" },
-  //   { name: "Pawan Chamara", email: "Pawan2345@gmail.com", date: "04/12/2023" },
-
-  //   // Add more candidates as needed
-  // ];
+ 
 
   const [candidateDetails,setCandidateDetails] = useState([]);
 
