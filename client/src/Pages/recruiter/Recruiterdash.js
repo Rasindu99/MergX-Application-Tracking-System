@@ -1,49 +1,191 @@
 import React, { useState, useEffect } from 'react';
-import CardL from '../../Components/recruitercomp/CardL';
-import CardS from '../../Components/recruitercomp/CardS';
+import CardL from '../../Components/hiringManagerCompo/CardL';
+import CardS from '../../Components/hiringManagerCompo/CardS';
 import { FaSearch } from 'react-icons/fa';
+import axios from 'axios';
 
 export default function Recruiterdash() {
   const [searchTerm, setSearchTerm] = useState('');
   const [filteredCandidates, setFilteredCandidates] = useState([]);
+  const [carddetails,setCardDetails] = useState({
+    applications:0,
+    acceptedApplications:0,
+    interviewedcandidates:0,
+    Totalvacancies:0,
+    candidates:0,
+    postedJobs:0,
+    pendingjobs:0,
+    newmessages:0,
+    todayinterveiw:0
 
-  const candidates = [
-    { name: "Tharindu Dilshan", email: "dilshantharindu8@gmail.com", date: "07/12/2023" },
-    { name: "Nimasha Buddhini", email: "nimasha123456@gmail.com", date: "06/12/2023" },
-    { name: "Pawan Chamara", email: "Pawan2345@gmail.com", date: "04/12/2023" },
-    { name: "Pawan Chamara", email: "Pawan2345@gmail.com", date: "04/12/2023" },
-    { name: "Pawan Chamara", email: "Pawan2345@gmail.com", date: "04/12/2023" },
-    { name: "Pawan Chamara", email: "Pawan2345@gmail.com", date: "04/12/2023" },
-    { name: "Pawan Chamara", email: "Pawan2345@gmail.com", date: "04/12/2023" },
-    { name: "Pawan Chamara", email: "Pawan2345@gmail.com", date: "04/12/2023" },
+});
 
-    // Add more candidates as needed
-  ];
+
+ 
+
+  const [candidateDetails,setCandidateDetails] = useState([]);
+
+  
+
+  const getTotalCandidates = async () => {
+    try{
+     const response = await axios.get('/dashboard/getcandidatecount');
+      setCardDetails((prevState)=>({
+         ...prevState,
+         candidates:response.data.candidatecount
+      }));
+    }catch(err){
+       console.log(err);
+    }
+  }
+
+  const getacceptedapplications = async ()=>{
+    try{
+        const response = await axios.get('/reporting/getallacceptedapplicationcount');
+        setCardDetails((prevState)=>({
+          ...prevState,
+          acceptedApplications:response.data.total
+        }));
+    }catch(err){
+      console.log(err);
+    } 
+   }
+   const gettodayinterviewcount = async ()=>{
+    try{
+        const response = await axios.get('/dashboard/gettodayinterview');
+        setCardDetails((prevState)=>({
+          ...prevState,
+          todayinterveiw:response.data.todayInterviews
+        }));
+    }catch(err){
+      console.log(err);
+    }
+   }
+
+   const getpostedjobs = async ()=>{
+    try{
+         const response = await axios.get('/dashboard/totaljobpostingcount'); 
+         setCardDetails((prevState)=>({
+           ...prevState,
+           postedJobs:response.data.jobpostingcount
+         }));
+    }catch(err){
+      console.log(err);
+    }
+   }
+
+   
+ const getpendingjobs = async ()=>{
+  try{
+  const response = await axios.get('/dashboard/totalpendingjobcount')
+  setCardDetails((prevState)=>({
+    ...prevState,
+    pendingjobs:response.data.pendingjobpostingcount
+  }));
+  
+  }catch(err){
+    console.log(err);
+  }
+ }
+
+ const getEvaluations = async ()=>{
+  try{
+     const respone = await axios.get('/dashboard/totalevaluations');
+     setCardDetails((prevState)=>({
+       ...prevState,
+       interviewedcandidates:respone.data.total
+     }));
+  }
+  catch(err){
+    console.log(err);
+  }
+ }
+ const gettotalvacancies = async ()=>{
+  try{
+    const response= await axios.get('/dashboard/totalvacancies');
+    setCardDetails((prevState)=>({
+      ...prevState,
+      Totalvacancies:response.data.totalVacancies
+    }));  
+  }catch(err){
+    console.log(err);
+  }
+
+ }
+
+ const  getapplications = async ()=>{
+  try{
+       const response = await axios.get('/reporting/getallapplicationcount');
+       setCardDetails((prevState)=>({
+        ...prevState,
+        applications:response.data.total
+      }));
+       
+  }catch(err){  
+    console.log(err);
+  }
+ }
+
+ const getCandidateDetails = async ()=>{
+  try{
+        const response = await axios.get('/dashboard/getcandidatedetails') ;
+        setCandidateDetails(response.data.candidatedetails);
+        
+
+   }catch(err){
+    console.log(err);
+  }
+ }
+
+   useEffect(() => {
+    getpostedjobs();
+    getpendingjobs();
+    getTotalCandidates();
+    getacceptedapplications();
+    gettodayinterviewcount();
+    getEvaluations();
+    gettotalvacancies();
+    getapplications();
+    getCandidateDetails();
+    
+   },[]);
+
+   useEffect(() => {
+    const matchedByFname = candidateDetails.filter(candidate =>
+      candidate.fname.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  
+    const matchedByLname = candidateDetails.filter(candidate =>
+      candidate.lname.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+  
+    setFilteredCandidates(
+      matchedByFname.length > 0 ? matchedByFname : matchedByLname
+    );
+  }, [searchTerm, candidateDetails]);
 
   useEffect(() => {
-    setFilteredCandidates(
-      candidates.filter(candidate =>
-        candidate.name.toLowerCase().includes(searchTerm.toLowerCase())
-      )
-    );
-  }, [searchTerm]);
+    setFilteredCandidates(candidateDetails);
+    console.log(candidateDetails);
+  }
+  ,[candidateDetails]);
 
   return (
     <div className="flex items-center justify-center">
       <div className="rounded-3xl w-[95%] h-full mt-2" style={{ background: 'linear-gradient(to bottom, #2B2B2B 0%, rgba(43, 43, 43, 0) 35%)' }}>
         <div className="flex items-center justify-around mt-5">
-          <CardL title="Candidates" value="10" />
-          <CardL title="Applications" value="10" />
-          <CardL title="Feedbacks" value="10" />
-          <CardL title="Unread" value="02" />
+              <CardL  name="Pending" subName="Jobs" val={carddetails.pendingjobs} />
+          <CardL  name="Accepted" subName="Applications" val={carddetails.acceptedApplications} />
+          <CardL  name="Today" subName="Interviews" val={carddetails.todayinterveiw} />
+          <CardL name="New Messages" val={carddetails.newmessages} />
         </div>
         <div className="flex items-center justify-around mt-8">
-          <CardS title="Jobs" value="10" />
-          <CardS title="Job Invitaions" value="10" />
-          <CardS title="Status Updates" value="10" />
-          <CardS title="New Applications" value="02" />
-          <CardS title="New Feedbacks" value="02" />
-          <CardS title="New Candidates" value="02" />
+        <CardS name="Candidates" val={carddetails.candidates} />
+          <CardS  name="Posted" subName="Jobs" val={carddetails.postedJobs} />
+          <CardS  name="Vacancies" val={carddetails.Totalvacancies} />
+          <CardS name="Interviewed" subName="Candidates" val={carddetails.interviewedcandidates} />
+          <CardS  name="Total" subName="Applications" val={carddetails.applications} />
+          
         </div>
 
         <style>
@@ -76,14 +218,14 @@ export default function Recruiterdash() {
                 <img src={candidate.image} alt='' className='rounded-full border-[2px] w-[50px] h-[50px]' />
               </div>
               <div>
-                <p className="text-lg font-bold">{candidate.name}</p>
-                <p className="text-sm text-white opacity-25">CANDIDATE</p>
+                <p className="text-lg font-bold">{candidate.fname} {candidate.lname}</p>
+                
               </div>
               <div>
                 <p className="text-sm">{candidate.email}</p>
               </div>
               <div>
-                <p className="text-sm text-white opacity-25">{candidate.date}</p>
+                <p className="text-sm text-white opacity-25">{candidate.phone_number}</p>
               </div>
             </div>
           ))}

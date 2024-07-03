@@ -20,6 +20,7 @@ const formatDate = (timestamp) => {
 export default function Dashboard() {
   const [jobPostings, setJobPostings] = useState([]);
   const [selectedJob, setSelectedJob] = useState(null);
+  const [showDetails, setshowDetails] = useState(false);
   const [source, setSource] = useState({
     allhiredcount: 0,
     hiredcountbyposition: 0,
@@ -150,26 +151,27 @@ export default function Dashboard() {
   }, [source]);
 
   return (
-    <div className='flex w-screen'>
+    <div className='flex w-screen '>
       <div className='fixed'>
         <HiringmanagerNav />
       </div>
-      <div className='w-screen lg:ml-[320px] md:ml-72 ml-[260px] '>
+      <div className='w-screen lg:ml-[320px] md:ml-72 ml-[260px] overscroll-x-none'>
         <Topbar title='Reporting' />
         <div className='content text-white flex flex-row p-[0px] bg-[#2b2b2b] m-[30px] h-fit rounded-[30px] 320px:text-[0.5rem] 450px:text-[0.8rem] sm:text-[0.9rem] 900px:text-[1.1rem] 1010px:text-[1.2rem] '>
           <div className='flex flex-col bg-[#1E1E1E] rounded-[30px] esm:p-[10px] 450px:p-[15px] sm:p-[25px] sm:w-auto 450px:w-[165px] 500px:w-[175px] lg:w-[250px] esm:w-[140px] sm:pl-[0px] sm:pr-[0px]'>
             <p className='text-center text-[#FFFFFF] esm:p-[4px] 450px:p-[6px] sm:p-[10px] sm:pb-[25px] font-general-sans pt-[0px]'> Position </p>
-            <div className='flex flex-col'>
+            <div className='flex flex-col overflow-scroll h-[75vh] overflow-x-hidden '>
               {jobPostings.map((job, index) => (
                 <button key={index}
-                  onClick={() => setSelectedJob(job)}
-                  className='hover:scale-110 p-[10px] text-center text-[0.7rem] lg:text-[1rem] md:text-[0.9rem] 320px:text-[0.5rem] border-[1px] border-[solid] border-[grey] hover:bg-[#2b2b2b] m-[10px] my-[5px] items-center rounded-[30px] '>
+                  onClick={() => {setSelectedJob(job); setshowDetails(true);}}
+                  className='hover:scale-105 p-[10px] text-center text-[0.7rem] lg:text-[1rem] md:text-[0.9rem] 320px:text-[0.5rem] border-[1px] border-[solid] border-[grey] hover:bg-[#2b2b2b] m-[10px] my-[5px] items-center rounded-[30px] '>
                   <p>{job.jobTitle}</p>
                 </button>
               ))}
             </div>
           </div>
-          <div className='description flex flex-col w-full pt-[20px] box-border mb-[20px]'>
+          {showDetails ? (
+          <div className='description flex flex-col w-full pt-[20px] box-border mb-[20px] h-[85vh] overflow-y-scroll '>
             <div className='details flex flex-row justify-around pb-[20px] '>
               <CardEsm name="Hired" val={source.hiredcountbyposition} numSize={'0.8rem'} />
               <CardEsm name="Approved Applications" val={source.acceptedapplicationsbyposition} numSize='20px' />
@@ -227,6 +229,9 @@ export default function Dashboard() {
               </div>
             </div>
           </div>
+        ) : (<div className='m-auto overflow-auto'>
+          <p className='text-[#a3a3a3] text-center text-[28px]'>Select a job to view details</p>
+        </div>)}
         </div>
       </div>
     </div>

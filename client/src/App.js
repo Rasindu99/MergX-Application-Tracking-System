@@ -67,7 +67,7 @@ function App() {
 
   
   return (
-    <div className="App">
+    <div className="App overflow-x-hidden">
 
       <UserContextProvider>
       <Toaster position='bottom-right' toastOptions={{duration: 3000}}></Toaster>

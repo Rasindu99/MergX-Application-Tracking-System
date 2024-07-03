@@ -179,9 +179,10 @@ export default function InterviewFeedback() {
       <div className="w-screen lg:ml-[320px] md:ml-72 ml-[260px] ">
         <Topbar title="Interview Feedback"></Topbar>
         <div
-          className={`content  text-white flex flex-row p-[0px]   bg-[#212121] m-[30px]  h-fit rounded-[30px] 320px:text-[0.5rem]  450px:text-[0.8rem] sm:text-[0.9rem]   900px:text-[1.1rem]  1010px:text-[1.2rem]  ${
+          className={`content  text-white flex flex-row p-[0px]    m-[30px]  h-fit rounded-[30px] 320px:text-[0.5rem]  450px:text-[0.8rem] sm:text-[0.9rem]   900px:text-[1.1rem]  1010px:text-[1.2rem]  ${
             showDetails === false ? " justify-center h-[85vh] " : null
           }`}
+          // bg-[#212121]
         >
           <div className="candidates  flex flex-col gap-[10px] bg-[#1E1E1E] rounded-[30px] esm:p-[10px] 450px:p-[15px] sm:p-[25px]  sm:w-auto 450px:w-[165px] 500px:w-[175px] esm:w-[140px]">
             <p className="text-center text-[#FFFFFF] esm:p-[4px] 450px:p-[6px] sm:p-[10px] font-general-sans pt-[0px]">
@@ -193,7 +194,7 @@ export default function InterviewFeedback() {
                 showDetails === false ? "w-[600px] max-h-[75vh]" : null
               }`}
             >
-              <div>
+              <div className="h-[75vh] overflow-auto overflow-x-hidden">
                 {candidates.map((candidate,index) => (
                   <button
                     key={index}
@@ -201,9 +202,9 @@ export default function InterviewFeedback() {
                       setshowDetails(true);
                       setselected(candidate);
                     }}
-                    className={` hover:scale-110 accLabel m-[10px] my-[5px]  flex flex-row   bg-[#2b2b2b] sm:pl-[5px]  items-center   rounded-[30px]  sm:gap-[4px] esm:w-[110px] esm:h-[25px] 450px:w-[140px] 450px:h-[35px]   sm:w-[150px] sm:h-[45px]  lg:rounded-[25px]  lg:gap-[12px] lg:w-[200px] lg:h-[60px] sm:gap-[6px] sm:w-[180px] sm:h-[50px] sm:rounded-[30px] esm:w-[fit-content] ${
+                    className={` hover:scale-105 accLabel m-[10px] my-[5px]  flex flex-row   bg-[#2b2b2b] sm:pl-[5px]  items-center   rounded-[30px]  sm:gap-[4px] esm:w-[110px] esm:h-[25px] 450px:w-[140px] 450px:h-[35px]   sm:w-[150px] sm:h-[45px]  lg:rounded-[25px]  lg:gap-[12px] lg:w-[200px] lg:h-[60px] sm:gap-[6px] sm:w-[180px] sm:h-[50px] sm:rounded-[30px] esm:w-[fit-content] ${
                       showDetails === false
-                        ? "lg:w-[500px] justify-between hover:scale-105"
+                        ? "lg:w-[500px] justify-between  m-[30px]"
                         : null
                     }`}
                   >
@@ -242,7 +243,7 @@ export default function InterviewFeedback() {
           </div>
 
           {showDetails ? (
-            <div className="description flex flex-col w-full pt-[20px] box-border">
+            <div className="description flex flex-col w-full pt-[20px] box-border h-[85vh] overflow-auto overflow-x-hidden ">
               <div className="flex flex-row py-[20px] justify-center gap-5 border-[grey]  border-b-[2px] ">
                 <img
                   src={selected.image}
