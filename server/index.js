@@ -5,15 +5,12 @@ const cors = require('cors'); // Middleware for enabling CORS
 const mongoose = require('mongoose'); // MongoDB ORM
 const cookieParser = require('cookie-parser'); // Middleware for parsing cookies
 const JWT = require('jsonwebtoken')
+const bodyParser = require('body-parser');
 
 const {app, server} = require('../server/socket/socket');
 
-const bodyParser = require('body-parser');
 const feedbackRoute = require('./routes/feedbackRoutes');
 const interviewRoute = require('./routes/interviewRoutes');
-
-
-const bodyParser = require('body-parser');
 
 // const Evaluationmodel = require('../server/models/evaluation');
 const Evaluationmodel = require('./models/evaluation.js');
@@ -42,18 +39,20 @@ app.use('/chatbot',require('./routes/chatRoutes'));
 app.use('/interview', require('./routes/interviewscheduleRoutes'));
 //change schedule api ->
 app.use('/schedule', require('./routes/interviewscheduleRoutes'));
+
 app.use('/evaluation', require('./routes/evaluationRoutes'));
 app.use('/invitation',require('./routes/jobinterviewinvitationRoutes'));
 app.use('/access',require('./routes/adminaccessRoutes'));
+app.use('/cv',require('./routes/applicationRoutes'))
+app.use('/wishlist', require('./routes/addWishlistRoutes'));
+app.use('/hmfeedback',require('./routes/HmRoutes.js'));
 
 app.use('/message', messageRoutes);
 app.use('/users', userRoutes);
 app.use('/candidatedash', candidateRoutes); 
 app.use('/', authRoutes);
 
-app.use('/cv',require('./routes/applicationRoutes'))
-app.use('/wishlist', require('./routes/addWishlistRoutes'));
-app.use('/hmfeedback',require('./routes/HmRoutes.js'));
+
 
 //app.use('/Protected', require('./routes/ProtectedRoute'));
 // Defining the port for the server to listen on
@@ -168,8 +167,6 @@ app.put('/hmfeedback/update/:_id', async (req, res) => {
     return res.status(500).json({ error: 'Server Error' });
   }
 });
-
-
 
 
 const port = 8000;

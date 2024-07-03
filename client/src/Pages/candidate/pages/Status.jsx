@@ -7,7 +7,6 @@ import SingleAnouncement from '../../../Components/candidateComp/Status_Page/Sin
 import SingleStatus from '../../../Components/candidateComp/Status_Page/SingleStatus';
 import { useInterviewContext } from '../../../Context/InterviewContext';
 import { UserContext } from '../../../Context/UserContext';
-import {useSocketContext}  from '../../../Context/SocketContext';
 import useListenStatus from '../../../hooks/useListenStatus';
 
 
@@ -19,10 +18,19 @@ export default function Status() {
   const [selectedStatus, setSelectedStatus] = useState(null);
   const [showAnnouncement, setShowAnnouncement] = useState(true);
   const [selectedAnnouncement, setSelectedAnnouncement] = useState(null);
-  const [ read, setRead] = useState(false);
+ 
 
   const { localStatusData, setLocalStatusData } = useInterviewContext();
   const { localAnouncementData, setLocalAnouncementData } = useInterviewContext();
+
+  const [readStatuses, setReadStatuses] = useState(() => {
+    const storedReadStatuses = window.localStorage.getItem('readStatuses');
+    try {
+      return storedReadStatuses ? JSON.parse(storedReadStatuses) : [];
+    } catch {
+      return [];
+    }
+  });
 
   useListenStatus();
 
@@ -51,11 +59,11 @@ export default function Status() {
     fetchData();
   }, []);
 
-  const handleViewStatus = (status) => {
-    setSelectedStatus(status);
-    setShowStatus(true);
-    setRead(true);
-  };
+  useEffect(() => {
+    
+    window.localStorage.setItem('readStatuses', JSON.stringify(readStatuses));
+    console.log('localStorage updated with new ReadStatuses', readStatuses);
+  }, [ readStatuses]);
 
   const handleViewAnnouncement = (announcements) =>{
     setSelectedAnnouncement(announcements);
@@ -65,6 +73,21 @@ export default function Status() {
   const handleModalstatusClose = () => {
     setShowStatus(false);
     setShowAnnouncement(false);
+  };
+
+  const sortStatuses = (statuses) => {
+    return statuses.slice().sort((a, b) => {
+      // If a is read and b is new, b should come first (sorted ascending)
+      if (readStatuses.includes(a._id) && !readStatuses.includes(b._id)) {
+        return -1;
+      }
+      // If a is new and b is read, a should come first (sorted ascending)
+      if (!readStatuses.includes(a._id) && readStatuses.includes(b._id)) {
+        return 1;
+      }
+      // Otherwise, maintain the original order
+      return 0;
+    });
   };
 
   return (
@@ -77,12 +100,15 @@ export default function Status() {
           </div>
           <div className='overflow-y-auto h-5/6 rounded-lg'>
             <div className="mx-auto  w-4/5 overflow-hidden rounded-lg">
-              {localStatusData.slice().reverse().map((status, index) => (
+              {sortStatuses(localStatusData).reverse().map((status, index) => (
                 <SingleStatus
                   key={index}
                   status={status}
                   index={index}
-                  handleViewStatus={handleViewStatus}
+                  setShowStatus={setShowStatus}
+                  setSelectedStatus={setSelectedStatus}
+                  setReadStatuses={setReadStatuses}
+                  readStatuses={readStatuses}
                 />
               ))}
             </div>

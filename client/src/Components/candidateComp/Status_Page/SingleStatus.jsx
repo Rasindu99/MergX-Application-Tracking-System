@@ -1,9 +1,10 @@
-import React from 'react';
+import {React, useState} from 'react';
 import moment from 'moment';
 import { GrFormView } from "react-icons/gr";
 
-const SingleStatus = ({status, index, handleViewStatus}) => {
+const SingleStatus = ({status, index, setShowStatus, setSelectedStatus, readStatuses, setReadStatuses}) => {
 
+  // const [ isRead, setIsRead] = useState(false);
   const statusTime = moment(status.time, 'HH:mm:ss'); // Parse the time string using moment
 
   if (!statusTime.isValid()) {
@@ -14,12 +15,26 @@ const SingleStatus = ({status, index, handleViewStatus}) => {
   const timeAgo = statusTime.fromNow();
   const formattedTimeAgo = timeAgo.includes('seconds') ? timeAgo.replace('seconds', 'secs') : timeAgo;
 
+  const isRead = readStatuses.includes(status._id);
+  const borderColor = isRead ? 'border-gray-500' : 'border-orange-600';
+
+  const handleViewStatus = (status) => {
+    setSelectedStatus(status);
+    setShowStatus(true);
+    if (!isRead) {
+      setReadStatuses([...readStatuses, status._id]);
+    }
+  };
+
   return (
     <div className='bg-neutral-400 rounded-xl'>
       <div key={index} className="flex items-center justify-between h-[100px] bg-gradient-to-b from-[#2B2B2B] to-[#333333] hover:opacity-90 hover:bg-red-500 rounded-lg border-neutral-600 mt-1">
-        <div className="h-[75px] w-[75px] rounded-full overflow-hidden ml-8">
-          <img src={status.image} alt="status" className="object-cover w-full h-full" />
+        <div className={`box-border h-[73px] w-[73px] rounded-full overflow-hidden border-3 ${borderColor} flex justify-center items-center ml-8 relative p-[2.5px]`}>
+          <div className='box-border h-[60px] w-[60px] rounded-full overflow-hidden flex justify-center items-center absolute'>
+              <img src={status.image} alt="status" className="object-cover w-full h-full" />
+          </div>
         </div>
+        
         <div className="w-[50px]"></div>
         <div className="w-[350px] text-left">
           <p>{status.description}</p>

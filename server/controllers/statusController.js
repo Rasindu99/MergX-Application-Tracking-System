@@ -9,10 +9,11 @@ const statusset = (req, res) => {
 const deleteStatus = async (statusId) => {
     try {
        
-
         // Find and delete the status
         await Status.findByIdAndDelete(statusId);
         console.log('Status deleted successfully');
+        io.emit('status_deleted', statusId);
+
     } catch (error) {
         console.error('Error deleting status:', error);
     }
