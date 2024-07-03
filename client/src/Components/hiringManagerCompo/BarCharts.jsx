@@ -12,12 +12,26 @@ class BarCharts extends React.Component {
       options: {
         chart: {
           type: 'bar',
-          height: 350
+          height: 350,
+          animations: {
+            enabled: true,
+            easing: 'easeinout',
+            speed: 800,
+            animateGradually: {
+              enabled: true,
+              delay: 150
+            },
+            dynamicAnimation: {
+              enabled: true,
+              speed: 350
+            }
+          }
         },
         plotOptions: {
           bar: {
             borderRadius: 4,
             horizontal: true,
+            distributed: true // This option allows individual bar coloring
           }
         },
         dataLabels: {

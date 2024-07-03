@@ -57,6 +57,8 @@ app.use('/', authRoutes);
 //app.use('/Protected', require('./routes/ProtectedRoute'));
 // Defining the port for the server to listen on
 app.use('/reporting', require('./routes/ReportingRoutes'));
+app.use('/dashboard', require('./routes/HMDashboardRoutes'));
+
 
 app.put('/evaluation/updateevaluation/:_id', async (req, res) => {
   try {
