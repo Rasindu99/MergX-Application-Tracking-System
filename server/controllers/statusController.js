@@ -44,7 +44,7 @@ const updatestatus = async (req, res) => {
         // Schedule deletion of status after 6 hours
         setTimeout(() => {
             deleteStatus(status._id); // Call deleteStatus function after 6 hours
-        },   2 * 24 * 60 * 60 * 1000 ); // 30mins in milliseconds
+        },  2 * 24 * 60 * 60 * 1000 ); // 30mins in milliseconds
 
         return res.status(200).json({ message: 'Status updated successfully', status });
     } catch (error) {

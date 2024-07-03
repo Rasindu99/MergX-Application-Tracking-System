@@ -1,4 +1,5 @@
 const Announcement = require('../models/announcement');
+const { io } = require('../socket/socket');
 
 // announcement post endpoint
 const updateannouncement = async (req, res) => {
@@ -18,6 +19,8 @@ const updateannouncement = async (req, res) => {
             title,
             announce,
         });
+        io.emit('anouncement_update', announcement);
+
         return res.status(200).json({ message: 'Announcement updated successfully', announcement });
     } catch (error) {
         console.error(error);
@@ -42,6 +45,7 @@ const deleteAnnouncement = async (req, res) => {
     const announcementId = req.params.announcementId;
     try {
         const deletedAnnouncement = await Announcement.findByIdAndDelete(announcementId);
+        io.emit('anouncement_delete', announcementId);
 
         if (!deletedAnnouncement) {
             return res.status(404).json({ error: 'Announcement not found' });

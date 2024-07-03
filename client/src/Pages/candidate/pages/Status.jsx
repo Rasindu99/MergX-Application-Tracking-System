@@ -20,13 +20,26 @@ export default function Status() {
   const [selectedAnnouncement, setSelectedAnnouncement] = useState(null);
  
 
-  const { localStatusData, setLocalStatusData } = useInterviewContext();
-  const { localAnouncementData, setLocalAnouncementData } = useInterviewContext();
+  const { 
+    localStatusData, 
+    setLocalStatusData, 
+    localAnouncementData, 
+    setLocalAnouncementData 
+  } = useInterviewContext();
 
   const [readStatuses, setReadStatuses] = useState(() => {
     const storedReadStatuses = window.localStorage.getItem('readStatuses');
     try {
       return storedReadStatuses ? JSON.parse(storedReadStatuses) : [];
+    } catch {
+      return [];
+    }
+  });
+
+  const [ readAnnouncements, setReadAnnouncements ] = useState(() => {
+    const storedReadAnnouncements = window.localStorage.getItem('readAnnouncements');
+    try {
+      return storedReadAnnouncements ? JSON.parse(storedReadAnnouncements) : [];
     } catch {
       return [];
     }
@@ -63,32 +76,32 @@ export default function Status() {
     
     window.localStorage.setItem('readStatuses', JSON.stringify(readStatuses));
     console.log('localStorage updated with new ReadStatuses', readStatuses);
-  }, [ readStatuses]);
 
-  const handleViewAnnouncement = (announcements) =>{
-    setSelectedAnnouncement(announcements);
-    setShowAnnouncement(true);
-  }
+    window.localStorage.setItem('readAnnouncements', JSON.stringify(readAnnouncements));
+    console.log('localStorage updated with new ReadAnnouncements', readAnnouncements);
+  }, [ readStatuses, readAnnouncements]);
+
+ 
 
   const handleModalstatusClose = () => {
     setShowStatus(false);
     setShowAnnouncement(false);
   };
 
-  const sortStatuses = (statuses) => {
-    return statuses.slice().sort((a, b) => {
-      // If a is read and b is new, b should come first (sorted ascending)
-      if (readStatuses.includes(a._id) && !readStatuses.includes(b._id)) {
+  const sortItems = (items, readItems) => {
+    return items.slice().sort((a, b) => {
+      if (readItems.includes(a._id) && !readItems.includes(b._id)) {
         return -1;
       }
-      // If a is new and b is read, a should come first (sorted ascending)
-      if (!readStatuses.includes(a._id) && readStatuses.includes(b._id)) {
+      if (!readItems.includes(a._id) && readItems.includes(b._id)) {
         return 1;
       }
-      // Otherwise, maintain the original order
       return 0;
     });
   };
+
+  const sortedStatuses = sortItems(localStatusData, readStatuses);
+  const sortedAnnouncements = sortItems(localAnouncementData, readAnnouncements);
 
   return (
     <div className='items-center h-full w-full overflow-hidden overflow-y-hidden '>
@@ -100,7 +113,7 @@ export default function Status() {
           </div>
           <div className='overflow-y-auto h-5/6 rounded-lg'>
             <div className="mx-auto  w-4/5 overflow-hidden rounded-lg">
-              {sortStatuses(localStatusData).reverse().map((status, index) => (
+              {sortedStatuses.reverse().map((status, index) => (
                 <SingleStatus
                   key={index}
                   status={status}
@@ -121,12 +134,15 @@ export default function Status() {
           </div>
           <div className='overflow-y-auto h-4/6'>
             <div className='mx-auto w-4/5 '>
-              {localAnouncementData.slice().reverse().map((announcement, index) => (
+              {sortedAnnouncements.reverse().map((announcement, index) => (
                 <SingleAnouncement
                   key={index}
                   announcement={announcement}
                   index={index}
-                  handleViewAnnouncement={handleViewAnnouncement}
+                  setShowAnnouncement={setShowAnnouncement}
+                  setReadAnnouncements={setReadAnnouncements}
+                  readAnnouncements={readAnnouncements}
+                  setSelectedAnnouncement={setSelectedAnnouncement}
                 />
               ))}
             </div>

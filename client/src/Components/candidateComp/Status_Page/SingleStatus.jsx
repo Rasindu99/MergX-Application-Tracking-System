@@ -4,7 +4,6 @@ import { GrFormView } from "react-icons/gr";
 
 const SingleStatus = ({status, index, setShowStatus, setSelectedStatus, readStatuses, setReadStatuses}) => {
 
-  // const [ isRead, setIsRead] = useState(false);
   const statusTime = moment(status.time, 'HH:mm:ss'); // Parse the time string using moment
 
   if (!statusTime.isValid()) {
