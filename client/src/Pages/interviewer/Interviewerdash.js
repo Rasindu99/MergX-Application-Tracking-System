@@ -11,8 +11,13 @@ import CardL from '../../Components/hiringManagerCompo/CardL.jsx'
 
 export default function Interviewerdash() {
 
-  const { user } = useContext(UserContext);
+
   const [interviews, setInterviews] = useState([]);
+  const today = new Date();
+
+  const selectedDateSchedules = interviews.filter(schedule =>
+      new Date(schedule.date).toLocaleDateString() === today.toLocaleDateString()
+  );
   const [carddetails,setCardDetails] = useState({
     applications :0,
     acceptedApplications:0,
@@ -25,16 +30,16 @@ export default function Interviewerdash() {
 
   useEffect(() => {
     
-    const fetchInterviews = async () => {
+    const fetchInterviewSchedules = async () => {
       try {
-        const response = await axios.get('http://localhost:8000/interview');
-        setInterviews(response.data); 
+        const response = await axios.get('http://localhost:8000/schedule/getinterviewschedule'); 
+        setInterviews(response.data);
       } catch (error) {
         console.error('Error fetching interviews:', error);
       }
     };
 
-    fetchInterviews(); 
+    fetchInterviewSchedules(); 
 
     getTotalCandidates();
     getacceptedapplications();
@@ -151,14 +156,16 @@ export default function Interviewerdash() {
               <p className='text-left ml-8 mt-8 text-xl'>Today's Interviews</p>
             </div>
             <div id='bar-container' className='mt-5 max-h-80 overflow-y-auto'>
-            {interviews.map((interview, index) => (
-                  <InterviewBar
-                    key={index}
-                    interviewTitle={interview.name}
-                    interviewDate={interview.date}
-                    interviewTime={interview.time}
-                  />
-                ))}
+            {selectedDateSchedules
+              .sort((a, b) => new Date(`1970-01-01T${a.start_time}Z`) - new Date(`1970-01-01T${b.start_time}Z`))
+              .map((interview, index) => (
+                <InterviewBar
+                  key={index}
+                  interviewTitle={interview.subject}
+                  interviewDate={new Date(interview.date).toLocaleDateString()}
+                  interviewTime={interview.start_time}
+                />
+            ))}
             </div>
           </div>
         </div>

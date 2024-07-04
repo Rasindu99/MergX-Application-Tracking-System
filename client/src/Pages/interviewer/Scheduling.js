@@ -6,6 +6,7 @@ import ViewJobButton from '../../Components/interviewercomp/ViewJobButton';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import axios from 'axios';
+import Swal from 'sweetalert2';
 import ScheduledInterviews from '../../Components/interviewercomp/ScheduledInterviews';
 import { MdOutlineClose } from "react-icons/md";
 
@@ -31,8 +32,6 @@ export default function Scheduling() {
   const togglePopup = () => {
     setShowPopup(!showPopup);
   };
-
-  const [interviews, setInterviews] = useState([]);
 
   const [formData, setFormData] = useState({
     jobId: 'null',
@@ -68,6 +67,33 @@ export default function Scheduling() {
     });
   };
 
+  const handleDelete = async (id) => {
+    try {
+      const response = await axios.delete(`http://localhost:8000/schedule/deleteinterviewschedule/${id}`);
+      if (response.status === 200) {
+        setInterviewSchedules(interviewSchedules.filter(schedule => schedule._id !== id));
+        await Swal.fire({
+          title: 'Deleted!',
+          text: 'Interview Schedule deleted successfully',
+          icon: 'success',
+          confirmButtonText: 'OK'
+        }).then(() => {
+          window.location.reload();
+        });
+      } else {
+        console.error('Failed to delete interview schedule');
+        await Swal.fire({
+          title: 'Error!',
+          text: 'Failed to delete interview schedule',
+          icon: 'error',
+          confirmButtonText: 'OK'
+        });
+      }
+    } catch (error) {
+      console.error('Error deleting interview schedule:', error);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -87,7 +113,7 @@ export default function Scheduling() {
           link: formData.meetingLink,
           password: formData.password,
           experience: formData.experience,
-          skills: formData.skills.split(',').map(skill => skill.trim()), // Convert skills to an array
+          skills: formData.skills.split(',').map(skill => skill.trim()),
           description: formData.description
         })
       });
@@ -95,14 +121,69 @@ export default function Scheduling() {
       if (response.ok) {
         const data = await response.json();
         console.log('Interview Schedule created successfully', data);
+        await Swal.fire({
+          title: 'Success!',
+          text: 'Interview Schedule created successfully',
+          icon: 'success',
+          confirmButtonText: 'OK'
+        }).then(() => {
+          window.location.reload();
+        });
         handleClear();
       } else {
         console.error('Failed to create interview schedule');
+        await Swal.fire({
+          title: 'Error!',
+          text: 'Failed to create interview schedule',
+          icon: 'error',
+          confirmButtonText: 'OK'
+        });
       }
     } catch (error) {
       console.error('Error:', error);
     }
   };
+
+  const handleUpdate = async (id, formData) => {
+    try {
+      const response = await axios.put(`http://localhost:8000/schedule/updateinterviewschedule/${id}`, {
+        date: new Date(formData.date).toISOString(),
+        start_time: formData.startTime,
+        end_time: formData.endTime,
+        subject: formData.subject,
+        link: formData.meetingLink,
+        password: formData.password,
+      }, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+  
+      if (response.status === 200) {
+        const updatedSchedule = response.data.interviewschedule;
+        setInterviewSchedules(interviewSchedules.map(schedule => schedule._id === id ? updatedSchedule : schedule));
+        await Swal.fire({
+          title: 'Updated!',
+          text: 'Interview Schedule updated successfully',
+          icon: 'success',
+          confirmButtonText: 'OK'
+        }).then(() => {
+          window.location.reload();
+        });
+      } else {
+        console.error('Failed to update interview schedule');
+        await Swal.fire({
+          title: 'Error!',
+          text: 'Failed to update interview schedule',
+          icon: 'error',
+          confirmButtonText: 'OK'
+        });
+      }
+    } catch (error) {
+      console.error('Error updating interview schedule:', error);
+    }
+  };
+  
 
   useEffect(() => {
     const fetchInterviewSchedules = async () => {
@@ -127,31 +208,36 @@ export default function Scheduling() {
             <Description name={name} />
           </div>
 
-          <div id='background' className="z-0 grid grid-cols-3 mx-8 mt-24 w-80 h-80vh rounded-3xl">
-            <div className='flex flex-col items-start col-span-1 px-5 py-10'>
+          <div id='background' className="w-80 h-80vh rounded-3xl z-0 mt-24 mx-8 grid grid-cols-3">
+            <div className='flex flex-col items-start py-10 px-5 col-span-1'>
               <div className='pl-5'>
                  <ViewJobButton/>
               </div>
-              <div className='pl-5 mt-14'>
-                <p className='mb-8 text-2xl text-left text-white text-opacity-50'>Calender</p>
+              <div className='mt-14 pl-5'>
+                <p className='text-2xl text-white text-left mb-8 text-opacity-50'>Calender</p>
                 <Calendar
                   onChange={setDate}
                   value={date}
                 />
               </div>
             </div>
-            <div className='col-span-2 px-5 py-10'>
+            <div className='px-5 col-span-2 py-10'>
               <div>
                 <p className='text-3xl'>{formattedDate}</p>
                 <div className='mt-10 overflow-y-auto h-[450px]'>
                 {selectedDateSchedules.length > 0 ? (
-                  selectedDateSchedules.map((schedule, index) => (
-                    <ScheduledInterviews
-                      key={index}
-                      interviewTitle={schedule.jobtitle}
-                      interviewTime={schedule.start_time + " - " + schedule.end_time}
-                    />
-                  ))
+                  selectedDateSchedules
+                    .sort((a, b) => new Date(`1970-01-01T${a.start_time}Z`) - new Date(`1970-01-01T${b.start_time}Z`))
+                    .map((schedule, index) => (
+                      <ScheduledInterviews
+                        key={index}
+                        interviewTitle={schedule.subject}
+                        interviewTime={`${schedule.start_time} - ${schedule.end_time}`}
+                        onDelete={() => handleDelete(schedule._id)}
+                        onUpdate={(id, formData) => handleUpdate(id, formData)}
+                        interview={schedule}
+                      />
+                    ))
                 ) : (
                   <p className='text-xl text-center'>No Scheduled Interviews</p>
                 )}
@@ -166,13 +252,13 @@ export default function Scheduling() {
       </div>
 
       {showPopup && (
-        <div className='fixed top-0 left-0 z-50 flex items-center justify-center w-full h-full bg-white bg-opacity-5 backdrop-blur'>
+        <div className='fixed top-0 left-0 w-full h-full flex justify-center items-center bg-white bg-opacity-5 backdrop-blur z-50'>
           <div className='bg-[#2B2B2BE5] opacity-90 relative w-[60rem] h-[45rem] border-2 border-[#EA712287] rounded-3xl px-5'>
-            <MdOutlineClose size={25} className='absolute cursor-pointer top-5 right-5' onClick={togglePopup} />
-            <p className='mt-5 text-3xl text-center bold'>{formattedDate}</p>
+            <MdOutlineClose size={25} className='absolute top-5 right-5 cursor-pointer' onClick={togglePopup} />
+            <p className='text-3xl bold mt-5 text-center'>{formattedDate}</p>
             <form className='p-8' onSubmit={handleSubmit}>
               <div className='flex items-center justify-between'>
-               <label className='flex items-center gap-10 text-white'>
+               <label className='text-white flex items-center gap-10'>
                   Start Time:
                   <input
                     type="time"
@@ -183,7 +269,7 @@ export default function Scheduling() {
                     className='block w-2/4 mt-1 p-2 bg-[#2B2B2BE5] border-2 border-white border-opacity-10 rounded-xl'
                   />
                 </label>
-                <label className='flex items-center gap-10 text-white'>
+                <label className='text-white flex items-center gap-10'>
                   End Time:
                   <input
                     type="time"
@@ -198,7 +284,7 @@ export default function Scheduling() {
               </div>
               <div className='grid items-center gap-4 mt-5'>
                 <div className='flex items-center'>
-                  <label className='flex items-center w-48 gap-10 text-white'>Meeting Link</label>
+                  <label className='text-white flex items-center gap-10 w-48'>Meeting Link</label>
                   <input
                       type="url"
                       name="meetingLink"
@@ -209,7 +295,7 @@ export default function Scheduling() {
                     />
                 </div>
                 <div className='flex items-center'>
-                  <label className='flex items-center w-48 gap-10 text-white'>Password</label>
+                  <label className='text-white flex items-center gap-10 w-48'>Password</label>
                   <input
                       type="text"
                       name="password"
@@ -220,7 +306,7 @@ export default function Scheduling() {
                     />
                 </div>
                 <div className='flex items-center'>
-                  <label className='flex items-center w-48 gap-10 text-white'>Subject</label>
+                  <label className='text-white flex items-center gap-10 w-48'>Subject</label>
                   <input
                       type="text"
                       name="subject"
@@ -231,7 +317,7 @@ export default function Scheduling() {
                     />
                 </div>
                 <div className='flex items-center'>
-                  <label className='flex items-center w-48 gap-10 text-white'>Expirience</label>
+                  <label className='text-white flex items-center gap-10 w-48'>Expirience</label>
                   <input
                       type="text"
                       name="experience"
@@ -242,7 +328,7 @@ export default function Scheduling() {
                     />
                 </div>
                 <div className='flex items-center'>
-                  <label className='flex items-center w-48 gap-10 text-white'>Skills</label>
+                  <label className='text-white flex items-center gap-10 w-48'>Skills</label>
                   <input
                       type="text"
                       name="skills"
@@ -253,7 +339,7 @@ export default function Scheduling() {
                     />
                 </div>
                 <div className='flex items-center'>
-                  <label className='flex items-start w-48 gap-10 text-white'>Description</label>
+                  <label className='text-white flex items-start gap-10 w-48'>Description</label>
                   <textarea
                       name="description"
                       value={formData.description}
