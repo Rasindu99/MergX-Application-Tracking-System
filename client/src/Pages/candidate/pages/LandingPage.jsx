@@ -1,5 +1,6 @@
 import {React, useContext, useEffect, useState} from 'react'
 import Card from '../../../Components/candidateComp/LandingPage/Card'
+import Card2 from '../../../Components/candidateComp/LandingPage/Card2'
 import AvatarBio from '../../../Components/candidateComp/LandingPage/AvatarBio'
 import Description from '../../../Components/candidateComp/LandingPage/Description'
 import Education from '../../../Components/candidateComp/LandingPage/Education'
@@ -34,7 +35,7 @@ const LandingPage = () => {
       </div>
       <div className='flex flex-wrap gap-9 justify-center mb-3'>
         <Card />
-        <Card />
+        <Card2 />
         <Card />
       </div>
 

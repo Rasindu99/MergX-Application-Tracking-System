@@ -24,7 +24,8 @@ export default function Status() {
     localStatusData, 
     setLocalStatusData, 
     localAnouncementData, 
-    setLocalAnouncementData 
+    setLocalAnouncementData,
+    setLocalReadAnnouncementData
   } = useInterviewContext();
 
   const [readStatuses, setReadStatuses] = useState(() => {
@@ -44,6 +45,7 @@ export default function Status() {
       return [];
     }
   });
+  setLocalReadAnnouncementData(readAnnouncements);
 
   useListenStatus();
 

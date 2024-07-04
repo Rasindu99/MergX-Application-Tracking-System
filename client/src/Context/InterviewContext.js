@@ -20,6 +20,7 @@ export const InterviewContextProvider = ({ children }) => {
 
   const [localStatusData, setLocalStatusData] = useState([]);
   const [localAnouncementData, setLocalAnouncementData] = useState([]);
+  const [localReadAnnouncementData, setLocalReadAnnouncementData] = useState([]);
 
   const triggerUpdate = () => {
     setUpdateFlag(prev => !prev); // Toggle the flag to trigger an update
@@ -48,7 +49,9 @@ export const InterviewContextProvider = ({ children }) => {
         localStatusData, 
         setLocalStatusData,
         localAnouncementData, 
-        setLocalAnouncementData
+        setLocalAnouncementData,
+        localReadAnnouncementData,
+        setLocalReadAnnouncementData
       }}
     >
       {children}

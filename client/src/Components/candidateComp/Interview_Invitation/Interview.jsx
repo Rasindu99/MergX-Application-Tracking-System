@@ -5,6 +5,7 @@ import axios from 'axios';
 import { UserContext } from '../../../Context/UserContext';
 
 const Interview = ({ interview, isRead }) => {
+  
   const {
     interviews,
     setInterviews,
@@ -93,9 +94,10 @@ const Interview = ({ interview, isRead }) => {
   };
   
   const formattedDate = date.toLocaleString(undefined, options).replace('at', '/');
+  const gradientClass = isRead ? 'from-[#2B2B2B] to-[#333333]': 'from-[#565656] to-[#333333]'; 
 
   return (
-    <div className={`interview-row transition-transform ease-in-out duration-200 transform hover:scale-105 hover:opacity-80 p-4 ${isRead ? 'bg-neutral-800' : 'bg-neutral-700'}`} key={interview._id}>
+    <div className={`interview-row transition-transform ease-in-out duration-200 transform hover:scale-105 hover:opacity-80 p-5 bg-gradient-to-b ${gradientClass}`} key={interview._id}>
       <div className="flex items-center justify-around summary">
         <span className='w-[200px]'>{interview.subject}</span>
         <span className='w-2/5'>{formattedDate}</span>

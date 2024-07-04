@@ -1,12 +1,13 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { UserContext } from '../../../Context/UserContext';
 import axios from 'axios';
-import { IoIosLink } from "react-icons/io";
 import { GrFormView } from "react-icons/gr";
 import { IoMdClose } from "react-icons/io";
 import Calendar from 'react-calendar';
 import { FaLaptopFile } from "react-icons/fa6";
 import { FaCopy } from "react-icons/fa";
+import UpCommingInt from './UpCommingInt';
+import JoinedInterviews from './JoinedInterviews';
 
 export default function InterviewLinkCard() {
     const { user } = useContext(UserContext);
@@ -97,92 +98,12 @@ export default function InterviewLinkCard() {
     }, []);
 
     return (
-        <div>
-            <div className='flex justify-center pt-3'>
-                <div className='bg-gradient-to-b from-[#2B2B2B] to-[#333333] rounded-lg w-2/3 h-[780px]'> 
-                    <div className='flex justify-center mt-3'>
-                        <div>
-                            <h1 className='text-2xl text-orange-500'>Up Coming</h1>
-                             <div className='w-[400px] '>
-                                 <hr className='opacity-50 text-[2px]'></hr>
-                            </div>
-                        </div>
-                    </div>
-                    <div className=' rounded-xl mx-5 mt-12  h-[650px] overflow-y-auto'>
-                        <div className=''>
-                                {approvedJobs.length > 0 ? (
-                                    approvedJobs
-                                        .filter(application => user._id === application.user_id)
-                                        .map(application => (
-                                            <div key={application._id} className='bg-gradient-to-b from-[#2B2B2B] to-[#272727] '>
-                                                <div className='flex items-center justify-between mx-12'>
-                                                    <div>
-                                                        <h1><IoIosLink className='size-[100px]' /></h1>
-                                                    </div>
-                                                    <div>
-                                                        <h3>{application.interviewSchedule?.jobtitle || 'N/A'}</h3>
-                                                        <p>Date: {formatDate(application.interviewSchedule?.date)}</p>
-                                                        <p>Time: {application.interviewSchedule?.start_time} - {application.interviewSchedule?.end_time}</p>
-                                                    </div>
-                                                    <div>
-                                                        <button onClick={() => handleJoinInterview(application)} className='bg-orange-500 h-14 w-[150px] rounded-lg'>Join Interview</button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        ))
-                                ) : (
-                                    <h3>empty</h3>
-                                )}
-                        </div>
-                        
-                    </div>
-                </div>
-
-                <div className='w-[30px]'></div>
-
-                <div>
-                    <div className='bg-gradient-to-b from-[#2B2B2B] to-[#333333] rounded-lg h-[320px]'>
-                        <div>
-                        <div className='flex justify-center'>
-                        <div className='mt-2'>
-                            <h1 className='text-xl text-orange-500'>Joined Interview</h1>
-                             <div className='w-[180px] opacity-30 '>
-                                 <hr className='opacity-50 '></hr>
-                            </div>
-                        </div>
-                    </div>
-                    <div className=' h-[250px] mt-3 overflow-y-auto '>
-                        <div className='mx-1 rounded-xl'>
-                                {isjoinedTrue.length > 0 ? (
-                                    isjoinedTrue
-                                        .filter(application => user._id === application.user_id)
-                                        .map(application => (
-                                            <div key={application._id} className=' border-opacity-30 bg-gradient-to-b from-[#2B2B2B] to-[#272727]'>
-                                                <div className='flex items-center justify-between mx-2'>
-                                                    <div>
-                                                        <h1><FaLaptopFile className='size-[30px]' /></h1>
-                                                    </div>
-                                                    <div className='w-[300px] '>
-                                                        <h3> {application.interviewSchedule?.jobtitle || 'N/A'}</h3>
-                                                    </div>
-                                                    <div>
-                                                        <button><GrFormView className='size-[40px]'/></button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        ))
-                                ) : (
-                                    <h1>empty</h1>
-                                )}
-                            </div>
-                    </div>
-                            
-                        </div>
-                    </div>
-                    <div className="pt-2">
-                        <Calendar className="w-full h-full" />
-                    </div>
-                </div>
+        <div className='bg-green-400 h-full w-full'>
+            <div className='flex justify-center bg-blue-500 h-full w-full'>
+                
+                <UpCommingInt approvedJobs={approvedJobs} formatDate={formatDate} handleJoinInterview={handleJoinInterview} />
+                
+                <JoinedInterviews user={user} isjoinedTrue={isjoinedTrue} />
                 
                 {showInterview && selectedInterview && (
                     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-30 backdrop-filter backdrop-blur-sm">

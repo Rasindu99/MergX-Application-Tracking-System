@@ -5,7 +5,7 @@ const cors = require('cors');
 const {
     createEvalautions, 
     //  updateEvaluation,
-      getEvaluation,getimg,getpost,getEvaCandidates} = require('../controllers/evaluationController');
+      getEvaluation,getimg,getpost,getEvaCandidates, getEvaCandidatesByJobAndUser} = require('../controllers/evaluationController');
 
 router.use(
     cors({
@@ -20,5 +20,8 @@ router.get('/',getEvaluation);
 router.get('/getimg/:_id',getimg);
 router.get('/getpost/:_id',getpost);
 router.get('/getEvaCandidates',getEvaCandidates);
+
+// get selected evaluation objects
+router.get('/getEvaCandidatesByJobAndUser',getEvaCandidatesByJobAndUser );
 
 module.exports = router;

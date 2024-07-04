@@ -156,7 +156,6 @@ const getEvaluation = async (req, res) => {
 
 
 
-
 const getEvaCandidates = async (req,res)=>{
   try{
     const candidates = await Evaluationmodel.find();
@@ -168,6 +167,31 @@ const getEvaCandidates = async (req,res)=>{
   catch(error){
     console.error('Error in getEvaCandidates:', error); // Log the error for debugging
     res.status(500).json({ error: 'Server error' });
+  }
+}
+
+// controller to get evaluation objects -Rasindu
+const getEvaCandidatesByJobAndUser = async (req, res) => {
+  try {
+    const { user_id } = req.query; // Assuming you pass jobId and user_id as query parameters
+    //console.log('job id',jobId);
+
+    if (!user_id) {
+      return res.status(400).json({ message: "jobId and user_id are required" });
+    }
+
+    const evaluation = await Evaluationmodel.find({
+      candidateid: user_id
+    });
+
+    if (!evaluation) {
+      return res.status(404).json({ message: "No evaluation found for the given jobId and user_id" });
+    }
+
+    res.status(200).json(evaluation);
+  } catch (error) {
+    console.error('Error fetching evaluation:', error);
+    res.status(500).json({ message: "Internal server error", error: error.message });
   }
 }
 
@@ -217,5 +241,6 @@ module.exports={
     getEvaluation,
     getimg,
     getpost,
-    getEvaCandidates
+    getEvaCandidates,
+    getEvaCandidatesByJobAndUser
 }
