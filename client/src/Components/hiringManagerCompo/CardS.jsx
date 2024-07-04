@@ -10,7 +10,7 @@ export default function CardS(props) {
 
         <div className="txt mx-auto my-0 text-center">
           <p className='text-lg text-white text-center'>{props.name}<br/>{props.subName}</p>
-          <h1 className='text-6xl text-[#EA7122] mt-4 text-center font-bold'>{props.val}</h1>
+          <h1 className='text-6xl text-[#EA7122] mt-3 text-center font-bold'>{props.val}</h1>
         </div>
       </div>
     </div>
