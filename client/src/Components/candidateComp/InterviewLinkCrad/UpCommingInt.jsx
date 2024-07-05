@@ -8,25 +8,25 @@ const UpCommingInt = ({approvedJobs, formatDate, handleJoinInterview}) => {
   const { user } = useContext(UserContext);
 
   return (
-    <div className='bg-gradient-to-b from-[#2B2B2B] to-[#2B2B2B] rounded-lg w-2/4 h-4/5 mr-2'>
+    <div className='bg-gradient-to-b from-[#2b2b2b] to-[#2c2c2c] rounded-lg w-full h-full mr-2 '>
       <div className='flex justify-center '>
-        <div>
-          <h1 className='text-2xl text-orange-500'>Up Coming</h1>
-          <div className='w-[400px] '>
-            <hr className='opacity-50 text-[2px]'></hr>
+        <div className='mt-2'>
+          <h1 className='text-2xl text-neutral-200'>Up Coming Interviews</h1>
+          <div className='w-[300px] '>
+            <hr className='opacity-30 text-[2px] mt-1'></hr>
           </div>
         </div>
       </div>
-      <div className=' rounded-xl mx-5 h-4/5 overflow-y-auto'>
+      <div className=' rounded-xl mx-5 mt-5 h-4/5 overflow-y-auto'>
         <div className=''>
           {approvedJobs.length > 0 ? (
             approvedJobs
               .filter(application => user._id === application.user_id)
               .map(application => (
-                <div key={application._id} className='bg-gradient-to-b from-[#2B2B2B] to-[#272727] '>
+                <div key={application._id} className='bg-gradient-to-b from-[#333333] to-[#252525] rounded-lg hover:from-[#464646] hover:to-[#333333] cursor-pointer mb-[3px] p-2'>
                   <div className='flex items-center justify-between mx-12'>
                     <div>
-                      <h1><IoIosLink className='size-[100px]' /></h1>
+                      <h1><IoIosLink className='size-[80px]' /></h1>
                     </div>
                     <div>
                       <h3>{application.interviewSchedule?.jobtitle || 'N/A'}</h3>
@@ -34,7 +34,7 @@ const UpCommingInt = ({approvedJobs, formatDate, handleJoinInterview}) => {
                       <p>Time: {application.interviewSchedule?.start_time} - {application.interviewSchedule?.end_time}</p>
                     </div>
                     <div>
-                      <button onClick={() => handleJoinInterview(application)} className='bg-orange-500 h-14 w-[150px] rounded-lg'>Join Interview</button>
+                      <button onClick={() => handleJoinInterview(application)} className='bg-orange-500 h-14 w-[150px] rounded-lg font-semibold hover:bg-orange-600'>OPEN LINK</button>
                     </div>
                   </div>
                 </div>

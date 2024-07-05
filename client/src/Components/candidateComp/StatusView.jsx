@@ -54,10 +54,10 @@ export default function StatusView({ visible, onClose, status }) {
       </div>
 
       <button
-        className="group flex justify-center items-center text-white bg-orange-500 text-center rounded-md hover:bg-orange-600 size-10 hover:text-red-700 absolute right-3 top-3"
+        className="group flex justify-center items-center text-white bg-orange-500 text-center rounded-md hover:bg-orange-600 size-10 absolute right-4 top-4"
         onClick={handleOnClose}
       >
-        <IoMdClose className="text-white size-6 group-hover:scale-110 transform transition-transform duration-200" />
+        <IoMdClose className="text-white group-hover:text-black text-xl" />
       </button>
     </div>
   )

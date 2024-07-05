@@ -25,11 +25,11 @@ const JoinedInterviews = ({isjoinedTrue, user}) => {
 
   return (
     <div>
-      <div className='bg-gradient-to-b from-[#2B2B2B] to-[#333333] rounded-lg h-full w-[400px]'>
+      <div className='bg-gradient-to-b from-[#313131] to-[#2c2c2c] rounded-lg h-full w-[400px] p-2 overflow-y-auto'>
         <div className='h-full'>
           <div className='flex justify-center'>
             <div className='mt-2'>
-              <h1 className='text-xl text-orange-500'>Joined Interview</h1>
+              <h1 className='text-xl text-orange-500'> Interview History</h1>
               <div className='w-[180px] opacity-30 '>
                 <hr className='opacity-50 '></hr>
               </div>
@@ -47,6 +47,7 @@ const JoinedInterviews = ({isjoinedTrue, user}) => {
                       startedEvaluations={startedEvaluations}
                       isVisible={visibleInterviewId === application._id}
                       onToggleVisibility={() => handleToggleVisibility(application._id)}
+                      user={user}
                       />
                   ))
               ) : (

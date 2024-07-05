@@ -1,10 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { UserContext } from '../../../Context/UserContext';
 import axios from 'axios';
-import { GrFormView } from "react-icons/gr";
 import { IoMdClose } from "react-icons/io";
-import Calendar from 'react-calendar';
-import { FaLaptopFile } from "react-icons/fa6";
 import { FaCopy } from "react-icons/fa";
 import UpCommingInt from './UpCommingInt';
 import JoinedInterviews from './JoinedInterviews';
@@ -15,6 +12,7 @@ export default function InterviewLinkCard() {
     const [isjoinedTrue, setIsjoinedTrue] = useState([]);
     const [showInterview, setShowInterview] = useState(false);
     const [selectedInterview, setSelectedInterview] = useState(null);
+    const [show, setShow] = useState(false);
 
     const formatDate = (dateString) => {
         if (!dateString) return 'Not scheduled';
@@ -97,22 +95,35 @@ export default function InterviewLinkCard() {
         getisjoinedtrue();
     }, []);
 
+    useEffect(() => {
+        if (showInterview) {
+            setTimeout(() => setShow(true), 50); // Delay to allow for transition
+        } else {
+            setShow(false);
+        }
+    }, [showInterview]);
+
+    const handleOnClose = () => {
+        setShow(false);
+        setTimeout(() => handleModalClose(), 100);
+    }
+
     return (
-        <div className='bg-green-400 h-full w-full'>
-            <div className='flex justify-center bg-blue-500 h-full w-full'>
+        <div className='h-full w-full'>
+            <div className='flex justify-center h-full w-full'>
                 
                 <UpCommingInt approvedJobs={approvedJobs} formatDate={formatDate} handleJoinInterview={handleJoinInterview} />
                 
                 <JoinedInterviews user={user} isjoinedTrue={isjoinedTrue} />
                 
                 {showInterview && selectedInterview && (
-                    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-30 backdrop-filter backdrop-blur-sm">
-                        <div className="bg-[#19191A] p-6 rounded-lg shadow-lg h-fit w-[700px] border-orange-700 border-[1px]">
+                    <div className={`fixed inset-0 flex items-center justify-center bg-black bg-opacity-30 backdrop-filter backdrop-blur-sm transition-opacity duration-500 ${show ? 'opacity-100' : 'opacity-0'}`}>
+                        <div className={`bg-[#19191A] p-6 rounded-lg shadow-lg h-fit w-[700px] border-orange-700 border transition-transform duration-500 ${show ? 'transform scale-100' : 'transform scale-95'}`}>
                             <button
-                                className="absolute px-4 py-2 text-white bg-gray-700 rounded-md top-4 right-4 hover:bg-gray-600 size-12"
-                                onClick={handleModalClose}
+                                className="group flex justify-center items-center text-white bg-orange-500 text-center rounded-md hover:bg-orange-600 size-10 absolute right-4 top-4"
+                                onClick={handleOnClose}
                             >
-                                <IoMdClose className="text-white hover:text-red-700" />
+                                <IoMdClose className="text-white group-hover:text-black text-xl" />
                             </button>
               
                             <h1 className="mb-4 text-2xl font-bold text-orange-500">{selectedInterview.interviewSchedule?.jobtitle || 'N/A'}</h1>
@@ -130,11 +141,11 @@ export default function InterviewLinkCard() {
                                 <button 
                                     onClick={copyLinkToClipboard}
                                     className="px-4 py-2 text-white rounded bg-[#171711A] hover:text-orange-600"
-                                ><div className='flex items-center justify-between'>
-                                    <FaCopy className='mr-2'  />
-                                    Copy Link
-                                </div>
-                                    
+                                >
+                                    <div className='flex items-center justify-between'>
+                                        <FaCopy className='mr-2'  />
+                                        Copy Link
+                                    </div>
                                 </button>
                             </div>
                             

@@ -21,7 +21,7 @@ const ProgressTimeline = ({applicationExists}) => {
    
 
   return (
-    <div className="flex justify-center ">
+    <div className="flex justify-center">
     <div >
       
         <div  className="flex gap-x-3 ">
@@ -34,7 +34,7 @@ const ProgressTimeline = ({applicationExists}) => {
             </div>
           </div>
           <div className="grow pt-0.5 pb-8">
-            <h3 className="flex gap-x-1.5 font-semibold text-gray-800 dark:text-white">
+            <h3 className="flex gap-x-1.5 font-semibold text-gray-400 dark:text-white">
             Interview Completed
             </h3>
             <button type="button" className="mt-1 -ms-1 p-1 inline-flex items-center gap-x-2 text-xs rounded-lg border border-transparent text-gray-500 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:text-neutral-400 dark:hover:bg-neutral-700">
@@ -52,7 +52,7 @@ const ProgressTimeline = ({applicationExists}) => {
             </div>
           </div>
           <div className="grow pt-0.5 pb-8">
-            <h3 className="flex gap-x-1.5 font-semibold text-gray-800 dark:text-white">
+            <h3 className="flex gap-x-1.5 font-semibold text-gray-400 dark:text-white">
             Interviewer Review
             </h3>
             <button type="button" className="mt-1 -ms-1 p-1 inline-flex items-center gap-x-2 text-xs rounded-lg border border-transparent text-gray-500 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:text-neutral-400 dark:hover:bg-neutral-700">
@@ -69,7 +69,7 @@ const ProgressTimeline = ({applicationExists}) => {
             </div>
           </div>
           <div className="grow pt-0.5 pb-8">
-            <h3 className="flex gap-x-1.5 font-semibold text-gray-800 dark:text-white">
+            <h3 className="flex gap-x-1.5 font-semibold text-gray-400 dark:text-white">
             Recruiter Review
             </h3>
             <button type="button" className="mt-1 -ms-1 p-1 inline-flex items-center gap-x-2 text-xs rounded-lg border border-transparent text-gray-500 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:text-neutral-400 dark:hover:bg-neutral-700">
@@ -86,7 +86,7 @@ const ProgressTimeline = ({applicationExists}) => {
             </div>
           </div>
           <div className="grow pt-0.5 pb-8">
-            <h3 className="flex gap-x-1.5 font-semibold text-gray-800 dark:text-white">
+            <h3 className="flex gap-x-1.5 font-semibold text-gray-400 dark:text-white">
             Hiring Manager Review
             </h3>
             <button type="button" className="mt-1 -ms-1 p-1 inline-flex items-center gap-x-2 text-xs rounded-lg border border-transparent text-gray-500 hover:bg-gray-100 disabled:opacity-50 disabled:pointer-events-none dark:text-neutral-400 dark:hover:bg-neutral-700">
@@ -103,7 +103,7 @@ const ProgressTimeline = ({applicationExists}) => {
             </div>
           </div>
           <div className="grow pt-0.5 pb-8">
-            <h3 className="flex gap-x-1.5 font-semibold text-gray-800 dark:text-white">
+            <h3 className="flex gap-x-1.5 font-semibold text-gray-400 dark:text-white">
             Waiting Approval
             </h3>
           </div>
