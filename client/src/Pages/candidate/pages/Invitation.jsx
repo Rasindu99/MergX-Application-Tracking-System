@@ -83,41 +83,43 @@ const Invitation = () => {
 
 
   return (
-    <div className='flex flex-col items-center justify-start w-full h-full bg-neutral-800'>
+    <div className='flex flex-col items-center justify-around w-full h-full bg-neutral-800'>
 
       <div className='flex items-center justify-center w-11/12 bg-neutral-800 height-10'>
         <SearchBar filteredInterviews={filteredInterviews} />
       </div>
 
-      <div className='bg-neutral-800 w-11/12 height-7 divide-x divide-neutral-400 border-2 border-neutral-600 rounded-t-2xl'>
-        <button
-          onClick={() => setFilter('new')}
-          className={`hover:bg-neutral-700 font-bold text-lg w-1/4 px-4 py-2 rounded-tl-2xl ${filter === 'new' ? 'bg-neutral-500 text-white' : 'bg-neutral-800'}`}
-        >New</button>
+      <div className='flex flex-col w-full h-5/6 items-center justify-center overflow-y-auto rounded-xl '>
+        <div className='bg-neutral-800 w-11/12 h-[60px] divide-x divide-neutral-400 border-2 border-neutral-600 rounded-t-2xl'>
+          <button
+            onClick={() => setFilter('new')}
+            className={`hover:bg-neutral-700 h-full font-bold text-lg w-1/4 px-4 py-2 rounded-tl-2xl ${filter === 'new' ? 'bg-neutral-500 text-white' : 'bg-neutral-800'}`}
+          >New</button>
 
-        <button
-          onClick={() => setFilter('all')}
-          className={`hover:bg-neutral-700 font-bold text-lg w-1/4 px-4 py-2 ${filter === 'all' ? 'bg-neutral-500  backdrop-opacity-10 text-white' : 'bg-neutral-800'}`}
-        >All</button>
+          <button
+            onClick={() => setFilter('all')}
+            className={`hover:bg-neutral-700 h-full font-bold text-lg w-1/4 px-4 py-2 ${filter === 'all' ? 'bg-neutral-500  backdrop-opacity-10 text-white' : 'bg-neutral-800'}`}
+          >All</button>
 
-        <button
-          onClick={() => setFilter('viewed')}
-          className={`hover:bg-neutral-700 font-bold text-lg w-1/4 px-4 py-2 ${filter === 'viewed' ? 'bg-neutral-500 text-white' : 'bg-neutral-800'}`}
-        >Viewed</button>
+          <button
+            onClick={() => setFilter('viewed')}
+            className={`hover:bg-neutral-700 h-full font-bold text-lg w-1/4 px-4 py-2 ${filter === 'viewed' ? 'bg-neutral-500 text-white' : 'bg-neutral-800'}`}
+          >Viewed</button>
 
-        <button
-          onClick={() => setFilter('deleted')}
-          className={`hover:bg-neutral-700 font-bold text-lg w-1/4 px-4 py-2 rounded-tr-2xl ${filter === 'deleted' ? 'bg-neutral-500 text-white' : 'bg-neutral-800'}`}
-        >Deleted</button>
-      </div>
+          <button
+            onClick={() => setFilter('deleted')}
+            className={`hover:bg-neutral-700 h-full font-bold text-lg w-1/4 px-4 py-2 rounded-tr-2xl ${filter === 'deleted' ? 'bg-neutral-500 text-white' : 'bg-neutral-800'}`}
+          >Deleted</button>
+        </div>
 
-      <div className='items-center w-11/12 overflow-auto overflow-x-hidden divide-y listContainer rounded-b-xl height-75 bg-neutral-800 divide-neutral-600'>
-        {(search ? searchedInterview : getFilteredInterviews()).map((interview) => {
-          const isRead = readInterviews.includes(interview._id);
-          return (
-            <Interview key={interview._id} isRead={isRead} interview={interview} />
-          )
-        })}
+        <div className='items-center w-11/12 overflow-auto overflow-x-hidden divide-y listContainer rounded-b-xl h-full bg-neutral-800 divide-neutral-600'>
+          {(search ? searchedInterview : getFilteredInterviews()).map((interview) => {
+            const isRead = readInterviews.includes(interview._id);
+            return (
+              <Interview key={interview._id} isRead={isRead} interview={interview} />
+            )
+          })}
+        </div>
       </div>
     </div>
   )

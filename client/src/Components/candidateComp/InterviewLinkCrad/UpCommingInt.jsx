@@ -40,7 +40,18 @@ const UpCommingInt = ({approvedJobs, formatDate, handleJoinInterview}) => {
                 </div>
               ))
           ) : (
-            <h3>empty</h3>
+              <div class="loader h-[100px] w-full absolute top-[40%] left-[45%]">
+                <div class="dot-spinner">
+                  <div class="dot-spinner__dot"></div>
+                  <div class="dot-spinner__dot"></div>
+                  <div class="dot-spinner__dot"></div>
+                  <div class="dot-spinner__dot"></div>
+                  <div class="dot-spinner__dot"></div>
+                  <div class="dot-spinner__dot"></div>
+                  <div class="dot-spinner__dot"></div>
+                  <div class="dot-spinner__dot"></div>
+                </div>
+              </div>
           )}
         </div>
 

@@ -35,8 +35,8 @@ const JoinedInterviews = ({isjoinedTrue, user}) => {
               </div>
             </div>
           </div>
-          <div className=' h-5/6 mt-3 overflow-y-auto'>
-            <div className='mx-1 rounded-xl'>
+          <div className=' h-5/6 mt-3 overflow-y-auto relative'>
+            <div className=' rounded-xl'>
               {isjoinedTrue.length > 0 ? (
                 isjoinedTrue
                   .filter(application => user._id === application.user_id)
@@ -51,7 +51,18 @@ const JoinedInterviews = ({isjoinedTrue, user}) => {
                       />
                   ))
               ) : (
-                <h1>empty</h1>
+                  <div class="loader h-[100px]  absolute top-[27%] left-[45%]">
+                    <div class="dot-spinner">
+                      <div class="dot-spinner__dot"></div>
+                      <div class="dot-spinner__dot"></div>
+                      <div class="dot-spinner__dot"></div>
+                      <div class="dot-spinner__dot"></div>
+                      <div class="dot-spinner__dot"></div>
+                      <div class="dot-spinner__dot"></div>
+                      <div class="dot-spinner__dot"></div>
+                      <div class="dot-spinner__dot"></div>
+                    </div>
+                  </div>
               )}
             </div>
           </div>

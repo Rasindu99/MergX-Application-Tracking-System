@@ -52,7 +52,7 @@ const SearchBar = ({ filteredInterviews }) => {
       <input
         type='text'
         placeholder='search here...'
-        className='flex-1  border-0 outline-0 px-5 py-2 bg-transparent text-xl text-neutral-50 placeholder:italic placeholder:text-white placeholder:text-start placeholder:px-4'
+        className='flex-1  border-0 outline-0 px-5 py-2 bg-transparent text-xl text-neutral-50   placeholder:text-white placeholder:text-start placeholder:px-4'
         value={searchInput}
         onChange={(e) => setSearchInput(e.target.value)}
       />

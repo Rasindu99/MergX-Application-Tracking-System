@@ -23,7 +23,20 @@ const LandingPage = () => {
   },[]);
 
   if (!profileData) {
-    return <div>Loading...</div>; // Show a loading message while the data is being fetched
+    return (
+      <div class="loader h-[100px] w-full absolute top-[50%] left-[55%]">
+        <div class="dot-spinner">
+          <div class="dot-spinner__dot"></div>
+          <div class="dot-spinner__dot"></div>
+          <div class="dot-spinner__dot"></div>
+          <div class="dot-spinner__dot"></div>
+          <div class="dot-spinner__dot"></div>
+          <div class="dot-spinner__dot"></div>
+          <div class="dot-spinner__dot"></div>
+          <div class="dot-spinner__dot"></div>
+        </div>
+      </div>
+    ) // Show a loading message while the data is being fetched
   }
 
   return (
