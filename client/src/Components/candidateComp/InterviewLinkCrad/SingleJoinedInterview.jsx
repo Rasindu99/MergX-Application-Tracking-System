@@ -2,6 +2,7 @@ import {React, useState, useEffect} from 'react'
 import { FaLaptopFile } from "react-icons/fa6";
 import { GrFormView } from "react-icons/gr";
 import ProgressTimeline from '../../hiringManagerCompo/ProgressTimeline'
+import { IoMdClose } from "react-icons/io";
 
 
 const SingleJoinedInterview = ({application, startedEvaluations, isVisible, onToggleVisibility}) => {
@@ -30,8 +31,17 @@ const SingleJoinedInterview = ({application, startedEvaluations, isVisible, onTo
         </div>
       </div>
       {isVisible && (
-        <div className="bg-neutral-700 rounded-2xl m-1">
-          <ProgressTimeline applicationExists={filteredEvaluations}/>
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-30 backdrop-filter backdrop-blur-sm">
+          <div className="bg-[#19191A] p-6 rounded-lg shadow-lg h-fit w-[700px] border-orange-700 border-[1px]">
+            <button
+              className="absolute px-4 py-2 text-white bg-gray-700 rounded-md top-4 right-4 hover:bg-gray-600 size-12"
+              onClick={onToggleVisibility}
+            >
+              <IoMdClose className="text-white hover:text-red-700" />
+            </button>
+            <ProgressTimeline applicationExists={filteredEvaluations} />
+
+          </div>
         </div>
       )}
     </div>
