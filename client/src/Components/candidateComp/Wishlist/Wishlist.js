@@ -1,10 +1,15 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect, useRef } from 'react';
 import { UserContext } from '../../../Context/UserContext';
 import axios from 'axios';
 import { GrFormView } from "react-icons/gr";
 import { IoBagCheckSharp } from "react-icons/io5";
 import { IoMdClose } from "react-icons/io";
 import { toast } from 'react-hot-toast';
+import { MdCloudUpload } from "react-icons/md";
+import { FaFileCircleCheck } from "react-icons/fa6";
+import { IoMdCloudUpload } from "react-icons/io";
+import { FaFileCirclePlus } from "react-icons/fa6";
+import { TiDelete } from "react-icons/ti";
 
 export default function Wishlist() {
     const { user } = useContext(UserContext);
@@ -17,11 +22,20 @@ export default function Wishlist() {
     const [selectedWishlistItemId, setSelectedWishlistItemId] = useState(null);
     const [showapplicationupload, setShowapplicationupload] = useState(false);
     const [cv, setCv] = useState(null);
+    const [show, setShow] = useState(false);
 
     // Function to handle file input change
     const handleFileChange = (e) => {
         setCv(e.target.files[0]);
     };
+
+    useEffect(() => {
+        if (showapplicationupload) {
+            setTimeout(() => setShow(true), 50); // Delay to allow for transition
+        } else {
+            setShow(false);
+        }
+    }, [showapplicationupload]);
 
     const updatesubmitted = async (id) => {
         try {
@@ -36,6 +50,7 @@ export default function Wishlist() {
 
     // Function to upload application
     const uploadApplication = async (e) => {
+        e.stopPropagation();
         e.preventDefault();
         
         const formData = new FormData();
@@ -66,6 +81,7 @@ export default function Wishlist() {
                 
             }
             
+            
         } catch (error) {
             console.error('Error submitting application:', error);
             toast.error('Error submitting application');
@@ -77,6 +93,7 @@ export default function Wishlist() {
         try {
             const response = await axios.get('wishlist/detailssubmittedfalse'); // Ensure the URL is correct
             setWishlistItems(response.data.data);
+            console.log('wishList Items', response.data);
         } catch (error) {
             console.error('Error fetching wishlist items:', error);
         }
@@ -86,7 +103,7 @@ export default function Wishlist() {
     const getinvitationsendistrue = async () => {
         try {
             const response = await axios.get('/interview/getinterviewschedule');
-            console.log('Sent invitation get successful');
+            console.log('Sent invitation get successful',response.data);
             setinterviewschedules(response.data);
         } catch (error) {
             console.error('Error:', error);
@@ -132,6 +149,25 @@ export default function Wishlist() {
         const query = searchQuery.toLowerCase();
         return jobTitle.includes(query) || subject.includes(query);
     });
+
+    // File Upload area tools----------------------------
+
+    const fileInputRef = useRef(null);
+
+    const handleFormClick = (e) => {
+        e.stopPropagation();
+        fileInputRef.current.click();
+      };
+
+    const handleDeleteClick = (event) => {
+        event.stopPropagation(); // Prevent the form click event from being triggered
+        setCv(null);
+    };
+
+    const handleOnClose = () => {
+        setShow(false);
+        setTimeout(() => handleModalClose(), 200); 
+    }
 
     return (
         <div className='flex justify-center'>
@@ -212,23 +248,42 @@ export default function Wishlist() {
                 </div>
             )}
             {showapplicationupload && selectedjobinvitation && (
-                <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-30 backdrop-filter backdrop-blur-sm">
-                    <div className="bg-[#19191A] p-6 rounded-lg shadow-lg h-[800px] w-[1000px] border-orange-700 border-[1px] relative">
+                <div className={`fixed inset-0 flex items-center justify-center bg-black bg-opacity-30 backdrop-filter backdrop-blur-sm transition-opacity duration-500 ${show ? 'opacity-100' : 'opacity-0'}`}>
+                    <div className={`flex flex-col items-center justify-around bg-[#1d1d1d] p-6 rounded-lg shadow-lg h-3/4 w-2/6 border-neutral-700 border-[1px] relative transition-transform duration-500 ${show ? 'transform scale-100' : 'transform scale-95'}`}>
                         <button
-                            className="absolute px-4 py-2 text-white bg-gray-700 rounded-md top-4 right-4 hover:bg-gray-600 size-12"
-                            onClick={handleModalClose}
+                            className="group flex justify-center items-center text-white bg-orange-500 text-center rounded-md hover:bg-orange-600 size-10 absolute right-4 top-4"
+                            onClick={handleOnClose}
                         >
-                            <IoMdClose className="text-white hover:text-red-700" />
+                            <IoMdClose className="text-white group-hover:text-black text-xl" />
                         </button>
                         
-                        <h1 className="mb-4 text-2xl font-bold">{selectedjobinvitation.jobtitle}</h1>
-                        <h1>{user.fname}</h1>
-                        <h1>{selectedjobinvitation._id}</h1>
+                        <div>
+                            <h1 className="mb-4 text-2xl font-bold">{selectedjobinvitation.jobtitle}</h1>
+                            <h1>{user.fname}</h1>
+                            <h1>{selectedjobinvitation._id}</h1>
+                        </div>
 
-                        <form onSubmit={uploadApplication}>
-                            <input type='file' onChange={handleFileChange} required />
-                            <button type='submit' className='h-10 bg-orange-500 w-[250px] rounded-lg hover:opacity-40'>Submit</button>
+                        <form
+                           
+                            onClick={handleFormClick}
+                            className='flex flex-col justify-around items-center border-3 border-dashed border-orange-500 h-[250px] w-[250px] cursor-pointer rounded-2xl relative '
+                        >
+                            <TiDelete className='absolute text-3xl right-2 top-2 text-orange-500 cursor-pointer hover:text-orange-700 z-10' onClick={handleDeleteClick}/>
+                            { 
+                                cv  ? 
+                                    <div className='flex justify-around  h-3/5 flex-col items-center'>
+                                        <FaFileCircleCheck className='text-8xl text-orange-500 ml-5' />
+                                        <h1 className='text-lg font-semibold text-green-500'>File upload Successful</h1>
+                                    </div>
+                                    :
+                                    <div className='flex justify-around  h-3/5 flex-col items-center '>
+                                        <FaFileCirclePlus className='text-orange-300 text-8xl ml-5' />
+                                        <h1 className='text-lg font-semibold text-neutral-500'>Browse File to upload</h1>
+                                    </div>
+                            }
+                            <input type='file' onChange={handleFileChange} ref={fileInputRef} className="hidden" required />
                         </form>
+                        <button type='submit' className='h-10 bg-orange-500 w-[250px] rounded-lg hover:opacity-40' onClick={uploadApplication}>Submit</button>
                     </div>
                 </div>
             )}
