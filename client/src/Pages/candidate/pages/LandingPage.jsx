@@ -4,6 +4,7 @@ import Card2 from '../../../Components/candidateComp/LandingPage/Card2'
 import AvatarBio from '../../../Components/candidateComp/LandingPage/AvatarBio'
 import Description from '../../../Components/candidateComp/LandingPage/Description'
 import Education from '../../../Components/candidateComp/LandingPage/Education'
+import LoadingWheel from '../../../Components/LoadingComp/LoadingWheel'
 import { UserContext } from '../../../Context/UserContext'
 import axios from 'axios'
 
@@ -25,16 +26,7 @@ const LandingPage = () => {
   if (!profileData) {
     return (
       <div class="loader h-[100px] w-full absolute top-[50%] left-[55%]">
-        <div class="dot-spinner">
-          <div class="dot-spinner__dot"></div>
-          <div class="dot-spinner__dot"></div>
-          <div class="dot-spinner__dot"></div>
-          <div class="dot-spinner__dot"></div>
-          <div class="dot-spinner__dot"></div>
-          <div class="dot-spinner__dot"></div>
-          <div class="dot-spinner__dot"></div>
-          <div class="dot-spinner__dot"></div>
-        </div>
+        <LoadingWheel />
       </div>
     ) // Show a loading message while the data is being fetched
   }
