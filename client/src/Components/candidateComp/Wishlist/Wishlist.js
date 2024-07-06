@@ -170,20 +170,20 @@ export default function Wishlist() {
     }
 
     return (
-        <div className='flex justify-center'>
-            <div>
-                <div className="pt-10 pb-10">
+        <div className='flex justify-center overflow-hidden h-auto w-full'>
+            <div className='w-full flex flex-col items-center max-h-[1300px] overflow-y-auto'>
+                <div className="pt-3 pb-3 w-full mb-3">
                     <input
-                    className="text-[#ffffff] bg-[#2B2B2B] h-[40px] w-[800px] rounded-3xl pl-3"
+                    className="text-[#ffffff] bg-[#2B2B2B] h-[45px] w-2/4 rounded-3xl pl-3 border border-neutral-700"
                     type="text"
                     placeholder="Search Jobs...."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     />
                 </div>
-                <div>
-                <table>
-                    <tbody>
+                <div className='overflow-y-auto h-3/4 w-[90%] rounded-2xl border border-neutral-700'>
+                <table className='overflow-y-auto w-full'>
+                    <tbody className='overflow-y-auto w-full'>
                         {filterWishlistItems.map((item) => {
                             if (user._id === item.candidate_id) {
                                 const InterviewSchedule = interviewschedulesData && interviewschedulesData.find(
@@ -191,32 +191,32 @@ export default function Wishlist() {
                                 );
 
                                 return (
-                                    <tr key={item._id} className='border-b border-gray-500 h-[70px] bg-gradient-to-b from-[#2B2B2B] to-[#333333]'>
-                                        <td className='pl-8 pr-3'>
-                                            <IoBagCheckSharp className='size-[70px] text-orange-500 opacity-40'/>
+                                    <tr key={item._id} className='border-b border-neutral-700 h-[70px] bg-gradient-to-b from-[#2B2B2B] to-[#333333] w-2/4 hover:from-[#464646] hover:to-[#333333]  cursor-pointer'>
+                                        <td className='pl-8 pr-3 w-[10%]'>
+                                            <IoBagCheckSharp className='text-4xl text-orange-500 opacity-40'/>
                                         </td>
-                                        <td>
+                                        <td className='w-[25%] px-1 '>
                                             <h1 className='font-bold'>{ InterviewSchedule?.jobtitle}</h1>
                                             <p className='opacity-40'>{InterviewSchedule?.subject || 'N/A'}</p>
                                         </td>
-                                        <td className='pl-2 w-[500px] pr-2'>
+                                        <td className='pl-2 w-[25%] pr-2 '>
                                             <h1>
                                                 {InterviewSchedule?.description?.length > 60 
                                                     ? `${InterviewSchedule?.description.substring(0, 60)}...` 
                                                     : InterviewSchedule?.description}
                                             </h1>
                                         </td>
-                                        <td className='pl-2 w-[200px] pr-2'>
+                                        <td className='pl-2 w-[10%] pr-2 '>
                                             <h1>{InterviewSchedule?.posteddate || 'date'}</h1>
                                         </td>
-                                        <td className='pl-2 w-[200px] pr-2'>
+                                        <td className='pl-2 w-[10%] pr-2'>
                                             <button onClick={() => handleViewInvitation(InterviewSchedule)}>
                                                 <GrFormView className='size-[45px] hover:opacity-45'/>
                                             </button>
                                         </td>
-                                        <td className='pr-12'>
-                                            <button onClick={() => handleApplicationSubmit(InterviewSchedule, item._id)} className='h-10 bg-orange-500 w-[250px] rounded-lg hover:opacity-40'>
-                                                Submit Application (CV)
+                                        <td className='  w-[20%]'>
+                                            <button onClick={() => handleApplicationSubmit(InterviewSchedule, item._id)} className='h-9 bg-orange-500 px-2 rounded-lg hover:opacity-40 text-base font-medium'>
+                                              Submit Resume
                                             </button>
                                         </td>
                                     </tr>

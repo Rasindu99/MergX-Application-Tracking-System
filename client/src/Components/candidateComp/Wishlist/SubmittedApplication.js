@@ -76,57 +76,57 @@ export default function SubmittedApplication() {
     });
 
     return (
-        <div className='flex justify-center'>
-            <div>
-                <div className="pt-10 pb-10">
+        <div className='flex justify-center overflow-hidden h-auto w-full'>
+            <div className='w-full flex flex-col items-center max-h-[1300px] overflow-y-auto'>
+                <div className="pt-3 pb-3 w-full mb-3">
                     <input
-                    className="text-[#ffffff] bg-[#2B2B2B] h-[40px] w-[800px] rounded-3xl pl-3"
+                    className="text-[#ffffff] bg-[#2B2B2B] h-[45px] w-2/4 rounded-3xl pl-3 border border-neutral-700"
                     type="text"
                     placeholder="Search Jobs...."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     />
                 </div>
-                <div>
-                <table>
-                    <tbody>
-                        {filterWishlistItems.map((item) => {
-                            if (user._id === item.candidate_id) {
-                                const InterviewSchedule = interviewschedulesData && interviewschedulesData.find(
-                                    (interviewschedule) => interviewschedule._id === item.job_invitation_id
-                                );
+                <div className='overflow-y-auto h-[37%] w-[90%] rounded-2xl border border-neutral-700'>
+                    <table className='overflow-y-auto h-1/2 w-full'>
+                        <tbody className='overflow-y-auto h-1/2 w-full'>
+                            {filterWishlistItems.map((item) => {
+                                if (user._id === item.candidate_id) {
+                                    const InterviewSchedule = interviewschedulesData && interviewschedulesData.find(
+                                        (interviewschedule) => interviewschedule._id === item.job_invitation_id
+                                    );
 
-                                return (
-                                    <tr key={item._id} className='border-b border-gray-500 h-[70px] bg-gradient-to-b from-[#2B2B2B] to-[#333333]'>
-                                        <td className='pl-8 pr-3'>
-                                            <IoBagCheckSharp className='size-[70px] text-orange-500 opacity-40'/>
-                                        </td>
-                                        <td>
-                                            <h1 className='font-bold'>{ InterviewSchedule?.jobtitle}</h1>
-                                            <p className='opacity-40'>{InterviewSchedule?.subject || 'N/A'}</p>
-                                        </td>
-                                        <td className='pl-2 w-[500px] pr-2'>
-                                            <h1 className='opacity-45'>
-                                                Submitted
-                                            </h1>
-                                        </td>
-                                        <td className='pl-2 w-[200px] pr-2'>
-                                            <h1>{InterviewSchedule?.posteddate || 'date'}</h1>
-                                        </td>
-                                        <td className='pl-2 w-[200px] pr-2'>
-                                            <button onClick={() => handleViewInvitation(InterviewSchedule)}>
-                                                <GrFormView className='size-[45px] hover:opacity-45'/>
-                                            </button>
-                                        </td>
-                                        
-                                    </tr>
-                                );
-                            } else {
-                                return null;
-                            }
-                        })}
-                    </tbody>
-                </table>
+                                    return (
+                                        <tr key={item._id} className='border-b border-neutral-700 h-[70px] bg-gradient-to-b from-[#2B2B2B] to-[#333333] w-2/4 hover:from-[#464646] hover:to-[#333333]  cursor-pointer'>
+                                            <td className='pl-8 pr-3'>
+                                                <IoBagCheckSharp className='text-4xl text-orange-500 opacity-40' />
+                                            </td>
+                                            <td>
+                                                <h1 className='font-bold'>{InterviewSchedule?.jobtitle}</h1>
+                                                <p className='opacity-40'>{InterviewSchedule?.subject || 'N/A'}</p>
+                                            </td>
+                                            <td className='pl-2 w-[500px] pr-2'>
+                                                <h1 className='opacity-45'>
+                                                    Submitted
+                                                </h1>
+                                            </td>
+                                            <td className='pl-2 w-[200px] pr-2'>
+                                                <h1>{InterviewSchedule?.posteddate || 'date'}</h1>
+                                            </td>
+                                            <td className='pl-2 w-[200px] pr-2'>
+                                                <button onClick={() => handleViewInvitation(InterviewSchedule)}>
+                                                    <GrFormView className='size-[45px] hover:opacity-45' />
+                                                </button>
+                                            </td>
+
+                                        </tr>
+                                    );
+                                } else {
+                                    return null;
+                                }
+                            })}
+                        </tbody>
+                    </table>
                 </div>
                 
             </div> 

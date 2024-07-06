@@ -150,7 +150,7 @@ input:checked+.radio-tile label {
 .dot-spinner {
   --uib-size: 2.8rem;
   --uib-speed: .9s;
-  --uib-color: rgb(154 52 18);
+  --uib-color: rgb(234 88 12);
   position: relative;
   display: flex;
   align-items: center;

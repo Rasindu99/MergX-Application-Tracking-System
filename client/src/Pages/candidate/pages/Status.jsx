@@ -8,6 +8,7 @@ import SingleStatus from '../../../Components/candidateComp/Status_Page/SingleSt
 import { useInterviewContext } from '../../../Context/InterviewContext';
 import { UserContext } from '../../../Context/UserContext';
 import useListenStatus from '../../../hooks/useListenStatus';
+import LoadingWheel from '../../../Components/LoadingComp/LoadingWheel';
 
 
 
@@ -18,6 +19,8 @@ export default function Status() {
   const [selectedStatus, setSelectedStatus] = useState(null);
   const [showAnnouncement, setShowAnnouncement] = useState(true);
   const [selectedAnnouncement, setSelectedAnnouncement] = useState(null);
+  const [statusLoading, setStatusLoading] = useState(true);
+  const [announcementsLoading, setAnnouncementsLoading] = useState(true);
  
 
   const { 
@@ -63,6 +66,9 @@ export default function Status() {
 
       window.localStorage.setItem('statusData', JSON.stringify(statusResponse.data));
       window.localStorage.setItem('announcementData', JSON.stringify(announcementResponse.data));
+
+      setStatusLoading(false);
+      setAnnouncementsLoading(false);
 
     } catch (error) {
       console.error('Error fetching data :', error);
@@ -114,18 +120,22 @@ export default function Status() {
             <h1 className='text-2xl font-bold text-neutral-200'>Status</h1>
           </div>
           <div className='overflow-y-auto h-5/6 rounded-lg'>
-            <div className="mx-auto  w-4/5 overflow-hidden rounded-lg">
-              {sortedStatuses.reverse().map((status, index) => (
-                <SingleStatus
-                  key={index}
-                  status={status}
-                  index={index}
-                  setShowStatus={setShowStatus}
-                  setSelectedStatus={setSelectedStatus}
-                  setReadStatuses={setReadStatuses}
-                  readStatuses={readStatuses}
-                />
-              ))}
+            <div className="mx-auto  w-4/5 overflow-hidden rounded-lg relative">
+              {statusLoading ? (
+                <div className='flex justify-center items-center h-[400px]'><LoadingWheel/></div>
+              ) : (
+                sortedStatuses.reverse().map((status, index) => (
+                  <SingleStatus
+                    key={index}
+                    status={status}
+                    index={index}
+                    setShowStatus={setShowStatus}
+                    setSelectedStatus={setSelectedStatus}
+                    setReadStatuses={setReadStatuses}
+                    readStatuses={readStatuses}
+                  />
+                ))
+              )}
             </div>
           </div>
         </div>
@@ -136,17 +146,21 @@ export default function Status() {
           </div>
           <div className='overflow-y-auto h-4/6'>
             <div className='mx-auto w-4/5 '>
-              {sortedAnnouncements.reverse().map((announcement, index) => (
-                <SingleAnouncement
-                  key={index}
-                  announcement={announcement}
-                  index={index}
-                  setShowAnnouncement={setShowAnnouncement}
-                  setReadAnnouncements={setReadAnnouncements}
-                  readAnnouncements={readAnnouncements}
-                  setSelectedAnnouncement={setSelectedAnnouncement}
-                />
-              ))}
+              {announcementsLoading ? (
+                <div className='flex justify-center items-center h-[400px]'><LoadingWheel/></div>
+              ) : (
+                sortedAnnouncements.reverse().map((announcement, index) => (
+                  <SingleAnouncement
+                    key={index}
+                    announcement={announcement}
+                    index={index}
+                    setShowAnnouncement={setShowAnnouncement}
+                    setReadAnnouncements={setReadAnnouncements}
+                    readAnnouncements={readAnnouncements}
+                    setSelectedAnnouncement={setSelectedAnnouncement}
+                  />
+                ))
+              )}
             </div>
           </div>
 </div>
