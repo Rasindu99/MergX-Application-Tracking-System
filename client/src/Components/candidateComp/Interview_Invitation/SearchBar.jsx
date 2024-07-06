@@ -48,11 +48,11 @@ const SearchBar = ({ filteredInterviews }) => {
   }
 
   return (
-    <div className='button-container flex items-center rounded-2xl px-1 py-1 text-xl text-neutral-200  w-2/3 bg-neutral-500 opacity-60 justify-center backdrop-opacity-10'>
+    <div className='button-container flex items-center rounded-3xl px-1 py-1 text-xl text-neutral-200  w-2/3 bg-neutral-500 opacity-60 justify-center backdrop-opacity-10'>
       <input
         type='text'
-        placeholder='search here...'
-        className='flex-1  border-0 outline-0 px-5 py-2 bg-transparent text-xl text-neutral-50   placeholder:text-white placeholder:text-start placeholder:px-4'
+        placeholder='Search here...'
+        className='flex-1  border-0 outline-0 px-5 py-2 bg-transparent text-lg text-neutral-50   placeholder:text-white placeholder:text-start placeholder:px-4'
         value={searchInput}
         onChange={(e) => setSearchInput(e.target.value)}
       />

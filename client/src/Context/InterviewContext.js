@@ -17,6 +17,7 @@ export const InterviewContextProvider = ({ children }) => {
   const[readInterviews, setReadInterviews] = useState([]);
   const [updateFlag, setUpdateFlag] = useState(false); // Flag for triggering updates
   const [allInterviews, setAllInterviews] = useState([]);
+  const [wishListedInterviews, setWishListedInterviews] = useState([]);
 
   const [localStatusData, setLocalStatusData] = useState([]);
   const [localAnouncementData, setLocalAnouncementData] = useState([]);
@@ -51,7 +52,9 @@ export const InterviewContextProvider = ({ children }) => {
         localAnouncementData, 
         setLocalAnouncementData,
         localReadAnnouncementData,
-        setLocalReadAnnouncementData
+        setLocalReadAnnouncementData,
+        wishListedInterviews, 
+        setWishListedInterviews
       }}
     >
       {children}

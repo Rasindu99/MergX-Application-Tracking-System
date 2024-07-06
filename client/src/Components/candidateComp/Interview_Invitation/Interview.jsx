@@ -3,8 +3,12 @@ import { useInterviewContext } from '../../../Context/InterviewContext';
 import { RiDeleteBin5Fill } from "react-icons/ri";
 import axios from 'axios';
 import { UserContext } from '../../../Context/UserContext';
+import { MdOutlineFavoriteBorder } from "react-icons/md";
+import { MdFavorite } from "react-icons/md";
+import toast from 'react-hot-toast';
 
-const Interview = ({ interview, isRead }) => {
+
+const Interview = ({ interview, isRead, isWishListed }) => {
   
   const {
     interviews,
@@ -16,6 +20,8 @@ const Interview = ({ interview, isRead }) => {
     search,
     readInterviews,
     setReadInterviews,
+    wishListedInterviews,
+    setWishListedInterviews
   } = useInterviewContext();
 
   const [detailsVisible, setDetailsVisible] = useState(false);
@@ -52,6 +58,12 @@ const Interview = ({ interview, isRead }) => {
   }
 
   const handleAddToWishlist = async () => {
+
+    if(isWishListed) {
+      toast.error("Item already wishListed")
+     return;
+    }
+
     setIsAddingToWishlist(true);
     setWishlistError(null);
     setWishlistSuccess(false);
@@ -63,8 +75,12 @@ const Interview = ({ interview, isRead }) => {
         candidate_id: user._id,
         candidate_email: user.email
       });
-
       setWishlistSuccess(true);
+
+      setWishListedInterviews([...wishListedInterviews, interview._id]);
+      console.log('new item added to wishList',interview._id);
+      toast.success('Item wishListed !!');
+
       console.log('Item added to wishlist:', response.data);
     } catch (err) {
       setWishlistError('Failed to add item to wishlist. Please try again.');
@@ -97,23 +113,40 @@ const Interview = ({ interview, isRead }) => {
   const gradientClass = isRead ? 'from-[#2B2B2B] to-[#333333]': 'from-[#5B5959] to-[#3D3D3D]'; 
 
   return (
-    <div className={`interview-row transition-transform ease-in-out duration-200 transform hover:scale-105 hover:opacity-80 p-3 bg-gradient-to-b ${gradientClass}`} key={interview._id}>
+    <div className={`interview-row hover:opacity-80 p-3 bg-gradient-to-b ${gradientClass}`} key={interview._id}>
       <div className="flex items-center justify-around summary">
         <span className='w-[200px]'>{interview.subject}</span>
         <span className='w-2/5'>{formattedDate}</span>
+
         <div className='z-10 flex justify-around w-1/5'>
-          <button className="z-10 px-2 py-1 mr-3 text-white bg-blue-500 rounded" onClick={() => handleRead(interview)}>
+
+          <button className="z-10 px-2 py-1 mr-3 text-white text-sm bg-orange-600 bg-opacity-90 rounded-md hover:bg-orange-400" onClick={() => handleRead(interview)}>
             {detailsVisible ? 'View Less' : 'View More'}
           </button>
-          <button 
-            className="z-10 px-2 py-1 mr-3 text-white bg-blue-500 rounded"
+
+          <button
+            className="z-10 px-2 py-1 mr-3 text-white bg-orange-600 bg-opacity-90 rounded-md hover:bg-orange-400"
             onClick={handleAddToWishlist}
             disabled={isAddingToWishlist}
           >
-            {isAddingToWishlist ? 'Adding...' : 'Add to Wishlist'}
+            {
+              isAddingToWishlist ? 'Adding...' : (
+                wishlistSuccess || isWishListed ? (
+                  <div className='flex items-center justify-between w-[90px]'>
+                    <h1 className='text-sm pr-1'>WishListed</h1>
+                    <MdFavorite className='text-white text-xl'/>
+                  </div>
+                ) : (
+                  <div className='flex items-center justify-between w-[75px]'>
+                    <h1 className='text-sm'>Wishlist</h1>
+                    <MdOutlineFavoriteBorder className='text-white text-xl'/>
+                  </div>
+                )
+              )
+            }
           </button>
-          <button onClick={() => handleDelete(interview)} className='z-10 bg-orange-700 border-0 rounded-full cursor-pointer w-9 h-9 border-y-cyan-950'>
-            <RiDeleteBin5Fill className='w-6 h-6 m-auto' />
+          <button onClick={() => handleDelete(interview)} className='z-10 border-2 border-red-600 bg-red-600 bg-opacity-30 rounded-full cursor-pointer w-9 h-9 hover:bg-red-800'>
+            <RiDeleteBin5Fill className='w-5 h-5 m-auto' />
           </button>
         </div>
       </div>
@@ -125,8 +158,6 @@ const Interview = ({ interview, isRead }) => {
           <a href="#" className="text-blue-500 underline">Full Details</a>
         </div>
       )}
-      {wishlistError && <p className="text-red-500">{wishlistError}</p>}
-      {wishlistSuccess && <p className="text-green-500">Added to wishlist successfully!</p>}
     </div>
   )
 }

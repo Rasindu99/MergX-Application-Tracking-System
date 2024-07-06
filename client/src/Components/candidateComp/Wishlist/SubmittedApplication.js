@@ -77,7 +77,7 @@ export default function SubmittedApplication() {
 
     return (
         <div className='flex justify-center overflow-hidden h-auto w-full'>
-            <div className='w-full flex flex-col items-center max-h-[1300px] overflow-y-auto'>
+            <div className='w-full flex flex-col items-center max-h-[800px] overflow-y-auto'>
                 <div className="pt-3 pb-3 w-full mb-3">
                     <input
                     className="text-[#ffffff] bg-[#2B2B2B] h-[45px] w-2/4 rounded-3xl pl-3 border border-neutral-700"
@@ -87,9 +87,9 @@ export default function SubmittedApplication() {
                     onChange={(e) => setSearchQuery(e.target.value)}
                     />
                 </div>
-                <div className='overflow-y-auto h-[37%] w-[90%] rounded-2xl border border-neutral-700'>
-                    <table className='overflow-y-auto h-1/2 w-full'>
-                        <tbody className='overflow-y-auto h-1/2 w-full'>
+                <div className='overflow-y-auto h-3/4 w-[90%] rounded-2xl border border-neutral-700'>
+                    <table className='overflow-y-auto w-full'>
+                        <tbody className='overflow-y-auto w-full'>
                             {filterWishlistItems.map((item) => {
                                 if (user._id === item.candidate_id) {
                                     const InterviewSchedule = interviewschedulesData && interviewschedulesData.find(

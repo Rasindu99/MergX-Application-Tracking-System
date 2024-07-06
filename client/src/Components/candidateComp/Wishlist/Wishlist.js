@@ -171,7 +171,7 @@ export default function Wishlist() {
 
     return (
         <div className='flex justify-center overflow-hidden h-auto w-full'>
-            <div className='w-full flex flex-col items-center max-h-[1300px] overflow-y-auto'>
+            <div className='w-full flex flex-col items-center max-h-[800px] overflow-y-auto'>
                 <div className="pt-3 pb-3 w-full mb-3">
                     <input
                     className="text-[#ffffff] bg-[#2B2B2B] h-[45px] w-2/4 rounded-3xl pl-3 border border-neutral-700"
@@ -182,51 +182,51 @@ export default function Wishlist() {
                     />
                 </div>
                 <div className='overflow-y-auto h-3/4 w-[90%] rounded-2xl border border-neutral-700'>
-                <table className='overflow-y-auto w-full'>
-                    <tbody className='overflow-y-auto w-full'>
-                        {filterWishlistItems.map((item) => {
-                            if (user._id === item.candidate_id) {
-                                const InterviewSchedule = interviewschedulesData && interviewschedulesData.find(
-                                    (interviewschedule) => interviewschedule._id === item.job_invitation_id
-                                );
+                    <table className='overflow-y-auto w-full'>
+                        <tbody className='overflow-y-auto w-full'>
+                            {filterWishlistItems.map((item) => {
+                                if (user._id === item.candidate_id) {
+                                    const InterviewSchedule = interviewschedulesData && interviewschedulesData.find(
+                                        (interviewschedule) => interviewschedule._id === item.job_invitation_id
+                                    );
 
-                                return (
-                                    <tr key={item._id} className='border-b border-neutral-700 h-[70px] bg-gradient-to-b from-[#2B2B2B] to-[#333333] w-2/4 hover:from-[#464646] hover:to-[#333333]  cursor-pointer'>
-                                        <td className='pl-8 pr-3 w-[10%]'>
-                                            <IoBagCheckSharp className='text-4xl text-orange-500 opacity-40'/>
-                                        </td>
-                                        <td className='w-[25%] px-1 '>
-                                            <h1 className='font-bold'>{ InterviewSchedule?.jobtitle}</h1>
-                                            <p className='opacity-40'>{InterviewSchedule?.subject || 'N/A'}</p>
-                                        </td>
-                                        <td className='pl-2 w-[25%] pr-2 '>
-                                            <h1>
-                                                {InterviewSchedule?.description?.length > 60 
-                                                    ? `${InterviewSchedule?.description.substring(0, 60)}...` 
-                                                    : InterviewSchedule?.description}
-                                            </h1>
-                                        </td>
-                                        <td className='pl-2 w-[10%] pr-2 '>
-                                            <h1>{InterviewSchedule?.posteddate || 'date'}</h1>
-                                        </td>
-                                        <td className='pl-2 w-[10%] pr-2'>
-                                            <button onClick={() => handleViewInvitation(InterviewSchedule)}>
-                                                <GrFormView className='size-[45px] hover:opacity-45'/>
-                                            </button>
-                                        </td>
-                                        <td className='  w-[20%]'>
-                                            <button onClick={() => handleApplicationSubmit(InterviewSchedule, item._id)} className='h-9 bg-orange-500 px-2 rounded-lg hover:opacity-40 text-base font-medium'>
-                                              Submit Resume
-                                            </button>
-                                        </td>
-                                    </tr>
-                                );
-                            } else {
-                                return null;
-                            }
-                        })}
-                    </tbody>
-                </table>
+                                    return (
+                                        <tr key={item._id} className='border-b border-neutral-700 h-[70px] bg-gradient-to-b from-[#2B2B2B] to-[#333333] w-2/4 hover:from-[#464646] hover:to-[#333333]  cursor-pointer'>
+                                            <td className='pl-8 pr-3 w-[10%]'>
+                                                <IoBagCheckSharp className='text-4xl text-orange-500 opacity-40' />
+                                            </td>
+                                            <td className='w-[25%] px-1 '>
+                                                <h1 className='font-bold'>{InterviewSchedule?.jobtitle}</h1>
+                                                <p className='opacity-40'>{InterviewSchedule?.subject || 'N/A'}</p>
+                                            </td>
+                                            <td className='pl-2 w-[25%] pr-2 '>
+                                                <h1>
+                                                    {InterviewSchedule?.description?.length > 60
+                                                        ? `${InterviewSchedule?.description.substring(0, 60)}...`
+                                                        : InterviewSchedule?.description}
+                                                </h1>
+                                            </td>
+                                            <td className='pl-2 w-[10%] pr-2 '>
+                                                <h1>{InterviewSchedule?.posteddate || 'date'}</h1>
+                                            </td>
+                                            <td className='pl-2 w-[10%] pr-2'>
+                                                <button onClick={() => handleViewInvitation(InterviewSchedule)}>
+                                                    <GrFormView className='size-[45px] hover:opacity-45' />
+                                                </button>
+                                            </td>
+                                            <td className='  w-[20%]'>
+                                                <button onClick={() => handleApplicationSubmit(InterviewSchedule, item._id)} className='h-9 bg-orange-500 px-2 rounded-lg hover:opacity-40 text-base font-medium'>
+                                                    Submit Resume
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    );
+                                } else {
+                                    return null;
+                                }
+                            })}
+                        </tbody>
+                    </table>
                 </div>
                 
             </div> 
