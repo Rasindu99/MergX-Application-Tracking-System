@@ -20,7 +20,19 @@ const postqanda =  async(req, res) => {
     }
 }
 
+//get end point
+const getmessage = async(req, res) => {
+    try {
+        const QandAs = await QandAmodel.find();
+        return res.status(200).json({QandAs});
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: 'Server error' });
+    }
+}
+
 module.exports = {
-    postqanda
+    postqanda,
+    getmessage
 
 }
