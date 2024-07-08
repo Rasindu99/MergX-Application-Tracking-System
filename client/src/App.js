@@ -58,7 +58,7 @@ import Reporting from './Pages/hiring manager/Reporting';
 import MessageHiringManager from './Pages/hiring manager/MessageHiringManager';
 import OTP from './Pages/OTP';
 import Landingpage from './Components/LandingPage/Landingpage';
-import QandA from './Components/admincomp/QandA';
+import QandA from './Pages/admin/QandA';
 
 axios.defaults.baseURL = 'http://localhost:8000';
 axios.defaults.withCredentials = true
