@@ -1,6 +1,7 @@
 const Evaluationmodel = require('../models/evaluation')
 const User =  require('../models/user');
 const JobPosting =require('../models/jobposting');
+const Application = require('../models/application');
 // Post evaluation
 
 const createEvalautions = async (req,res)=>{
@@ -147,6 +148,7 @@ const getEvaluation = async (req, res) => {
     if (!evaluation) {
       return res.status(404).json({ error: 'Evaluation not found' });
     }
+    
     res.json(evaluation);
   } catch (error) {
     console.error('Error fetching evaluation:', error);
@@ -210,6 +212,59 @@ const getpost = async  (req,res)=>{
   }
 }
 
+const getNotEvaluatedApplications = async (req,res)=>{
+  try{
+    const applications = await Application.find({isjoined:true,isEvaluated:false}, { job_id: 1, user_id: 1, user_name: 1, user_email: 1, } );
+   
+  
+      if (applications.length === 0) {
+        console.log('No applications found that match the query conditions.');
+      }
+  
+      res.status(200).json({ applications });
+  }
+  catch(error){
+    console.error('Error in getNotEvaluatedApplications:', error); // Log the error for debugging
+    res.status(500).json({ error: 'Server error' });
+  
+  }
+}
+
+const getEvaluatedApplications = async (req,res)=>{
+  try{ 
+    const applications = await Application.find({isjoined:true,isEvaluated:true}, { job_id: 1, user_id: 1, user_name: 1, user_email: 1, } );
+    if(applications.length === 0){
+      console.log('No applications found that match the query conditions.');
+    }
+    res.status(200).json({ applications });
+  }
+  catch(rrror){
+    console.error('Error in getEvaluatedApplications:', error); // Log the error for debugging
+    res.status(500).json({ error: 'Server error' });
+  }
+}
+
+const updateIsEvaluated = async (req,res)=>{
+  try{
+       const { _id } = req.params;
+       if (!_id) {
+         return res.status(400).json({ error: 'application_id path parameter is required' });
+       }
+        const updatedApplication = await Application.findByIdAndUpdate(
+          _id,
+          { isEvaluated: true },
+          { new: true }
+        );
+        if (!updatedApplication) {
+          return res.status(404).json({ error: 'Application not found' });
+        }
+        res.status(200).json({ message: 'Application updated successfully', updatedApplication });
+  }catch(error){
+    console.error('Error in updateIsEvaluated:', error); // Log the error for debugging
+    res.status(500).json({ error: 'Server error' });
+  }
+}
+
 
 module.exports={
   createEvalautions,
@@ -217,5 +272,8 @@ module.exports={
     getEvaluation,
     getimg,
     getpost,
-    getEvaCandidates
+    getEvaCandidates,
+    getNotEvaluatedApplications,
+    updateIsEvaluated,
+    getEvaluatedApplications
 }

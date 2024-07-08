@@ -15,6 +15,7 @@ export default function InterviewFeedback() {
   const [existEvolution, setexistEvolution] = useState([]);
   const [evoluations, setEvoluations] = useState([]);
   const [candidates, setCandidate] = useState([]);
+  const [submited,setsubmited]=useState(false);
 
   const [data, setData] = useState({
     candidatename: "",
@@ -111,6 +112,11 @@ export default function InterviewFeedback() {
             setexistEvolution(response.data);
             console.log(" geting data from databse",response.data)
             // Use response.data directly
+            if(response.data.hiringManagerComment!==""){
+                  setSubmitTrue();
+            }else{
+              setSubmitFalse();
+            }
           }
         } catch (error) {
           console.error(error);
@@ -143,12 +149,22 @@ export default function InterviewFeedback() {
      
       console.log("send data to database" ,data);
       toast.success("Successsfully submitted.");
+      setSubmitTrue();
     }
   } catch (error) {
     console.error("Error updating evaluation:", error);
     toast.error("System Error");
   }
 };
+
+
+const setSubmitTrue = ()=>{
+  setsubmited(true);
+}
+
+const setSubmitFalse =()=>{
+  setsubmited(false);
+}
 
   useEffect(()=>{
     getInterviewdCandidates();
@@ -201,6 +217,7 @@ export default function InterviewFeedback() {
                     onClick={() => {
                       setshowDetails(true);
                       setselected(candidate);
+                      
                     }}
                     className={` hover:scale-105 accLabel m-[10px] my-[5px]  flex flex-row   bg-[#2b2b2b] sm:pl-[5px]  items-center   rounded-[30px]  sm:gap-[4px] esm:w-[110px] esm:h-[25px] 450px:w-[140px] 450px:h-[35px]   sm:w-[150px] sm:h-[45px]  lg:rounded-[25px]  lg:gap-[12px] lg:w-[200px] lg:h-[60px] sm:gap-[6px] sm:w-[180px] sm:h-[50px] sm:rounded-[30px] esm:w-[fit-content] ${
                       showDetails === false
@@ -259,6 +276,12 @@ export default function InterviewFeedback() {
                     Interviewer Name:{data.interviewername}
                   </p>
                 </div>
+                <div className="flex flex-col  ">
+              {submited ?(<label htmlFor="" className="p-[5px] rounded-[10px] bg-[#EA7122] h-fit "> Evaluated</label>):null}  
+                {/* <label htmlFor="" className="p-[5px] rounded-[10px] bg-green-700 h-fit " >Hired</label> */}
+                {/* <label htmlFor="" className="p-[5px] rounded-[10px] bg-[#484848] h-fit text-[red] ">Rejected</label> */}
+                </div>
+                
               </div>
               <div className="">
                 <p className="  bg-[#2b2b2b] pl-[20px] py-[15px]">
@@ -494,7 +517,7 @@ export default function InterviewFeedback() {
 
                 <br />
               </div>
-              <ProgressTimeline  ></ProgressTimeline>
+              {/* <ProgressTimeline  ></ProgressTimeline> */}
             </div>
           ) : null}
         </div>

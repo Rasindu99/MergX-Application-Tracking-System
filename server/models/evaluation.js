@@ -107,13 +107,13 @@ const evaluationSchema = new mongoose.Schema({
     // Fill by Hiring Manager
     hiringManagerComment:{
         type:String,
-        default:' '
+        default:''
     },
 
     // Fill by Recruiter
     recruiterComment:{
         type:String,
-        default:' '
+        default:''
     },
 
     // Fill by Hiring Manager
