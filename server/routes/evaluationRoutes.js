@@ -5,7 +5,7 @@ const cors = require('cors');
 const {
     createEvalautions, 
     //  updateEvaluation,
-      getEvaluation,getimg,getpost,getEvaCandidates,getNotEvaluatedApplications,updateIsEvaluated,getEvaluatedApplications} = require('../controllers/evaluationController');
+      getEvaluation,getimg,getpost,getEvaCandidates,getNotEvaluatedApplications,updateIsEvaluated,getEvaluatedApplications,getRecruitercheckedEvaluations,getRecruiterUnCheckedEvaluations} = require('../controllers/evaluationController');
 
 router.use(
     cors({
@@ -23,5 +23,8 @@ router.get('/getEvaCandidates',getEvaCandidates);
 router.get('/getNotEvaluatedApplications',getNotEvaluatedApplications);
 router.put('/updateIsEvaluated/:_id',updateIsEvaluated);
 router.get('/getEvaluatedApplications',getEvaluatedApplications);
+router.get('/getRecruitercheckedEvaluations',getRecruitercheckedEvaluations);
+router.get('/getRecruiterUnCheckedEvaluations',getRecruiterUnCheckedEvaluations);
+
 
 module.exports = router;

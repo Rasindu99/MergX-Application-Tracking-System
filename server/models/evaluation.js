@@ -121,6 +121,14 @@ const evaluationSchema = new mongoose.Schema({
         type:Boolean,
         default:false
     },
+    checkedrecruiter:{
+        type:Boolean,
+        default:false
+    },
+    checkedhiringmanager:{
+        type:Boolean,
+        default:false
+    },
 
     
 });

@@ -265,6 +265,34 @@ const updateIsEvaluated = async (req,res)=>{
   }
 }
 
+const getRecruitercheckedEvaluations = async (req,res)=>{
+  try{
+       const response = await Evaluationmodel.find({checkedrecruiter:true});
+        if(response.length === 0){
+          console.log('No applications found that match the query conditions.');
+        }
+        res.json(response);
+  }
+  catch(error){
+    
+    res.json({ error: 'Server error' });
+  }
+}
+
+const getRecruiterUnCheckedEvaluations = async (req,res)=>{
+  try{ 
+    const response = await Evaluationmodel.find({checkedrecruiter:false});
+    if(response.length === 0){
+      console.log('No applications found that match the query conditions.');
+    }
+    res.json( response );
+
+  }
+  catch(error){
+    res.json({ error: 'Server error' });
+  }
+}
+
 
 module.exports={
   createEvalautions,
@@ -275,5 +303,7 @@ module.exports={
     getEvaCandidates,
     getNotEvaluatedApplications,
     updateIsEvaluated,
-    getEvaluatedApplications
+    getEvaluatedApplications,
+    getRecruitercheckedEvaluations,
+    getRecruiterUnCheckedEvaluations
 }

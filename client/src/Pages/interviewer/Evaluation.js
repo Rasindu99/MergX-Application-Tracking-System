@@ -193,6 +193,7 @@ export default function Evaluation() {
           clear();
         console.log("Evaluations Created Successfully");
         toast.success("Successfully submitted.");
+        updateIsEvaluated(selected._id);
         console.log(data);
       }
     } catch (error) {
@@ -410,7 +411,7 @@ useEffect(()=>{
               className={`candidates flex flex-col gap-[10px] bg-[#1E1E1E] rounded-[30px] rounded-tr-[0px] rounded-br-[0px] esm:p-[10px] 450px:p-[15px] sm:p-[25px] sm:w-auto 450px:w-[165px] 500px:w-[175px] esm:w-[140px]`}
             >
               <p className="text-center text-[#FFFFFF] esm:p-[4px] 450px:p-[6px] sm:p-[10px] font-general-sans pt-[0px]">
-                Interviewing Candidates
+                 Candidates
               </p>
               <div
                 className={`max-h-[100vh] flex justify-center overflow-y-auto ${
