@@ -3,8 +3,44 @@ import { motion, AnimatePresence } from 'framer-motion';
 import LOGOMERGEX from '../../Images/logo.png';
 import BG from '../../Images/BG.jpg';
 import { Link } from 'react-router-dom';
+import axios from 'axios';
+import {toast} from 'react-hot-toast';
 
 export default function Landingpage() {
+  const [data, setData] = useState({
+    username:'',
+    useremail:'',
+    message:''
+  })
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setData(prevData => ({
+      ...prevData,
+      [name]: value
+    }));
+  };
+
+  const contactus = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post('/qanda/postqanda', data);
+      if (response.data.error) {
+        toast.error(response.data.error);
+      } else {
+        toast.success('Message sent successfully!');
+        setData({
+          username: '',
+          useremail: '',
+          message: ''
+        });
+      }
+    } catch (error) {
+      console.error('Error sending message:', error);
+      toast.error('Failed to send message. Please try again.');
+    }
+  };
+  
   const features = [
     {
       title: "Smart Resume Parsing",
@@ -189,22 +225,48 @@ export default function Landingpage() {
 
         {/* Contact Form */}
         <section id="contact" className='py-20 bg-[#19191A]'>
-          <div className='container px-4 mx-auto'>
-            <h2 className='mb-8 text-3xl font-bold text-center text-white'>Contact Us</h2>
-            <form className='max-w-md mx-auto'>
-              <input type="text" placeholder="Name" className='w-full p-2 mb-4 border rounded' />
-              <input type="email" placeholder="Email" className='w-full p-2 mb-4 border rounded' />
-              <textarea placeholder="Message" className='w-full p-2 mb-4 border rounded' rows={4}></textarea>
-              <motion.button
-                className='w-full px-6 py-2 text-white bg-orange-500 rounded'
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                Send
-              </motion.button>
-            </form>
-          </div>
-        </section>
+      <div className='container px-4 mx-auto'>
+        <h2 className='mb-8 text-3xl font-bold text-center text-white'>Contact Us</h2>
+        <form className='max-w-md mx-auto' onSubmit={contactus}>
+          <input
+            type="text"
+            name="username"
+            value={data.username}
+            onChange={handleChange}
+            placeholder="Name"
+            className='w-full p-2 mb-4 border rounded'
+            required
+          />
+          <input
+            type="email"
+            name="useremail"
+            value={data.useremail}
+            onChange={handleChange}
+            placeholder="Email"
+            className='w-full p-2 mb-4 border rounded'
+            required
+          />
+          <textarea
+            name="message"
+            value={data.message}
+            onChange={handleChange}
+            placeholder="Message"
+            className='w-full p-2 mb-4 border rounded'
+            rows={4}
+            required
+          ></textarea>
+          <motion.button
+            type="submit"
+            className='w-full px-6 py-2 text-white bg-orange-500 rounded'
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            Send
+          </motion.button>
+        </form>
+      </div>
+    </section>
+    
       </div>
     </div>
   );
