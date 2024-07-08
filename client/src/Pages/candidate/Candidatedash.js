@@ -28,7 +28,7 @@ export default function Candidatedash() {
             className='rounded-full size-[60px] flex justify-center items-center' 
             onClick={toggleChatbot}
           >
-            <FaRobot className='size-[50px] hover:opacity-10' />
+            <FaRobot className='size-[50px] text-neutral-400 hover:text-orange-600' />
           </button>
         </div>
       </div>

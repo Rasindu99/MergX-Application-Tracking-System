@@ -8,7 +8,7 @@ const UpCommingInt = ({approvedJobs, formatDate, handleJoinInterview}) => {
   const { user } = useContext(UserContext);
 
   return (
-    <div className='bg-gradient-to-b from-[#2b2b2b] to-[#2c2c2c] rounded-lg w-full h-full mr-2 '>
+    <div className='bg-gradient-to-b from-[#2b2b2b] to-[#2c2c2c] rounded-l-3xl w-full h-full mr-2 '>
       <div className='flex justify-center '>
         <div className='mt-2'>
           <h1 className='text-2xl text-neutral-200'>Up Coming Interviews</h1>

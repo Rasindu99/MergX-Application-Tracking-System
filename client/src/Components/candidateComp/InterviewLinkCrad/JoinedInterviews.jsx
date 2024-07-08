@@ -25,7 +25,7 @@ const JoinedInterviews = ({isjoinedTrue, user}) => {
 
   return (
     <div>
-      <div className='bg-gradient-to-b from-[#313131] to-[#2c2c2c] rounded-lg h-full w-[400px] p-2 overflow-y-auto'>
+      <div className='bg-gradient-to-b from-[#313131] to-[#262626] rounded-tr-3xl rounded-tl-lg h-full w-[400px] p-2 overflow-y-auto'>
         <div className='h-full'>
           <div className='flex justify-center'>
             <div className='mt-2'>
