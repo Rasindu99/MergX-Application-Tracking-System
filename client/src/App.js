@@ -58,6 +58,7 @@ import Reporting from './Pages/hiring manager/Reporting';
 import MessageHiringManager from './Pages/hiring manager/MessageHiringManager';
 import OTP from './Pages/OTP';
 import Landingpage from './Components/LandingPage/Landingpage';
+import QandA from './Components/admincomp/QandA';
 
 axios.defaults.baseURL = 'http://localhost:8000';
 axios.defaults.withCredentials = true
@@ -122,6 +123,7 @@ function App() {
           <Route path='/adminroleassignment' element={<ProtectedRoute><RoleAssignment /></ProtectedRoute>} />
           <Route path='/adminaccesscontrol' element={<ProtectedRoute><AccessControl /></ProtectedRoute>} />
           <Route path='/adminsystemsettings' element={<ProtectedRoute><SystemSettings /></ProtectedRoute>} />
+          <Route path='/adminqandas' element={<ProtectedRoute><QandA/></ProtectedRoute>}></Route>
 
           <Route path='/userdetails' element={<ProtectedRoute><ViewUserCard /></ProtectedRoute>} />
         </Routes>
