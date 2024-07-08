@@ -46,6 +46,7 @@ app.use('/hmfeedback',require('./routes/HmRoutes.js'));
 // Defining the port for the server to listen on
 app.use('/reporting', require('./routes/ReportingRoutes'));
 app.use('/dashboard', require('./routes/HMDashboardRoutes'));
+app.use('/qanda', require('./routes/qandaRoutes.js'));
 
 
 app.put('/evaluation/updateevaluation/:_id', async (req, res) => {
