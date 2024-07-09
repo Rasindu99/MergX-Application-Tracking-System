@@ -8,7 +8,7 @@ export default function QandACompo() {
   // get q and a
   const getQandAsapi = async () => {
     try {
-      const response = await axios.get("/qanda/getqanda");
+      const response = await axios.get("/qanda/getsendfalsemessage");
       setGetQandA(response.data.QandAs);
     } catch (error) {
       console.error("error fetching Q and A data: ", error);

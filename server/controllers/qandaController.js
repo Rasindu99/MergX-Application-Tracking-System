@@ -47,8 +47,20 @@ const getmessage = async(req, res) => {
     }
 }
 
+//get send false endpoint
+const getsendfalsemessage = async(req, res) =>{
+    try {
+       const QandAs = await QandAmodel.find({sent : false}).sort({createdAt: -1}) ;
+       return res.status(200).json({QandAs});
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: 'Server error' });
+    }
+}
+
 module.exports = {
     postqanda,
-    getmessage
+    getmessage,
+    getsendfalsemessage
 
 }
