@@ -27,9 +27,4 @@ router.get('/getapprovedapplication',getapprovedtruedata)
 router.get('/getapprovedisjoinedtrue', getisjoinedtrue);
 
 
-
-
-
-
-
 module.exports = router;
