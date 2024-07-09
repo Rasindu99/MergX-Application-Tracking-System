@@ -57,7 +57,8 @@ export default function InterviewFeedback() {
     overallcomment: "",
     hiringManagerComment: "",
     recruiterComment: "",
-    isHired:false
+    isHired:false,
+    isRejected:false
   });
 
   const updatecheckedHM = async (application_id) => {
@@ -423,9 +424,9 @@ const setSubmitFalse =()=>{
                   </p>
                 </div>
                 <div className="flex flex-col  ">
-              {submited ?(<label htmlFor="" className="p-[5px] rounded-[10px] bg-[#EA7122] h-fit "> Evaluated</label>):null}  
-                {/* <label htmlFor="" className="p-[5px] rounded-[10px] bg-green-700 h-fit " >Hired</label> */}
-                {/* <label htmlFor="" className="p-[5px] rounded-[10px] bg-[#484848] h-fit text-[red] ">Rejected</label> */}
+              {submited && !data.isHired && !data.isRejected && showEvaluated?(<label htmlFor="" className="p-[5px] rounded-[10px] bg-[#EA7122] h-fit "> Evaluated</label>):null}  
+              {data.isHired && showEvaluated? (  <label htmlFor="" className="p-[5px] rounded-[10px] bg-green-700 h-fit " >Hired</label>):null}   
+              {data.isRejected && showEvaluated? (      <label htmlFor="" className="p-[5px] rounded-[10px] bg-[#484848] h-fit text-[red] ">Rejected</label>):null} 
                 </div>
                 
               </div>
