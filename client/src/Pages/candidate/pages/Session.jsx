@@ -24,7 +24,7 @@ const Session = () => {
         <MdKeyboardAlt className='absolute size-[46px] text-neutral-400 right-[55px] bottom-24 hover:text-orange-600 cursor-pointer' onClick={toggleCompilar}/>
         {isCompilarOpen && (
         <Draggable handle=".draggable-header">
-          <div className='fixed flex flex-col w-3/5 bg-neutral-400 border-[#393737] border-[3px] shadow-lg h-2/3 overflow-y-auto rounded-2xl bottom-0 right-5'>
+          <div className='fixed z-50 flex flex-col w-3/5 bg-neutral-400 border-[#393737] border-[3px] shadow-lg h-2/3 overflow-y-auto rounded-2xl bottom-0 right-5'>
             <div className='border-b-[1px] border-[#393737] flex items-center draggable-header bg-gradient-to-r from-[#2f2e2e] to-[#272727] h-[47px] w-full rounded-t-lg cursor-grab'>
               <button
                 className="group flex justify-center items-center text-white bg-orange-500 text-center rounded-md hover:bg-orange-600 size-7 absolute right-2 top-2"
