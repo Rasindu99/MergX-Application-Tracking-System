@@ -22,7 +22,7 @@ export default function QandA() {
           </div>
             
           
-      <div>
+      <div className='mx-[70px] bg-gradient-to-b from-[#272727] to-[#17171A] rounded-[30px] h-[780px] '>
         <QandACompo/>
       </div>
     </div>
