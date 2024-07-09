@@ -6,6 +6,7 @@ import ProgressTimeline from "../../Components/hiringManagerCompo/ProgressTimeli
 import HiringmanagerNav from "../../Components/hiringManagerCompo/HiringManagerNav";
 import { UserContext } from "../../Context/UserContext.js";
 import { toast } from "react-hot-toast";
+import { IoChevronBackCircle } from "react-icons/io5";
 
 export default function InterviewFeedback() {
   const [selected, setselected] = useState(null);
@@ -15,6 +16,21 @@ export default function InterviewFeedback() {
   const [existEvolution, setexistEvolution] = useState([]);
   const [evoluations, setEvoluations] = useState([]);
   const [candidates, setCandidate] = useState([]);
+  const [submited,setsubmited]=useState(false);
+  const [showEvaluated,setShowEvaluated] = useState(false);
+  const [checkedEvaluations,setCheckedEvaluations] = useState([]);
+  const  [checkedCandidates,setCheckedCandidates] = useState([]);
+
+  const clearcandiates = ()=>{
+    setCandidate([]);
+    setEvoluations([]);
+  }
+
+  const clearcheckedcandiates = ()=>{
+    setCheckedCandidates([]);
+    setCheckedEvaluations([]);
+    setexistEvolution([]);
+  }
 
   const [data, setData] = useState({
     candidatename: "",
@@ -41,13 +57,33 @@ export default function InterviewFeedback() {
     overallcomment: "",
     hiringManagerComment: "",
     recruiterComment: "",
-    isHired:false
+    isHired:false,
+    isRejected:false
   });
+
+  const updatecheckedHM = async (application_id) => {
+    if(!application_id) {
+      console.error("Application ID is missing");
+      return;
+    }
+      try{
+        const response = await axios.put(`http://localhost:8000/evaluation/updatecheckedhiringmanager/${application_id}`);
+        if(response.data.error){
+          console.error("Error in updating isEvaluated");
+          
+        }else{
+          console.log("isEvaluated Updated Successfully");
+        }
+      }
+      catch(error){
+        console.error(error);
+      }
+    }
 
 
  const getInterviewdCandidates = async () => {
   try{
-    const resposne = await axios.get('http://localhost:8000/evaluation/getEvaCandidates');
+    const resposne = await axios.get('http://localhost:8000/evaluation/getHMUnCheckedEvaluations');
     setEvoluations(resposne.data);
     
   }
@@ -55,6 +91,16 @@ export default function InterviewFeedback() {
     console.error(" Can't get evoluations",error);
   }
   };
+
+  const getChekedEvaluations = async ()=>{
+    try{
+      const response = await axios.get('http://localhost:8000/evaluation/getHMcheckedEvaluations');
+      setCheckedEvaluations(response.data);
+    }
+    catch(error){
+      console.error("Can't get checked evaluations",error);
+    }
+  }
 
     const getImg = async (user_id) => {
       if (!user_id){
@@ -73,11 +119,30 @@ export default function InterviewFeedback() {
     }
   };
 
+  const checkedgetImg = async (user_id) => {
+    if (!user_id){
+      console.error("User ID is required");
+      return;
+    }
+  try {
+    const response = await axios.get(`http://localhost:8000/evaluation/getimg/${user_id}`);
+    setCheckedCandidates(prevState => prevState.map(candidate =>
+      candidate.userid === user_id ? { ...candidate, image: response.data.image } : candidate
+    ));
+
+    
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+
     const processCandidates = async () => {
     
     evoluations.forEach((evoluation)=>{
-      const { candidateid, candidatename, candidateemail, position} = evoluation;
+      const { _id,candidateid, candidatename, candidateemail, position} = evoluation;
       setCandidate(prevState => [...prevState, {
+        _id,
         userid:candidateid,
         username: candidatename,
         email: candidateemail,
@@ -86,6 +151,24 @@ export default function InterviewFeedback() {
       }]);
       getImg(candidateid);
       console.log("Candidates data:",candidates);
+    });
+
+  };
+
+  const processcheckedCandidates = async () => {
+    
+    checkedEvaluations.forEach((evoluation)=>{
+      const { _id,candidateid, candidatename, candidateemail, position} = evoluation;
+      setCheckedCandidates(prevState => [...prevState, {
+        _id,
+        userid:candidateid,
+        username: candidatename,
+        email: candidateemail,
+        image: '', // initial placeholder value
+        post: position // initial placeholder value
+      }]);
+      checkedgetImg(candidateid);
+      
     });
 
   };
@@ -111,6 +194,11 @@ export default function InterviewFeedback() {
             setexistEvolution(response.data);
             console.log(" geting data from databse",response.data)
             // Use response.data directly
+            if(response.data.hiringManagerComment!==""){
+                  setSubmitTrue();
+            }else{
+              setSubmitFalse();
+            }
           }
         } catch (error) {
           console.error(error);
@@ -143,12 +231,32 @@ export default function InterviewFeedback() {
      
       console.log("send data to database" ,data);
       toast.success("Successsfully submitted.");
+      updatecheckedHM(selected._id);
+      setSubmitTrue();
+      
     }
   } catch (error) {
     console.error("Error updating evaluation:", error);
     toast.error("System Error");
   }
 };
+
+const setshowEvaluatedtrue = () => {
+  setShowEvaluated(true);
+}
+
+const setshowEvaluatedfalse = ()=>{
+  setShowEvaluated(false);
+}
+
+
+const setSubmitTrue = ()=>{
+  setsubmited(true);
+}
+
+const setSubmitFalse =()=>{
+  setsubmited(false);
+}
 
   useEffect(()=>{
     getInterviewdCandidates();
@@ -163,12 +271,24 @@ export default function InterviewFeedback() {
     processCandidates();
   }, [evoluations]);
 
+  useEffect(()=>{
+    processcheckedCandidates();
+  },[checkedEvaluations]);
+
   useEffect(() => {
     console.log("Candidates data:",candidates);
   }
   ,[candidates]);
 
- 
+  useEffect(()=>{
+    if(showEvaluated){
+      getChekedEvaluations();
+      clearcandiates();
+    }else{
+      getInterviewdCandidates();
+      clearcheckedcandiates();
+    }
+    },[showEvaluated]);
 
 
   return (
@@ -184,9 +304,10 @@ export default function InterviewFeedback() {
           }`}
           // bg-[#212121]
         >
+        {!showDetails ? (<div>{!showEvaluated ? ( <button className="absolute right-[60px] top-[120px] p-[10px] rounded-[10px] bg-[#EA7122]" onClick={setshowEvaluatedtrue}>Show Checked Cadidates</button>):( <button className="absolute right-[60px] top-[120px] p-[10px] rounded-[10px] bg-[#EA7122]" onClick={setshowEvaluatedfalse}>Show Unchecked Cadidates</button>)} </div>):(<IoChevronBackCircle  onClick={()=>{setshowDetails(false)}}  className="absolute right-[60px] top-[120px] w-[50px] h-[50px] text-[#EA7122]" />)}     
           <div className="candidates  flex flex-col gap-[10px] bg-[#1E1E1E] rounded-[30px] esm:p-[10px] 450px:p-[15px] sm:p-[25px]  sm:w-auto 450px:w-[165px] 500px:w-[175px] esm:w-[140px]">
             <p className="text-center text-[#FFFFFF] esm:p-[4px] 450px:p-[6px] sm:p-[10px] font-general-sans pt-[0px]">
-              Interviewed Candidates
+             Candidates
             </p>
             {/* <PostTag></PostTag> */}
             <div
@@ -195,49 +316,92 @@ export default function InterviewFeedback() {
               }`}
             >
               <div className="h-[75vh] overflow-auto overflow-x-hidden">
-                {candidates.map((candidate,index) => (
-                  <button
-                    key={index}
-                    onClick={() => {
-                      setshowDetails(true);
-                      setselected(candidate);
-                    }}
-                    className={` hover:scale-105 accLabel m-[10px] my-[5px]  flex flex-row   bg-[#2b2b2b] sm:pl-[5px]  items-center   rounded-[30px]  sm:gap-[4px] esm:w-[110px] esm:h-[25px] 450px:w-[140px] 450px:h-[35px]   sm:w-[150px] sm:h-[45px]  lg:rounded-[25px]  lg:gap-[12px] lg:w-[200px] lg:h-[60px] sm:gap-[6px] sm:w-[180px] sm:h-[50px] sm:rounded-[30px] esm:w-[fit-content] ${
-                      showDetails === false
-                        ? "lg:w-[500px] justify-between  m-[30px]"
-                        : null
-                    }`}
-                  >
-                    <div
-                      className={` ${
-                        showDetails === false
-                          ? "flex justify-evenly gap-[12px]"
-                          : " flex flex-row  gap-[12px] justify-start"
-                      } `}
-                    >
-                      <img
-                        src={candidate.image}
-                        alt=""
-                        className="userImg  rounded-[50%] border-[solid] border-[#ffffff] ml-[0.7rem] esm:w-[20px] esm:h-[20px]  450px:w-[30px] 450px:h-[30px]  sm:w-[35px] sm:h-[35px] border-[1.5px]  lg:w-[40px] lg:h-[40px] lg:border-[2px] md:w-[37px] md:h-[37px] md:border-[2px] sm:m-1 esm:m-[3px]"
-                      />
-                      <div className="block ">
-                        <p className="name text-left text-[#ffffff] mb-[-2px] md:mb-[-4px] text-[0.7rem] lg:text-[1rem]  md:text-[0.9rem] 320px:text-[0.5rem]">
-                          {candidate.username}{" "}
-                        </p>
-                        <p className="post text-left text-[#ffffff] opacity-[30%]  mt-[-2px] md:mt-[-4px] text-[0.7rem] lg:text-[1rem]  md:text-[0.9rem] 320px:text-[0.5rem]">
-                          {candidate.post}
-                        </p>
-                      </div>
-                    </div>
-                    <p
-                      className={`post ${
-                        showDetails === false ? "block" : "hidden"
-                      } mr-[60px] text-[#ffffff] opacity-[30%]  mt-[-2px] md:mt-[-4px] text-[0.7rem] lg:text-[1rem]  md:text-[0.9rem] 320px:text-[0.5rem]`}
-                    >
-                      {candidate.email}
-                    </p>
-                  </button>
-                ))}
+              {showEvaluated ? (<div>{checkedCandidates.map((candidate,index) => (
+          <button
+              key={index}
+              onClick={() => {
+                setshowDetails(true);
+                setselected(candidate);
+              }}
+              className={` hover:scale-105 accLabel m-[10px] my-[5px]  flex flex-row   bg-[#2b2b2b] sm:pl-[5px]  items-center   rounded-[30px]  sm:gap-[4px] esm:w-[110px] esm:h-[25px] 450px:w-[140px] 450px:h-[35px]   sm:w-[150px] sm:h-[45px]  lg:rounded-[25px]  lg:gap-[12px] lg:w-[200px] lg:h-[60px] sm:gap-[6px] sm:w-[180px] sm:h-[50px] sm:rounded-[30px] esm:w-[fit-content] ${
+                showDetails === false
+                  ? "lg:w-[500px] justify-between  m-[30px]"
+                  : null
+              }`}
+            >
+              <div
+                className={` ${
+                  showDetails === false
+                    ? "flex justify-evenly gap-[12px]"
+                    : " flex flex-row  gap-[12px] justify-start"
+                } `}
+              >
+                <img
+                  src={candidate.image}
+                  alt=""
+                  className="userImg  rounded-[50%] border-[solid] border-[#ffffff] ml-[0.7rem] esm:w-[20px] esm:h-[20px]  450px:w-[30px] 450px:h-[30px]  sm:w-[35px] sm:h-[35px] border-[1.5px]  lg:w-[40px] lg:h-[40px] lg:border-[2px] md:w-[37px] md:h-[37px] md:border-[2px] sm:m-1 esm:m-[3px]"
+                />
+                <div className="block ">
+                  <p className="name text-left text-[#ffffff] mb-[-2px] md:mb-[-4px] text-[0.7rem] lg:text-[1rem]  md:text-[0.9rem] 320px:text-[0.5rem]">
+                    {candidate.username}{" "}
+                  </p>
+                  <p className="post text-left text-[#ffffff] opacity-[30%]  mt-[-2px] md:mt-[-4px] text-[0.7rem] lg:text-[1rem]  md:text-[0.9rem] 320px:text-[0.5rem]">
+                    {candidate.post}
+                  </p>
+                </div>
+              </div>
+              <p
+                className={`post ${
+                  showDetails === false ? "block" : "hidden"
+                } mr-[60px] text-[#ffffff] opacity-[30%]  mt-[-2px] md:mt-[-4px] text-[0.7rem] lg:text-[1rem]  md:text-[0.9rem] 320px:text-[0.5rem]`}
+              >
+                {candidate.email}
+              </p>
+            </button>
+                  ))}</div>):(<div> {candidates.map((candidate,index) => (
+                    <button
+              key={index}
+              onClick={() => {
+                setshowDetails(true);
+                setselected(candidate);
+              }}
+              className={` hover:scale-105 accLabel m-[10px] my-[5px]  flex flex-row   bg-[#2b2b2b] sm:pl-[5px]  items-center   rounded-[30px]  sm:gap-[4px] esm:w-[110px] esm:h-[25px] 450px:w-[140px] 450px:h-[35px]   sm:w-[150px] sm:h-[45px]  lg:rounded-[25px]  lg:gap-[12px] lg:w-[200px] lg:h-[60px] sm:gap-[6px] sm:w-[180px] sm:h-[50px] sm:rounded-[30px] esm:w-[fit-content] ${
+                showDetails === false
+                  ? "lg:w-[500px] justify-between  m-[30px]"
+                  : null
+              }`}
+            >
+              <div
+                className={` ${
+                  showDetails === false
+                    ? "flex justify-evenly gap-[12px]"
+                    : " flex flex-row  gap-[12px] justify-start"
+                } `}
+              >
+                <img
+                  src={candidate.image}
+                  alt=""
+                  className="userImg  rounded-[50%] border-[solid] border-[#ffffff] ml-[0.7rem] esm:w-[20px] esm:h-[20px]  450px:w-[30px] 450px:h-[30px]  sm:w-[35px] sm:h-[35px] border-[1.5px]  lg:w-[40px] lg:h-[40px] lg:border-[2px] md:w-[37px] md:h-[37px] md:border-[2px] sm:m-1 esm:m-[3px]"
+                />
+                <div className="block ">
+                  <p className="name text-left text-[#ffffff] mb-[-2px] md:mb-[-4px] text-[0.7rem] lg:text-[1rem]  md:text-[0.9rem] 320px:text-[0.5rem]">
+                    {candidate.username}{" "}
+                  </p>
+                  <p className="post text-left text-[#ffffff] opacity-[30%]  mt-[-2px] md:mt-[-4px] text-[0.7rem] lg:text-[1rem]  md:text-[0.9rem] 320px:text-[0.5rem]">
+                    {candidate.post}
+                  </p>
+                </div>
+              </div>
+              <p
+                className={`post ${
+                  showDetails === false ? "block" : "hidden"
+                } mr-[60px] text-[#ffffff] opacity-[30%]  mt-[-2px] md:mt-[-4px] text-[0.7rem] lg:text-[1rem]  md:text-[0.9rem] 320px:text-[0.5rem]`}
+              >
+                {candidate.email}
+              </p>
+            </button>
+                  ))}
+   </div>)}
               </div>
             </div>
           </div>
@@ -259,6 +423,12 @@ export default function InterviewFeedback() {
                     Interviewer Name:{data.interviewername}
                   </p>
                 </div>
+                <div className="flex flex-col  ">
+              {submited && !data.isHired && !data.isRejected && showEvaluated?(<label htmlFor="" className="p-[5px] rounded-[10px] bg-[#EA7122] h-fit "> Evaluated</label>):null}  
+              {data.isHired && showEvaluated? (  <label htmlFor="" className="p-[5px] rounded-[10px] bg-green-700 h-fit " >Hired</label>):null}   
+              {data.isRejected && showEvaluated? (      <label htmlFor="" className="p-[5px] rounded-[10px] bg-[#484848] h-fit text-[red] ">Rejected</label>):null} 
+                </div>
+                
               </div>
               <div className="">
                 <p className="  bg-[#2b2b2b] pl-[20px] py-[15px]">
@@ -494,7 +664,7 @@ export default function InterviewFeedback() {
 
                 <br />
               </div>
-              <ProgressTimeline  ></ProgressTimeline>
+              {/* <ProgressTimeline  ></ProgressTimeline> */}
             </div>
           ) : null}
         </div>
