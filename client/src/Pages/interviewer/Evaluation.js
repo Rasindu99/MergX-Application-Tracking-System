@@ -250,7 +250,6 @@ export default function Evaluation() {
       
       try{
          const response = await axios.get('/evaluation/getEvaluatedApplications');
-         console.log('hello');
          setEvaluatedApplication(response.data.applications);
        } catch (error) {
          console.error('Error fetching applications:', error);

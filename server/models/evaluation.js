@@ -121,6 +121,7 @@ const evaluationSchema = new mongoose.Schema({
         type:Boolean,
         default:false
     },
+
     checkedrecruiter:{
         type:Boolean,
         default:false
@@ -129,6 +130,11 @@ const evaluationSchema = new mongoose.Schema({
         type:Boolean,
         default:false
     },
+    isRejected:{
+        type:Boolean,
+        default:false
+    }
+
 
     
 });

@@ -293,6 +293,115 @@ const getRecruiterUnCheckedEvaluations = async (req,res)=>{
   }
 }
 
+const getHMcheckedEvaluations = async (req,res)=>{
+  try{
+       const response = await Evaluationmodel.find({checkedhiringmanager:true});
+        if(response.length === 0){
+          console.log('No applications found that match the query conditions.');
+        }
+        res.json(response);
+  }
+  catch(error){
+    
+    res.json({ error: 'Server error' });
+  }
+}
+
+const getHMUnCheckedEvaluations = async (req,res)=>{
+  try{ 
+    const response = await Evaluationmodel.find({checkedhiringmanager:false});
+    if(response.length === 0){
+      console.log('No applications found that match the query conditions.');
+    }
+    res.json( response );
+
+  }
+  catch(error){
+    res.json({ error: 'Server error' });
+  }
+}
+
+const updatecheckedrecruiter = async (req,res)=>{
+  try{
+       const { _id } = req.params;
+       if (!_id) {
+         return res.status(400).json({ error: 'evaluation path parameter is required' });
+       }
+        const updatedApplication = await Evaluationmodel.findByIdAndUpdate(
+          _id,
+          { checkedrecruiter: true },
+          { new: true }
+        );
+        if (!updatedApplication) {
+          return res.status(404).json({ error: 'Evaluation not found' });
+        }
+        res.status(200).json({ message: 'Application updated successfully', updatedApplication });
+  }catch(error){
+    console.error('Error in updateIsEvaluated:', error); // Log the error for debugging
+    res.status(500).json({ error: 'Server error' });
+  }
+}
+
+const updatecheckedhiringmanager = async (req,res)=>{
+  try{
+       const { _id } = req.params;
+       if (!_id) {
+         return res.status(400).json({ error: 'evaluation path parameter is required' });
+       }
+        const updatedApplication = await Evaluationmodel.findByIdAndUpdate(
+          _id,
+          { checkedhiringmanager: true },
+          { new: true }
+        );
+        if (!updatedApplication) {
+          return res.status(404).json({ error: 'Evaluation not found' });
+        }
+        res.status(200).json({ message: 'Application updated successfully', updatedApplication });
+  }catch(error){
+    console.error('Error in updateIsEvaluated:', error); // Log the error for debugging
+    res.status(500).json({ error: 'Server error' });
+  }
+}
+
+const getcandidateforfinaldecision = async (req,res)=>{
+  try{
+    const response = await Evaluationmodel.find({checkedhiringmanager:true,isHired:false,isRejected:false});
+    if(response.length === 0){
+      console.log('No candidates found that match the query conditions.');
+    }
+    res.json(response);
+
+  }catch(error){
+    res.status(200).json({error:'Server error'});
+
+  }
+}
+
+const gethiredCandidtaesList = async (req,res)=>{
+  try{
+    const response = await Evaluationmodel.find({checkedhiringmanager:true,isHired:true});
+    if(response.legth === 0){
+      console.log('No hired candidates found.');
+    }
+    res.json(response);
+  }
+  catch(error){
+    res.status(200).json({error:'server error'})
+  }
+}
+ 
+const getrejectedList = async (req,res)=>{
+     try{
+       const response = await Evaluationmodel.find({checkedhiringmanager:true,isRejected:true});
+       if(response.length ===  0){
+        console.log("No rejected candidates found");
+       }
+       res.json(response);
+     }
+     catch(error){
+      res.status(200).json({error:"Server Error"});
+     }
+}
 
 module.exports={
   createEvalautions,
@@ -305,5 +414,12 @@ module.exports={
     updateIsEvaluated,
     getEvaluatedApplications,
     getRecruitercheckedEvaluations,
-    getRecruiterUnCheckedEvaluations
+    getRecruiterUnCheckedEvaluations,
+    getHMcheckedEvaluations,
+    getHMUnCheckedEvaluations,
+    updatecheckedrecruiter,
+    updatecheckedhiringmanager,
+    getcandidateforfinaldecision,
+    gethiredCandidtaesList,
+    getrejectedList
 }

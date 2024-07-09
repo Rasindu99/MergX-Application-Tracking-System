@@ -58,6 +58,25 @@ export default function CandidateAssessment() {
     isHired:false
   });
 
+  const updatecheckedrecruiter = async (application_id) => {
+    if(!application_id) {
+      console.error("Application ID is missing");
+      return;
+    }
+      try{
+        const response = await axios.put(`http://localhost:8000/evaluation/updatecheckedrecruiter/${application_id}`);
+        if(response.data.error){
+          console.error("Error in updating isEvaluated");
+          
+        }else{
+          console.log("isEvaluated Updated Successfully");
+        }
+      }
+      catch(error){
+        console.error(error);
+      }
+    }
+
 
  const getInterviewdCandidates = async () => {
   try{
@@ -119,8 +138,9 @@ export default function CandidateAssessment() {
     const processCandidates = async () => {
     
     evoluations.forEach((evoluation)=>{
-      const { candidateid, candidatename, candidateemail, position} = evoluation;
+      const { _id,candidateid, candidatename, candidateemail, position} = evoluation;
       setCandidate(prevState => [...prevState, {
+        _id,
         userid:candidateid,
         username: candidatename,
         email: candidateemail,
@@ -135,8 +155,9 @@ export default function CandidateAssessment() {
   const processcheckedCandidates = async () => {
     
     checkedEvaluations.forEach((evoluation)=>{
-      const { candidateid, candidatename, candidateemail, position} = evoluation;
+      const { _id,candidateid, candidatename, candidateemail, position} = evoluation;
       setCheckedCandidates(prevState => [...prevState, {
+        _id,
         userid:candidateid,
         username: candidatename,
         email: candidateemail,
@@ -202,6 +223,7 @@ export default function CandidateAssessment() {
      
       console.log("send data to database" ,data);
       toast.success("Successsfully submitted.");
+      updatecheckedrecruiter(selected._id);
     }
   } catch (error) {
     console.error("Error updating evaluation:", error);
