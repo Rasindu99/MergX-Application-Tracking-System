@@ -494,7 +494,7 @@ export default function InterviewFeedback() {
 
                 <br />
               </div>
-              {/* <ProgressTimeline  ></ProgressTimeline> */}
+              <ProgressTimeline  ></ProgressTimeline>
             </div>
           ) : null}
         </div>
