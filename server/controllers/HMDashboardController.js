@@ -152,6 +152,35 @@ const getinterviewercount = async (req,res)=>{
     }
 }
 
+const getinterviewscount = async (req,res)=>{
+    try{
+        const count = await InterviewSchedule.countDocuments({send : true });
+        res.status(200).json({interviewcount: count});
+
+    }catch(err){
+        res.status(500).json({error: 'Error counting interviews', details: err});
+    
+    }
+}
+
+const getupcominginterviews = async (req, res) => {
+        const now = new Date();
+      
+        try {
+          const count = await InterviewSchedule.countDocuments({
+            date: {
+              $gte: now
+            },
+            send: true
+          });
+      
+          res.status(200).json({ upcomingInterviews: count });
+        } catch (error) {
+          res.status(500).json({ error: 'Error in counting upcoming interviews', details: error });
+        }
+      };
+      
+
 
 module.exports ={
     getTotalJobPostings,
@@ -165,5 +194,7 @@ module.exports ={
     getadmincount,
     getrecruitercount,
     gethiringmanagers,
-    getinterviewercount
+    getinterviewercount,
+    getinterviewscount,
+    getupcominginterviews
 }

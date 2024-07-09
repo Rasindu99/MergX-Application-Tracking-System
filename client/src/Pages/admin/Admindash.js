@@ -152,7 +152,7 @@ useEffect(() => {
   return (
     <div>
       <div className='flex'>
-        <div>
+        <div className=''>
           <AdminNav/>
         </div>
 
@@ -168,9 +168,9 @@ useEffect(() => {
           )}
           {/* If user doesn't exist, you may want to display a message */}
           {/* {!user && <h1>No user found</h1>} */}
-          <div className='flex  flex-col  pt-8 pb-8 pl-5'>
+          <div className='flex flex-col pt-8 pb-8 pl-5'>
           <div className="card_container mt-[10px] flex flex-col gap-5 "> 
-          <div className="card_container_1 flex  mb-6 justify-center gap-24 ">
+          <div className="flex justify-center gap-24 mb-6 card_container_1 ">
             
           <CardL  name="Vacancies"  val={carddetails.vacancies-carddetails.hired} />
           <CardL  name="Hired"  val={carddetails.hired} />
@@ -195,9 +195,9 @@ useEffect(() => {
             placeholder="Search Candidate's Name"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="bg-transparent focus:outline-none text-white opacity-25 w-full"
+            className="w-full text-white bg-transparent opacity-25 focus:outline-none"
           />
-          <FaSearch className="text-gray-500 ml-2" />
+          <FaSearch className="ml-2 text-gray-500" />
         </div>
         <div className="w-[75%] max-h-[250px] overflow-y-auto scrollbar-hidden overflow-x-hidden">
           {filteredUsers.map((user, index) => (
@@ -220,7 +220,7 @@ useEffect(() => {
             </div>
           ))}
           {filteredUsers.length === 0 && (
-            <p className="text-gray-500 text-center mt-4">No candidates found</p>
+            <p className="mt-4 text-center text-gray-500">No candidates found</p>
           )}
         </div>
 
