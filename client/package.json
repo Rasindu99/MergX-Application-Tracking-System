@@ -13,6 +13,7 @@
     "axios": "^1.6.7",
     "dayjs": "^1.11.11",
     "dotenv": "^16.4.5",
+    "framer-motion": "^11.2.13",
     "js-cookie": "^3.0.5",
     "jsonwebtoken": "^9.0.2",
     "jwt-decode": "^4.0.0",
@@ -30,10 +31,12 @@
     "react-router-dom": "^6.21.3",
     "react-scripts": "5.0.1",
     "react-toastify": "^10.0.5",
-    "socket.io-client": "^4.7.4",
+    
     "web-vitals": "^2.1.4",
     "yup": "^1.4.0",
-    "zustand": "^4.5.1"
+    "zustand": "^4.5.1",
+    "sweetalert2": "^11.12.2",
+    "socket.io-client": "^4.7.4"
   },
   "scripts": {
     "start": "react-scripts start",

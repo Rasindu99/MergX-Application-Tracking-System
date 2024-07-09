@@ -14,7 +14,7 @@ export const InterviewContextProvider = ({ children }) => {
   const [searchedInterview, setSearchedInterview] = useState([]);
   const [searchInput, setSearchInput] = useState([]);
   const [search, setSearch] = useState(false);
-  const[readInterviews, setReadInterviews] = useState([]);
+  const [readInterviews, setReadInterviews] = useState([]);
   const [updateFlag, setUpdateFlag] = useState(false); // Flag for triggering updates
   const [allInterviews, setAllInterviews] = useState([]);
   const [wishListedInterviews, setWishListedInterviews] = useState([]);
