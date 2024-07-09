@@ -49,8 +49,11 @@ export default function QandACompo() {
                 return (
                   <div key={index} className='p-2 mb-4 border'>
                     <div className='flex items-center'>
-                      <div className='ml-3'>
+                      <div className='relative ml-3'>
                         <FaRegQuestionCircle className='size-[40px] opacity-50'/>
+                        {!qa.read && (
+                          <div className='absolute top-0 right-0 w-3 h-3 bg-red-500 rounded-full'></div>
+                        )}
                       </div>
                       <div className='flex-grow ml-3'>
                         <p><strong>Name:</strong> {qa.username}</p>
