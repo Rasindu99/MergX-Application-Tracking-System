@@ -44,6 +44,10 @@ const jobPostingSchema = new mongoose.Schema({
   expired: {
     type: Boolean,
     default: false
+  },
+  approvedAt: {
+    type: Date,
+    default: null
   }
 }, {timestamps: true});
 
