@@ -5,6 +5,7 @@ import { UserContext } from "../../Context/UserContext";
 import Topbar from "../../Components/hiringManagerCompo/Topbar.jsx";
 import PieCharts from "../../Components/interviewercomp/InputPieCharts";
 import { toast } from "react-hot-toast";
+import { IoChevronBackCircle } from "react-icons/io5";
 
 
 export default function Evaluation() {
@@ -15,7 +16,21 @@ export default function Evaluation() {
   const [isexistevaluation, setisexistevaluation] = useState(false);
   const { user } = useContext(UserContext);
   const [application, setApplication] = useState([]);
+  const [evaluatedApplication, setEvaluatedApplication] = useState([]);
+  const [evaluatedCandidates, setEvaluatedCandidates] = useState([]);
   const [candidates, setCandidate] = useState([]);
+  const [showEvaluated,setShowEvaluated] = useState(false);
+
+  const clearCandidates= ()=>{
+    setCandidate([]);
+    setApplication([]);
+  }
+
+  const clearEvaluatedCandidates= ()=>{ 
+    setEvaluatedCandidates([]);
+    setEvaluatedApplication([]);
+    setexistEvolution([]);
+  }
 
   const [data, setData] = useState({
     candidatename: "",
@@ -43,10 +58,19 @@ export default function Evaluation() {
     overallcomment: "",
   });
 
+  
+
   const handleClick = (value) => {
     setFeedbackTab(value);
   };
 
+  const setshowEvaluatedtrue = () => {
+    setShowEvaluated(true);
+  }
+
+  const setshowEvaluatedfalse = ()=>{
+    setShowEvaluated(false);
+  }
 
   
   const handleInputChange = (event) => {
@@ -81,10 +105,33 @@ export default function Evaluation() {
     }
   };
 
+  const EvaluatedgetPost = async (job_id) => {
+    try {
+      const response = await axios.get(`http://localhost:8000/evaluation/getpost/${job_id}`);
+      setEvaluatedCandidates(prevState => prevState.map(candidate =>
+        candidate.job_id === job_id ? { ...candidate, position: response.data.jobTitle } : candidate
+      ));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const EvaluatedgetImg = async (user_id) => {
+    try {
+      const response = await axios.get(`http://localhost:8000/evaluation/getimg/${user_id}`);
+      setEvaluatedCandidates(prevState => prevState.map(candidate =>
+        candidate.user_id === user_id ? { ...candidate, image: response.data.image } : candidate
+      ));
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   
   const getApplications = async () => {
     try {
-      const response = await axios.get('http://localhost:8000/cv/getapplications');
+      // const response = await axios.get('http://localhost:8000/cv/getapplications');
+      const response = await axios.get('http://localhost:8000/evaluation/getNotEvaluatedApplications');
       setApplication(response.data.applications);
       application.map(application => {
         console.log(application);
@@ -97,8 +144,9 @@ export default function Evaluation() {
 
   const processApplications = () => {
     application.forEach(app => {
-      const { job_id, user_id, user_name, user_email } = app;
+      const { _id,job_id, user_id, user_name, user_email } = app;
       setCandidate(prevState => [...prevState, {
+        _id,
         job_id,
         user_id,
         username: user_name,
@@ -108,6 +156,24 @@ export default function Evaluation() {
       }]);
       getPost(job_id);
       getImg(user_id);
+
+    });
+  };
+
+  const processEvaluatedApplications = () => {
+    evaluatedApplication.forEach(app => {
+      const { _id,job_id, user_id, user_name, user_email } = app;
+      setEvaluatedCandidates(prevState => [...prevState, {
+        _id,
+        job_id,
+        user_id,
+        username: user_name,
+        email: user_email,
+        image: '', // initial placeholder value
+        position: '' // initial placeholder value
+      }]);
+      EvaluatedgetPost(job_id);
+      EvaluatedgetImg(user_id);
 
     });
   };
@@ -127,6 +193,7 @@ export default function Evaluation() {
           clear();
         console.log("Evaluations Created Successfully");
         toast.success("Successfully submitted.");
+        updateIsEvaluated(selected._id);
         console.log(data);
       }
     } catch (error) {
@@ -150,12 +217,44 @@ export default function Evaluation() {
         clear();
         console.log("Evaluations Updated Successfully");
         toast.success("Successfully updated.");
+        updateIsEvaluated(selected._id);
+        
+        
       }
     } catch (error) {
       console.error("Error updating evaluation:", error);
       toast.error("All fields must be filled.");
     }
   };
+
+  const updateIsEvaluated = async (application_id) => {
+    if(!application_id) {
+      console.error("Application ID is missing");
+      return;
+    }
+      try{
+        const response = await axios.put(`http://localhost:8000/evaluation/updateIsEvaluated/${application_id}`);
+        if(response.data.error){
+          console.error("Error in updating isEvaluated");
+          
+        }else{
+          console.log("isEvaluated Updated Successfully");
+        }
+      }
+      catch(error){
+        console.error(error);
+      }
+    }
+
+    const getEvaluatedApplications = async ()=>{
+      
+      try{
+         const response = await axios.get('/evaluation/getEvaluatedApplications');
+         setEvaluatedApplication(response.data.applications);
+       } catch (error) {
+         console.error('Error fetching applications:', error);
+       }
+    }
 
   const clear = () => {
     setData({
@@ -246,29 +345,43 @@ export default function Evaluation() {
   }, [showDetails, selected,application]);
 
   useEffect(() => {
+    if(showEvaluated){
+      getEvaluatedApplications();
+      clearCandidates();
+    
+    }else{
+     
     getApplications();
-  }, []); // Empty dependency array means it runs once on mount
+    clearEvaluatedCandidates();
+    }
+  }, [showEvaluated]); // Empty dependency array means it runs once on mount
 
 useEffect(() => {
   processApplications();
  
 },[application]);
 
+useEffect(()=>{
+  processEvaluatedApplications();
+},[evaluatedApplication]);
 
+useEffect(()=>{
+ console.log('evaluatedApplication',evaluatedApplication);
+},[showEvaluated])
+ 
 
-useEffect(() => { 
-  console.log(candidates);
-}
-,[candidates]);
-useEffect(() => { 
-  console.log(data);
-}
-,[data]);
+// useEffect(() => { 
+//   console.log('Candidate',candidates);
+// }
+// ,[candidates]);
 
-
-
-   
-
+// useEffect(() => {
+//   console.log('Evaluated Candidate',evaluatedCandidates);
+// },[evaluatedCandidates]);
+// useEffect(() => { 
+//   console.log(data);
+// }
+// ,[data]);
  
 
   return (
@@ -285,15 +398,19 @@ useEffect(() => {
             post="Hiring Manager"
           />
           <div
-            className={`content max-h-[100vh] overflow-y-auto text-white flex flex-row p-[0px] bg-[#1E1E1E] m-[30px] h-fit rounded-[30px] 320px:text-[0.5rem] 450px:text-[0.8rem] sm:text-[0.9rem] 900px:text-[1.1rem] 1010px:text-[1.2rem] ${
+            className={`content  h-[90vh] overflow-y-auto text-white flex flex-row p-[0px] bg-[#1E1E1E] m-[30px] rounded-[30px] 320px:text-[0.5rem] 450px:text-[0.8rem] sm:text-[0.9rem] 900px:text-[1.1rem] 1010px:text-[1.2rem] mb-0 ${
               showDetails === false ? " justify-center" : null
             }`}
           >
+
+          
+     {!showDetails ? (<div>{!showEvaluated ? ( <button className="absolute right-[60px] top-[120px] p-[10px] rounded-[10px] bg-[#EA7122]" onClick={setshowEvaluatedtrue}>Show Evaluated Cadidates</button>):( <button className="absolute right-[60px] top-[120px] p-[10px] rounded-[10px] bg-[#EA7122]" onClick={setshowEvaluatedfalse}>Show Interviewing Cadidates</button>)} </div>):(<IoChevronBackCircle  onClick={()=>{setshowDetails(false)}}  className="absolute right-[60px] top-[120px] w-[50px] h-[50px] text-[#EA7122]" />)}     
+          
             <div
               className={`candidates flex flex-col gap-[10px] bg-[#1E1E1E] rounded-[30px] rounded-tr-[0px] rounded-br-[0px] esm:p-[10px] 450px:p-[15px] sm:p-[25px] sm:w-auto 450px:w-[165px] 500px:w-[175px] esm:w-[140px]`}
             >
               <p className="text-center text-[#FFFFFF] esm:p-[4px] 450px:p-[6px] sm:p-[10px] font-general-sans pt-[0px]">
-                Interviewed Candidates
+                 Candidates
               </p>
               <div
                 className={`max-h-[100vh] flex justify-center overflow-y-auto ${
@@ -301,7 +418,47 @@ useEffect(() => {
                 }`}
               >
                 <div>
-                  {candidates.map((candidate,index) => (
+
+                {showEvaluated ? (<div>{evaluatedCandidates.map((candidate,index) => (
+                    <button
+                      key={index}
+                      onClick={() => {
+                        setshowDetails(true);
+                        setselected(candidate);
+                       
+                      }}
+                      className={`hover:scale-110 accLabel m-[10px] my-[5px] flex flex-row bg-[#2b2b2b] sm:pl-[5px] items-center rounded-[30px] esm:w-[110px] esm:h-[25px] 450px:w-[140px] 450px:h-[35px]  lg:rounded-[25px] lg:gap-[12px] lg:w-[200px] lg:h-[60px] sm:gap-[6px] sm:w-[180px] sm:h-[50px] sm:rounded-[30px] esm:w-[fit-content] ${
+                        showDetails === false ? "lg:w-[500px] justify-between hover:scale-105" : null
+                      }`}
+                    >
+                      <div
+                        className={`${
+                          showDetails === false ? "flex justify-evenly gap-[12px]" : "flex flex-row gap-[12px] justify-start"
+                        }`}
+                      >
+                        <img
+                          src={candidate.image}
+                          alt=""
+                          className="userImg rounded-[50%] border-[solid] border-[#ffffff] ml-[0.7rem] esm:w-[20px] esm:h-[20px] 450px:w-[30px] 450px:h-[30px] sm:w-[35px] sm:h-[35px] border-[1.5px] lg:w-[40px] lg:h-[40px] lg:border-[2px] md:w-[37px] md:h-[37px] md:border-[2px] sm:m-1 esm:m-[3px]"
+                        />
+                        <div className="block">
+                          <p className="name text-left text-[#ffffff] mb-[-2px] md:mb-[-4px] text-[0.7rem] lg:text-[1rem] md:text-[0.9rem] 320px:text-[0.5rem]">
+                            {candidate.username}
+                          </p>
+                          <p className="post text-left text-[#ffffff] opacity-[30%] mt-[-2px] md:mt-[-4px] text-[0.7rem] lg:text-[1rem] md:text-[0.9rem] 320px:text-[0.5rem]">
+                            {candidate.position}
+                          </p>
+                        </div>
+                      </div>
+                      <p
+                        className={`post ${
+                          showDetails === false ? "block" : "hidden"
+                        } mr-[60px] text-[#ffffff] opacity-[30%] mt-[-2px] md:mt-[-4px] text-[0.7rem] lg:text-[1rem] md:text-[0.9rem] 320px:text-[0.5rem]`}
+                      >
+                         {candidate.email}
+                      </p>
+                    </button>
+                  ))}</div>):(<div> {candidates.map((candidate,index) => (
                     <button
                       key={index}
                       onClick={() => {
@@ -341,13 +498,14 @@ useEffect(() => {
                       </p>
                     </button>
                   ))}
-                </div>
+   </div>)}
+                              </div>
               </div>
             </div>
-
+           
 
             {showDetails ? (
-              <div className="description flex flex-col w-full box-border">
+              <div className="description flex flex-col w-full box-border max-h-[800px] overflow-y-auto">
                 <div className="flex flex-row py-[20px] justify-center gap-5 border-[grey]  border-b-[2px] ">
                   <img
                     src={selected.image}

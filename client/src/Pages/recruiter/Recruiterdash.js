@@ -171,8 +171,8 @@ export default function Recruiterdash() {
   ,[candidateDetails]);
 
   return (
-    <div className="flex items-center justify-center">
-      <div className="rounded-3xl w-[95%] h-full mt-2" style={{ background: 'linear-gradient(to bottom, #2B2B2B 0%, rgba(43, 43, 43, 0) 35%)' }}>
+    <div className="flex items-center ml-[320px] justify-center  ">
+      <div className="rounded-3xl  w-full mx-5 mt-2" style={{ background: 'linear-gradient(to bottom, #2B2B2B 0%, rgba(43, 43, 43, 0) 35%)' }}>
         <div className="flex items-center justify-around mt-5">
               <CardL  name="Pending" subName="Jobs" val={carddetails.pendingjobs} />
           <CardL  name="Accepted" subName="Applications" val={carddetails.acceptedApplications} />
@@ -188,18 +188,6 @@ export default function Recruiterdash() {
           
         </div>
 
-        <style>
-      {`
-        .scrollbar-hidden::-webkit-scrollbar {
-          display: none;
-        }
-        .scrollbar-hidden {
-          scrollbar-width: none; /* Firefox */
-          -ms-overflow-style: none; /* IE and Edge */
-        }
-      `}
-    </style>
-
         <div className="flex flex-col items-center mt-20">
         <div className="w-[60%] flex items-center justify-center mb-4 p-4 rounded-2xl border-2 border-[#2B2B2B]" style={{ background: 'linear-gradient(to bottom, #2B2B2B 0%, rgba(43, 43, 43, 0) 80%)' }} >  
           <input
@@ -211,7 +199,7 @@ export default function Recruiterdash() {
           />
           <FaSearch className="text-gray-500 ml-2" />
         </div>
-        <div className="w-[75%] max-h-[250px] overflow-y-auto scrollbar-hidden">
+        <div className="w-[75%] max-h-[700px] overflow-y-auto scrollbar-hidden">
           {filteredCandidates.map((candidate, index) => (
             <div key={index} className="flex items-center justify-between p-4 mb-2 rounded border-x-2 border-[#2B2B2B]" style={{ background: 'linear-gradient(to bottom, #2B2B2B 0%, rgba(43, 43, 43, 0) 60%)' }}>
               <div className='items-center block '>

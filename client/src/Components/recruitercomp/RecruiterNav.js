@@ -40,7 +40,7 @@ export default function RecruiterNav() {
     }, [location.pathname]);
 
     return (
-        <div className='h-screen bg-[#2B2B2B] lg:w-[320px] sm:w-fit md:w-72 w-fit'>
+        <div className='h-screen fixed bg-[#2B2B2B] lg:w-[320px] sm:w-fit md:w-72 w-fit'>
             <div className='pt-12'>
                 <div className='flex items-center justify-center'>
                     <div className='items-center block '>
