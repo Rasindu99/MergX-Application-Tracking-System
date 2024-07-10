@@ -4,6 +4,7 @@ import { FaRegQuestionCircle } from "react-icons/fa";
 import { FaRegEye } from "react-icons/fa";
 import { MdDeleteForever } from "react-icons/md";
 import { IoMdClose } from "react-icons/io";
+import { toast } from 'react-hot-toast';
 
 export default function QandACompo() {
   const [getQandA, setGetQandA] = useState([]);
@@ -58,6 +59,7 @@ export default function QandACompo() {
         handleModalClose();
         // Optionally, show a success message
       }
+      toast.success( 'Sent reply Successsfully')
     } catch (error) {
       console.error("Error sending reply:", error);
       // Optionally, show an error message
@@ -80,6 +82,24 @@ export default function QandACompo() {
       console.error("Error marking message as read:", error);
     }
   };
+
+  //handke delete
+  const handleDelete = async (id) =>{
+    try {
+      const response = await axios.delete(`/qanda/deletemessage/${id}`);
+      if (response.status === 200) {
+          // Remove the deleted item from both state arrays
+          setGetQandA(prevQandA => prevQandA.filter(qa => qa._id !== id));
+          setSendtruegetQanda(prevQandA => prevQandA.filter(qa => qa._id !== id));
+          // Optionally, show a success message
+          
+      }
+      toast.success( 'Deleted Successsfully')
+  } catch (error) {
+      console.error("Error deleting Q&A entry:", error);
+      // Optionally, show an error message
+  }
+  }
 
    // Handle reply text change
    const handleReplyChange = (e) => {
@@ -151,7 +171,9 @@ export default function QandACompo() {
                         className='px-3 py-1 text-white hover:text-opacity-40 '><FaRegEye className='size-[30px]' /></button>
                       </div>
                       <div className='ml-3'>
-                        <button className='px-3 py-1 text-red-600 hover:text-opacity-40'><MdDeleteForever className='size-[30px]' /></button>
+                        <button 
+                        onClick={() => handleDelete(qa._id)}
+                        className='px-3 py-1 text-red-600 hover:text-opacity-40'><MdDeleteForever className='size-[30px]' /></button>
                       </div>
                     </div>
                   </div>
