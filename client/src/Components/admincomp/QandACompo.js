@@ -3,10 +3,13 @@ import React, { useEffect, useState } from 'react';
 import { FaRegQuestionCircle } from "react-icons/fa";
 import { FaRegEye } from "react-icons/fa";
 import { MdDeleteForever } from "react-icons/md";
+import { IoMdClose } from "react-icons/io";
 
 export default function QandACompo() {
   const [getQandA, setGetQandA] = useState([]);
   const [sendtruegetQandA, setSendtruegetQanda] = useState([]);
+  const [messageShowModel, setMessageShowModel] = useState(false);
+  const [selectedMessage, setSelectedMessage] = useState(null);
 
   // get q and a
   const getQandAsapi = async () => {
@@ -26,6 +29,18 @@ export default function QandACompo() {
     } catch (error) {
       console.error("error fetching Q and A data: ", error);
     }
+  }
+
+  //handle view send is false
+  const handleview = (message) => {
+    setMessageShowModel(true);
+    setSelectedMessage(message)
+  }
+
+  //handle close
+  const handleModalClose = () =>{
+    setMessageShowModel(false);
+    setSelectedMessage(null);
   }
 
   useEffect(() => {
@@ -76,7 +91,9 @@ export default function QandACompo() {
                         <p><strong>Time:</strong> {time}</p>
                       </div>
                       <div className='ml-3'>
-                        <button className='px-3 py-1 text-white hover:text-opacity-40 '><FaRegEye className='size-[30px]' /></button>
+                        <button 
+                        onClick={() => handleview(qa)}
+                        className='px-3 py-1 text-white hover:text-opacity-40 '><FaRegEye className='size-[30px]' /></button>
                       </div>
                       <div className='ml-3'>
                         <button className='px-3 py-1 text-red-600 hover:text-opacity-40'><MdDeleteForever className='size-[30px]' /></button>
@@ -107,10 +124,10 @@ export default function QandACompo() {
                         <p><strong>Time:</strong> {time}</p>
                       </div>
                       <div className='ml-3'>
-                        <button className='px-3 py-1 text-white bg-blue-500 rounded'>View</button>
+                        <button className='px-3 py-1 text-white hover:text-opacity-40 '><FaRegEye className='size-[30px]' /></button>
                       </div>
                       <div className='ml-3'>
-                        <button className='px-3 py-1 text-white bg-red-500 rounded'>Delete</button>
+                        <button className='px-3 py-1 text-red-600 hover:text-opacity-40'><MdDeleteForever className='size-[30px]' /></button>
                       </div>
                     </div>
                   </div>
@@ -120,6 +137,25 @@ export default function QandACompo() {
           </div>
         </div>
       </div>
+      {messageShowModel && selectedMessage && (
+        <div className='fixed inset-0 flex items-center justify-center bg-black bg-opacity-50'>
+          <div className='w-full max-w-2xl p-6 bg-white rounded-lg'>
+            <div className='flex items-center justify-between mb-4'>
+              <h2 className='text-xl font-bold'>Message Details</h2>
+              <button onClick={handleModalClose} className='text-gray-500 hover:text-gray-700'>
+                <IoMdClose size={24} />
+              </button>
+            </div>
+            <div>
+              <p><strong>Name:</strong> {selectedMessage.username}</p>
+              <p><strong>Email:</strong> {selectedMessage.useremail}</p>
+              <p><strong>Date:</strong> {formatDateTime(selectedMessage.createdAt).date}</p>
+              <p><strong>Time:</strong> {formatDateTime(selectedMessage.createdAt).time}</p>
+              <p><strong>Message:</strong> {selectedMessage.message}</p>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
