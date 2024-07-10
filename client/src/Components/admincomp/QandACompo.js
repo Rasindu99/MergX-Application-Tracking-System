@@ -204,7 +204,9 @@ export default function QandACompo() {
                         <button className='px-3 py-1 text-white hover:text-opacity-40 '><FaRegEye className='size-[30px]' /></button>
                       </div>
                       <div className='ml-3'>
-                        <button className='px-3 py-1 text-red-600 hover:text-opacity-40'><MdDeleteForever className='size-[30px]' /></button>
+                        <button 
+                        onClick={() => handleDelete(qa._id)} 
+                        className='px-3 py-1 text-red-600 hover:text-opacity-40'><MdDeleteForever className='size-[30px]' /></button>
                       </div>
                     </div>
                   </div>
