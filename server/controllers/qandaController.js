@@ -154,6 +154,17 @@ const deleteQandA =async(req, res) => {
     }
 }
 
+//get count read is false end point
+const getcountnewmassages = async(req, res) => {
+    try {
+        const count = await QandAmodel.countDocuments({ read: false });
+        return res.status(200).json({ newMessagesCount: count });
+    } catch (error) {
+        console.error('Error getting new message count:', error);
+        return res.status(500).json({ error: 'Server error' });
+    }
+};
+
 module.exports = {
     postqanda,
     getmessage,
@@ -161,6 +172,7 @@ module.exports = {
     getsendtruemessage,
     putreply,
     putreadtrue,
-    deleteQandA
+    deleteQandA,
+    getcountnewmassages
 
 }
