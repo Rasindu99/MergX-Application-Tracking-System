@@ -137,12 +137,30 @@ const putreadtrue = async(req, res) => {
     }
 };
 
+//delete 
+const deleteQandA =async(req, res) => {
+    try {
+        const {id} = req.params;
+        const deletedQandA = await QandAmodel.findByIdAndDelete(id);
+
+        if (!deletedQandA) {
+            return res.status(404).json({error: 'Q and A entry not found'});
+        }
+
+        return res.status(200).json({message: 'Q and A entry deleted successfully', deletedQandA})
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: 'Server error' });
+    }
+}
+
 module.exports = {
     postqanda,
     getmessage,
     getsendfalsemessage,
     getsendtruemessage,
     putreply,
-    putreadtrue
+    putreadtrue,
+    deleteQandA
 
 }
