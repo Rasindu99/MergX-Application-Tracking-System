@@ -71,7 +71,7 @@ const getAllPendingJobPostings = async (req, res) => {
 // GET all approved job postings
 const getAllApprovedJobPostings = async (req, res) => {
     try {
-        const jobPostings = await JobPosting.find({ approved: true }).sort({ updatedAt: -1 });
+        const jobPostings = await JobPosting.find({ approved: true }).sort({ approvedAt: -1 });
 
         if (!jobPostings || jobPostings.length === 0) {
             return res.status(404).json({ message: "No approved job postings found" });
@@ -166,7 +166,13 @@ const updateAcceptTrue = async(req,res) => {
   const { approved } = req.body;
 
   try {
-    const updatedJob = await JobPosting.findByIdAndUpdate(jobId, { approved }, { new: true });
+    const updateData = { approved };
+
+    if (approved) {
+      updateData.approvedAt = new Date();
+    }
+
+    const updatedJob = await JobPosting.findByIdAndUpdate(jobId, updateData, { new: true });
 
     if (!updatedJob) {
       return res.status(404).json({ success: false, message: 'Job not found' });

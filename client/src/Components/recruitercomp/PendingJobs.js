@@ -5,7 +5,7 @@ import { FaRegEdit } from "react-icons/fa";
 import { RiDeleteBinLine } from "react-icons/ri";
 import { toast } from "react-hot-toast";
 
-export default function PendingJobs({ jobPostings, setJobPostings, fetchPendingJobPostings}) {
+export default function PendingJobs({ jobPostings, setJobPostings, fetchPendingJobPostings }) {
   const [selectedJob, setSelectedJob] = useState(null);
   const [editModeJobs, setEditModeJobs] = useState({});
 
@@ -44,9 +44,7 @@ export default function PendingJobs({ jobPostings, setJobPostings, fetchPendingJ
   };
 
   const handleSaveClick = () => {
-    console.log("Clicked");
-    const { jobTitle, vacancies, description, salary, requiredExperience } =
-      selectedJob;
+    const { jobTitle, vacancies, description, salary, requiredExperience } = selectedJob;
 
     if (!jobTitle) {
       toast.error("Please fill in the Job Title field.");
@@ -64,15 +62,13 @@ export default function PendingJobs({ jobPostings, setJobPostings, fetchPendingJ
       axios
         .put(`/job/updateJobPosting/${selectedJob._id}`, selectedJob)
         .then((response) => {
-          console.log(response.data);
           setJobPostings((prevState) => {
-            var updatedJobPostings = prevState.map((job) => {
+            const updatedJobPostings = prevState.map((job) => {
               if (job._id === selectedJob._id) {
                 return response.data;
               }
               return job;
             });
-            console.log(updatedJobPostings);
             return updatedJobPostings;
           });
           setSelectedJob(null);
@@ -101,80 +97,73 @@ export default function PendingJobs({ jobPostings, setJobPostings, fetchPendingJ
       })
       .catch((error) => {
         console.log('Error deleting job post:', error);
-        toast.error('Failed to delete job psot. Please try again later.');
+        toast.error('Failed to delete job post. Please try again later.');
       });
   };
 
   return (
     <div className="flex w-full m-0 text-left">
-      <div className="w-[32.5%] m-0">
-      <style>
-                {`
-                    .scrollbar-hidden::-webkit-scrollbar {
-                        display: none;
-                    }
-                    .scrollbar-hidden {
-                        scrollbar-width: none; /* Firefox */
-                        -ms-overflow-style: none; /* IE and Edge */
-                    }
-                `}
-                </style>
-        <div className="flex flex-col w-[95%] max-h-[700px] overflow-y-auto scrollbar-hidden">
+      <div className="w-[32.5%] m-0 max-h-[700px] overflow-y-scroll pr-2">
+        <div className="flex flex-col w-[95%]">
           {jobPostings.map((job) => (
             <div
               key={job._id}
-              className="meeting_container w-full flex p-2 border-b-[1px] border-white cursor-pointer"
+              className={`meeting_container w-full flex cursor-pointer border-b border-gray-500 hover:bg-gray-100 hover:bg-opacity-10 p-[10px] ${
+                selectedJob && selectedJob._id === job._id ? 'bg-[#BABABA] bg-opacity-20 opacity-100' : 'hover:bg-gray-300'
+              }`}
+              onClick={() => handleJobBarClick(job)}
             >
-              <div
-                className="title w-full flex justify-between"
-              >
+              <div className="title w-full flex justify-between">
                 <div className="flex">
                   <PiBriefcase
                     size={25}
                     className={`text-white ${
-                      editModeJobs[job._id] ? "1" : "opacity-25"
+                      selectedJob && selectedJob._id === job._id ? "opacity-100" : "opacity-25"
                     }`}
                   />
                   <p
                     className={`text-[14px] text-white ${
-                      editModeJobs[job._id] ? "1" : "opacity-25"
+                      selectedJob && selectedJob._id === job._id ? "opacity-100" : "opacity-25"
                     }`}
-                    onClick={() => handleJobBarClick(job)}
                   >
                     {job.jobTitle}
                   </p>
                 </div>
                 <div className="flex">
-                {selectedJob &&  selectedJob._id === job._id && (
-                  <>
-                  <div>
-                    <FaRegEdit
-                      size={25}
-                      className={`text-white cursor-pointer ${editModeJobs[job._id] ? 'opacity-100' : 'opacity-25'}`}
-                      onClick={() => toggleEditMode(job._id)}
-                    />
-                  </div>
-
-                  <div>
-                      <RiDeleteBinLine
+                  {selectedJob && selectedJob._id === job._id && (
+                    <>
+                      <div>
+                        <FaRegEdit
                           size={25}
-                          className="text-white opacity-25 cursor-pointer"
-                          onClick={handleDeleteClick}
-                      />
-                  </div>
-                </>
-                )}
+                          className={`text-white cursor-pointer ${
+                            editModeJobs[job._id] ? "opacity-100" : "opacity-25"
+                          }`}
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            toggleEditMode(job._id);
+                          }}
+                        />
+                      </div>
+                      <div>
+                        <RiDeleteBinLine
+                          size={25}
+                          className="text-white cursor-pointer"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleDeleteClick();
+                          }}
+                        />
+                      </div>
+                    </>
+                  )}
                 </div>
-
               </div>
             </div>
           ))}
         </div>
       </div>
 
-      <div
-       className="w-[67.5%] border-l border-l-[1px] border-l-[rgba(234,113,34,0.25)]"
-      >
+      <div className="w-[67.5%]">
         {selectedJob && (
           <div>
             <div className="flex w-full p-4">
