@@ -70,7 +70,7 @@ export default function QandACompo() {
       
       <div className='flex mx-8'>
         <div className='w-2/3 border'>
-          <h1>Q&A Messages</h1>
+          <h1 className='pb-4 text-2xl text-orange-500 text-bold'>New Messages</h1>
           <div className='mx-4 border h-[600px] overflow-y-auto'>
             <div >
               {getQandA.map((qa, index) => {
@@ -106,7 +106,7 @@ export default function QandACompo() {
           </div>
         </div>
         <div className='w-1/3 border'>
-          <h1>How are you</h1>
+          <h1 className='pb-4 text-2xl text-orange-500 text-bold'>Replied Messages</h1>
           <div  className='mx-4 border h-[600px] overflow-y-auto'>
           <div>
               {sendtruegetQandA.map((qa, index) => {
@@ -138,15 +138,14 @@ export default function QandACompo() {
         </div>
       </div>
       {messageShowModel && selectedMessage && (
-        <div className='fixed inset-0 flex items-center justify-center bg-black bg-opacity-50'>
-          <div className='w-full max-w-2xl p-6 bg-white rounded-lg'>
-            <div className='flex items-center justify-between mb-4'>
-              <h2 className='text-xl font-bold'>Message Details</h2>
-              <button onClick={handleModalClose} className='text-gray-500 hover:text-gray-700'>
-                <IoMdClose size={24} />
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-30 backdrop-filter backdrop-blur-sm">
+          <div className="bg-[#19191A] p-6 rounded-lg shadow-lg h-[800px] w-[1000px] border-orange-700 border-[1px] relative">
+              <button onClick={handleModalClose} className="absolute px-4 py-2 text-white bg-gray-700 rounded-md top-4 right-4 hover:bg-gray-600 size-12">
+                <IoMdClose className="text-white hover:text-red-700" />
               </button>
-            </div>
+
             <div>
+            <h2 className='text-xl font-bold'>Message Details</h2>
               <p><strong>Name:</strong> {selectedMessage.username}</p>
               <p><strong>Email:</strong> {selectedMessage.useremail}</p>
               <p><strong>Date:</strong> {formatDateTime(selectedMessage.createdAt).date}</p>
