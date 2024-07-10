@@ -1,6 +1,8 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { FaRegQuestionCircle } from "react-icons/fa";
+import { FaRegEye } from "react-icons/fa";
+import { MdDeleteForever } from "react-icons/md";
 
 export default function QandACompo() {
   const [getQandA, setGetQandA] = useState([]);
@@ -54,12 +56,12 @@ export default function QandACompo() {
       <div className='flex mx-8'>
         <div className='w-2/3 border'>
           <h1>Q&A Messages</h1>
-          <div className='mx-4 border'>
-            <div>
+          <div className='mx-4 border h-[600px] overflow-y-auto'>
+            <div >
               {getQandA.map((qa, index) => {
                 const { date, time } = formatDateTime(qa.createdAt);
                 return (
-                  <div key={index} className='p-2 mb-4 border'>
+                  <div key={index} className='p-2 border'>
                     <div className='flex items-center'>
                       <div className='relative ml-3'>
                         <FaRegQuestionCircle className='size-[40px] opacity-50'/>
@@ -74,10 +76,10 @@ export default function QandACompo() {
                         <p><strong>Time:</strong> {time}</p>
                       </div>
                       <div className='ml-3'>
-                        <button className='px-3 py-1 text-white bg-blue-500 rounded'>View</button>
+                        <button className='px-3 py-1 text-white hover:text-opacity-40 '><FaRegEye className='size-[30px]' /></button>
                       </div>
                       <div className='ml-3'>
-                        <button className='px-3 py-1 text-white bg-red-500 rounded'>Delete</button>
+                        <button className='px-3 py-1 text-red-600 hover:text-opacity-40'><MdDeleteForever className='size-[30px]' /></button>
                       </div>
                     </div>
                   </div>
@@ -88,12 +90,12 @@ export default function QandACompo() {
         </div>
         <div className='w-1/3 border'>
           <h1>How are you</h1>
-          <div className='mx-4 border'>
+          <div  className='mx-4 border h-[600px] overflow-y-auto'>
           <div>
               {sendtruegetQandA.map((qa, index) => {
                 const { date, time } = formatDateTime(qa.createdAt);
                 return (
-                  <div key={index} className='p-2 mb-4 border'>
+                  <div key={index} className='p-2 border'>
                     <div className='flex items-center'>
                       <div className='relative ml-3'>
                         <FaRegQuestionCircle className='size-[40px] opacity-50'/>
