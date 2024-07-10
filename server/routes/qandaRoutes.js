@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const cors = require('cors');
-const { postqanda, getmessage, getsendfalsemessage, getsendtruemessage } = require('../controllers/qandaController');
+const { postqanda, getmessage, getsendfalsemessage, getsendtruemessage, putreply, putreadtrue, deleteQandA } = require('../controllers/qandaController');
 router.use(
     cors({
         credentials: true,
@@ -14,5 +14,8 @@ router.post('/postqanda', postqanda);
 router.get('/getqanda',getmessage);
 router.get('/getsendfalsemessage', getsendfalsemessage);
 router.get('/getsendtruemessage', getsendtruemessage);
+router.put('/putreply/:id',putreply);
+router.put('/putreadtrue/:id',putreadtrue);
+router.delete('/deletemessage/:id', deleteQandA);
 
 module.exports = router;

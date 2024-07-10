@@ -58,6 +58,8 @@ const getsendfalsemessage = async(req, res) =>{
     }
 }
 
+
+
 //get send true endpoint
 const getsendtruemessage = async(req, res) => {
     try {
@@ -69,10 +71,96 @@ const getsendtruemessage = async(req, res) => {
     }
 }
 
+//put reply
+const putreply = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { reply } = req.body;
+
+        if (!reply) {
+            return res.status(400).json({ error: 'Reply is required' });
+        }
+
+        const updatedQandA = await QandAmodel.findByIdAndUpdate(
+            id,
+            { reply, sent: true },
+            { new: true }
+        );
+
+        if (!updatedQandA) {
+            return res.status(404).json({ error: 'Q&A entry not found' });
+        }
+
+        // Send an email to the user with the reply
+        await sendMail(
+            updatedQandA.useremail,
+            "Response to Your Inquiry",
+            `Dear ${updatedQandA.username},
+
+We have responded to your inquiry. Here's our reply:
+
+${reply}
+
+If you have any further questions, please don't hesitate to reach out.
+
+Best regards,
+MergeX Team
+(Application Tracking System)`
+        );
+
+        return res.status(200).json({ message: 'Reply sent successfully', qanda: updatedQandA });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: 'Server error' });
+    }
+};
+
+//put read is true endpoint
+const putreadtrue = async(req, res) => {
+    try {
+        const { id } = req.params;
+
+        const updatedQandA = await QandAmodel.findByIdAndUpdate(
+            id,
+            { read: true },
+            { new: true }
+        );
+
+        if (!updatedQandA) {
+            return res.status(404).json({ error: 'Q&A entry not found' });
+        }
+
+        return res.status(200).json({ message: 'Message marked as read', qanda: updatedQandA });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: 'Server error' });
+    }
+};
+
+//delete 
+const deleteQandA =async(req, res) => {
+    try {
+        const {id} = req.params;
+        const deletedQandA = await QandAmodel.findByIdAndDelete(id);
+
+        if (!deletedQandA) {
+            return res.status(404).json({error: 'Q and A entry not found'});
+        }
+
+        return res.status(200).json({message: 'Q and A entry deleted successfully', deletedQandA})
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: 'Server error' });
+    }
+}
+
 module.exports = {
     postqanda,
     getmessage,
     getsendfalsemessage,
-    getsendtruemessage
+    getsendtruemessage,
+    putreply,
+    putreadtrue,
+    deleteQandA
 
 }

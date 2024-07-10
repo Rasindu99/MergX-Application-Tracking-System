@@ -4,12 +4,14 @@ import { FaRegQuestionCircle } from "react-icons/fa";
 import { FaRegEye } from "react-icons/fa";
 import { MdDeleteForever } from "react-icons/md";
 import { IoMdClose } from "react-icons/io";
+import { toast } from 'react-hot-toast';
 
 export default function QandACompo() {
   const [getQandA, setGetQandA] = useState([]);
   const [sendtruegetQandA, setSendtruegetQanda] = useState([]);
   const [messageShowModel, setMessageShowModel] = useState(false);
   const [selectedMessage, setSelectedMessage] = useState(null);
+  const [reply, setReply] = useState();
 
   // get q and a
   const getQandAsapi = async () => {
@@ -43,6 +45,72 @@ export default function QandACompo() {
     setSelectedMessage(null);
   }
 
+  //handle reply submission
+  const handleReplySubmit = async (e) => {
+    e.preventDefault();
+    if (!selectedMessage || !reply.trim()) return;
+
+    try {
+      const response = await axios.put(`/qanda/putreply/${selectedMessage._id}`, { reply });
+      if (response.status === 200) {
+        // Update local state
+        setGetQandA(prevQandA => prevQandA.filter(qa => qa._id !== selectedMessage._id));
+        setSendtruegetQanda(prevQandA => [...prevQandA, response.data.qanda]);
+        handleModalClose();
+        // Optionally, show a success message
+      }
+      toast.success( 'Sent reply Successsfully')
+    } catch (error) {
+      console.error("Error sending reply:", error);
+      // Optionally, show an error message
+    }
+  };
+
+  // New function to handle marking a message as read
+  const handleMarkAsRead = async (id) => {
+    try {
+      const response = await axios.put(`/qanda/putreadtrue/${id}`);
+      if (response.status === 200) {
+        // Update the local state to reflect the change
+        setGetQandA(prevQandA => 
+          prevQandA.map(qa => 
+            qa._id === id ? { ...qa, read: true } : qa
+          )
+        );
+      }
+    } catch (error) {
+      console.error("Error marking message as read:", error);
+    }
+  };
+
+  //handke delete
+  const handleDelete = async (id) =>{
+    try {
+      const response = await axios.delete(`/qanda/deletemessage/${id}`);
+      if (response.status === 200) {
+          // Remove the deleted item from both state arrays
+          setGetQandA(prevQandA => prevQandA.filter(qa => qa._id !== id));
+          setSendtruegetQanda(prevQandA => prevQandA.filter(qa => qa._id !== id));
+          // Optionally, show a success message
+          
+      }
+      toast.success( 'Deleted Successsfully')
+  } catch (error) {
+      console.error("Error deleting Q&A entry:", error);
+      // Optionally, show an error message
+  }
+  }
+
+   // Handle reply text change
+   const handleReplyChange = (e) => {
+    setReply(e.target.value);
+  };
+
+  // Handle reply clear
+  const handleReplyClear = () => {
+    setReply('');
+  };
+
   useEffect(() => {
     getQandAsapi();
     getQandAsapisenttrue();
@@ -63,6 +131,8 @@ export default function QandACompo() {
     });
     return { date: formattedDate, time: formattedTime };
   };
+
+  
 
   return (
     <div className=''>
@@ -92,11 +162,18 @@ export default function QandACompo() {
                       </div>
                       <div className='ml-3'>
                         <button 
-                        onClick={() => handleview(qa)}
+                        onClick={() => {
+                          handleview(qa);
+                          if (!qa.read) {
+                            handleMarkAsRead(qa._id);
+                          }
+                        }}
                         className='px-3 py-1 text-white hover:text-opacity-40 '><FaRegEye className='size-[30px]' /></button>
                       </div>
                       <div className='ml-3'>
-                        <button className='px-3 py-1 text-red-600 hover:text-opacity-40'><MdDeleteForever className='size-[30px]' /></button>
+                        <button 
+                        onClick={() => handleDelete(qa._id)}
+                        className='px-3 py-1 text-red-600 hover:text-opacity-40'><MdDeleteForever className='size-[30px]' /></button>
                       </div>
                     </div>
                   </div>
@@ -151,6 +228,35 @@ export default function QandACompo() {
               <p><strong>Date:</strong> {formatDateTime(selectedMessage.createdAt).date}</p>
               <p><strong>Time:</strong> {formatDateTime(selectedMessage.createdAt).time}</p>
               <p><strong>Message:</strong> {selectedMessage.message}</p>
+
+              <div>
+                <form onSubmit={handleReplySubmit}>
+                  <div>
+                    <textarea 
+                      className='w-full p-2 mt-4 text-black border rounded'
+                      value={reply}
+                      onChange={handleReplyChange}
+                      placeholder="Type your reply here..."
+                      rows="4"
+                    ></textarea>
+                  </div>
+                  <div className='flex justify-end mt-4 space-x-4'>
+                    <button 
+                      type="submit"
+                      className='px-4 py-2 text-white bg-green-600 rounded hover:bg-green-700'
+                    >
+                      Send
+                    </button>
+                    <button 
+                      type="button"
+                      onClick={handleReplyClear}
+                      className='px-4 py-2 text-white bg-gray-600 rounded hover:bg-gray-700'
+                    >
+                      Clear
+                    </button>
+                  </div>
+                </form>
+              </div>
             </div>
           </div>
         </div>
