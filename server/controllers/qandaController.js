@@ -58,6 +58,8 @@ const getsendfalsemessage = async(req, res) =>{
     }
 }
 
+
+
 //get send true endpoint
 const getsendtruemessage = async(req, res) => {
     try {
@@ -113,11 +115,34 @@ MergeX Team
     }
 };
 
+//put read is true endpoint
+const putreadtrue = async(req, res) => {
+    try {
+        const { id } = req.params;
+
+        const updatedQandA = await QandAmodel.findByIdAndUpdate(
+            id,
+            { read: true },
+            { new: true }
+        );
+
+        if (!updatedQandA) {
+            return res.status(404).json({ error: 'Q&A entry not found' });
+        }
+
+        return res.status(200).json({ message: 'Message marked as read', qanda: updatedQandA });
+    } catch (error) {
+        console.error(error);
+        return res.status(500).json({ error: 'Server error' });
+    }
+};
+
 module.exports = {
     postqanda,
     getmessage,
     getsendfalsemessage,
     getsendtruemessage,
-    putreply
+    putreply,
+    putreadtrue
 
 }

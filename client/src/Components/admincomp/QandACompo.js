@@ -64,6 +64,23 @@ export default function QandACompo() {
     }
   };
 
+  // New function to handle marking a message as read
+  const handleMarkAsRead = async (id) => {
+    try {
+      const response = await axios.put(`/qanda/putreadtrue/${id}`);
+      if (response.status === 200) {
+        // Update the local state to reflect the change
+        setGetQandA(prevQandA => 
+          prevQandA.map(qa => 
+            qa._id === id ? { ...qa, read: true } : qa
+          )
+        );
+      }
+    } catch (error) {
+      console.error("Error marking message as read:", error);
+    }
+  };
+
    // Handle reply text change
    const handleReplyChange = (e) => {
     setReply(e.target.value);
@@ -95,6 +112,8 @@ export default function QandACompo() {
     return { date: formattedDate, time: formattedTime };
   };
 
+  
+
   return (
     <div className=''>
       <h1>Hello</h1>
@@ -123,7 +142,12 @@ export default function QandACompo() {
                       </div>
                       <div className='ml-3'>
                         <button 
-                        onClick={() => handleview(qa)}
+                        onClick={() => {
+                          handleview(qa);
+                          if (!qa.read) {
+                            handleMarkAsRead(qa._id);
+                          }
+                        }}
                         className='px-3 py-1 text-white hover:text-opacity-40 '><FaRegEye className='size-[30px]' /></button>
                       </div>
                       <div className='ml-3'>
