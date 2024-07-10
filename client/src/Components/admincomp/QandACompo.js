@@ -10,6 +10,7 @@ export default function QandACompo() {
   const [sendtruegetQandA, setSendtruegetQanda] = useState([]);
   const [messageShowModel, setMessageShowModel] = useState(false);
   const [selectedMessage, setSelectedMessage] = useState(null);
+  const [reply, setReply] = useState();
 
   // get q and a
   const getQandAsapi = async () => {
@@ -42,6 +43,36 @@ export default function QandACompo() {
     setMessageShowModel(false);
     setSelectedMessage(null);
   }
+
+  //handle reply submission
+  const handleReplySubmit = async (e) => {
+    e.preventDefault();
+    if (!selectedMessage || !reply.trim()) return;
+
+    try {
+      const response = await axios.put(`/qanda/putreply/${selectedMessage._id}`, { reply });
+      if (response.status === 200) {
+        // Update local state
+        setGetQandA(prevQandA => prevQandA.filter(qa => qa._id !== selectedMessage._id));
+        setSendtruegetQanda(prevQandA => [...prevQandA, response.data.qanda]);
+        handleModalClose();
+        // Optionally, show a success message
+      }
+    } catch (error) {
+      console.error("Error sending reply:", error);
+      // Optionally, show an error message
+    }
+  };
+
+   // Handle reply text change
+   const handleReplyChange = (e) => {
+    setReply(e.target.value);
+  };
+
+  // Handle reply clear
+  const handleReplyClear = () => {
+    setReply('');
+  };
 
   useEffect(() => {
     getQandAsapi();
@@ -151,6 +182,35 @@ export default function QandACompo() {
               <p><strong>Date:</strong> {formatDateTime(selectedMessage.createdAt).date}</p>
               <p><strong>Time:</strong> {formatDateTime(selectedMessage.createdAt).time}</p>
               <p><strong>Message:</strong> {selectedMessage.message}</p>
+
+              <div>
+                <form onSubmit={handleReplySubmit}>
+                  <div>
+                    <textarea 
+                      className='w-full p-2 mt-4 text-black border rounded'
+                      value={reply}
+                      onChange={handleReplyChange}
+                      placeholder="Type your reply here..."
+                      rows="4"
+                    ></textarea>
+                  </div>
+                  <div className='flex justify-end mt-4 space-x-4'>
+                    <button 
+                      type="submit"
+                      className='px-4 py-2 text-white bg-green-600 rounded hover:bg-green-700'
+                    >
+                      Send
+                    </button>
+                    <button 
+                      type="button"
+                      onClick={handleReplyClear}
+                      className='px-4 py-2 text-white bg-gray-600 rounded hover:bg-gray-700'
+                    >
+                      Clear
+                    </button>
+                  </div>
+                </form>
+              </div>
             </div>
           </div>
         </div>
