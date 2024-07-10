@@ -433,7 +433,18 @@ module.exports={
     getEvaluation,
     getimg,
     getpost,
-
-    
-    getEvaCandidates
+    getEvaCandidates,
+    getNotEvaluatedApplications,
+    updateIsEvaluated,
+    getEvaluatedApplications,
+    getRecruitercheckedEvaluations,
+    getRecruiterUnCheckedEvaluations,
+    getHMcheckedEvaluations,
+    getHMUnCheckedEvaluations,
+    updatecheckedrecruiter,
+    updatecheckedhiringmanager,
+    getcandidateforfinaldecision,
+    gethiredCandidtaesList,
+    getrejectedList,
+    getEvaCandidatesByJobAndUser
 }

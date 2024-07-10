@@ -5,15 +5,22 @@ const cors = require('cors');
 const {
     createEvalautions, 
     //  updateEvaluation,
-
-      getEvaluation,getimg,getpost,getEvaCandidates, getEvaCandidatesByJobAndUser} = require('../controllers/evaluationController');
-
-
-
-
-      
-      getEvaluation,getimg,getpost,getEvaCandidates,getNotEvaluatedApplications,updateIsEvaluated,getEvaluatedApplications,getRecruitercheckedEvaluations,getRecruiterUnCheckedEvaluations,getHMcheckedEvaluations,getHMUnCheckedEvaluations,updatecheckedrecruiter,updatecheckedhiringmanager,getcandidateforfinaldecision,gethiredCandidtaesList,getrejectedList} = require('../controllers/evaluationController');
-
+      getEvaluation,
+      getimg,getpost,
+      getEvaCandidates,
+      getNotEvaluatedApplications,
+      updateIsEvaluated,
+      getEvaluatedApplications,
+      getRecruitercheckedEvaluations,
+      getRecruiterUnCheckedEvaluations,
+      getHMcheckedEvaluations,
+      getHMUnCheckedEvaluations,
+      updatecheckedrecruiter,
+      updatecheckedhiringmanager,
+      getcandidateforfinaldecision,
+      gethiredCandidtaesList,
+      getrejectedList,
+      getEvaCandidatesByJobAndUser} = require('../controllers/evaluationController');
 
 router.use(
     cors({
@@ -41,8 +48,7 @@ router.get('/getcandidateforfinaldecision',getcandidateforfinaldecision);
 router.get('/gethiredCandidtaesList',gethiredCandidtaesList);
 router.get('/getrejectedList',getrejectedList);
 
-
-// get selected evaluation objects
 router.get('/getEvaCandidatesByJobAndUser',getEvaCandidatesByJobAndUser );
+
 
 module.exports = router;
