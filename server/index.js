@@ -149,7 +149,8 @@ app.put('/hmfeedback/update/:_id', async (req, res) => {
       overallcomment: req.body.overallcomment,
       hiringManagerComment: req.body.hiringManagerComment,
     recruiterComment:req.body.recruiterComment,
-    isHired:req.body.isHired
+    isHired:req.body.isHired,
+    isRejected:req.body.isRejected
     };
     
 

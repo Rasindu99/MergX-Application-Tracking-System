@@ -11,8 +11,8 @@ export default function CandidateCommunication() {
   };
 
   return (
-    <div className="w-full bg-[#191919] pl-5 pr-5">
-      <div className="w-full bg-[#525252] h-200 rounded-[30px]">
+    <div className="ml-[320px] bg-[#191919] pl-5 pr-5">
+      <div className="w-full mt-2 bg-[#525252] h-200 rounded-[30px]">
         <div className="flex items-center justify-between bg-[#2B2B2B] bg-opacity-90 w-full h-20 rounded-t-[30px] text-center text-[18px]">
           <div
             onClick={() => action(1)}

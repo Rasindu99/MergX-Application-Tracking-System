@@ -88,7 +88,7 @@ export default function ApplicationManagementComp() {
       return (
         <div
           key={app._id}
-          className="flex items-center justify-center pt-2 pb-2 mt-1 mb-2 cursor-pointer"
+          className="flex  items-center justify-center pt-2 pb-2 mt-1 mb-2 cursor-pointer"
           onClick={() => handleApplicationClick(app)}
         >
           <div className='flex items-center bg-[#1e1e1e] rounded-2xl w-[250px] justify-center pt-2 pb-2'>

@@ -44,6 +44,10 @@ const applicationSchema = new mongoose.Schema({
     isjoined:{
         type:Boolean,
         default: false
+    },
+    isEvaluated:{
+        type:Boolean,
+        default:false
     }
     
 

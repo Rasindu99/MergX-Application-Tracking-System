@@ -20,6 +20,10 @@ const qandaSchema = new mongoose.Schema({
     sent: {
         type: Boolean,
         default: false
+    },
+    reply:{
+        type : String,
+        default: null
     }
 }, {timestamps: true});
 

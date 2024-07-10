@@ -43,7 +43,7 @@ export default function PopupViewjob({ visible, onClose }) {
               'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-              jobId: selectedJob.jobid,
+              jobId: selectedJob._id,
               jobtitle: selectedJob.jobTitle,
               creatorId: user._id,
               date: data.date,
@@ -119,9 +119,9 @@ export default function PopupViewjob({ visible, onClose }) {
     };
 
     return (
-        <div className="fixed top-0 left-0 w-full h-full flex justify-center items-center bg-white bg-opacity-5 backdrop-blur z-50">
+        <div className="fixed top-0 left-0 z-50 flex items-center justify-center w-full h-full bg-white bg-opacity-5 backdrop-blur">
             <div className="bg-[#2B2B2BE5] opacity-90 relative w-[80rem] h-[45rem] border-2 border-[#EA712287] rounded-3xl px-5">
-                <MdOutlineClose size={25} className='absolute top-5 right-5 cursor-pointer' onClick={onClose} />
+                <MdOutlineClose size={25} className='absolute cursor-pointer top-5 right-5' onClick={onClose} />
 
                 <div className='flex'>
                     <div className='border-r pr-3 py-2 border-[#EA712287] w-[20rem] h-[716px] overflow-y-scroll'>
@@ -146,20 +146,20 @@ export default function PopupViewjob({ visible, onClose }) {
                     </div>
                     <div className='py-5 w-[60rem] h-[44rem] p-4 overflow-y-scroll text-left'>
                         {selectedJob && !showSchedule ? (
-                            <div className='px-40 relative'>
-                                <h2 className='mt-10 mb-4 text-3xl text-white text-center'>{selectedJob.jobTitle}</h2>
+                            <div className='relative px-40'>
+                                <h2 className='mt-10 mb-4 text-3xl text-center text-white'>{selectedJob.jobTitle}</h2>
                                 <div className='flex items-start justify-between mt-10 mb-5'>
-                                    <p className='text-white w-1/5'>Description</p>
+                                    <p className='w-1/5 text-white'>Description</p>
                                     <p className='w-1/5'> - </p>
                                     <p className='w-4/5 text-left'>{selectedJob.description}</p>
                                 </div>
                                 <div className='flex items-start justify-between mt-10 mb-5'>
-                                    <p className='text-white w-1/5'>Skills</p>
+                                    <p className='w-1/5 text-white'>Skills</p>
                                     <p className='w-1/5'> - </p>
                                     <p className='w-4/5 text-left'>{selectedJob.requiredSkills}</p>
                                 </div>
                                 <div className='flex items-start justify-between mt-10 mb-5'>
-                                    <p className='text-white w-1/5'>Salary</p>
+                                    <p className='w-1/5 text-white'>Salary</p>
                                     <p className='w-1/5'> - </p>
                                     <p className='w-4/5 text-left'>{selectedJob.salary}</p>
                                 </div>
@@ -169,25 +169,25 @@ export default function PopupViewjob({ visible, onClose }) {
                                 </div>
                             </div>
                         ) : showSchedule ? (
-                            <div className='p-4 mt-4 rounded-lg px-40'>
-                                <h3 className='mb-2 text-3xl text-white text-center'>Schedule Interview</h3>
+                            <div className='p-4 px-40 mt-4 rounded-lg'>
+                                <h3 className='mb-2 text-3xl text-center text-white'>Schedule Interview</h3>
                                 <div className='flex items-start justify-between mt-10 mb-5'>
-                                    <p className='text-white w-1/5'>Job Title</p>
+                                    <p className='w-1/5 text-white'>Job Title</p>
                                     <p className='w-1/5'> - </p>
                                     <p className='w-4/5 text-left'>{selectedJob.jobTitle}</p>
                                 </div>
                                 <div className='flex items-start justify-between mb-5'>
-                                    <p className='text-white w-1/5'>Experience</p>
+                                    <p className='w-1/5 text-white'>Experience</p>
                                     <p className='w-1/5'> - </p>
                                     <p className='w-4/5 text-left'>{selectedJob.requiredExperience}</p>
                                 </div>
                                 <div className='flex items-start justify-between mb-5'>
-                                    <p className='text-white w-1/5'>Skills</p>
+                                    <p className='w-1/5 text-white'>Skills</p>
                                     <p className='w-1/5'> - </p>
                                     <p className='w-4/5 text-left'>{selectedJob.requiredSkills}</p>
                                 </div>
                                 <div className='flex items-start justify-between mb-5'>
-                                    <p className='text-white w-1/5'>Description</p>
+                                    <p className='w-1/5 text-white'>Description</p>
                                     <p className='w-1/5'> - </p>
                                     <p className='w-4/5 text-left'>{selectedJob.description}</p>
                                 </div>
@@ -195,7 +195,7 @@ export default function PopupViewjob({ visible, onClose }) {
                                 <div>
                                     <form onSubmit={createschedule}>
                                         <div className='flex items-start mb-5'>
-                                            <label className='text-white w-1/5'>Subject</label>
+                                            <label className='w-1/5 text-white'>Subject</label>
                                             <p className='w-1/5'> - </p>
                                             <input
                                                 type='text'
@@ -208,7 +208,7 @@ export default function PopupViewjob({ visible, onClose }) {
                                             />
                                         </div>
                                         <div className='flex items-start mb-5'>
-                                            <label className='text-white w-1/5'>Link</label>
+                                            <label className='w-1/5 text-white'>Link</label>
                                             <p className='w-1/5'> - </p>
                                             <input
                                                 type='text'
@@ -221,7 +221,7 @@ export default function PopupViewjob({ visible, onClose }) {
                                             />
                                         </div>
                                         <div className='flex items-start mb-5'>
-                                            <label className='text-white w-1/5'>Password</label>
+                                            <label className='w-1/5 text-white'>Password</label>
                                             <p className='w-1/5'> - </p>
                                             <input
                                                 type='text'
@@ -234,7 +234,7 @@ export default function PopupViewjob({ visible, onClose }) {
                                             />
                                         </div>
                                         <div className='flex items-start mb-5'>
-                                            <label className='text-white w-1/5'>Date</label>
+                                            <label className='w-1/5 text-white'>Date</label>
                                             <p className='w-1/5'> - </p>
                                             <input
                                                 type='date'
@@ -247,7 +247,7 @@ export default function PopupViewjob({ visible, onClose }) {
                                             />
                                         </div>
                                         <div className='flex items-start mb-5'>
-                                            <label className='text-white w-1/5'>Start Time</label>
+                                            <label className='w-1/5 text-white'>Start Time</label>
                                             <p className='w-1/5'> - </p>
                                             <input
                                                 type='time'
@@ -259,7 +259,7 @@ export default function PopupViewjob({ visible, onClose }) {
                                             />
                                         </div>
                                         <div className='flex items-start mb-5'>
-                                            <label className='text-white w-1/5'>End Time</label>
+                                            <label className='w-1/5 text-white'>End Time</label>
                                             <p className='w-1/5'> - </p>
                                             <input
                                                 type='time'
@@ -270,7 +270,7 @@ export default function PopupViewjob({ visible, onClose }) {
                                                 required
                                             />
                                         </div>
-                                        <div className='pt-3 flex items-center justify-center mt-10 gap-5'>
+                                        <div className='flex items-center justify-center gap-5 pt-3 mt-10'>
                                             <button type='submit' className='bg-orange-500 h-[40px] w-[150px] rounded-lg'>Save</button>
                                             <button type='button' className='bg-blue-600 h-[40px] w-[150px] rounded-lg ml-2' onClick={() => setData({
                                                 
@@ -287,7 +287,7 @@ export default function PopupViewjob({ visible, onClose }) {
                                 </div>
                             </div>
                         ) : (
-                            <p className='mt-10 mb-4 text-3xl text-white text-center'>Select a job to view details</p>
+                            <p className='mt-10 mb-4 text-3xl text-center text-white'>Select a job to view details</p>
                         )}
                     </div>
                 </div>
