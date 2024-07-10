@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 const interviewScheduleSchema = new mongoose.Schema({
     jobId: {
-        type: Number,
+        type: String,
         required: true
     },
     jobtitle:{
