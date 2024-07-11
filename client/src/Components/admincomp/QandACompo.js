@@ -145,17 +145,23 @@ export default function QandACompo() {
 
   return (
     <div className=''>
-      <h1>Hello</h1>
       
-      <div className='flex mx-8'>
-        <div className='w-2/3 border'>
-          <h1 className='pb-4 text-2xl text-orange-500 text-bold'>New Messages</h1>
-          <div className='mx-4 border h-[600px] overflow-y-auto'>
+      
+      <div className='flex pt-8 mx-8'>
+        <div className='w-2/3 border-r-2 border-orange-500'>
+          <h1 className='pb-2 text-3xl text-orange-500 text-bold'>New Qs</h1>
+          <div className='flex justify-center pb-12'>
+            <div className='w-[400px]'>
+              <hr className='border-2 border-orange-500 border-opacity-35'></hr>
+            </div>
+            
+          </div>
+          <div className='mx-4  h-[600px] overflow-y-auto'>
             <div >
               {getQandA.map((qa, index) => {
                 const { date, time } = formatDateTime(qa.createdAt);
                 return (
-                  <div key={index} className='p-2 border'>
+                  <div key={index} className='p-2 border-b border-gray-500 bg-gradient-to-b from-[#2B2B2B] to-[#333333]'>
                     <div className='flex items-center'>
                       <div className='relative ml-3'>
                         <FaRegQuestionCircle className='size-[40px] opacity-50'/>
@@ -191,14 +197,22 @@ export default function QandACompo() {
             </div>
           </div>
         </div>
-        <div className='w-1/3 border'>
-          <h1 className='pb-4 text-2xl text-orange-500 text-bold'>Replied Messages</h1>
-          <div  className='mx-4 border h-[600px] overflow-y-auto'>
+        <div className='w-1/3 '>
+          <h1 className='pb-2 text-3xl text-orange-500 text-bold'>Replied As</h1>
+
+          <div className='flex justify-center pb-12'>
+            <div className='w-[300px]'>
+              <hr className='border-2 border-orange-500 border-opacity-35'></hr>
+            </div>
+            
+          </div>
+          
+          <div  className='mx-4  h-[600px] overflow-y-auto'>
           <div>
               {sendtruegetQandA.map((qa, index) => {
                 const { date, time } = formatDateTime(qa.createdAt);
                 return (
-                  <div key={index} className='p-2 border'>
+                  <div key={index} className='p-2 border-b border-gray-500 bg-gradient-to-b from-[#2B2B2B] to-[#333333]'>
                     <div className='flex items-center'>
                       <div className='relative ml-3'>
                         <FaRegQuestionCircle className='size-[40px] opacity-50'/>
