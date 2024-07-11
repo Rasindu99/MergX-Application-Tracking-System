@@ -172,8 +172,11 @@ export default function QandACompo() {
                       <div className='flex-grow ml-3'>
                         <p><strong>Name:</strong> {qa.username}</p>
                         <p><strong>Email:</strong> {qa.useremail}</p>
-                        <p><strong>Date:</strong> {date}</p>
-                        <p><strong>Time:</strong> {time}</p>
+                        <div className='flex justify-center'>
+                          <p className='pr-2'>{date}</p>
+                          <p>{time}</p>
+                        </div>
+                        
                       </div>
                       <div className='ml-3'>
                         <button 
