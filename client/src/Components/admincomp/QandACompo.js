@@ -5,6 +5,7 @@ import { FaRegEye } from "react-icons/fa";
 import { MdDeleteForever } from "react-icons/md";
 import { IoMdClose } from "react-icons/io";
 import { toast } from 'react-hot-toast';
+import { BsFillReplyFill } from "react-icons/bs";
 
 export default function QandACompo() {
   const [getQandA, setGetQandA] = useState([]);
@@ -170,16 +171,16 @@ export default function QandACompo() {
                         )}
                       </div>
                       <div className='flex-grow ml-3'>
-                        <div className='flex justify-center'> 
-                          <div className=''>
-                            <p> {qa.username}</p>
-                            <p> {qa.useremail}</p>
-                          </div>
-                          
-                          <div className='flex justify-center'>
+                        
+                        <div className='pl-8  w-[650px]'> 
+                          <div className='flex text-left'> 
+                            <p className='opacity-80'> <strong>{qa.useremail}</strong></p>
+                            <p className='text-orange-400 text-[14px] pl-6'>{date} at {time}</p>
+                          </div> 
+                          <div className='flex text-left'>
                             <div>
-                              <p>{qa.message}</p>
-                              <p className='opacity-30'>{date} at {time}</p>
+                              <p><span className='opacity-50'>{qa.message.slice(0, 100)}...</span><span className='opacity-30'>see more</span></p>
+                              
                             </div>
                           </div>
                         </div>
@@ -220,71 +221,90 @@ export default function QandACompo() {
           
           <div  className='mx-4  h-[600px] overflow-y-auto'>
           <div>
-              {sendtruegetQandA.map((qa, index) => {
-                const { date, time } = formatDateTime(qa.createdAt);
-                return (
-                  <div key={index} className='p-2 border-b border-gray-500 bg-gradient-to-b from-[#2B2B2B] to-[#333333]'>
-                    <div className='flex items-center'>
-                      <div className='relative ml-3'>
-                        <FaRegQuestionCircle className='size-[40px] opacity-50'/>
-                      </div>
-                      <div className='flex-grow ml-3'>
-                        <p> {qa.username}</p>
-                        <p> {qa.useremail}</p>
-                        <div className='flex justify-center'>
-                          <p className='opacity-30'>{date} at {time}</p>
-                          
-                        </div>
-                      </div>
-                      <div className='ml-3'>
-                        <button
-                        onClick={() =>handleviewReply(qa)}
-                        className='px-3 py-1 text-white hover:text-opacity-40 '><FaRegEye className='size-[30px]' /></button>
-                      </div>
-                      <div className='ml-3'>
-                        <button 
-                        onClick={() => handleDelete(qa._id)} 
-                        className='px-3 py-1 text-red-600 hover:text-opacity-40'><MdDeleteForever className='size-[30px]' /></button>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })}
-              
+  {sendtruegetQandA
+    .slice()
+    .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt))
+    .map((qa, index) => {
+      const { date, time } = formatDateTime(qa.createdAt);
+      return (
+        <div key={index} className='p-2 border-b border-gray-500 bg-gradient-to-b from-[#2B2B2B] to-[#333333]'>
+          <div className='flex items-center'>
+            <div className='relative ml-3'>
+              <BsFillReplyFill className='size-[40px] opacity-50'/>
             </div>
+            <div className='flex-grow ml-3'>
+              <p>{qa.useremail}</p>
+              <div className='flex justify-center'>
+                <p>
+                  <span className='opacity-50'>{qa.reply.slice(0, 30)}...</span>
+                  <span className='opacity-30'>see more</span>
+                </p>
+              </div>
+            </div>
+            <div className='ml-3'>
+              <button
+                onClick={() => handleviewReply(qa)}
+                className='px-3 py-1 text-white hover:text-opacity-40 '>
+                <FaRegEye className='size-[30px]' />
+              </button>
+            </div>
+            <div className='ml-3'>
+              <button
+                onClick={() => handleDelete(qa._id)}
+                className='px-3 py-1 text-red-600 hover:text-opacity-40'>
+                <MdDeleteForever className='size-[30px]' />
+              </button>
+            </div>
+          </div>
+        </div>
+      );
+    })}
+</div>
           </div>
         </div>
       </div>
       {messageShowModel && selectedMessage && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-30 backdrop-filter backdrop-blur-sm">
-          <div className="bg-[#19191A] p-6 rounded-lg shadow-lg h-[800px] w-[1000px] border-orange-700 border-[1px] relative">
+          <div className="bg-[#19191A] p-6 rounded-lg shadow-lg h-auto w-[900px] border-orange-700 border-[1px] relative">
               <button onClick={handleModalClose} className="absolute px-4 py-2 text-white bg-gray-700 rounded-md top-4 right-4 hover:bg-gray-600 size-12">
                 <IoMdClose className="text-white hover:text-red-700" />
               </button>
 
             <div>
-            <h2 className='text-xl font-bold'>Message Details</h2>
-              <p><strong>Name:</strong> {selectedMessage.username}</p>
-              <p><strong>Email:</strong> {selectedMessage.useremail}</p>
-              <p><strong>Date:</strong> {formatDateTime(selectedMessage.createdAt).date}</p>
-              <p><strong>Time:</strong> {formatDateTime(selectedMessage.createdAt).time}</p>
-              <p><strong>Message:</strong> {selectedMessage.message}</p>
+            <h2 className='text-xl font-bold text-orange-500'>Message</h2>
+            <div className='pt-5 text-left '>
+              <div className='flex'>
+                <p>{selectedMessage.useremail} </p>
+                <p className='text-orange-400 text-[14px] pl-4'> {formatDateTime(selectedMessage.createdAt).date} at {formatDateTime(selectedMessage.createdAt).time} </p>
+              </div>
+              <p className=' text-left opacity-50 text-[14px]'> {selectedMessage.username}</p>
+              <p className='pb-2 opacity-50'>to me,</p>
+            </div>
+            <div className=''>
+               <p className='mx-12 text-left opacity-70'> {selectedMessage.message}</p>
+            </div>
+             
+              
+              <div className='flex justify-center pt-8 pb-10'>
+                <div><hr className='w-[420px]' ></hr ></div>
+                
+              </div>
 
               <div>
                 <form onSubmit={handleReplySubmit}>
                   <div>
                     <textarea 
-                      className='w-full p-2 mt-4 text-black border rounded'
+                      className='w-full p-2 mt-4 text-white border rounded bg-[#2a2a2b]'
                       value={reply}
                       onChange={handleReplyChange}
                       placeholder="Type your reply here..."
                       rows="4"
                     ></textarea>
                   </div>
-                  <div className='flex justify-end mt-4 space-x-4'>
+                  <div className='flex justify-center mt-4 space-x-4'>
                     <button 
                       type="submit"
-                      className='px-4 py-2 text-white bg-green-600 rounded hover:bg-green-700'
+                      className='px-4 py-2 text-white bg-orange-500 rounded hover:bg-orange-700'
                     >
                       Send
                     </button>
@@ -305,19 +325,41 @@ export default function QandACompo() {
 
 {repliedShowModel && selectedMessage && (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-30 backdrop-filter backdrop-blur-sm">
-          <div className="bg-[#19191A] p-6 rounded-lg shadow-lg h-[800px] w-[1000px] border-orange-700 border-[1px] relative">
+          <div className="bg-[#19191A] p-6 rounded-lg shadow-lg h-auto w-[900px] border-orange-700 border-[1px] relative">
               <button onClick={handleModalClose} className="absolute px-4 py-2 text-white bg-gray-700 rounded-md top-4 right-4 hover:bg-gray-600 size-12">
                 <IoMdClose className="text-white hover:text-red-700" />
               </button>
 
             <div>
-            <h2 className='text-xl font-bold'>Message Details</h2>
-              <p><strong>Name:</strong> {selectedMessage.username}</p>
-              <p><strong>Email:</strong> {selectedMessage.useremail}</p>
-              <p><strong>Date:</strong> {formatDateTime(selectedMessage.createdAt).date}</p>
-              <p><strong>Time:</strong> {formatDateTime(selectedMessage.createdAt).time}</p>
-              <p><strong>Message:</strong> {selectedMessage.message}</p>
-              <p><strong>Reply:</strong> {selectedMessage.reply}</p>
+            <h2 className='text-xl font-bold text-orange-500'>Message</h2>
+            <div className='pt-5 text-left '>
+              <div className='flex'>
+                <p>{selectedMessage.useremail} </p>
+                <p className='text-orange-400 text-[14px] pl-4'> {formatDateTime(selectedMessage.createdAt).date} at {formatDateTime(selectedMessage.createdAt).time} </p>
+              </div>
+              <p className=' text-left opacity-50 text-[14px]'> {selectedMessage.username}</p>
+              <p className='pb-2 opacity-50'>to me,</p>
+            </div>
+            <div className=''>
+               <p className='mx-12 text-left opacity-70'> {selectedMessage.message}</p>
+            </div>
+             
+              
+              <div className='flex justify-center pt-8 pb-10'>
+                <div><hr className='w-[420px]' ></hr ></div>
+                
+              </div>
+              <h2 className='text-xl font-bold text-orange-500 '>Reply</h2>
+              <div className='pt-5'>
+                <div className='flex '>
+                  <p>Admin </p>
+                  <p className='text-orange-400 text-[14px] pl-4'>{formatDateTime(selectedMessage.updatedAt).date} at {formatDateTime(selectedMessage.updatedAt).time}</p>
+                </div>
+                <p className='pb-2 text-left text-[14px] opacity-50'>to {selectedMessage.username},</p>
+                <p className='mx-12 text-left opacity-70'>{selectedMessage.reply}</p>
+                
+              </div>
+              
 
               
             </div>
