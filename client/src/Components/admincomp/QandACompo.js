@@ -10,6 +10,7 @@ export default function QandACompo() {
   const [getQandA, setGetQandA] = useState([]);
   const [sendtruegetQandA, setSendtruegetQanda] = useState([]);
   const [messageShowModel, setMessageShowModel] = useState(false);
+  const [repliedShowModel, setReplyShowModal] = useState(false);
   const [selectedMessage, setSelectedMessage] = useState(null);
   const [reply, setReply] = useState();
 
@@ -39,10 +40,18 @@ export default function QandACompo() {
     setSelectedMessage(message)
   }
 
+  //handle view send is true
+  const handleviewReply = (reply) => {
+    setReplyShowModal(true);
+    setSelectedMessage(reply);
+    
+  }
+
   //handle close
   const handleModalClose = () =>{
     setMessageShowModel(false);
     setSelectedMessage(null);
+    setReplyShowModal(false);
   }
 
   //handle reply submission
@@ -201,7 +210,9 @@ export default function QandACompo() {
                         <p><strong>Time:</strong> {time}</p>
                       </div>
                       <div className='ml-3'>
-                        <button className='px-3 py-1 text-white hover:text-opacity-40 '><FaRegEye className='size-[30px]' /></button>
+                        <button
+                        onClick={() =>handleviewReply(qa)}
+                        className='px-3 py-1 text-white hover:text-opacity-40 '><FaRegEye className='size-[30px]' /></button>
                       </div>
                       <div className='ml-3'>
                         <button 
@@ -212,6 +223,7 @@ export default function QandACompo() {
                   </div>
                 );
               })}
+              
             </div>
           </div>
         </div>
@@ -259,6 +271,28 @@ export default function QandACompo() {
                   </div>
                 </form>
               </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+{repliedShowModel && selectedMessage && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-30 backdrop-filter backdrop-blur-sm">
+          <div className="bg-[#19191A] p-6 rounded-lg shadow-lg h-[800px] w-[1000px] border-orange-700 border-[1px] relative">
+              <button onClick={handleModalClose} className="absolute px-4 py-2 text-white bg-gray-700 rounded-md top-4 right-4 hover:bg-gray-600 size-12">
+                <IoMdClose className="text-white hover:text-red-700" />
+              </button>
+
+            <div>
+            <h2 className='text-xl font-bold'>Message Details</h2>
+              <p><strong>Name:</strong> {selectedMessage.username}</p>
+              <p><strong>Email:</strong> {selectedMessage.useremail}</p>
+              <p><strong>Date:</strong> {formatDateTime(selectedMessage.createdAt).date}</p>
+              <p><strong>Time:</strong> {formatDateTime(selectedMessage.createdAt).time}</p>
+              <p><strong>Message:</strong> {selectedMessage.message}</p>
+              <p><strong>Reply:</strong> {selectedMessage.reply}</p>
+
+              
             </div>
           </div>
         </div>
