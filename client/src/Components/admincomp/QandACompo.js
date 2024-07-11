@@ -170,12 +170,20 @@ export default function QandACompo() {
                         )}
                       </div>
                       <div className='flex-grow ml-3'>
-                        <p><strong>Name:</strong> {qa.username}</p>
-                        <p><strong>Email:</strong> {qa.useremail}</p>
-                        <div className='flex justify-center'>
-                          <p className='pr-2'>{date}</p>
-                          <p>{time}</p>
+                        <div className='flex justify-center'> 
+                          <div className=''>
+                            <p> {qa.username}</p>
+                            <p> {qa.useremail}</p>
+                          </div>
+                          
+                          <div className='flex justify-center'>
+                            <div>
+                              <p>{qa.message}</p>
+                              <p className='opacity-30'>{date} at {time}</p>
+                            </div>
+                          </div>
                         </div>
+                        
                         
                       </div>
                       <div className='ml-3'>
@@ -221,10 +229,12 @@ export default function QandACompo() {
                         <FaRegQuestionCircle className='size-[40px] opacity-50'/>
                       </div>
                       <div className='flex-grow ml-3'>
-                        <p><strong>Name:</strong> {qa.username}</p>
-                        <p><strong>Email:</strong> {qa.useremail}</p>
-                        <p><strong>Date:</strong> {date}</p>
-                        <p><strong>Time:</strong> {time}</p>
+                        <p> {qa.username}</p>
+                        <p> {qa.useremail}</p>
+                        <div className='flex justify-center'>
+                          <p className='opacity-30'>{date} at {time}</p>
+                          
+                        </div>
                       </div>
                       <div className='ml-3'>
                         <button
