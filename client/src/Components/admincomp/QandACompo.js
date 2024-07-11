@@ -170,16 +170,16 @@ export default function QandACompo() {
                         )}
                       </div>
                       <div className='flex-grow ml-3'>
-                        <div className='flex justify-center'> 
-                          <div className=''>
-                            <p> {qa.username}</p>
-                            <p> {qa.useremail}</p>
-                          </div>
-                          
-                          <div className='flex justify-center'>
+                        
+                        <div className='pl-8  w-[650px]'> 
+                          <div className='flex text-left'> 
+                            <p className='opacity-80'> <strong>{qa.useremail}</strong></p>
+                            <p className='text-orange-400 text-[14px] pl-6'>{date} at {time}</p>
+                          </div> 
+                          <div className='flex text-left'>
                             <div>
-                              <p>{qa.message}</p>
-                              <p className='opacity-30'>{date} at {time}</p>
+                              <p><span className='opacity-50'>{qa.message.slice(0, 100)}...</span><span className='opacity-30'>see more</span></p>
+                              
                             </div>
                           </div>
                         </div>
