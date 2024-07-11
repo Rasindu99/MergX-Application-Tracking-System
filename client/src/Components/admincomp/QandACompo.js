@@ -5,6 +5,7 @@ import { FaRegEye } from "react-icons/fa";
 import { MdDeleteForever } from "react-icons/md";
 import { IoMdClose } from "react-icons/io";
 import { toast } from 'react-hot-toast';
+import { BsFillReplyFill } from "react-icons/bs";
 
 export default function QandACompo() {
   const [getQandA, setGetQandA] = useState([]);
@@ -226,13 +227,13 @@ export default function QandACompo() {
                   <div key={index} className='p-2 border-b border-gray-500 bg-gradient-to-b from-[#2B2B2B] to-[#333333]'>
                     <div className='flex items-center'>
                       <div className='relative ml-3'>
-                        <FaRegQuestionCircle className='size-[40px] opacity-50'/>
+                        <BsFillReplyFill className='size-[40px] opacity-50'/>
                       </div>
                       <div className='flex-grow ml-3'>
-                        <p> {qa.username}</p>
+                        
                         <p> {qa.useremail}</p>
                         <div className='flex justify-center'>
-                          <p className='opacity-30'>{date} at {time}</p>
+                        <p><span className='opacity-50'>{qa.reply.slice(0, 30)}...</span><span className='opacity-30'>see more</span></p>
                           
                         </div>
                       </div>
