@@ -129,7 +129,7 @@ export default function SendJobInvitation() {
                         </div>
                     </div>
                 </div>
-                <div className='w-1/2 border-l border-orange-500 h-[680px]'>
+                <div className='w-1/2 h-[680px]'>
                     <div>
                         <h1 className='text-2xl opacity-40'>Sent Job Interview Invitation</h1>
                     </div>
