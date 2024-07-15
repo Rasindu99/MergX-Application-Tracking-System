@@ -199,7 +199,7 @@ export default function Recruiterdash() {
           />
           <FaSearch className="text-gray-500 ml-2" />
         </div>
-        <div className="w-[75%] max-h-[700px] overflow-y-auto scrollbar-hidden">
+        <div className="w-[75%] max-h-[700px] overflow-y-auto pr-2">
           {filteredCandidates.map((candidate, index) => (
             <div key={index} className="flex items-center justify-between p-4 mb-2 rounded border-x-2 border-[#2B2B2B]" style={{ background: 'linear-gradient(to bottom, #2B2B2B 0%, rgba(43, 43, 43, 0) 60%)' }}>
               <div className='items-center block '>

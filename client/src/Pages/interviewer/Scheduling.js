@@ -17,6 +17,37 @@ export default function Scheduling() {
   const [date, setDate] = useState(new Date());
   const [interviewSchedules, setInterviewSchedules] = useState([]);
   const [showPopup, setShowPopup] = useState(false);
+  const [users, setUsers] = useState([]);
+
+  const fetchUsers = async () => {
+    try {
+      const response = await fetch('http://localhost:8000/getusers');
+      if (response.ok) {
+        const data = await response.json();
+        setUsers(data);
+      } else {
+        console.error('Failed to fetch users');
+      }
+    } catch (error) {
+      console.error('Error fetching users:', error);
+    }
+  };
+
+  const fetchInterviewSchedules = async () => {
+    try {
+      const response = await axios.get('http://localhost:8000/schedule/getinterviewschedule'); 
+      setInterviewSchedules(response.data);
+    } catch (error) {
+      console.error('Error fetching interviews:', error);
+    }
+  };
+
+  useEffect(() => {
+
+    fetchUsers();
+    fetchInterviewSchedules(); 
+
+  }, []);
 
   const formattedDate = date.toLocaleDateString('en-US', {
     weekday: 'long',
@@ -27,6 +58,7 @@ export default function Scheduling() {
 
   const selectedDateSchedules = interviewSchedules.filter(schedule =>
     new Date(schedule.date).toLocaleDateString() === date.toLocaleDateString()
+    && schedule.assign === user._id
   );
 
   const togglePopup = () => {
@@ -37,12 +69,13 @@ export default function Scheduling() {
     jobId: 'null',
     jobtitle: 'null',
     creatorId: user._id,
-    date: formattedDate,
+    date: date.toISOString(),
     startTime: '',
     endTime: '',
     meetingLink: '',
     password: '',
     subject: '',
+    assign: '',
     experience: '',
     skills: '',
     description: ''
@@ -55,7 +88,7 @@ export default function Scheduling() {
 
   const handleClear = () => {
     setFormData({
-      date: formattedDate,
+      date: date.toISOString(),
       startTime: '',
       endTime: '',
       meetingLink: '',
@@ -69,33 +102,58 @@ export default function Scheduling() {
 
   const handleDelete = async (id) => {
     try {
-      const response = await axios.delete(`http://localhost:8000/schedule/deleteinterviewschedule/${id}`);
-      if (response.status === 200) {
-        setInterviewSchedules(interviewSchedules.filter(schedule => schedule._id !== id));
+      const result = await Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, delete it!',
+        cancelButtonText: 'No, cancel!'
+      });
+  
+      if (result.isConfirmed) {
+        const response = await axios.delete(`http://localhost:8000/schedule/deleteinterviewschedule/${id}`);
+        if (response.status === 200) {
+          setInterviewSchedules(interviewSchedules.filter(schedule => schedule._id !== id));
+          await Swal.fire({
+            title: 'Deleted!',
+            text: 'Interview Schedule deleted successfully',
+            icon: 'success',
+            confirmButtonText: 'OK'
+          })
+          fetchInterviewSchedules();
+        } else {
+          console.error('Failed to delete interview schedule');
+          await Swal.fire({
+            title: 'Error!',
+            text: 'Failed to delete interview schedule',
+            icon: 'error',
+            confirmButtonText: 'OK'
+          });
+        }
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
         await Swal.fire({
-          title: 'Deleted!',
-          text: 'Interview Schedule deleted successfully',
-          icon: 'success',
-          confirmButtonText: 'OK'
-        }).then(() => {
-          window.location.reload();
-        });
-      } else {
-        console.error('Failed to delete interview schedule');
-        await Swal.fire({
-          title: 'Error!',
-          text: 'Failed to delete interview schedule',
+          title: 'Cancelled',
+          text: 'Your interview schedule is safe',
           icon: 'error',
           confirmButtonText: 'OK'
         });
       }
     } catch (error) {
       console.error('Error deleting interview schedule:', error);
+      await Swal.fire({
+        title: 'Error!',
+        text: 'An error occurred while deleting the interview schedule',
+        icon: 'error',
+        confirmButtonText: 'OK'
+      });
     }
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    console.log(formData);
     try {
       const response = await fetch('http://localhost:8000/schedule/interviewschedule', {
         method: 'POST',
@@ -106,10 +164,11 @@ export default function Scheduling() {
           jobId: formData.jobId,
           jobtitle: formData.jobtitle,
           creatorId: formData.creatorId,
-          date: new Date(formData.date).toISOString(),
+          date: date.toISOString(),
           start_time: formData.startTime,
           end_time: formData.endTime,
           subject: formData.subject,
+          assign: formData.assign,
           link: formData.meetingLink,
           password: formData.password,
           experience: formData.experience,
@@ -119,17 +178,17 @@ export default function Scheduling() {
       });
 
       if (response.ok) {
-        const data = await response.json();
-        console.log('Interview Schedule created successfully', data);
+        const newInterview = await response.json();
+        console.log('Interview Schedule created successfully', newInterview);
         await Swal.fire({
           title: 'Success!',
           text: 'Interview Schedule created successfully',
           icon: 'success',
           confirmButtonText: 'OK'
-        }).then(() => {
-          window.location.reload();
-        });
+        })
         handleClear();
+        fetchInterviewSchedules();
+        togglePopup();
       } else {
         console.error('Failed to create interview schedule');
         await Swal.fire({
@@ -151,6 +210,7 @@ export default function Scheduling() {
         start_time: formData.startTime,
         end_time: formData.endTime,
         subject: formData.subject,
+        assign: formData.assign,
         link: formData.meetingLink,
         password: formData.password,
       }, {
@@ -167,9 +227,8 @@ export default function Scheduling() {
           text: 'Interview Schedule updated successfully',
           icon: 'success',
           confirmButtonText: 'OK'
-        }).then(() => {
-          window.location.reload();
-        });
+        })
+        fetchInterviewSchedules();
       } else {
         console.error('Failed to update interview schedule');
         await Swal.fire({
@@ -184,19 +243,16 @@ export default function Scheduling() {
     }
   };
   
+  const tileClassName = ({ date }) => {
+    const formattedDate = date.toLocaleDateString();
+    const today = new Date().toLocaleDateString();
 
-  useEffect(() => {
-    const fetchInterviewSchedules = async () => {
-      try {
-        const response = await axios.get('http://localhost:8000/schedule/getinterviewschedule'); 
-        setInterviewSchedules(response.data);
-      } catch (error) {
-        console.error('Error fetching interviews:', error);
-      }
-    };
-
-    fetchInterviewSchedules();
-  }, []);
+    return formattedDate !== today && 
+      interviewSchedules.filter(schedule =>
+      schedule.assign === user._id).some(schedule => 
+      new Date(schedule.date).toLocaleDateString() === formattedDate
+    ) ? 'react-calendar__tile--has-interviews' : null;
+  };
 
   return (
     <>
@@ -218,6 +274,7 @@ export default function Scheduling() {
                 <Calendar
                   onChange={setDate}
                   value={date}
+                  tileClassName={tileClassName}
                 />
               </div>
             </div>
@@ -253,7 +310,7 @@ export default function Scheduling() {
 
       {showPopup && (
         <div className='fixed top-0 left-0 w-full h-full flex justify-center items-center bg-white bg-opacity-5 backdrop-blur z-50'>
-          <div className='bg-[#2B2B2BE5] opacity-90 relative w-[60rem] h-[45rem] border-2 border-[#EA712287] rounded-3xl px-5'>
+          <div className='bg-[#2B2B2BE5] opacity-90 relative w-[60rem] h-[46rem] border-2 border-[#EA712287] rounded-3xl px-5'>
             <MdOutlineClose size={25} className='absolute top-5 right-5 cursor-pointer' onClick={togglePopup} />
             <p className='text-3xl bold mt-5 text-center'>{formattedDate}</p>
             <form className='p-8' onSubmit={handleSubmit}>
@@ -315,6 +372,25 @@ export default function Scheduling() {
                       required
                       className='block w-full mt-1 p-2 bg-[#2B2B2BE5] border-2 border-white border-opacity-10 rounded-xl'
                     />
+                </div>
+                <div className='flex items-center'>
+                  <label className='text-white flex items-center gap-10 w-48'>Interviewer</label>
+                  <select 
+                    type="text"
+                    name="assign"
+                    value={formData.assign}
+                    onChange={handleChange}
+                    required
+                    className='block w-full mt-1 p-2 bg-[#2B2B2BE5] border-2 border-white border-opacity-10 rounded-xl'>
+                      <option value="" disabled>Select Interviewer</option>
+                    {users
+                      .filter(user => user.role === 'interviewer')
+                      .map(interviewer => (
+                        <option key={interviewer._id} value={interviewer._id}>
+                          {interviewer.fname}  {interviewer.lname}
+                        </option>
+                      ))}
+                  </select>
                 </div>
                 <div className='flex items-center'>
                   <label className='text-white flex items-center gap-10 w-48'>Expirience</label>

@@ -112,7 +112,7 @@ export default function AdminNav() {
                             <li>
                                 <div className={`flex items-center py-3 pl-8 hover:bg-gray-100 hover:bg-opacity-10 ${activeItem === 6 ? 'bg-[#BABABA] bg-opacity-20 text-white' : 'text-gray-100 hover:bg-gray-300 hover:text-white'}`}>
                                     <div className='mr-8'><MdMarkEmailUnread  size={20} className="opacity-25 sm:w-6 sm:h-6 hover:text-white" /></div>
-                                    <div><label className='text-white opacity-25 hover:text-white' style={{ fontSize: '18px' }}>Q & A</label></div>
+                                    <div><label className='text-white opacity-25 hover:text-white' style={{ fontSize: '18px' }}>Qs</label></div>
                                 </div>
                             </li>
                         </Link>

@@ -403,6 +403,18 @@ const getrejectedList = async (req,res)=>{
      }
 }
 
+const getHiredCandidatesCount = async (req, res) => {
+  const { jobId } = req.params; // Assuming you pass job_id as a parameter
+
+  try {
+    const count = await Evaluationmodel.countDocuments({ job_id: jobId, isHired: true });
+    res.json({ count });
+  } catch (error) {
+    console.error('Error in getHiredCandidatesCount:', error);
+    res.status(500).json({ error: 'Server error' });
+  }
+};
+
 module.exports={
   createEvalautions,
     // updateEvaluation,
@@ -421,5 +433,6 @@ module.exports={
     updatecheckedhiringmanager,
     getcandidateforfinaldecision,
     gethiredCandidtaesList,
-    getrejectedList
+    getrejectedList,
+    getHiredCandidatesCount
 }
