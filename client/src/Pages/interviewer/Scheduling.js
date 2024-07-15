@@ -69,7 +69,7 @@ export default function Scheduling() {
     jobId: 'null',
     jobtitle: 'null',
     creatorId: user._id,
-    date: formattedDate,
+    date: date.toISOString(),
     startTime: '',
     endTime: '',
     meetingLink: '',
@@ -88,7 +88,7 @@ export default function Scheduling() {
 
   const handleClear = () => {
     setFormData({
-      date: formattedDate,
+      date: date.toISOString(),
       startTime: '',
       endTime: '',
       meetingLink: '',
@@ -164,7 +164,7 @@ export default function Scheduling() {
           jobId: formData.jobId,
           jobtitle: formData.jobtitle,
           creatorId: formData.creatorId,
-          date: new Date(formData.date).toISOString(),
+          date: date.toISOString(),
           start_time: formData.startTime,
           end_time: formData.endTime,
           subject: formData.subject,
@@ -243,6 +243,17 @@ export default function Scheduling() {
     }
   };
   
+  const tileClassName = ({ date }) => {
+    const formattedDate = date.toLocaleDateString();
+    const today = new Date().toLocaleDateString();
+
+    return formattedDate !== today && 
+      interviewSchedules.filter(schedule =>
+      schedule.assign === user._id).some(schedule => 
+      new Date(schedule.date).toLocaleDateString() === formattedDate
+    ) ? 'react-calendar__tile--has-interviews' : null;
+  };
+
   return (
     <>
       <div className='flex'>
@@ -263,6 +274,7 @@ export default function Scheduling() {
                 <Calendar
                   onChange={setDate}
                   value={date}
+                  tileClassName={tileClassName}
                 />
               </div>
             </div>
