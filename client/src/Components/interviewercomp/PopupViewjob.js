@@ -9,6 +9,22 @@ export default function PopupViewjob({ visible, onClose }) {
     const [nonexpiredjobData, setNonexpiredjobData] = useState([]);
     const [selectedJob, setSelectedJob] = useState(null);
     const [showSchedule, setShowSchedule] = useState(false);
+    const [users, setUsers] = useState([]);
+
+    const fetchUsers = async () => {
+        try {
+        const response = await fetch('http://localhost:8000/getusers');
+        if (response.ok) {
+            const data = await response.json();
+            setUsers(data);
+        } else {
+            console.error('Failed to fetch users');
+        }
+        } catch (error) {
+        console.error('Error fetching users:', error);
+        }
+    };
+
     const [data, setData] = useState({
         jobId: '',
         creatorId: '',
@@ -17,6 +33,7 @@ export default function PopupViewjob({ visible, onClose }) {
         start_time: '',
         end_time: '',
         subject: '',
+        assign: '',
         link: '',
         password: '',
         experience: '',
@@ -50,6 +67,7 @@ export default function PopupViewjob({ visible, onClose }) {
               start_time: data.start_time,
               end_time: data.end_time,
               subject: data.subject,
+              assign: data.assign,
               link: data.link,
               password: data.password,
               experience: selectedJob.requiredExperience,
@@ -66,6 +84,7 @@ export default function PopupViewjob({ visible, onClose }) {
                 start_time: '',
                 end_time: '',
                 subject: '',
+                assign: '',
                 link: '',
                 password: '',
             });
@@ -93,6 +112,7 @@ export default function PopupViewjob({ visible, onClose }) {
 
     useEffect(() => {
         getnonexpiredjobs();
+        fetchUsers();
     }, []);
 
     if (!visible) return null;
@@ -206,6 +226,26 @@ export default function PopupViewjob({ visible, onClose }) {
                                                 onChange={handleInputChange}
                                                 required
                                             />
+                                        </div>
+                                        <div className='flex items-start mb-5'>
+                                            <label className='w-1/5 text-white'>Interviewer</label>
+                                            <p className='w-1/5'> - </p>
+                                            <select 
+                                                type="text"
+                                                name="assign"
+                                                value={data.assign}
+                                                onChange={handleInputChange}
+                                                required
+                                                className='bg-[#2B2B2BE5] border-2 border-white border-opacity-10 rounded-lg h-8 w-4/5'>
+                                                <option value="" disabled>Select Interviewer</option>
+                                                {users
+                                                .filter(user => user.role === 'interviewer')
+                                                .map(interviewer => (
+                                                    <option key={interviewer._id} value={interviewer._id}>
+                                                    {interviewer.fname}  {interviewer.lname}
+                                                    </option>
+                                                ))}
+                                            </select>
                                         </div>
                                         <div className='flex items-start mb-5'>
                                             <label className='w-1/5 text-white'>Link</label>
