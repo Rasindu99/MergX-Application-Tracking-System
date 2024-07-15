@@ -69,33 +69,57 @@ export default function Scheduling() {
 
   const handleDelete = async (id) => {
     try {
-      const response = await axios.delete(`http://localhost:8000/schedule/deleteinterviewschedule/${id}`);
-      if (response.status === 200) {
-        setInterviewSchedules(interviewSchedules.filter(schedule => schedule._id !== id));
+      const result = await Swal.fire({
+        title: 'Are you sure?',
+        text: "You won't be able to revert this!",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, delete it!',
+        cancelButtonText: 'No, cancel!'
+      });
+  
+      if (result.isConfirmed) {
+        const response = await axios.delete(`http://localhost:8000/schedule/deleteinterviewschedule/${id}`);
+        if (response.status === 200) {
+          setInterviewSchedules(interviewSchedules.filter(schedule => schedule._id !== id));
+          await Swal.fire({
+            title: 'Deleted!',
+            text: 'Interview Schedule deleted successfully',
+            icon: 'success',
+            confirmButtonText: 'OK'
+          }).then(() => {
+            window.location.reload();
+          });
+        } else {
+          console.error('Failed to delete interview schedule');
+          await Swal.fire({
+            title: 'Error!',
+            text: 'Failed to delete interview schedule',
+            icon: 'error',
+            confirmButtonText: 'OK'
+          });
+        }
+      } else if (result.dismiss === Swal.DismissReason.cancel) {
         await Swal.fire({
-          title: 'Deleted!',
-          text: 'Interview Schedule deleted successfully',
-          icon: 'success',
-          confirmButtonText: 'OK'
-        }).then(() => {
-          window.location.reload();
-        });
-      } else {
-        console.error('Failed to delete interview schedule');
-        await Swal.fire({
-          title: 'Error!',
-          text: 'Failed to delete interview schedule',
+          title: 'Cancelled',
+          text: 'Your interview schedule is safe',
           icon: 'error',
           confirmButtonText: 'OK'
         });
       }
     } catch (error) {
       console.error('Error deleting interview schedule:', error);
+      await Swal.fire({
+        title: 'Error!',
+        text: 'An error occurred while deleting the interview schedule',
+        icon: 'error',
+        confirmButtonText: 'OK'
+      });
     }
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+
+  const handleSubmit = async () => {
     try {
       const response = await fetch('http://localhost:8000/schedule/interviewschedule', {
         method: 'POST',

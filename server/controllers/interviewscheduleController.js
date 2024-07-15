@@ -5,10 +5,6 @@ const createInterviewSchedule = async (req, res) => {
     try {
         const { jobId, creatorId,jobtitle, date, start_time, end_time, subject, link, password, experience, skills, description } = req.body;
         
-        if (!jobId || !creatorId || !jobtitle || !date || !start_time || !end_time || !subject || !link || !password || !experience || !skills || !description) {
-            return res.status(400).json({ error: 'Missing required fields' });
-        }
-
         // Create interview schedule in the database
         const interviewschedule = await InterviewSchedule.create({
             jobId,
