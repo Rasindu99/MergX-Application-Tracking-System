@@ -174,14 +174,14 @@ export default function Recruiterdash() {
     <div className="flex items-center ml-[320px] justify-center  ">
       <div className="rounded-3xl  w-full mx-5 mt-2" style={{ background: 'linear-gradient(to bottom, #2B2B2B 0%, rgba(43, 43, 43, 0) 35%)' }}>
         <div className="flex items-center justify-around mt-5">
-              <CardL  name="Pending" subName="Jobs" val={carddetails.pendingjobs} />
+          <CardL  name="Pending" subName="Jobs" val={carddetails.pendingjobs} />
           <CardL  name="Accepted" subName="Applications" val={carddetails.acceptedApplications} />
           <CardL  name="Today" subName="Interviews" val={carddetails.todayinterveiw} />
           <CardL name="New Messages" val={carddetails.newmessages} />
         </div>
         <div className="flex items-center justify-around mt-8">
         <CardS name="Candidates" val={carddetails.candidates} />
-          <CardS  name="Posted" subName="Jobs" val={carddetails.postedJobs} />
+          <CardS  name="Approved" subName="Jobs" val={carddetails.postedJobs} />
           <CardS  name="Vacancies" val={carddetails.Totalvacancies} />
           <CardS name="Interviewed" subName="Candidates" val={carddetails.interviewedcandidates} />
           <CardS  name="Total" subName="Applications" val={carddetails.applications} />
