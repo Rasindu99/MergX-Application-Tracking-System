@@ -1,13 +1,20 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import '../interviewer/custom.css';
 import InterviewNav from '../../Components/interviewercomp/InterviewNav';
 import Description from '../../Components/interviewercomp/InterviewerDes';
 import InterviewItem from '../../Components/interviewercomp/InterviewItem';
 import axios from 'axios';
+import { UserContext } from '../../Context/UserContext';
+
 
 export default function InterviewPage() {
   const name = 'Interview';
   const [interviews, setInterviews] = useState([]);
+  const { user } = useContext(UserContext);
+
+  const selectedDateSchedules = interviews.filter(schedule =>
+    schedule.assign === user._id
+  );
 
   useEffect(() => {
     const fetchInterviewSchedules = async () => {
@@ -33,7 +40,7 @@ export default function InterviewPage() {
         </div>
         <div id='background' className="w-80 h-80vh rounded-3xl z-0 mt-24 mx-8">
             <div id='container' className='mt-8 px-8'>
-            {interviews
+            {selectedDateSchedules
               .sort((a, b) => {
                 const dateA = new Date(a.date);
                 const dateB = new Date(b.date);
