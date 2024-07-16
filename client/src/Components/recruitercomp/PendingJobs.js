@@ -187,6 +187,9 @@ export default function PendingJobs({ pendingJobs, setPendingJobs, fetchPendingJ
               </div>
             </div>
           ))}
+          {pendingJobs.length === 0 && (
+            <p className="text-white opacity-25 text-center mt-4">No pending jobs found</p>
+          )}
         </div >
         <div className="flex flex-col w-[95%] h-[40%] max-h-[40%] overflow-y-scroll pr-2 mt-5">  
           <h2 className="text-white text-lg mb-4 mt-8">Rejected Jobs</h2>
@@ -245,6 +248,9 @@ export default function PendingJobs({ pendingJobs, setPendingJobs, fetchPendingJ
               </div>
             </div>
           ))}
+          {rejectedJobs.length === 0 && (
+            <p className="text-white opacity-25 text-center mt-4">No rejected jobs found</p>
+          )}
         </div>
       </div>
 
