@@ -243,6 +243,9 @@ export default function StatusUpdate() {
                         </tr>
                       );
                     })}
+                    {statusData.length === 0 && (
+                        <p className="text-white opacity-25 text-center mt-4">No status found</p>
+                    )}
                 </tbody>
               </table>
             </div>
@@ -340,6 +343,9 @@ export default function StatusUpdate() {
                         </tr>
                       );
                     })}
+                    {announcementData.length === 0 && (
+                        <p className="text-white opacity-25 text-center mt-4">No announcements found</p>
+                    )}
                 </tbody>
               </table>
             </div>

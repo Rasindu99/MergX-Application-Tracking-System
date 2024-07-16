@@ -246,23 +246,45 @@ export default function ApplicationManagementComp() {
               </div>
 
               <div className='flex justify-center pt-5'>
-                  <div className='px-4 mr-2'>
-                    <button
-                      className='h-12 bg-orange-500 w-[150px] rounded-lg hover:bg-slate-400'
-                      onClick={() => approveApplication(selectedApplication._id)}
-                    >
-                      Accept
-                    </button>
+                {/* Conditionally render buttons based on application status */}
+                {selectedApplication && (
+                  <div className='px-4'>
+                    {!selectedApplication.approval && !selectedApplication.rejected && (
+                      <>
+                        <button
+                          className='h-12 bg-orange-500 w-[150px] rounded-lg hover:bg-slate-400'
+                          onClick={() => approveApplication(selectedApplication._id)}
+                        >
+                          Accept
+                        </button>
+                        <button
+                          className='ml-4 h-12 bg-orange-500 w-[150px] rounded-lg hover:bg-slate-400'
+                          onClick={() => rejectApplication(selectedApplication._id)}
+                        >
+                          Reject
+                        </button>
+                      </>
+                    )}
+                    {selectedApplication.approval && !selectedApplication.rejected && (
+                      <button
+                        className='h-12 bg-orange-500 w-[150px] rounded-lg hover:bg-slate-400'
+                        onClick={() => rejectApplication(selectedApplication._id)}
+                      >
+                        Reject
+                      </button>
+                    )}
+                    {!selectedApplication.approval && selectedApplication.rejected && (
+                      <button
+                        className='h-12 bg-orange-500 w-[150px] rounded-lg hover:bg-slate-400'
+                        onClick={() => approveApplication(selectedApplication._id)}
+                      >
+                        Accept
+                      </button>
+                    )}
                   </div>
-                  <div className='px-4 ml-2'>
-                    <button 
-                    className='h-12 bg-orange-500 w-[150px] rounded-lg  hover:bg-slate-400'
-                    onClick={() => rejectApplication(selectedApplication._id)}
-                    >
-                      Reject
-                    </button>
-                  </div>
-                </div>
+  )}
+</div>
+
               
               
             </div>
