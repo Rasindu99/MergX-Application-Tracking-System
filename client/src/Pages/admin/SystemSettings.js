@@ -1,6 +1,7 @@
 import React from 'react'
 import AdminNav from '../../Components/admincomp/AdminNav';
 import Adminheadrightbar from '../../Components/admincomp/Adminheadrightbar';
+import SendEmail from '../../Components/admincomp/SendEmail';
 
 export default function SystemSettings() {
   return (
@@ -24,8 +25,8 @@ export default function SystemSettings() {
 
             
            
-            <div>
-            <h1>hii</h1>
+            <div className='mx-[70px] bg-gradient-to-b from-[#272727] to-[#17171A] rounded-[30px] h-[780px] '>
+            <SendEmail/>
             </div>
             
           </div>
