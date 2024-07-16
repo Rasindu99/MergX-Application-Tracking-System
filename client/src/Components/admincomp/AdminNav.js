@@ -119,7 +119,7 @@ export default function AdminNav() {
                     </ul>
                     <div className='flex items-center justify-center'>
                         <div className='pt-10 fix w-fit'>
-                            <Link to='/'>
+                            <Link to='/login'>
                                 <button className='bg-[#EA7122] w-44 h-12 rounded-xl flex items-center justify-center'
                                     onClick={logout}
                                 >
