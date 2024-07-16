@@ -13,7 +13,7 @@ export default function SystemSettings() {
           
           <div className='flex justify-between pt-8 pb-8 pl-5'>
                 <div className=''>
-                  <h1 className='text-4xl'>System Settings</h1>
+                  <h1 className='text-4xl'>Send Email</h1>
                 </div>
                 
                 <div className='mr-5'>

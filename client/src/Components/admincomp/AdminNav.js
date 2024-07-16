@@ -7,9 +7,10 @@ import { IoPersonAddSharp } from 'react-icons/io5';
 import { FaUserEdit } from 'react-icons/fa';
 
 import { CiLogout } from 'react-icons/ci';
-import { DiAptana } from 'react-icons/di';
+//import { DiAptana } from 'react-icons/di';
 import { SiPrivateinternetaccess } from 'react-icons/si';
 import { MdMarkEmailUnread } from "react-icons/md";
+import { FaVoicemail } from "react-icons/fa";
 
 export default function AdminNav() {
     const [activeItem, setActiveItem] = useState(null);
@@ -103,8 +104,8 @@ export default function AdminNav() {
                         <Link to='/adminsystemsettings' className='no-underline'>
                             <li>
                                 <div className={`flex items-center py-3 pl-8 hover:bg-gray-100 hover:bg-opacity-10 ${activeItem === 5 ? 'bg-[#BABABA] bg-opacity-20 text-white' : 'text-gray-100 hover:bg-gray-300 hover:text-white'}`}>
-                                    <div className='mr-8'><DiAptana size={20} className="opacity-25 sm:w-6 sm:h-6 hover:text-white" /></div>
-                                    <div><label className='text-white opacity-25 hover:text-white' style={{ fontSize: '18px' }}>System Settings</label></div>
+                                    <div className='mr-8'><FaVoicemail size={20} className="opacity-25 sm:w-6 sm:h-6 hover:text-white" /></div>
+                                    <div><label className='text-white opacity-25 hover:text-white' style={{ fontSize: '18px' }}>Send Email</label></div>
                                 </div>
                             </li>
                         </Link>
