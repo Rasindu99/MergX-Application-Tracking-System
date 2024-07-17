@@ -220,9 +220,9 @@ export default function SendEmail() {
 
     return (
         <div className="flex justify-center">
-            <form onSubmit={sendEmail} className="w-full max-w-4xl space-y-4">
-                <div>
-                    <label className="block mb-1 text-sm font-medium text-gray-300">To:</label>
+            <form onSubmit={sendEmail} className="w-full max-w-4xl pt-12 space-y-4">
+                <div className='text-left'>
+                    <label className="block mb-1 text-sm font-medium text-orange-500">To:</label>
                     <div className="flex">
                         <input
                             type="email"
@@ -259,7 +259,7 @@ export default function SendEmail() {
                             ))}
                         </div>
                     )}
-                    <div className="flex flex-wrap gap-2 mt-2">
+                    <div className="flex flex-wrap gap-2 mt-2 ">
                         {data.to.map((email, index) => (
                             <div key={index} className="flex items-center px-2 py-1 text-white bg-orange-500 rounded-full">
                                 {email}
@@ -270,8 +270,8 @@ export default function SendEmail() {
                         ))}
                     </div>
                 </div>
-                <div>
-                    <label className="block mb-1 text-sm font-medium text-gray-300">Subject:</label>
+                <div className='text-left'>
+                    <label className="block mb-1 text-sm font-medium text-orange-500">Subject:</label>
                     <input
                         type="text"
                         placeholder="Subject"
@@ -281,8 +281,8 @@ export default function SendEmail() {
                         onChange={handleChange}
                     />
                 </div>
-                <div>
-                    <label className="block mb-1 text-sm font-medium text-gray-300">Body:</label>
+                <div className='text-left'>
+                    <label className="block mb-1 text-sm font-medium text-orange-500">Body:</label>
                     <div className="bg-[#202024] rounded-md h-[250px]">
                         <ReactQuill 
                             theme="snow"
@@ -294,9 +294,9 @@ export default function SendEmail() {
                         />
                     </div>
                 </div>
-                <div className="flex justify-center pt-12">
+                <div className="flex justify-center pt-12 ">
                     <div 
-                        className={`w-full max-w-xl border-2 border-dashed border-orange-500 rounded-lg p-6 ${dragActive ? 'bg-[#2c2c30]' : ''}`}
+                        className={`w-full max-w-xl border-2 border-dashed border-orange-500 rounded-lg p-6 ${dragActive ? 'bg-[#2c2c30]' : ''} bg-[white] bg-opacity-10`}
                         onDragEnter={handleDrag}
                         onDragLeave={handleDrag}
                         onDragOver={handleDrag}
@@ -311,7 +311,7 @@ export default function SendEmail() {
                         />
                         <label htmlFor="fileInput" className="block text-center cursor-pointer">
                             <p className="mb-2 text-gray-300">Drag and drop your file here or</p>
-                            <button type="button" className="text-blue-500 hover:underline" onClick={handleButtonClick}>
+                            <button type="button" className="text-orange-500 hover:underline" onClick={handleButtonClick}>
                                 Upload a file
                             </button>
                         </label>
