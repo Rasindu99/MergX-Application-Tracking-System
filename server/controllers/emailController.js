@@ -1,28 +1,40 @@
 const { sendMail } = require('../helpers/sendMail');
 const Email = require('../models/Emails');
 
-//post endpoint
-const createEmail = async (req, res) =>{
-    try {
-        const {to, subject, body, file } = req.body;
+const createEmail = async (req, res) => {
+  try {
+    const { to, subject, body } = req.body;
+    const file = req.file;
 
-        //create database
-        const email = await Email.create({
-            to,
-            subject,
-            body,
-            file
-        });
+    let htmlContent = body;
+    let fileUrl = null;
 
-        sendMail(to, subject, body)
-
-        return res.status(200).json({message: 'Update Successfully', email});
-    } catch (error) {
-        console.error(error);
-        return res.status(500).json({error:'server error'});
+    if (file) {
+      fileUrl = file.location; // S3 URL of the uploaded file
+      htmlContent += `
+        <br><br>
+        Attachment: <a href="${fileUrl}">${file.originalname}</a>
+      `;
     }
-}
+
+    // Send email
+    await sendMail(to, subject, body, htmlContent);
+
+    // Create database entry
+    const email = await Email.create({
+      to,
+      subject,
+      body,
+      file: fileUrl
+    });
+
+    return res.status(200).json({ message: 'Email sent and saved successfully', email });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Server error' });
+  }
+};
 
 module.exports = {
- createEmail
-}
+  createEmail
+};

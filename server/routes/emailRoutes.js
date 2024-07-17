@@ -3,6 +3,7 @@ const router = express.Router();
 const cors = require('cors');
 
 const { createEmail } = require('../controllers/emailController');
+const upload = require('../helpers/upload');
 
 router.use(
     cors({
@@ -11,7 +12,7 @@ router.use(
     })
 );
 
-router.post('/createemail', createEmail);
+router.post('/createemail',upload.single('file'), createEmail);
 
 
 module.exports = router;
