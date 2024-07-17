@@ -2,6 +2,7 @@ import React from 'react'
 import AdminNav from '../../Components/admincomp/AdminNav'
 import Adminheadrightbar from '../../Components/admincomp/Adminheadrightbar'
 import QandACompo from '../../Components/admincomp/QandACompo'
+import AdminChatBotBottom from '../../Components/admincomp/AdminChatBotBottom'
 
 export default function QandA() {
   return (
@@ -26,6 +27,10 @@ export default function QandA() {
         <QandACompo/>
       </div>
     </div>
+     {/* Move AdminChatBotBottom here and wrap it in a positioned div */}
+     <div className="absolute bottom-0 right-0 z-50">
+        <AdminChatBotBottom/>
+      </div>
       
     </div>
   )
