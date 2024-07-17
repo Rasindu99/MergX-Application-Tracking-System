@@ -99,27 +99,36 @@ const approveApplication = async (req, res) => {
         res.status(500).json({ message: 'Failed to approve application' });
     }
 };
-//put
+
 const rejectApplication = async (req, res) => {
     try {
-        const applicationId = req.params.id;
-
-        const updatedApplication = await Application.findByIdAndUpdate(
-            applicationId,
-            { approval: false, rejected: true },
-            { new: true } // This option returns the updated document
-        );
-
-        if (!updatedApplication) {
-            return res.status(404).json({ message: 'Application not found' });
-        }
-
-        res.status(200).json({ message: 'Application approved successfully', application: updatedApplication });
+      const applicationId = req.params.id;
+  
+      if (!applicationId) {
+        return res.status(400).json({ error: true, message: 'Application ID is required' });
+      }
+  
+      const application = await Application.findById(applicationId);
+  
+      if (!application) {
+        return res.status(404).json({ error: true, message: 'Application not found' });
+      }
+  
+      if (application.approval && application.isEvaluated) {
+        return res.status(400).json({ error: true, message: 'Cannot reject an evaluated application' });
+      }
+  
+      application.approval = false;
+      application.rejected = true;
+      await application.save();
+  
+      res.status(200).json({ message: 'Application rejected successfully', application });
     } catch (error) {
-        console.error('Error in approving application:', error);
-        res.status(500).json({ message: 'Failed to approve application' });
+      console.error('Error in rejecting application:', error);
+      res.status(500).json({ error: true, message: 'Failed to reject application' });
     }
-};
+  };
+  
 
 //get approved true data is joined false
 const getapprovedtruedata = async (req, res) => {
