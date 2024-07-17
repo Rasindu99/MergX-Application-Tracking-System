@@ -1,6 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { toast } from 'react-hot-toast';
 import axios from 'axios';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
 export default function SendEmail() {
     const [data, setData] = useState({
@@ -13,10 +15,16 @@ export default function SendEmail() {
     const [dragActive, setDragActive] = useState(false);
     const [emailList, setEmailList] = useState([]);
     const [filteredEmails, setFilteredEmails] = useState([]);
+    const [showEmailList, setShowEmailList] = useState(false);
     const inputRef = useRef(null);
+    const emailListRef = useRef(null);
 
     useEffect(() => {
         fetchAllEmails();
+        document.addEventListener('mousedown', handleClickOutside);
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
     }, []);
 
     const fetchAllEmails = async () => {
@@ -37,12 +45,26 @@ export default function SendEmail() {
                 email.toLowerCase().includes(value.toLowerCase())
             );
             setFilteredEmails(filtered);
+            setShowEmailList(true);
         } else {
             setData(prevData => ({
                 ...prevData,
                 [name]: value
             }));
         }
+    };
+
+    const handleClickOutside = (event) => {
+        if (emailListRef.current && !emailListRef.current.contains(event.target)) {
+            setShowEmailList(false);
+        }
+    };
+
+    const handleBodyChange = (content) => {
+        setData(prevData => ({
+            ...prevData,
+            body: content
+        }));
     };
 
     const handleEmailSelect = (email) => {
@@ -52,6 +74,7 @@ export default function SendEmail() {
         }));
         setCurrentEmail('');
         setFilteredEmails([]);
+        setShowEmailList(false);
     };
 
     const handleRemoveEmail = (index) => {
@@ -172,44 +195,73 @@ export default function SendEmail() {
             file: null
         });
         setCurrentEmail('');
+        setFilteredEmails([]);
         if (inputRef.current) {
             inputRef.current.value = '';
         }
     };
 
+    const modules = {
+        toolbar: [
+            [{ 'header': [1, 2, false] }],
+            ['bold', 'italic', 'underline', 'strike', 'blockquote'],
+            [{'list': 'ordered'}, {'list': 'bullet'}, {'indent': '-1'}, {'indent': '+1'}],
+            ['link'],
+            ['clean']
+        ],
+    };
+
+    const formats = [
+        'header',
+        'bold', 'italic', 'underline', 'strike', 'blockquote',
+        'list', 'bullet', 'indent',
+        'link'
+    ];
+
     return (
         <div className="flex justify-center">
-            <form onSubmit={sendEmail} className="space-y-4">
-                <div className=''>
-                    <div className='text-left'>
-                        <label className='text-left'>To :</label>
-                    </div>
-                    <div className="relative">
+            <form onSubmit={sendEmail} className="w-full max-w-4xl pt-12 pb-12 space-y-4">
+                <div className='text-left'>
+                    <label className="block mb-1 text-sm font-medium text-orange-500">To:</label>
+                    <div className="flex">
                         <input
-                            type='email'
-                            placeholder='Enter email'
-                            className='px-3 py-2 bg-[#202024] text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-[600px]'
-                            name='to'
+                            type="email"
+                            placeholder="Enter email"
+                            className="flex-grow px-3 py-2 bg-[white] bg-opacity-10 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            name="to"
                             value={currentEmail}
                             onChange={handleChange}
+                            onFocus={() => setShowEmailList(true)}
                         />
-                        {filteredEmails.length > 0 && (
-                            <div className="absolute z-10 w-full bg-[#202024] mt-1 rounded-md shadow-lg">
-                                {filteredEmails.map((email, index) => (
-                                    <div 
-                                        key={index}
-                                        className="px-3 py-2 hover:bg-[#2c2c30] cursor-pointer"
-                                        onClick={() => handleEmailSelect(email)}
-                                    >
-                                        {email}
-                                    </div>
-                                ))}
-                            </div>
-                        )}
+                        <select 
+                            className="ml-4 bg-[#202024] px-3 py-2 rounded-md text-white "
+                            onChange={handleUserGroupSelect}
+                        >
+                            <option value="">--Select Users--</option>
+                            <option value="All">All</option>
+                            <option value="Admin">Admin</option>
+                            <option value="Recruiters">Recruiters</option>
+                            <option value="Hiring managers">Hiring managers</option>
+                            <option value="Interviewers">Interviewers</option>
+                            <option value="Candidates">Candidates</option>
+                        </select>
                     </div>
-                    <div className="flex flex-wrap gap-2 mt-2">
+                    {showEmailList && filteredEmails.length > 0 && (
+                        <div ref={emailListRef} className="absolute z-10 w-full max-w-2xl bg-[#19191A] mt-1 rounded-md shadow-lg max-h-60 overflow-y-auto">
+                            {filteredEmails.map((email, index) => (
+                                <div 
+                                    key={index}
+                                    className="px-3 py-2 hover:bg-[#2c2c30] cursor-pointer text-white"
+                                    onClick={() => handleEmailSelect(email)}
+                                >
+                                    {email}
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                    <div className="flex flex-wrap gap-2 mt-2 ">
                         {data.to.map((email, index) => (
-                            <div key={index} className="flex items-center px-2 py-1 text-white bg-blue-500 rounded-full">
+                            <div key={index} className="flex items-center px-2 py-1 text-white bg-[white] bg-opacity-10 rounded-full">
                                 {email}
                                 <button type="button" onClick={() => handleRemoveEmail(index)} className="ml-2 focus:outline-none">
                                     &times;
@@ -217,48 +269,34 @@ export default function SendEmail() {
                             </div>
                         ))}
                     </div>
-                    
-                    <select 
-                        className='bg-[#202024] mt-2 px-3 py-2 rounded-md'
-                        onChange={handleUserGroupSelect}
-                    >
-                        <option value="">--Select Users--</option>
-                        <option value="All">All</option>
-                        <option value="Admin">Admin</option>
-                        <option value="Recruiters">Recruiters</option>
-                        <option value="Hiring managers">Hiring managers</option>
-                        <option value="Interviewers">Interviewers</option>
-                        <option value="Candidates">Candidates</option>
-                    </select>
                 </div>
-                <div>
-                    <div className='text-left'>
-                        <label className='text-left'>Subject :</label>
-                    </div>
+                <div className='text-left'>
+                    <label className="block mb-1 text-sm font-medium text-orange-500">Subject:</label>
                     <input
-                        type='text'
-                        placeholder='Subject'
-                        className='px-3 py-2 bg-[#202024] text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 w-[1300px]'
-                        name='subject'
+                        type="text"
+                        placeholder="Subject"
+                        className="w-full px-3 py-2 bg-[white] bg-opacity-10 text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                        name="subject"
                         value={data.subject}
                         onChange={handleChange}
                     />
                 </div>
-                <div>
-                    <div className='text-left'>
-                        <label className='text-left'>Body :</label>
+                <div className='text-left'>
+                    <label className="block mb-1 text-sm font-medium text-orange-500">Body:</label>
+                    <div className="bg-[#202024] rounded-md h-[250px]">
+                        <ReactQuill 
+                            theme="snow"
+                            value={data.body}
+                            onChange={handleBodyChange}
+                            modules={modules}
+                            formats={formats}
+                            className="bg-[#202024] text-white rounded-md h-[200px]"
+                        />
                     </div>
-                    <textarea
-                        placeholder='Body'
-                        className='px-3 py-2 bg-[#202024] text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 h-32 w-[1300px]' 
-                        name='body'
-                        value={data.body}
-                        onChange={handleChange}
-                    />
                 </div>
-                <div className='flex justify-center'>
+                <div className="flex justify-center pt-6 ">
                     <div 
-                        className={`w-[600px] border-2 border-dashed border-orange-500 rounded-lg p-6 ${dragActive ? 'bg-gray-100' : ''}`}
+                        className={`w-full max-w-xl border-2 border-dashed border-orange-500 rounded-lg p-6 ${dragActive ? 'bg-[#2c2c30]' : ''} bg-[white] bg-opacity-10`}
                         onDragEnter={handleDrag}
                         onDragLeave={handleDrag}
                         onDragOver={handleDrag}
@@ -266,25 +304,23 @@ export default function SendEmail() {
                     >
                         <input
                             ref={inputRef}
-                            type='file'
+                            type="file"
                             id="fileInput"
-                            className='hidden'
+                            className="hidden border"
                             onChange={handleFileChange}
                         />
-                        <label htmlFor="fileInput" className="text-center cursor-pointer">
-                            <div>
-                                <p className="mb-2 text-gray-500">Drag and drop your file here or</p>
-                                <button type="button" className="text-blue-500 hover:underline" onClick={handleButtonClick}>
-                                    Upload a file
-                                </button>
-                            </div>
+                        <label htmlFor="fileInput" className="block text-center cursor-pointer">
+                            <p className="mb-2 text-gray-300">Drag and drop your file here or</p>
+                            <button type="button" className="text-orange-500 hover:underline" onClick={handleButtonClick}>
+                                Upload a file
+                            </button>
                         </label>
-                        {data.file && <p className="mt-2 text-sm text-gray-500">Selected file: {data.file.name}</p>}
+                        {data.file && <p className="mt-2 text-sm text-gray-300">Selected file: {data.file.name}</p>}
                     </div>
                 </div>
-                <div className='flex justify-center space-x-4'>
-                    <button type='submit' className="px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">Send</button>
-                    <button type='button' onClick={handleClear} className="px-4 py-2 text-white bg-gray-500 rounded-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">Clear</button>
+                <div className="flex justify-center space-x-4">
+                    <button type="submit" className="px-4 py-2 text-white bg-orange-500 rounded-md hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-offset-2">Send</button>
+                    <button type="button" onClick={handleClear} className="px-4 py-2 text-white bg-gray-500 rounded-md hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2">Clear</button>
                 </div>
             </form>
         </div>
