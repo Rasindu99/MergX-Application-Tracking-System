@@ -23,7 +23,7 @@ const Invitation = () => {
     setAllInterviews,
     updateFlag,
     wishListedInterviews,
-    setWishListedInterviews
+    setWishListedInterviews,
   } = useInterviewContext();
 
   const [filter, setFilter] = useState("all");
@@ -73,6 +73,20 @@ const Invitation = () => {
   const filteredInterviews = interviews.filter((interview) => !deletedInterviews.includes(interview._id));
   console.log('fileteredInterviews', filteredInterviews);
 
+  const sortItems = (items, readItems) => {
+    return items.slice().sort((a, b) => {
+      if (readItems.includes(a._id) && !readItems.includes(b._id)) {
+        return -1;
+      }
+      if (!readItems.includes(a._id) && readItems.includes(b._id)) {
+        return 1;
+      }
+      return 0;
+    });
+  };
+
+  const sortedInterviews = sortItems(filteredInterviews, readInterviews);
+
   const getFilteredInterviews = () => {
     switch (filter) {
       case 'viewed':
@@ -83,7 +97,7 @@ const Invitation = () => {
         return filteredInterviews.filter((interview) => !readInterviews.includes(interview._id));
       case 'all':
       default:
-        return filteredInterviews;
+        return sortedInterviews;
     }
   };
 

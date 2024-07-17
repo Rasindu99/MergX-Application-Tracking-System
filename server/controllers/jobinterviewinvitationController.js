@@ -33,6 +33,7 @@ const getinvitationsendistrue = async (req, res) => {
        return res.status(500).json({message: error.message}) 
     }
 }
+
 //update sendbutton
 const updateSend = async (req, res) => {
     const { send } = req.body;

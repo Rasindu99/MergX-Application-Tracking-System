@@ -113,10 +113,10 @@ const Interview = ({ interview, isRead, isWishListed }) => {
   const gradientClass = isRead ? 'from-[#2B2B2B] to-[#333333]': 'from-[#5B5959] to-[#3D3D3D]'; 
 
   return (
-    <div className={`interview-row hover:opacity-80 p-3 bg-gradient-to-b ${gradientClass}`} key={interview._id}>
+    <div className={`interview-row hover:opacity-80 p-3 bg-gradient-to-b ${gradientClass} `} key={interview._id}>
       <div className="flex items-center justify-around summary">
-        <span className='w-[200px]'>{interview.subject}</span>
-        <span className='w-2/5'>{formattedDate}</span>
+        <span className='w-[200px] text-neutral-400'>{interview.jobtitle}</span>
+        <span className='w-2/5 text-neutral-300'>{formattedDate}</span>
 
         <div className='z-10 flex justify-around w-1/5'>
 
@@ -151,11 +151,8 @@ const Interview = ({ interview, isRead, isWishListed }) => {
         </div>
       </div>
       {detailsVisible && (
-        <div className="mt-4 details">
-          <p>Interview Date: {interview.interviewDate}</p>
-          <p>Position: {interview.position}</p>
-          <p>Location: {interview.location}</p>
-          <a href="#" className="text-blue-500 underline">Full Details</a>
+        <div className="mt-4 details flex flex-col w-full bg-neutral-600 rounded-b-lg">
+          <p className='w-2/4 mx-auto text-base py-2 text-neutral-300'> {interview.description}</p>
         </div>
       )}
     </div>

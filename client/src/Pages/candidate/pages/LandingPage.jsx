@@ -5,22 +5,30 @@ import AvatarBio from '../../../Components/candidateComp/LandingPage/AvatarBio'
 import Description from '../../../Components/candidateComp/LandingPage/Description'
 import Education from '../../../Components/candidateComp/LandingPage/Education'
 import LoadingWheel from '../../../Components/LoadingComp/LoadingWheel'
+import { useInterviewContext } from '../../../Context/InterviewContext'
+import CardS from '../../../Components/candidateComp/LandingPage/CardS'
 import axios from 'axios'
 
 
 const LandingPage = () => {
 
   const [profileData, setProfileData] = useState(null);
+  const {triggerUpdate} = useInterviewContext();
 
-  useEffect(() => {
+  const fetchProfileData = () => {
     axios.get('/profile')
       .then(response => {
         setProfileData(response.data);
+        triggerUpdate();
       })
       .catch(error => {
         console.error('Error fetching profile:', error);
-      })
-  },[]);
+      });
+  };
+
+  useEffect(() => {
+    fetchProfileData();
+  }, []);
 
   if (!profileData) {
     return (
@@ -38,9 +46,9 @@ const LandingPage = () => {
         <Description description={profileData.bio}/>
       </div>
       <div className='flex flex-wrap gap-9 justify-center mb-3'>
-        <Card />
-        <Card2 />
-        <Card />
+        <Card  w={170} h={170} />
+        <Card2  w={170} h={170} />
+        <CardS  w={170} h={170} />
       </div>
 
     </div>

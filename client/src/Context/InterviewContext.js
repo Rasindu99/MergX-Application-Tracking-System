@@ -54,7 +54,7 @@ export const InterviewContextProvider = ({ children }) => {
         localReadAnnouncementData,
         setLocalReadAnnouncementData,
         wishListedInterviews, 
-        setWishListedInterviews
+        setWishListedInterviews,
       }}
     >
       {children}

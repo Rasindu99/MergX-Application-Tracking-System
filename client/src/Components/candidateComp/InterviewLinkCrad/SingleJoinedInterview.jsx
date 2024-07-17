@@ -25,7 +25,7 @@ const SingleJoinedInterview = ({ application, startedEvaluations, isVisible, onT
   useEffect(() => {
     const applicationExists = startedEvaluations.filter(evaluation => evaluation.job_id === application.job_id);
     setFilteredEvaluations(applicationExists);
-    console.log(applicationExists);
+    console.log("Joined -",applicationExists);
   }, [startedEvaluations, application.job_id]);
 
   return (

@@ -10,11 +10,11 @@ const ProgressTimeline = ({applicationExists}) => {
     const app = applicationExists[0];
     if (app.isHired) {
       a = 4; // hired
-    } else if (app.hiringManagerComment !== ' ') {
+    } else if (app.hiringManagerComment !== '') {
       a = 3; // only hiring manager feedbacked
-    } else if (app.recruiterComment !== ' ' && app.hiringManagerComment === ' ') {
+    } else if (app.recruiterComment !== '' && app.hiringManagerComment === '') {
       a = 2; // interviewer and recruiter feedbacked
-    } else if (app.interviewercomments !== ' ' && app.recruiterComment === ' ' && app.hiringManagerComment === ' ') {
+    } else if (app.interviewercomments !== '' && app.recruiterComment === '' && app.hiringManagerComment === '') {
       a = 1; // started evaluation only interviewer feedbacked
     }
   }

@@ -13,6 +13,7 @@ export default function InterviewLinkCard() {
     const [showInterview, setShowInterview] = useState(false);
     const [selectedInterview, setSelectedInterview] = useState(null);
     const [show, setShow] = useState(false);
+    const [loading, setLoading] = useState(true);
 
     const formatDate = (dateString) => {
         if (!dateString) return 'Not scheduled';
@@ -24,6 +25,7 @@ export default function InterviewLinkCard() {
         try {
             const response = await axios.get('/cv/getapprovedapplication');
             setApprovedJobs(response.data);
+            setLoading(false);
         } catch (error) {
             console.error('cant get approved application :', error);
         }
@@ -112,7 +114,7 @@ export default function InterviewLinkCard() {
         <div className='h-full w-full'>
             <div className='flex justify-center h-full w-full'>
                 
-                <UpCommingInt approvedJobs={approvedJobs} formatDate={formatDate} handleJoinInterview={handleJoinInterview} />
+                <UpCommingInt approvedJobs={approvedJobs} formatDate={formatDate} handleJoinInterview={handleJoinInterview} loading={loading}/>
                 
                 <JoinedInterviews user={user} isjoinedTrue={isjoinedTrue} />
                 

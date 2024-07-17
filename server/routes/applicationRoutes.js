@@ -3,7 +3,15 @@ const router = express.Router();
 const cors = require('cors');
 
 
-const { uploadApplication, getApplicationsGroupedByJobId, approveApplication, rejectApplication, getapprovedtruedata, getisjoinedtrue,getApplications, updateisjoinedtrue} = require('../controllers/applicationController');
+const { 
+  uploadApplication, 
+  getApplicationsGroupedByJobId, 
+  approveApplication, 
+  rejectApplication, 
+  getapprovedtruedata, 
+  getisjoinedtrue,
+  getApplications, 
+  updateisjoinedtrue} = require('../controllers/applicationController');
 
 
 const upload = require('../helpers/upload');
