@@ -134,7 +134,7 @@ export default function AdminNav() {
                         </div>
                     </div>
                 </nav>
-            </div>
+            </div>   
         </div>
     );
 }

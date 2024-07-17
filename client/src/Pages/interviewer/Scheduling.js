@@ -9,6 +9,7 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 import ScheduledInterviews from '../../Components/interviewercomp/ScheduledInterviews';
 import { MdOutlineClose } from "react-icons/md";
+import AdminChatBotBottom from '../../Components/admincomp/AdminChatBotBottom';
 
 export default function Scheduling() {
 
@@ -264,13 +265,13 @@ export default function Scheduling() {
             <Description name={name} />
           </div>
 
-          <div id='background' className="w-80 h-80vh rounded-3xl z-0 mt-24 mx-8 grid grid-cols-3">
-            <div className='flex flex-col items-start py-10 px-5 col-span-1'>
+          <div id='background' className="z-0 grid grid-cols-3 mx-8 mt-24 w-80 h-80vh rounded-3xl">
+            <div className='flex flex-col items-start col-span-1 px-5 py-10'>
               <div className='pl-5'>
                  <ViewJobButton/>
               </div>
-              <div className='mt-14 pl-5'>
-                <p className='text-2xl text-white text-left mb-8 text-opacity-50'>Calender</p>
+              <div className='pl-5 mt-14'>
+                <p className='mb-8 text-2xl text-left text-white text-opacity-50'>Calender</p>
                 <Calendar
                   onChange={setDate}
                   value={date}
@@ -278,7 +279,7 @@ export default function Scheduling() {
                 />
               </div>
             </div>
-            <div className='px-5 col-span-2 py-10'>
+            <div className='col-span-2 px-5 py-10'>
               <div>
                 <p className='text-3xl'>{formattedDate}</p>
                 <div className='mt-10 overflow-y-auto h-[450px]'>
@@ -309,13 +310,13 @@ export default function Scheduling() {
       </div>
 
       {showPopup && (
-        <div className='fixed top-0 left-0 w-full h-full flex justify-center items-center bg-white bg-opacity-5 backdrop-blur z-50'>
+        <div className='fixed top-0 left-0 z-50 flex items-center justify-center w-full h-full bg-white bg-opacity-5 backdrop-blur'>
           <div className='bg-[#2B2B2BE5] opacity-90 relative w-[60rem] h-[46rem] border-2 border-[#EA712287] rounded-3xl px-5'>
-            <MdOutlineClose size={25} className='absolute top-5 right-5 cursor-pointer' onClick={togglePopup} />
-            <p className='text-3xl bold mt-5 text-center'>{formattedDate}</p>
+            <MdOutlineClose size={25} className='absolute cursor-pointer top-5 right-5' onClick={togglePopup} />
+            <p className='mt-5 text-3xl text-center bold'>{formattedDate}</p>
             <form className='p-8' onSubmit={handleSubmit}>
               <div className='flex items-center justify-between'>
-               <label className='text-white flex items-center gap-10'>
+               <label className='flex items-center gap-10 text-white'>
                   Start Time:
                   <input
                     type="time"
@@ -326,7 +327,7 @@ export default function Scheduling() {
                     className='block w-2/4 mt-1 p-2 bg-[#2B2B2BE5] border-2 border-white border-opacity-10 rounded-xl'
                   />
                 </label>
-                <label className='text-white flex items-center gap-10'>
+                <label className='flex items-center gap-10 text-white'>
                   End Time:
                   <input
                     type="time"
@@ -341,7 +342,7 @@ export default function Scheduling() {
               </div>
               <div className='grid items-center gap-4 mt-5'>
                 <div className='flex items-center'>
-                  <label className='text-white flex items-center gap-10 w-48'>Meeting Link</label>
+                  <label className='flex items-center w-48 gap-10 text-white'>Meeting Link</label>
                   <input
                       type="url"
                       name="meetingLink"
@@ -352,7 +353,7 @@ export default function Scheduling() {
                     />
                 </div>
                 <div className='flex items-center'>
-                  <label className='text-white flex items-center gap-10 w-48'>Password</label>
+                  <label className='flex items-center w-48 gap-10 text-white'>Password</label>
                   <input
                       type="text"
                       name="password"
@@ -363,7 +364,7 @@ export default function Scheduling() {
                     />
                 </div>
                 <div className='flex items-center'>
-                  <label className='text-white flex items-center gap-10 w-48'>Subject</label>
+                  <label className='flex items-center w-48 gap-10 text-white'>Subject</label>
                   <input
                       type="text"
                       name="subject"
@@ -374,7 +375,7 @@ export default function Scheduling() {
                     />
                 </div>
                 <div className='flex items-center'>
-                  <label className='text-white flex items-center gap-10 w-48'>Interviewer</label>
+                  <label className='flex items-center w-48 gap-10 text-white'>Interviewer</label>
                   <select 
                     type="text"
                     name="assign"
@@ -393,7 +394,7 @@ export default function Scheduling() {
                   </select>
                 </div>
                 <div className='flex items-center'>
-                  <label className='text-white flex items-center gap-10 w-48'>Expirience</label>
+                  <label className='flex items-center w-48 gap-10 text-white'>Expirience</label>
                   <input
                       type="text"
                       name="experience"
@@ -404,7 +405,7 @@ export default function Scheduling() {
                     />
                 </div>
                 <div className='flex items-center'>
-                  <label className='text-white flex items-center gap-10 w-48'>Skills</label>
+                  <label className='flex items-center w-48 gap-10 text-white'>Skills</label>
                   <input
                       type="text"
                       name="skills"
@@ -415,7 +416,7 @@ export default function Scheduling() {
                     />
                 </div>
                 <div className='flex items-center'>
-                  <label className='text-white flex items-start gap-10 w-48'>Description</label>
+                  <label className='flex items-start w-48 gap-10 text-white'>Description</label>
                   <textarea
                       name="description"
                       value={formData.description}
@@ -434,6 +435,10 @@ export default function Scheduling() {
         </div>
         )
       }
+       {/* Move AdminChatBotBottom here and wrap it in a positioned div */}
+       <div className="absolute bottom-0 right-0 z-50">
+        <AdminChatBotBottom/>
+      </div>
     </>
   );
 }

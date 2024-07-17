@@ -3,6 +3,7 @@ import AdminNav from '../../Components/admincomp/AdminNav'
 
 import CreateUserAccountForm from '../../Components/admincomp/CreateUserAccountForm'
 import Adminheadrightbar from '../../Components/admincomp/Adminheadrightbar'
+import AdminChatBotBottom from '../../Components/admincomp/AdminChatBotBottom'
 
 
 
@@ -40,6 +41,10 @@ export default function CreateUserAccounts() {
          
                   
                 </div>
+                 {/* Move AdminChatBotBottom here and wrap it in a positioned div */}
+      <div className="absolute bottom-0 right-0 z-50">
+        <AdminChatBotBottom/>
+      </div>
       
     </div>
   )

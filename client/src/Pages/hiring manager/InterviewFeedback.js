@@ -7,6 +7,7 @@ import HiringmanagerNav from "../../Components/hiringManagerCompo/HiringManagerN
 import { UserContext } from "../../Context/UserContext.js";
 import { toast } from "react-hot-toast";
 import { IoChevronBackCircle } from "react-icons/io5";
+import AdminChatBotBottom from "../../Components/admincomp/AdminChatBotBottom.js";
 
 export default function InterviewFeedback() {
   const [selected, setselected] = useState(null);
@@ -414,7 +415,7 @@ const setSubmitFalse =()=>{
                   alt=""
                   className=" userImg  rounded-[50%] border-[solid] border-[#ffffff] ml-[0.7rem] esm:w-[20px] esm:h-[20px]  450px:w-[30px] 450px:h-[30px]  sm:w-[35px] sm:h-[35px] border-[1.5px]  lg:w-[100px] lg:h-[100px] lg:border-[2px] md:w-[37px] md:h-[37px] md:border-[2px] sm:m-1 esm:m-[3px]"
                 />
-                <div className="details flex flex-col justify-evenly  ">
+                <div className="flex flex-col details justify-evenly ">
                   <p className="text-left">{selected.username}</p>
                   <p className="text-left text-[#ffffff] opacity-[30%] ">
                     {selected.post}
@@ -423,7 +424,7 @@ const setSubmitFalse =()=>{
                     Interviewer Name:{data.interviewername}
                   </p>
                 </div>
-                <div className="flex flex-col  ">
+                <div className="flex flex-col ">
               {submited && !data.isHired && !data.isRejected && showEvaluated?(<label htmlFor="" className="p-[5px] rounded-[10px] bg-[#EA7122] h-fit "> Evaluated</label>):null}  
               {data.isHired && showEvaluated? (  <label htmlFor="" className="p-[5px] rounded-[10px] bg-green-700 h-fit " >Hired</label>):null}   
               {data.isRejected && showEvaluated? (      <label htmlFor="" className="p-[5px] rounded-[10px] bg-[#484848] h-fit text-[red] ">Rejected</label>):null} 
@@ -486,28 +487,28 @@ const setSubmitFalse =()=>{
                   <div className="flex flex-col justify-center gap-48  md:flex-row  pb-[10px]">
                     <div className="flex flex-col mb-[20px]">
                       <PieCharts percentage={data.addcomment}></PieCharts>
-                      <p className="text-white m-auto">Add Comment</p>
+                      <p className="m-auto text-white">Add Comment</p>
                     </div>
                     <div className="flex flex-col mb-[20px]">
                       <PieCharts percentage={data.collaboration}></PieCharts>
-                      <p className="text-white m-auto">
+                      <p className="m-auto text-white">
                         Effective Collaboration
                       </p>
                     </div>
                   </div>
 
-                  <div className="flex flex-col md:flex-row justify-around">
+                  <div className="flex flex-col justify-around md:flex-row">
                     <div className="flex flex-col m-auto mb-[20px]">
                       <PieCharts percentage={data.adoptability}></PieCharts>
-                      <p className="text-white m-auto">Adoptability</p>
+                      <p className="m-auto text-white">Adoptability</p>
                     </div>
                     <div className="flex flex-col m-auto mb-[20px]">
                       <PieCharts percentage={data.decisionmaking}></PieCharts>
-                      <p className="text-white m-auto">Decision Making</p>
+                      <p className="m-auto text-white">Decision Making</p>
                     </div>
                     <div className="flex flex-col m-auto mb-[20px]">
                       <PieCharts percentage={data.leadership}></PieCharts>
-                      <p className="text-white m-auto">Leadership Style</p>
+                      <p className="m-auto text-white">Leadership Style</p>
                     </div>
                   </div>
                 </div>
@@ -523,14 +524,14 @@ const setSubmitFalse =()=>{
                         percentage={data.problemsolution}
                         topic="Problem Solution"
                       ></PieCharts>
-                      <p className="text-white m-auto">Problem Solution</p>
+                      <p className="m-auto text-white">Problem Solution</p>
                     </div>
                     <div className="flex flex-col m-auto mb-[20px]">
                       <PieCharts
                         percentage={data.languageproficiency}
                         topic="Language Proficiency"
                       ></PieCharts>
-                      <p className="text-white m-auto">Language Proficiency</p>
+                      <p className="m-auto text-white">Language Proficiency</p>
                     </div>
                   </div>
                 </div>
@@ -547,21 +548,21 @@ const setSubmitFalse =()=>{
                         percentage={data.technical}
                         topic="Technical details"
                       ></PieCharts>
-                      <p className="text-white m-auto">Technical Details</p>
+                      <p className="m-auto text-white">Technical Details</p>
                     </div>
                     <div className="flex flex-col m-auto mb-[20px]">
                       <PieCharts
                         percentage={data.cultural}
                         topic="Culteral Fit"
                       ></PieCharts>
-                      <p className="text-white m-auto">Culteral Fit </p>
+                      <p className="m-auto text-white">Culteral Fit </p>
                     </div>
                     <div className="flex flex-col m-auto mb-[20px]">
                       <PieCharts
                         percentage={data.communication}
                         topic="Communication"
                       ></PieCharts>
-                      <p className="text-white m-auto">Communication</p>
+                      <p className="m-auto text-white">Communication</p>
                     </div>
                   </div>
                 </div>
@@ -570,20 +571,20 @@ const setSubmitFalse =()=>{
                     feedbackTab === 2 ? "block" : "hidden"
                   } `}
                 >
-                  <div className="flex flex-col  md:flex-row justify-around">
+                  <div className="flex flex-col justify-around md:flex-row">
                     <div className="flex flex-col m-auto mb-[20px]">
                       <PieCharts
                         percentage={data.clarity}
                         topic="Clarity"
                       ></PieCharts>
-                      <p className="text-white m-auto">Clarity</p>
+                      <p className="m-auto text-white">Clarity</p>
                     </div>
                     <div className="flex flex-col m-auto mb-[20px]">
                       <PieCharts
                         percentage={data.activelistening}
                         topic="Active listening"
                       ></PieCharts>
-                      <p className="text-white m-auto">Active listening</p>
+                      <p className="m-auto text-white">Active listening</p>
                     </div>
 
                     <div className="flex flex-col m-auto mb-[20px]">
@@ -591,14 +592,14 @@ const setSubmitFalse =()=>{
                         percentage={data.empathy}
                         topic="Empathy"
                       ></PieCharts>
-                      <p className="text-white m-auto">Empathy</p>
+                      <p className="m-auto text-white">Empathy</p>
                     </div>
                     <div className="flex flex-col m-auto mb-[20px]">
                       <PieCharts
                         percentage={data.presentationskills}
                         topic="Presentation Skill"
                       ></PieCharts>
-                      <p className="text-white m-auto">Presenation Skill</p>
+                      <p className="m-auto text-white">Presenation Skill</p>
                     </div>
                   </div>
                 </div>
@@ -668,6 +669,10 @@ const setSubmitFalse =()=>{
             </div>
           ) : null}
         </div>
+      </div>
+       {/* Move AdminChatBotBottom here and wrap it in a positioned div */}
+       <div className="absolute bottom-0 right-0 z-50">
+        <AdminChatBotBottom/>
       </div>
     </div>
   );
