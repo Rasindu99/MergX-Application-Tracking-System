@@ -1,4 +1,5 @@
 const InterviewSchedule = require('../models/interviewSchedule');
+const JobPosting = require('../models/jobposting');
 
 //get interview invitation send = false
 const getinvitationsendisfalse = async (req, res) => {
@@ -20,19 +21,21 @@ const getinvitationsendisfalse = async (req, res) => {
 //get interview invitation send = true
 const getinvitationsendistrue = async (req, res) => {
     try {
-        const interviewschedules = await InterviewSchedule.find({send : true }).sort({ createdAt: -1 });
+        const jobPostings = await JobPosting.find({ expired: false }).select('_id'); // Fetch non-expired job postings
+        const validJobIds = jobPostings.map(job => job._id.toString());
+
+        const interviewschedules = await InterviewSchedule.find({ send: true, jobId: { $in: validJobIds } }).sort({ createdAt: -1 });
 
         if (!interviewschedules || interviewschedules.length === 0) {
-            return res.status(404).json({ message: "All are expired job " });
+            return res.status(404).json({ message: "All are expired jobs" });
         }
 
-        // Return the array of job postings
         return res.status(200).json(interviewschedules);
     } catch (error) {
-       console.log(error);
-       return res.status(500).json({message: error.message}) 
+        console.log(error);
+        return res.status(500).json({ message: error.message });
     }
-}
+};
 //update sendbutton
 const updateSend = async (req, res) => {
     const { send } = req.body;
