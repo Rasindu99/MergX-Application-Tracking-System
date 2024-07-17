@@ -16,13 +16,36 @@ const ScheduledInterviews = ({ interviewTitle, interviewTime, onDelete, onUpdate
 
   const [showPopup, setShowPopup] = useState(false);
 
+  const [users, setUsers] = useState([]);
+
+  const fetchUsers = async () => {
+    try {
+      const response = await fetch('http://localhost:8000/getusers');
+      if (response.ok) {
+        const data = await response.json();
+        setUsers(data);
+      } else {
+        console.error('Failed to fetch users');
+      }
+    } catch (error) {
+      console.error('Error fetching users:', error);
+    }
+  };
+
+  useEffect(() => {
+
+    fetchUsers();
+
+  }, []);
+
   const [formData, setFormData] = useState({
     date: formatDate(interview?.date) || '',
     startTime: interview?.start_time || '',
     endTime: interview?.end_time || '',
     meetingLink: interview?.link || '',
     password: interview?.password || '',
-    subject: interview?.subject || ''
+    subject: interview?.subject || '',
+    assign: interview?.assign || ''
   });
 
   const togglePopup = () => {
@@ -36,7 +59,8 @@ const ScheduledInterviews = ({ interviewTitle, interviewTime, onDelete, onUpdate
       endTime: interview.end_time || '',
       meetingLink: interview.link || '',
       password: interview.password || '',
-      subject: interview.subject || ''
+      subject: interview.subject || '',
+      assign: interview.assign || ''
     });
   }, [interview]);
 
@@ -46,7 +70,6 @@ const ScheduledInterviews = ({ interviewTitle, interviewTime, onDelete, onUpdate
   };
 
   const handleSubmit = (e) => {
-    console.log(formData);
     e.preventDefault();
     onUpdate(interview._id, formData);
     togglePopup();
@@ -68,7 +91,7 @@ const ScheduledInterviews = ({ interviewTitle, interviewTime, onDelete, onUpdate
             <MdOutlineClose size={25} className='absolute top-5 right-5 cursor-pointer' onClick={togglePopup} />
             <form className='p-8' onSubmit={handleSubmit}>
               <div className='grid items-center gap-4 mt-5 px-32'>
-                <p className='text-2xl text-center mt-5 mb-10'>{interviewTitle}</p>
+              <p className='text-2xl text-center mt-5 mb-5'>{interviewTitle}</p>
                 <div className='flex items-center'>
                   <label className='text-white flex items-center gap-10 w-48'>Scheduled Date</label>
                     <input
@@ -135,7 +158,26 @@ const ScheduledInterviews = ({ interviewTitle, interviewTime, onDelete, onUpdate
                       className='block w-full mt-1 p-2 bg-[#2B2B2BE5] border-2 border-white border-opacity-10 rounded-xl'
                     />
                 </div>
-                <div className='flex items-center justify-center mt-10'>
+                <div className='flex items-center'>
+                  <label className='text-white flex items-center gap-10 w-48'>Interviewer</label>
+                  <select 
+                    type="text"
+                    name="assign"
+                    value={formData.assign}
+                    onChange={handleChange}
+                    required
+                    className='block w-full mt-1 p-2 bg-[#2B2B2BE5] border-2 border-white border-opacity-10 rounded-xl'>
+                      <option value="" disabled>Select Interviewer</option>
+                    {users
+                      .filter(user => user.role === 'interviewer')
+                      .map(interviewer => (
+                        <option key={interviewer._id} value={interviewer._id}>
+                          {interviewer.fname}  {interviewer.lname}
+                        </option>
+                      ))}
+                  </select>
+                </div>
+                <div className='flex items-center justify-center mt-8'>
                   <button type="submit" className='bg-[#EA7122] w-44 h-12 rounded-full'>Update</button>
                 </div>
               </div>

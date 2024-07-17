@@ -6,7 +6,8 @@ const {
     createEvalautions, 
     //  updateEvaluation,
       getEvaluation,
-      getimg,getpost,
+      getimg,
+      getpost,
       getEvaCandidates,
       getNotEvaluatedApplications,
       updateIsEvaluated,
@@ -20,6 +21,7 @@ const {
       getcandidateforfinaldecision,
       gethiredCandidtaesList,
       getrejectedList,
+      getHiredCandidatesCount,
       getEvaCandidatesByJobAndUser} = require('../controllers/evaluationController');
 
 router.use(
@@ -47,8 +49,6 @@ router.put('/updatecheckedhiringmanager/:_id',updatecheckedhiringmanager);
 router.get('/getcandidateforfinaldecision',getcandidateforfinaldecision);
 router.get('/gethiredCandidtaesList',gethiredCandidtaesList);
 router.get('/getrejectedList',getrejectedList);
-
-router.get('/getEvaCandidatesByJobAndUser',getEvaCandidatesByJobAndUser );
 
 
 module.exports = router;

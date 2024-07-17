@@ -58,6 +58,7 @@ app.use('/', authRoutes);
 app.use('/reporting', require('./routes/ReportingRoutes'));
 app.use('/dashboard', require('./routes/HMDashboardRoutes'));
 app.use('/qanda', require('./routes/qandaRoutes.js'));
+app.use('/email', require('./routes/emailRoutes.js'));
 
 
 app.put('/evaluation/updateevaluation/:_id', async (req, res) => {

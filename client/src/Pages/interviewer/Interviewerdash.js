@@ -3,7 +3,6 @@ import { UserContext } from '../../Context/UserContext';
 import InterviewNav from '../../Components/interviewercomp/InterviewNav'
 import './custom.css';
 import Header from '../../Components/interviewercomp/InterviewerHeader';
-import Card from '../../Components/interviewercomp/Card';
 import InterviewBar from '../../Components/interviewercomp/InterviewBar';
 import axios from 'axios';
 import CardL from '../../Components/hiringManagerCompo/CardL.jsx'
@@ -11,16 +10,18 @@ import CardL from '../../Components/hiringManagerCompo/CardL.jsx'
 
 export default function Interviewerdash() {
 
-
+  const { user } = useContext(UserContext);
   const [interviews, setInterviews] = useState([]);
   const today = new Date();
 
   const selectedDateSchedules = interviews.filter(schedule =>
       new Date(schedule.date).toLocaleDateString() === today.toLocaleDateString()
+      && schedule.assign === user._id
   );
+
   const [carddetails,setCardDetails] = useState({
-    applications :0,
-    acceptedApplications:0,
+   applications :0,
+   acceptedApplications:0,
    todayinterveiw:0,
    interviewedCandiates:0
 
@@ -146,7 +147,7 @@ export default function Interviewerdash() {
         <div id='background'  className=" w-80 h-80vh rounded-3xl z-0 mt-24 mx-8">
           <div className='flex items-center justify-around mt-5'>
              <CardL  name="Applications" subName="to evaluate" val={carddetails.acceptedApplications-carddetails.interviewedCandiates }></CardL>
-             <CardL name='Today' subName="interviews" val={carddetails.todayinterveiw}></CardL>
+             <CardL name='Today' subName="interviews" val={selectedDateSchedules.length}></CardL>
              <CardL name='New Messages' val='3'></CardL>
              <CardL name="Total" subName="Candidates" val={carddetails.candidates}></CardL>
              
