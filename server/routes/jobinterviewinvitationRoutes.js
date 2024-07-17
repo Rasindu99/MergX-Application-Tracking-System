@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const cors = require('cors');
-const { getinvitationsendisfalse, getinvitationsendistrue, updateSend } = require('../controllers/jobinterviewinvitationController');
+const { getinvitationsendisfalse, getinvitationsendistrue,getnonexpiredinvitations, updateSend } = require('../controllers/jobinterviewinvitationController');
 
 router.use(
     cors({
@@ -12,6 +12,7 @@ router.use(
 
 router.get('/sendinvitation', getinvitationsendisfalse);
 router.get('/sentinvitation', getinvitationsendistrue);
+router.get('/getnonexpiredinvitations', getnonexpiredinvitations);
 router.put('/send/:id',updateSend)
 
 module.exports = router;
