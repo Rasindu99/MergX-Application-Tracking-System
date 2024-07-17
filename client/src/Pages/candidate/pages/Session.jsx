@@ -1,4 +1,6 @@
-import {React, useState} from 'react'
+import React, {useState, useRef } from 'react';
+import html2canvas from 'html2canvas-pro';
+import jsPDF from 'jspdf';
 import InterviewLinkCard from '../../../Components/candidateComp/InterviewLinkCrad/InterviewLinkCard';
 import { MdKeyboardAlt } from "react-icons/md";
 import Draggable from 'react-draggable';
@@ -88,6 +90,41 @@ const Session = () => {
         }));
       };
     }
+  };
+
+  const divRef = useRef(null);
+
+  const printAndDownloadPDF = () => {
+    const div = divRef.current;
+    console.log('Printing');
+
+    html2canvas(div, { useCORS: true }).then((canvas) => {
+      const imgData = canvas.toDataURL('image/png');
+      const pdf = new jsPDF({
+        orientation: 'portrait',
+        unit: 'mm',
+        format: 'a4',
+      });
+
+      const imgWidth = 210; // A4 width in mm
+      const pageHeight = 295; // A4 height in mm
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+      let heightLeft = imgHeight;
+
+      let position = 0;
+
+      pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+      heightLeft -= pageHeight;
+
+      while (heightLeft >= 0) {
+        position = heightLeft - imgHeight;
+        pdf.addPage();
+        pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+        heightLeft -= pageHeight;
+      }
+
+      pdf.save('download.pdf');
+    });
   };
   
 
@@ -272,7 +309,7 @@ const Session = () => {
         </div>
       </div>
 
-      <div id="preview-sc" class="print_area w-4/5">
+      <div id="preview-sc" class="print_area w-4/5" ref={divRef}>
         <div class="w-full">
           <div class="preview-cnt">
             <div class="preview-cnt-l bg-green text-white">
@@ -382,7 +419,7 @@ const Session = () => {
 
               <div class="flex flex-col items-start w-full  mb-3 mt-4">
                 <div className='w-full p-1 border-b border-neutral-500 mb-3'>
-                  <h3 className='text-xl font-bold text-start text-neutral-600 uppercase'>PROJECTS</h3>
+                  <h3 className='text-xl font-bold text-start text-neutral-600 uppercase'>PROJECTS oklch</h3>
                 </div>
                 {projects.map((project, index) => (
                   <div key={index} className='w-full mt-3'>
@@ -406,11 +443,11 @@ const Session = () => {
         </div>
       </div>
 
-      <div class="print-btn-sc w-4/5 flex justify-start">
-        <div class=''>
-          <button type="button" class="bg-orange-700 p-2 rounded-md w-24 hover:bg-orange-600" onclick="printCV()">Print CV</button>
-        </div>
-      </div>
+      
+      
+        <button type="button" class="bg-orange-700 p-2 rounded-md w-24 hover:bg-orange-600 cursor-pointer z-50" onClick={printAndDownloadPDF}>Print CV</button>
+      
+      
 
     </div>
   )

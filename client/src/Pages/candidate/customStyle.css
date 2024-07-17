@@ -625,7 +625,7 @@ textarea{
     display: block;
     font-weight: 600;
     margin-bottom: 1rem;
-    background-color: rgba(0, 0, 0, 0.03);
+    background-color: rgba(0, 0, 0, 0.03); 
 }
 
 .educations-items.preview-blk-list .preview-item span:nth-child(2),
@@ -708,6 +708,7 @@ textarea{
         overflow: hidden;
     }
 }
+
 
 
 
