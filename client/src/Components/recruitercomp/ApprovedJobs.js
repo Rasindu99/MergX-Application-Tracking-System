@@ -111,6 +111,9 @@ export default function ApprovedJobs() {
                                 </div>
                             </div>
                         ))}
+                        {jobPostings.length === 0 && (
+                            <p className="text-white opacity-25 text-center mt-4">No approved jobs found</p>
+                        )}                       
                     </div>
                 </div>
             </div>
