@@ -220,7 +220,7 @@ export default function SendEmail() {
 
     return (
         <div className="flex justify-center">
-            <form onSubmit={sendEmail} className="w-full max-w-4xl pt-12 space-y-4">
+            <form onSubmit={sendEmail} className="w-full max-w-4xl pt-12 pb-12 space-y-4">
                 <div className='text-left'>
                     <label className="block mb-1 text-sm font-medium text-orange-500">To:</label>
                     <div className="flex">
@@ -234,7 +234,7 @@ export default function SendEmail() {
                             onFocus={() => setShowEmailList(true)}
                         />
                         <select 
-                            className="ml-4 bg-[#202024] px-3 py-2 rounded-md text-white"
+                            className="ml-4 bg-[#202024] px-3 py-2 rounded-md text-white "
                             onChange={handleUserGroupSelect}
                         >
                             <option value="">--Select Users--</option>
@@ -261,7 +261,7 @@ export default function SendEmail() {
                     )}
                     <div className="flex flex-wrap gap-2 mt-2 ">
                         {data.to.map((email, index) => (
-                            <div key={index} className="flex items-center px-2 py-1 text-white bg-orange-500 rounded-full">
+                            <div key={index} className="flex items-center px-2 py-1 text-white bg-[white] bg-opacity-10 rounded-full">
                                 {email}
                                 <button type="button" onClick={() => handleRemoveEmail(index)} className="ml-2 focus:outline-none">
                                     &times;
@@ -294,7 +294,7 @@ export default function SendEmail() {
                         />
                     </div>
                 </div>
-                <div className="flex justify-center pt-12 ">
+                <div className="flex justify-center pt-6 ">
                     <div 
                         className={`w-full max-w-xl border-2 border-dashed border-orange-500 rounded-lg p-6 ${dragActive ? 'bg-[#2c2c30]' : ''} bg-[white] bg-opacity-10`}
                         onDragEnter={handleDrag}
