@@ -70,7 +70,16 @@ const Sidebar = () => {
             Join Interview
           </div>
         </NavLink>
+
+        <NavLink style={navLinkStyles} to='/candidatedash/BuildResumePage'>
+          <div className='flex justify-start text-[18px] py-3 pt-3 pl-8 hover:bg-gray-100 hover:text-gray-400 hover:bg-opacity-10 dark:hover:text-neutral-300'>
+            <BsPersonVideo3 className='mr-5 text-3xl ' />
+            Build Resume
+          </div>
+        </NavLink>
+
       </div>
+      
       <Link to='/login'>
       <div className='flex items-end justify-center w-full h-1/12'>
         <Logout />

@@ -35,6 +35,7 @@ import Status from './Pages/candidate/pages/Status';
 import PendingSubmission from './Pages/candidate/pages/PendingSubmission';
 import Session from './Pages/candidate/pages/Session';
 import Invitation from './Pages/candidate/pages/Invitation';
+import BuildResume from './Pages/candidate/pages/BuildResume';
 
 import RecruiterLayout from './Components/recruitercomp/RecruiterLayout';
 import JobPosting from './Pages/recruiter/JobPosting';
@@ -115,6 +116,7 @@ function App() {
             <Route path='submissionPage' element={<PendingSubmission />} />
             <Route path='sessionPage' element={<Session />} />
             <Route path='invitationPage' element={<Invitation />} />
+            <Route path='BuildResumePage' element={<BuildResume />} />
           </Route>
 
           <Route path='/admincreateuser' element={<ProtectedRoute><CreateNewUser /></ProtectedRoute>} />
