@@ -25,7 +25,7 @@ export default function SystemSettings() {
 
             
            
-            <div className='mx-[70px] bg-gradient-to-b from-[#272727] to-[#17171A] rounded-[30px] h-[780px] '>
+            <div className='mx-[70px] bg-gradient-to-b from-[#272727] to-[#17171A] rounded-[30px] h-[780px] overflow-y-auto'>
             <SendEmail/>
             </div>
             
