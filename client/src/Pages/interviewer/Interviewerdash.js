@@ -6,6 +6,7 @@ import Header from '../../Components/interviewercomp/InterviewerHeader';
 import InterviewBar from '../../Components/interviewercomp/InterviewBar';
 import axios from 'axios';
 import CardL from '../../Components/hiringManagerCompo/CardL.jsx'
+import AdminChatBotBottom from '../../Components/admincomp/AdminChatBotBottom.js';
 
 
 export default function Interviewerdash() {
@@ -106,7 +107,7 @@ export default function Interviewerdash() {
     //     <div>
     //       <Header/>
     //     </div>
-    //     <div id='background' className="w-80 h-80vh rounded-3xl z-0 mt-24 mx-8">
+    //     <div id='background' className="z-0 mx-8 mt-24 w-80 h-80vh rounded-3xl">
     //       <div className='flex items-center justify-around mt-5'>
     //         <Card title="Applications" value="10" />
     //         <Card title="Candidates" value="10" />
@@ -114,10 +115,10 @@ export default function Interviewerdash() {
     //         <Card title="Unread" value="02" />
     //       </div>
     //       <div>
-    //         <div className='ml-8 mt-16'>
-    //           <p className='text-left ml-8 mt-8 text-xl'>Today's Interviews</p>
+    //         <div className='mt-16 ml-8'>
+    //           <p className='mt-8 ml-8 text-xl text-left'>Today's Interviews</p>
     //         </div>
-    //         <div id='bar-container' className='mt-5 max-h-80 overflow-y-auto'>
+    //         <div id='bar-container' className='mt-5 overflow-y-auto max-h-80'>
     //         {interviews.map((interview, index) => (
     //               <InterviewBar
     //                 key={index}
@@ -144,7 +145,7 @@ export default function Interviewerdash() {
         <div>
           <Header/>
         </div> 
-        <div id='background'  className=" w-80 h-80vh rounded-3xl z-0 mt-24 mx-8">
+        <div id='background'  className="z-0 mx-8 mt-24 w-80 h-80vh rounded-3xl">
           <div className='flex items-center justify-around mt-5'>
              <CardL  name="Applications" subName="to evaluate" val={carddetails.acceptedApplications-carddetails.interviewedCandiates }></CardL>
              <CardL name='Today' subName="interviews" val={selectedDateSchedules.length}></CardL>
@@ -153,10 +154,10 @@ export default function Interviewerdash() {
              
           </div>
           <div>
-            <div className='ml-8 mt-16'>
-              <p className='text-left ml-8 mt-8 text-xl'>Today's Interviews</p>
+            <div className='mt-16 ml-8'>
+              <p className='mt-8 ml-8 text-xl text-left'>Today's Interviews</p>
             </div>
-            <div id='bar-container' className='mt-5 max-h-80 overflow-y-auto'>
+            <div id='bar-container' className='mt-5 overflow-y-auto max-h-80'>
             {selectedDateSchedules
               .sort((a, b) => new Date(`1970-01-01T${a.start_time}Z`) - new Date(`1970-01-01T${b.start_time}Z`))
               .map((interview, index) => (
@@ -171,6 +172,10 @@ export default function Interviewerdash() {
           </div>
         </div>
         </div>
+         {/* Move AdminChatBotBottom here and wrap it in a positioned div */}
+      <div className="absolute bottom-0 right-0 z-50">
+        <AdminChatBotBottom/>
+      </div>
     </div>
   )
 }
