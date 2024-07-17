@@ -220,7 +220,7 @@ export default function SendEmail() {
 
     return (
         <div className="flex justify-center">
-            <form onSubmit={sendEmail} className="w-full max-w-4xl pt-12 pb-12 space-y-4">
+            <form onSubmit={sendEmail} className="w-full max-w-4xl pt-12 pb-12 space-y-4 ">
                 <div className='text-left'>
                     <label className="block mb-1 text-sm font-medium text-orange-500">To:</label>
                     <div className="flex">
