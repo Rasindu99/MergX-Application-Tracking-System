@@ -22,6 +22,23 @@ export default function InterviewFeedback() {
   const [checkedEvaluations,setCheckedEvaluations] = useState([]);
   const  [checkedCandidates,setCheckedCandidates] = useState([]);
 
+  //access controller
+  const [viewFeedback, setViewFeedback] = useState(false);
+  
+  useEffect(() => {
+    const fetchViewInterview = async () => {
+      try {
+        const response = await axios.get('/access/getviewfeedback');
+        setViewFeedback(response.data.view_feedback);
+      } catch (error) {
+        console.error('Error fetching view feedback state:', error);
+        toast.error('Error fetching access permissions');
+      }
+    };
+  
+    fetchViewInterview();
+  }, []);
+
   const clearcandiates = ()=>{
     setCandidate([]);
     setEvoluations([]);
@@ -83,6 +100,7 @@ export default function InterviewFeedback() {
 
 
  const getInterviewdCandidates = async () => {
+  
   try{
     const resposne = await axios.get('http://localhost:8000/evaluation/getHMUnCheckedEvaluations');
     setEvoluations(resposne.data);
@@ -180,9 +198,11 @@ export default function InterviewFeedback() {
   };
 
   useEffect(() => {
+   
     const fetchEvaluation = async () => {
       if (showDetails && selected) {
         // Check if showDetails is true and selected._id is defined before fetching
+        
         try {
           console.log("Fetching evaluation for candidate ID:", selected.userid); // Debug log
           const response = await axios.get(
@@ -215,6 +235,10 @@ export default function InterviewFeedback() {
 
  const updateEvaluation = async (event) => {
   event.preventDefault();
+  if (!viewFeedback) {
+    toast.error('Admin blocked temporarily');
+    return;
+  }
    if(data.hiringManagerComment.trim()===""){
     toast.error("Please enter your comment");
     return;
@@ -657,6 +681,7 @@ const setSubmitFalse =()=>{
                   <button
                     type="submit"
                     onClick={updateEvaluation}
+                    
                     className="mb-5 float-right esm:mr-[15%] sm:mr-[7%] md:mr-[6%] 900px:mr-[5%] 1010px:mr-[4%] bg-[#EA7122] esm:w-[50px] esm:h-[15px] 350px:w-[60px] 350px:h-[18px] 500px:w-[80px] 500px:h-[20px] sm:w-[100px] sm:h-[25px] md:w-[110px] md:h-[30px] 1010px:w-[120px] 1010px:h-[32px] 1300px:w-[125px] 1300px:h-[34px] xl:w-[130px] xl:h-[35px] rounded-[30px] "
                   >
                     Submit
