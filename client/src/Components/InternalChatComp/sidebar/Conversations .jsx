@@ -26,7 +26,7 @@ const Conversations = () => {
   }, [inputselected, conversations]);
 
 	return (
-		<div className=' py-2 flex h-full flex-col p-2'>
+		<div className=' py-2 flex h-full flex-col p-2 overflow-y-auto'>
 			{filteredConversations
 			//.filter(conversation => conversation.role !== 'candidate')
 			.map((conversation, idx) => (
