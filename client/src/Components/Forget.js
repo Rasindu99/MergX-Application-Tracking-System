@@ -76,7 +76,7 @@ function Forget() {
             </div>
             
             <div className='pt-10'>
-              <button type='submit' className='w-full h-12 px-12 bg-orange-600 rounded-2xl'>Send verification code</button>
+              <button type='submit' className='w-full h-12 px-12 bg-orange-600 hover:bg-orange-500 rounded-2xl'>Send verification code</button>
             </div>
             <div className='opacity-30'>
               <label>Check your email</label>
