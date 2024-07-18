@@ -5,6 +5,11 @@ import BG from '../../Images/BG.jpg';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import {toast} from 'react-hot-toast';
+import Gangamina from '../../Images/Gangamina.jpg';
+import Tharindu from '../../Images/Tharindu.JPG';
+import Rasindu from '../../../src/Images/Rasindu.jpg';
+import Pramudi from '../../Images/Pramudi.jpg';
+import Piyushan from '../../Images/Piyushan.jpg';
 
 export default function Landingpage() {
   const [data, setData] = useState({
@@ -65,11 +70,11 @@ export default function Landingpage() {
   ];
 
   const teamMembers = [
-    "Gangamina",
-    "Tharindu",
-    "Rasindu",
-    "Pramudi",
-    "Piyushan"
+    { name: "Gangamina", photo: Gangamina, role: "Group Leader", description: "214111K" },
+    { name: "Tharindu", photo: Tharindu, role: "Group Member", description: "214061F" },
+    { name: "Rasindu", photo: Rasindu, role: "Group Member", description: "214182C" },
+    { name: "Pramudi", photo: Pramudi, role: "Group Member", description: "Leveraging data to drive intelligent decisions." },
+    { name: "Piyushan", photo: Piyushan, role: "Group Member", description: "214154T" }
   ];
 
   const [currentFeatureIndex, setCurrentFeatureIndex] = useState(0);
@@ -98,7 +103,7 @@ export default function Landingpage() {
 
       {/* Content */}
       <div className="relative z-10">
-        <nav className='sticky top-0 flex items-center justify-between p-4 bg-white bg-opacity-100'>
+        <nav className='fixed top-0 left-0 right-0 flex items-center justify-between p-4 bg-white bg-opacity-100'>
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
@@ -121,7 +126,7 @@ export default function Landingpage() {
         </nav>
 
         {/* Introduction Section */}
-        <section id="intro" className='flex items-center justify-center min-h-screen'>
+        <section id="intro" className='flex items-center justify-center min-h-screen pt-20'>
           <motion.div className='flex items-center justify-center'>
             <motion.div
               className='text-center'
@@ -209,14 +214,26 @@ export default function Landingpage() {
         <section id="team" className='py-20 bg-white bg-opacity-80'>
           <div className='container px-4 mx-auto'>
             <h2 className='mb-8 text-3xl font-bold text-center text-[#19191A]'>Our Team</h2>
-            <div className='flex justify-around'>
+            <div className='flex flex-wrap justify-around'>
               {teamMembers.map((member, index) => (
                 <motion.div
                   key={index}
-                  className='p-4 text-center bg-[#19191A] rounded shadow'
+                  className='relative mb-4'
                   whileHover={{ scale: 1.1 }}
                 >
-                  {member}
+                  <img 
+                    src={member.photo} 
+                    alt={member.name} 
+                    className='object-cover w-48 h-48 border-4 border-orange-500 rounded-full' 
+                  />
+                  <motion.div
+                    className='absolute inset-0 flex flex-col items-center justify-center transition-opacity duration-300 bg-black bg-opacity-75 rounded-full opacity-0'
+                    whileHover={{ opacity: 1 }}
+                  >
+                    <p className='font-bold text-white'>{member.name}</p>
+                    <p className='text-orange-500'>{member.role}</p>
+                    <p className='px-2 text-sm text-center text-white'>{member.description}</p>
+                  </motion.div>
                 </motion.div>
               ))}
             </div>
@@ -225,48 +242,47 @@ export default function Landingpage() {
 
         {/* Contact Form */}
         <section id="contact" className='py-20 bg-[#19191A]'>
-      <div className='container px-4 mx-auto'>
-        <h2 className='mb-8 text-3xl font-bold text-center text-white'>Contact Us</h2>
-        <form className='max-w-md mx-auto' onSubmit={contactus}>
-          <input
-            type="text"
-            name="username"
-            value={data.username}
-            onChange={handleChange}
-            placeholder="Name"
-            className='w-full p-2 mb-4 border rounded  bg-[white] bg-opacity-10'
-            required
-          />
-          <input
-            type="email"
-            name="useremail"
-            value={data.useremail}
-            onChange={handleChange}
-            placeholder="Email"
-            className='w-full p-2 mb-4 border rounded  bg-[white] bg-opacity-10'
-            required
-          />
-          <textarea
-            name="message"
-            value={data.message}
-            onChange={handleChange}
-            placeholder="Message"
-            className='w-full p-2 mb-4 border rounded  bg-[white] bg-opacity-10'
-            rows={4}
-            required
-          ></textarea>
-          <motion.button
-            type="submit"
-            className='w-full px-6 py-2 text-white bg-orange-500 rounded'
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            Send
-          </motion.button>
-        </form>
-      </div>
-    </section>
-    
+          <div className='container px-4 mx-auto'>
+            <h2 className='mb-8 text-3xl font-bold text-center text-white'>Contact Us</h2>
+            <form className='max-w-md mx-auto' onSubmit={contactus}>
+              <input
+                type="text"
+                name="username"
+                value={data.username}
+                onChange={handleChange}
+                placeholder="Name"
+                className='w-full p-2 mb-4 border rounded  bg-[white] bg-opacity-10'
+                required
+              />
+              <input
+                type="email"
+                name="useremail"
+                value={data.useremail}
+                onChange={handleChange}
+                placeholder="Email"
+                className='w-full p-2 mb-4 border rounded  bg-[white] bg-opacity-10'
+                required
+              />
+              <textarea
+                name="message"
+                value={data.message}
+                onChange={handleChange}
+                placeholder="Message"
+                className='w-full p-2 mb-4 border rounded  bg-[white] bg-opacity-10'
+                rows={4}
+                required
+              ></textarea>
+              <motion.button
+                type="submit"
+                className='w-full px-6 py-2 text-white bg-orange-500 rounded'
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                Send
+              </motion.button>
+            </form>
+          </div>
+        </section>
       </div>
     </div>
   );
