@@ -2,6 +2,7 @@ import React  from 'react';
 import AdminNav from '../../Components/admincomp/AdminNav';
 import GetModify from '../../Components/admincomp/GetModify';
 import Adminheadrightbar from '../../Components/admincomp/Adminheadrightbar';
+import AdminChatBotBottom from '../../Components/admincomp/AdminChatBotBottom';
 
 
 
@@ -42,6 +43,10 @@ export default function ModifyUserAccount() {
           
         </div>
         
+      </div>
+       {/* Move AdminChatBotBottom here and wrap it in a positioned div */}
+       <div className="absolute bottom-0 right-0 z-50">
+        <AdminChatBotBottom/>
       </div>
     </div>
   );

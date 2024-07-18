@@ -5,13 +5,34 @@ import BG from '../../Images/BG.jpg';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import {toast} from 'react-hot-toast';
+import Gangamina from '../../Images/Gangamina.jpg';
+import Tharindu from '../../Images/Tharindu.JPG';
+import Rasindu from '../../../src/Images/Rasindu.jpg';
+import Pramudi from '../../Images/Pramudi.jpg';
+import Piyushan from '../../Images/Piyushan.jpg';
 
 export default function Landingpage() {
   const [data, setData] = useState({
     username:'',
     useremail:'',
     message:''
-  })
+  });
+
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const isScrolled = window.scrollY > 10;
+      if (isScrolled !== scrolled) {
+        setScrolled(isScrolled);
+      }
+    };
+
+    document.addEventListener('scroll', handleScroll);
+    return () => {
+      document.removeEventListener('scroll', handleScroll);
+    };
+  }, [scrolled]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -43,33 +64,37 @@ export default function Landingpage() {
   
   const features = [
     {
-      title: "Smart Resume Parsing",
-      description: "Our AI-powered resume parser extracts key information automatically, saving time and improving accuracy in candidate evaluation."
+      title: "User Management",
+      description: "Create, edit, and delete user accounts with role-based access control for recruiters, managers, and administrators."
     },
     {
-      title: "AI-Powered Matching",
-      description: "Advanced algorithms match candidates to job requirements, ensuring you find the best fit for every position."
+      title: "Candidate Management",
+      description: "Create and edit candidate profiles, upload resumes, assign status, and manage documents with automated notifications."
     },
     {
-      title: "Automated Screening",
-      description: "Streamline your hiring process with automated initial screenings, focusing your time on the most promising candidates."
+      title: "Job Posting and Management",
+      description: "Post job openings, track status, archive filled positions, and implement job approval workflows for hiring managers."
     },
     {
-      title: "Collaborative Hiring",
-      description: "Facilitate seamless communication among hiring teams, making collective decisions easier and more efficient."
+      title: "Application Tracking",
+      description: "Receive and manage applications, filter and search based on criteria, assign to recruiters, and track application sources."
     },
     {
-      title: "Analytics Dashboard",
-      description: "Gain insights into your hiring process with comprehensive analytics, helping you optimize your recruitment strategies."
+      title: "Interview Scheduling",
+      description: "Schedule interviews, send invitations and reminders, integrate with calendar tools, and collect feedback from interviewers."
+    },
+    {
+      title: "Collaboration and Communication",
+      description: "Internal messaging, email integration, notification center, and discussion threads on candidate profiles for team collaboration."
     }
   ];
 
   const teamMembers = [
-    "Gangamina",
-    "Tharindu",
-    "Rasindu",
-    "Pramudi",
-    "Piyushan"
+    { name: "Gangamina", photo: Gangamina, role: "Group Leader", description: "214111K" },
+    { name: "Tharindu", photo: Tharindu, role: "Group Member", description: "214061F" },
+    { name: "Rasindu", photo: Rasindu, role: "Group Member", description: "214182C" },
+    { name: "Pramudi", photo: Pramudi, role: "Group Member", description: "214115C" },
+    { name: "Piyushan", photo: Piyushan, role: "Group Member", description: "214154T" }
   ];
 
   const [currentFeatureIndex, setCurrentFeatureIndex] = useState(0);
@@ -98,30 +123,31 @@ export default function Landingpage() {
 
       {/* Content */}
       <div className="relative z-10">
-        <nav className='sticky top-0 flex items-center justify-between p-4 bg-white bg-opacity-100'>
+        <nav className={`fixed top-0 left-0 right-0 flex items-center justify-between p-2 bg-white bg-opacity-90 transition-all duration-300 ${scrolled ? 'h-12' : 'h-20'}`}>
           <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5 }}
+            initial={{ opacity: 1, x: 0 }}
+            animate={{ opacity: scrolled ? 0 : 1, x: scrolled ? -50 : 0 }}
+            transition={{ duration: 0.3 }}
+            className={`transition-all duration-300 ${scrolled ? 'w-0 overflow-hidden' : 'w-auto'}`}
           >
-            <img src={LOGOMERGEX} alt='logo' className='w-[100px] h-[100px]' />
+            <img src={LOGOMERGEX} alt='logo' className={`transition-all duration-300 ${scrolled ? 'w-0 h-0' : 'w-auto h-[100px]'}`} />
           </motion.div>
           <motion.div
-            className='flex space-x-4'
+            className='flex ml-auto space-x-4'
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
             <a href="#intro" className='text-[#19191A] cursor-pointer'>Intro</a>
-            <a href="#features" className='text-[#19191A] cursor-pointer '>Features</a>
-            <a href="#about" className='text-[#19191A] cursor-pointer '>About</a>
-            <a href="#team" className='text-[#19191A] cursor-pointer '>Team</a>
-            <a href="#contact" className='text-[#19191A] cursor-pointer '>Contact</a>
+            <a href="#features" className='text-[#19191A] cursor-pointer'>Features</a>
+            <a href="#about" className='text-[#19191A] cursor-pointer'>About</a>
+            <a href="#team" className='text-[#19191A] cursor-pointer'>Team</a>
+            <a href="#contact" className='text-[#19191A] cursor-pointer'>Contact</a>
           </motion.div>
         </nav>
 
         {/* Introduction Section */}
-        <section id="intro" className='flex items-center justify-center min-h-screen'>
+        <section id="intro" className='flex items-center justify-center min-h-screen pt-20'>
           <motion.div className='flex items-center justify-center'>
             <motion.div
               className='text-center'
@@ -132,7 +158,7 @@ export default function Landingpage() {
                 <h1 className='mb-4 font-bold text-[#19191A] text-[150px]'>
                      Merge<span className="text-orange-500">X</span>
                 </h1>
-              <p className='mb-8 text-xl text-[#19191A] opacity-90'>Revolutionizing Recruitment with AI-Powered ATS</p>
+              <p className='mb-8 text-xl text-[#19191A] opacity-90'>Application Tracking System</p>
               <Link to='/login'>
               <motion.button
                 className='px-6 py-2 text-lg text-white bg-orange-500 rounded'
@@ -199,7 +225,9 @@ export default function Landingpage() {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.5 }}
               >
-                <p className='text-lg text-white'>MergeX is an advanced Applicant Tracking System (ATS) designed to streamline your hiring process. Our AI-powered platform helps you find the perfect candidates efficiently and effectively, transforming how organizations recruit and manage talent.</p>
+                <p className='text-lg text-white'>MergeX is an Applicant Tracking System where we can enhance the employee recruitment process of a company by automating and digitalizing the activities associated with candidates and their job applications.<br></br><span>
+      In MergeX we are using the optical character recognition to track and analyze the candidate applications and provide a user-friendly environment for decision makers of the company to deal with job applicants.
+</span></p>
               </motion.div>
             </div>
           </div>
@@ -209,14 +237,26 @@ export default function Landingpage() {
         <section id="team" className='py-20 bg-white bg-opacity-80'>
           <div className='container px-4 mx-auto'>
             <h2 className='mb-8 text-3xl font-bold text-center text-[#19191A]'>Our Team</h2>
-            <div className='flex justify-around'>
+            <div className='flex flex-wrap justify-around'>
               {teamMembers.map((member, index) => (
                 <motion.div
                   key={index}
-                  className='p-4 text-center bg-[#19191A] rounded shadow'
+                  className='relative mb-4'
                   whileHover={{ scale: 1.1 }}
                 >
-                  {member}
+                  <img 
+                    src={member.photo} 
+                    alt={member.name} 
+                    className='object-cover w-48 h-48 border-4 border-orange-500 rounded-full' 
+                  />
+                  <motion.div
+                    className='absolute inset-0 flex flex-col items-center justify-center transition-opacity duration-300 bg-black bg-opacity-75 rounded-full opacity-0'
+                    whileHover={{ opacity: 1 }}
+                  >
+                    <p className='font-bold text-white'>{member.name}</p>
+                    <p className='text-orange-500'>{member.role}</p>
+                    <p className='px-2 text-sm text-center text-white'>{member.description}</p>
+                  </motion.div>
                 </motion.div>
               ))}
             </div>
@@ -224,49 +264,52 @@ export default function Landingpage() {
         </section>
 
         {/* Contact Form */}
-        <section id="contact" className='py-20 bg-[#19191A]'>
-      <div className='container px-4 mx-auto'>
-        <h2 className='mb-8 text-3xl font-bold text-center text-white'>Contact Us</h2>
-        <form className='max-w-md mx-auto' onSubmit={contactus}>
-          <input
-            type="text"
-            name="username"
-            value={data.username}
-            onChange={handleChange}
-            placeholder="Name"
-            className='w-full p-2 mb-4 border rounded'
-            required
-          />
-          <input
-            type="email"
-            name="useremail"
-            value={data.useremail}
-            onChange={handleChange}
-            placeholder="Email"
-            className='w-full p-2 mb-4 border rounded'
-            required
-          />
-          <textarea
-            name="message"
-            value={data.message}
-            onChange={handleChange}
-            placeholder="Message"
-            className='w-full p-2 mb-4 border rounded'
-            rows={4}
-            required
-          ></textarea>
-          <motion.button
-            type="submit"
-            className='w-full px-6 py-2 text-white bg-orange-500 rounded'
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            Send
-          </motion.button>
-        </form>
-      </div>
-    </section>
-    
+        <section id="contact" className='pt-20 bg-[#19191A]'>
+          <div className='container px-4 mx-auto'>
+            <h2 className='mb-8 text-3xl font-bold text-center text-white'>Contact Us</h2>
+            <form className='max-w-md mx-auto' onSubmit={contactus}>
+              <input
+                type="text"
+                name="username"
+                value={data.username}
+                onChange={handleChange}
+                placeholder="Name"
+                className='w-full p-2 mb-4 border rounded  bg-[white] bg-opacity-10'
+                required
+              />
+              <input
+                type="email"
+                name="useremail"
+                value={data.useremail}
+                onChange={handleChange}
+                placeholder="Email"
+                className='w-full p-2 mb-4 border rounded  bg-[white] bg-opacity-10'
+                required
+              />
+              <textarea
+                name="message"
+                value={data.message}
+                onChange={handleChange}
+                placeholder="Message"
+                className='w-full p-2 mb-4 border rounded  bg-[white] bg-opacity-10'
+                rows={4}
+                required
+              ></textarea>
+              <motion.button
+                type="submit"
+                className='w-full px-6 py-2 text-white bg-orange-500 rounded'
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                Send
+              </motion.button>
+            </form>
+            <div className='pt-8 pb-2'>
+              <h1 className='opacity-20'>MergeX</h1>
+            </div>
+          </div>
+        </section>
+        
       </div>
     </div>
   );
