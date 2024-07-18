@@ -234,7 +234,7 @@ export default function Landingpage() {
             value={data.username}
             onChange={handleChange}
             placeholder="Name"
-            className='w-full p-2 mb-4 border rounded'
+            className='w-full p-2 mb-4 border rounded  bg-[white] bg-opacity-10'
             required
           />
           <input
@@ -243,7 +243,7 @@ export default function Landingpage() {
             value={data.useremail}
             onChange={handleChange}
             placeholder="Email"
-            className='w-full p-2 mb-4 border rounded'
+            className='w-full p-2 mb-4 border rounded  bg-[white] bg-opacity-10'
             required
           />
           <textarea
@@ -251,7 +251,7 @@ export default function Landingpage() {
             value={data.message}
             onChange={handleChange}
             placeholder="Message"
-            className='w-full p-2 mb-4 border rounded'
+            className='w-full p-2 mb-4 border rounded  bg-[white] bg-opacity-10'
             rows={4}
             required
           ></textarea>
