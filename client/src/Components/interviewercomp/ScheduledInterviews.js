@@ -45,7 +45,7 @@ const ScheduledInterviews = ({ interviewTitle, interviewTime, onDelete, onUpdate
     meetingLink: interview?.link || '',
     password: interview?.password || '',
     subject: interview?.subject || '',
-    assign: interview?.assign || ''
+    second_interviewer: interview?._id || ''
   });
 
   const togglePopup = () => {
@@ -53,6 +53,7 @@ const ScheduledInterviews = ({ interviewTitle, interviewTime, onDelete, onUpdate
   };
 
   useEffect(() => {
+    console.log(interview.second_interviewer)
     setFormData({
       date: interview.date || '',
       startTime: interview.start_time || '',
@@ -60,7 +61,7 @@ const ScheduledInterviews = ({ interviewTitle, interviewTime, onDelete, onUpdate
       meetingLink: interview.link || '',
       password: interview.password || '',
       subject: interview.subject || '',
-      assign: interview.assign || ''
+      second_interviewer: interview.second_interviewer || ''
     });
   }, [interview]);
 
@@ -163,13 +164,12 @@ const ScheduledInterviews = ({ interviewTitle, interviewTime, onDelete, onUpdate
                   <select 
                     type="text"
                     name="assign"
-                    value={formData.assign}
+                    value={formData.second_interviewer}
                     onChange={handleChange}
-                    required
                     className='block w-full mt-1 p-2 bg-[#2B2B2BE5] border-2 border-white border-opacity-10 rounded-xl'>
                       <option value="" disabled>Select Interviewer</option>
                     {users
-                      .filter(user => user.role === 'interviewer')
+                      .filter(users => users.role === 'interviewer' && users._id !== interview.primary_interviewer)
                       .map(interviewer => (
                         <option key={interviewer._id} value={interviewer._id}>
                           {interviewer.fname}  {interviewer.lname}

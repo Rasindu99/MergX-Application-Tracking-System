@@ -27,13 +27,13 @@ export default function PopupViewjob({ visible, onClose }) {
 
     const [data, setData] = useState({
         jobId: '',
-        creatorId: '',
+        primary_interviewer: '',
         jobtitle:'',
         date: '',
         start_time: '',
         end_time: '',
         subject: '',
-        assign: '',
+        second_interviewer: '',
         link: '',
         password: '',
         experience: '',
@@ -62,12 +62,12 @@ export default function PopupViewjob({ visible, onClose }) {
             body: JSON.stringify({
               jobId: selectedJob._id,
               jobtitle: selectedJob.jobTitle,
-              creatorId: user._id,
+              primary_interviewer: user._id,
               date: data.date,
               start_time: data.start_time,
               end_time: data.end_time,
               subject: data.subject,
-              assign: data.assign,
+              second_interviewer: data.second_interviewer,
               link: data.link,
               password: data.password,
               experience: selectedJob.requiredExperience,
@@ -84,7 +84,7 @@ export default function PopupViewjob({ visible, onClose }) {
                 start_time: '',
                 end_time: '',
                 subject: '',
-                assign: '',
+                second_interviewer: '',
                 link: '',
                 password: '',
             });
@@ -149,7 +149,6 @@ export default function PopupViewjob({ visible, onClose }) {
                             <tbody>
                                 {
                                     nonexpiredjobData
-                                        .reverse()
                                         .map((jobPosting) => (
                                             <tr key={jobPosting._id} className="border-b border-gray-500 h-[50px] bg-gradient-to-b from-[#2B2B2B] to-[#333333]">
                                                 <td>
@@ -232,14 +231,13 @@ export default function PopupViewjob({ visible, onClose }) {
                                             <p className='w-1/5'> - </p>
                                             <select 
                                                 type="text"
-                                                name="assign"
-                                                value={data.assign}
+                                                name="second_interviewer"
+                                                value={data.second_interviewer}
                                                 onChange={handleInputChange}
-                                                required
                                                 className='bg-[#2B2B2BE5] border-2 border-white border-opacity-10 rounded-lg h-8 w-4/5'>
                                                 <option value="" disabled>Select Interviewer</option>
                                                 {users
-                                                .filter(user => user.role === 'interviewer')
+                                                .filter(users => users.role === 'interviewer' && users._id !== user._id)
                                                 .map(interviewer => (
                                                     <option key={interviewer._id} value={interviewer._id}>
                                                     {interviewer.fname}  {interviewer.lname}

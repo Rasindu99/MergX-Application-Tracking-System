@@ -59,7 +59,7 @@ export default function Scheduling() {
 
   const selectedDateSchedules = interviewSchedules.filter(schedule =>
     new Date(schedule.date).toLocaleDateString() === date.toLocaleDateString()
-    && schedule.assign === user._id
+    && (schedule.primary_interviewer === user._id || schedule.second_interviewer === user._id)
   );
 
   const togglePopup = () => {
@@ -69,14 +69,14 @@ export default function Scheduling() {
   const [formData, setFormData] = useState({
     jobId: 'null',
     jobtitle: 'null',
-    creatorId: user._id,
+    primary_interviewer: user._id,
     date: date.toISOString(),
     startTime: '',
     endTime: '',
     meetingLink: '',
     password: '',
     subject: '',
-    assign: '',
+    second_interviewer: '',
     experience: '',
     skills: '',
     description: ''
@@ -164,12 +164,12 @@ export default function Scheduling() {
         body: JSON.stringify({
           jobId: formData.jobId,
           jobtitle: formData.jobtitle,
-          creatorId: formData.creatorId,
+          primary_interviewer: formData.primary_interviewer,
           date: date.toISOString(),
           start_time: formData.startTime,
           end_time: formData.endTime,
           subject: formData.subject,
-          assign: formData.assign,
+          second_interviewer: formData.second_interviewer || null,
           link: formData.meetingLink,
           password: formData.password,
           experience: formData.experience,
@@ -250,7 +250,7 @@ export default function Scheduling() {
 
     return formattedDate !== today && 
       interviewSchedules.filter(schedule =>
-      schedule.assign === user._id).some(schedule => 
+      schedule.primary_interviewer === user._id || schedule.second_interviewer === user._id).some(schedule => 
       new Date(schedule.date).toLocaleDateString() === formattedDate
     ) ? 'react-calendar__tile--has-interviews' : null;
   };
@@ -378,14 +378,13 @@ export default function Scheduling() {
                   <label className='flex items-center w-48 gap-10 text-white'>Interviewer</label>
                   <select 
                     type="text"
-                    name="assign"
-                    value={formData.assign}
+                    name="second_interviewer"
+                    value={formData.second_interviewer}
                     onChange={handleChange}
-                    required
                     className='block w-full mt-1 p-2 bg-[#2B2B2BE5] border-2 border-white border-opacity-10 rounded-xl'>
                       <option value="" disabled>Select Interviewer</option>
                     {users
-                      .filter(user => user.role === 'interviewer')
+                      .filter(users => users.role === 'interviewer' && users._id !== user._id)
                       .map(interviewer => (
                         <option key={interviewer._id} value={interviewer._id}>
                           {interviewer.fname}  {interviewer.lname}
