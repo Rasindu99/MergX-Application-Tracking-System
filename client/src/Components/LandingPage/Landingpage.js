@@ -64,24 +64,28 @@ export default function Landingpage() {
   
   const features = [
     {
-      title: "Smart Resume Parsing",
-      description: "Our AI-powered resume parser extracts key information automatically, saving time and improving accuracy in candidate evaluation."
+      title: "User Management",
+      description: "Create, edit, and delete user accounts with role-based access control for recruiters, managers, and administrators."
     },
     {
-      title: "AI-Powered Matching",
-      description: "Advanced algorithms match candidates to job requirements, ensuring you find the best fit for every position."
+      title: "Candidate Management",
+      description: "Create and edit candidate profiles, upload resumes, assign status, and manage documents with automated notifications."
     },
     {
-      title: "Automated Screening",
-      description: "Streamline your hiring process with automated initial screenings, focusing your time on the most promising candidates."
+      title: "Job Posting and Management",
+      description: "Post job openings, track status, archive filled positions, and implement job approval workflows for hiring managers."
     },
     {
-      title: "Collaborative Hiring",
-      description: "Facilitate seamless communication among hiring teams, making collective decisions easier and more efficient."
+      title: "Application Tracking",
+      description: "Receive and manage applications, filter and search based on criteria, assign to recruiters, and track application sources."
     },
     {
-      title: "Analytics Dashboard",
-      description: "Gain insights into your hiring process with comprehensive analytics, helping you optimize your recruitment strategies."
+      title: "Interview Scheduling",
+      description: "Schedule interviews, send invitations and reminders, integrate with calendar tools, and collect feedback from interviewers."
+    },
+    {
+      title: "Collaboration and Communication",
+      description: "Internal messaging, email integration, notification center, and discussion threads on candidate profiles for team collaboration."
     }
   ];
 
@@ -154,7 +158,7 @@ export default function Landingpage() {
                 <h1 className='mb-4 font-bold text-[#19191A] text-[150px]'>
                      Merge<span className="text-orange-500">X</span>
                 </h1>
-              <p className='mb-8 text-xl text-[#19191A] opacity-90'>Revolutionizing Recruitment with AI-Powered ATS</p>
+              <p className='mb-8 text-xl text-[#19191A] opacity-90'>Application Tracking System</p>
               <Link to='/login'>
               <motion.button
                 className='px-6 py-2 text-lg text-white bg-orange-500 rounded'
@@ -221,7 +225,9 @@ export default function Landingpage() {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.5 }}
               >
-                <p className='text-lg text-white'>MergeX is an advanced Applicant Tracking System (ATS) designed to streamline your hiring process. Our AI-powered platform helps you find the perfect candidates efficiently and effectively, transforming how organizations recruit and manage talent.</p>
+                <p className='text-lg text-white'>MergeX is an Applicant Tracking System where we can enhance the employee recruitment process of a company by automating and digitalizing the activities associated with candidates and their job applications.<br></br><span>
+      In MergeX we are using the optical character recognition to track and analyze the candidate applications and provide a user-friendly environment for decision makers of the company to deal with job applicants.
+</span></p>
               </motion.div>
             </div>
           </div>
@@ -299,8 +305,8 @@ export default function Landingpage() {
               </motion.button>
             </form>
             <div className='pt-8 pb-2'>
-          <h1 className='opacity-20'>MergeX</h1>
-        </div>
+              <h1 className='opacity-20'>MergeX</h1>
+            </div>
           </div>
         </section>
         
