@@ -369,21 +369,6 @@ useEffect(()=>{
 useEffect(()=>{
  console.log('evaluatedApplication',evaluatedApplication);
 },[showEvaluated])
- 
-
-// useEffect(() => { 
-//   console.log('Candidate',candidates);
-// }
-// ,[candidates]);
-
-// useEffect(() => {
-//   console.log('Evaluated Candidate',evaluatedCandidates);
-// },[evaluatedCandidates]);
-// useEffect(() => { 
-//   console.log(data);
-// }
-// ,[data]);
- 
 
   return (
     <div>
