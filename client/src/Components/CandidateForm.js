@@ -174,7 +174,7 @@ function Forget() {
       </div>
       
       <div className='flex h-12 mx-6 my-6 text-left'>
-        <Link to='/' className='text-4xl text-white opacity-40'><IoArrowBackSharp /></Link>
+        <Link to='/login' className='text-4xl text-white opacity-40'><IoArrowBackSharp /></Link>
       </div>
 
       <section className='flex items-center justify-center md:w-screen lg:w-screen'>
@@ -255,7 +255,7 @@ function Forget() {
               </div>
               
               <div className='pt-10'>
-                <button type='submit' className='w-full h-12 px-12 bg-orange-600 rounded-2xl md:w-auto'>SIGN UP</button>
+                <button type='submit' className='w-full h-12 px-12 bg-orange-600 hover:bg-orange-500 rounded-2xl md:w-auto'>SIGN UP</button>
               </div>
             </form>
           </div>
