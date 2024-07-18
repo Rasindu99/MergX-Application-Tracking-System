@@ -1,4 +1,9 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { FiPlus } from "react-icons/fi";
+import { FaMinus } from "react-icons/fa6";
+
+
+
 
 const EducationForm = ({educations, setEducations}) => {
   
@@ -38,15 +43,15 @@ const EducationForm = ({educations, setEducations}) => {
 
   return (
     <div className="cv-form-blk">
-      <div className="cv-form-row-title">
-        <h3>education</h3>
+      <div class="bg-orange-700 p-2 mb-2 uppercase font-semibold text-3xl">
+        <h3 className='text-neutral-200'>education</h3>
       </div>
 
-      <div className="row-separator repeater">
-        <div className="repeater" data-repeater-list="group-c">
+      <div className="w-full flex flex-col items-start">
+        <div className="repeater w-full" data-repeater-list="group-c">
           {educations.map((education, index) => (
             <div key={index} data-repeater-item>
-              <div className="cv-form-row cv-form-row-experience">
+              <div class="p-5 my-2 border border-neutral-700 relative w-full">
                 <div className="cols-3">
                   <div className="form-elem">
                     <label htmlFor="" className="form-label">School</label>
@@ -126,10 +131,10 @@ const EducationForm = ({educations, setEducations}) => {
                 {index > 0 && ( // Show remove button for newly added educations
                   <button
                     type="button"
-                    className="repeater-remove-btn"
+                    className=" bg-orange-600 absolute top-2 right-2 rounded-full p-1 hover:bg-orange-500" 
                     onClick={() => handleRemoveEducation(index)}
                   >
-                    -
+                    <FaMinus  className='text-lg m-auto hover:text-black'/>
                   </button>
                 )}
               </div>
@@ -138,10 +143,10 @@ const EducationForm = ({educations, setEducations}) => {
         </div>
         <button
           type="button"
-          className="repeater-add-btn"
+          className="bg-neutral-600 w-10 h-10 rounded-md text-2xl text-center hover:bg-orange-600"
           onClick={handleAddEducation}
         >
-          +
+          <FiPlus className='mx-auto my-auto'/>
         </button>
       </div>
     </div>

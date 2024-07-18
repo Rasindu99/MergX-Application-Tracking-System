@@ -6,6 +6,8 @@ import { PiCircleDashedBold } from "react-icons/pi";
 import { RiInboxArchiveLine } from "react-icons/ri";
 import { RiFolderUploadLine } from "react-icons/ri";
 import { BsPersonVideo3 } from "react-icons/bs";
+import { GrDocumentConfig } from "react-icons/gr";
+
 import Logout from './Logout';
 import { Link, NavLink } from 'react-router-dom';
 
@@ -23,11 +25,11 @@ const Sidebar = () => {
 
   return (
 
-    <div className='z-10 flex flex-col items-center justify-between w-2/12 h-screen bg-neutral-800'>
+    <div className='z-10 flex flex-col items-center justify-around w-2/12 h-screen bg-neutral-800 '>
 
-      <div className='w-full h-1/5 '> <Avatar/> </div>
+      <div className='w-full h-3/12 '> <Avatar/> </div>
       
-      <div className='flex flex-col w-full h-1/5 '>
+      <div className='flex flex-col w-full h-8/12 mb-5'>
 
         <NavLink style={navLinkStyles} to="/candidatedash/landingPage" >
           <div className='flex justify-start text-[18px] py-3 pt-3 pl-8 hover:bg-gray-100 hover:text-gray-400 hover:bg-opacity-10 dark:hover:text-neutral-300'>
@@ -73,7 +75,7 @@ const Sidebar = () => {
 
         <NavLink style={navLinkStyles} to='/candidatedash/BuildResumePage'>
           <div className='flex justify-start text-[18px] py-3 pt-3 pl-8 hover:bg-gray-100 hover:text-gray-400 hover:bg-opacity-10 dark:hover:text-neutral-300'>
-            <BsPersonVideo3 className='mr-5 text-3xl ' />
+            <GrDocumentConfig   className='mr-5 text-3xl ' />
             Build Resume
           </div>
         </NavLink>

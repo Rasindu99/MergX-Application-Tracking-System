@@ -1,4 +1,8 @@
 import React, { useState } from 'react';
+import { FiPlus } from "react-icons/fi";
+import { FaMinus } from "react-icons/fa6";
+
+
 
 const AchievementsForm = ({achievements, setAchievements}) => {
   //const [achievements, setAchievements] = useState([{ achieve_title: '', achieve_description: '' }]);
@@ -29,15 +33,15 @@ const AchievementsForm = ({achievements, setAchievements}) => {
 
   return (
     <div className="cv-form-blk">
-      <div className="cv-form-row-title">
-        <h3>achievements</h3>
+      <div class="bg-orange-700 p-2 mb-2 uppercase font-semibold text-3xl">
+        <h3 className='text-neutral-200'>achievements</h3>
       </div>
 
-      <div className="row-separator repeater">
-        <div className="repeater" data-repeater-list="group-a">
+      <div className="w-full flex flex-col items-start">
+        <div className="repeater w-full" data-repeater-list="group-a">
           {achievements.map((achievement, index) => (
             <div key={index} data-repeater-item>
-              <div className="cv-form-row cv-form-row-achievement">
+              <div class="p-5 my-2 border border-neutral-700 relative w-full">
                 <div className="cols-2">
                   <div className="form-elem">
                     <label htmlFor="" className="form-label">Title</label>
@@ -67,10 +71,10 @@ const AchievementsForm = ({achievements, setAchievements}) => {
                 {index > 0 && ( // Show remove button for newly added achievements
                   <button
                     type="button"
-                    className="repeater-remove-btn"
+                    className=" bg-orange-600 absolute top-2 right-2 rounded-full p-1 hover:bg-orange-500" 
                     onClick={() => handleRemoveAchievement(index)}
                   >
-                    -
+                   <FaMinus  className='text-lg m-auto hover:text-black'/>
                   </button>
                 )}
               </div>
@@ -79,10 +83,10 @@ const AchievementsForm = ({achievements, setAchievements}) => {
         </div>
         <button
           type="button"
-          className="repeater-add-btn"
+          className="bg-neutral-600 w-10 h-10 rounded-md text-2xl text-center hover:bg-orange-600"
           onClick={handleAddAchievement}
         >
-          +
+          <FiPlus className='mx-auto my-auto'/>
         </button>
       </div>
     </div>
