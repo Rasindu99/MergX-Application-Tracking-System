@@ -149,7 +149,7 @@ const BuildResume = () => {
       <div className="skill-display">
         <div className="skill-description">
           {descriptionLines.map((line, index) => (
-            <p key={index}>{line}</p>
+            <p key={index}>* {line}</p>
           ))}
         </div>
       </div>
@@ -157,28 +157,7 @@ const BuildResume = () => {
   };
 
   return (
-    <div className='flex flex-col justify-center items-center p-5 overflow-auto w-full z-10 my-comp'>
-        {/* <InterviewLinkCard/>
-        <MdKeyboardAlt className='absolute size-[46px] text-neutral-400 right-[55px] bottom-24 hover:text-orange-600 cursor-pointer' onClick={toggleCompilar}/>
-        {isCompilarOpen && (
-        <Draggable handle=".draggable-header">
-          <div className='fixed z-50 flex flex-col w-3/5 bg-neutral-400 border-[#393737] border-[3px] shadow-lg h-2/3 overflow-y-auto rounded-2xl bottom-0 right-5'>
-            <div className='border-b-[1px] border-[#393737] flex items-center draggable-header bg-gradient-to-r from-[#2f2e2e] to-[#272727] h-[47px] w-full rounded-t-lg cursor-grab'>
-              <button
-                className="group flex justify-center items-center text-white bg-orange-500 text-center rounded-md hover:bg-orange-600 size-7 absolute right-2 top-2"
-                onClick={handleClose}
-              >
-                <IoMdClose className="text-white group-hover:text-black text-xl" />
-              </button>
-              <h1 className='text-[#666666] ml-5 font-medium '>MergeX-inbuilt-IDE (version_1)</h1>
-            </div>
-            <div className='overflow-y-auto bg-neutral-800 h-full'>
-              <CodeEditor />
-            </div>
-          </div>
-        </Draggable>
-      )} */}
-
+    <div className='flex flex-col justify-center items-center p-5 overflow-auto w-full z-10 my-comp relative'> 
       <div className='py-[64px] px-0' id ="about-sc" >
         <div className='container'>
           <div class="about-cnt">
@@ -348,7 +327,7 @@ const BuildResume = () => {
 
               <div class="w-full h-1/5">
                 <div class="w-full bg-neutral-400 bg-opacity-20 p-1 mb-3">
-                  <h3 className='uppercase text-xl font-semibold text-start'>about</h3>
+                  <h3 className='uppercase text-xl font-semibold text-start pl-5'>about</h3>
                 </div>
                 <div class="preview-blk-list">
                   <div class="preview-item">
@@ -377,7 +356,7 @@ const BuildResume = () => {
                   </div>
                   <div class="mt-5">
                     <span class="preview-item-val" id="summary_dsp">
-                      <h3 className='uppercase text-xl font-semibold text-start bg-neutral-400 bg-opacity-20 p-1'>SUMMARY</h3>
+                      <h3 className='uppercase text-xl font-semibold text-start bg-neutral-400 bg-opacity-20 p-1 pl-5'>SUMMARY</h3>
                       <h3 className='text-xs mt-2'>{formData.summary}</h3>
                     </span>
                   </div>
@@ -386,16 +365,16 @@ const BuildResume = () => {
 
               <div class="w-full h-2/5">
                 <div class="preview-blk-title">
-                  <h3>skills</h3>
+                  <h3 className='uppercase text-xl font-semibold text-start bg-neutral-400 bg-opacity-20 p-1 pl-5'>skills</h3>
                 </div>
                 <div class="skills-items preview-blk-list" id="skills_dsp">
                 {skills.map((skill, index) => (
                   <div key={index} className='w-full mt-3'>
                     <div >
-                      <h3 className='uppercase text-xl font-semibold text-start bg-neutral-400 bg-opacity-20 p-1'>{skill.skill_title}</h3>
+                      <h3 className='uppercase text-base font-semibold text-start bg-neutral-500 bg-opacity-20 p-1'>{skill.skill_title}</h3>
                     </div>
                     <div className=" text-neutral-300 w-full">
-                      <h3 className='text-base font-semibold text-start'>
+                      <h3 className='text-base font-semibold text-start flex justify-start pl-5'>
                           <SkillDisplay key={index} skill={skill} />
                       </h3>
                     </div>
@@ -493,12 +472,8 @@ const BuildResume = () => {
         </div>
       </div>
 
+      <button type="button" class="bg-orange-700 p-2 rounded-md w-24 hover:bg-orange-600 cursor-pointer z-50 absolute bottom-10" onClick={printAndDownloadPDF}>Print CV</button>
       
-      
-        <button type="button" class="bg-orange-700 p-2 rounded-md w-24 hover:bg-orange-600 cursor-pointer z-50" onClick={printAndDownloadPDF}>Print CV</button>
-      
-      
-
     </div>
   )
 }
