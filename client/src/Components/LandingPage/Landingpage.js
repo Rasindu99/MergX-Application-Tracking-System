@@ -89,7 +89,7 @@ export default function Landingpage() {
     { name: "Gangamina", photo: Gangamina, role: "Group Leader", description: "214111K" },
     { name: "Tharindu", photo: Tharindu, role: "Group Member", description: "214061F" },
     { name: "Rasindu", photo: Rasindu, role: "Group Member", description: "214182C" },
-    { name: "Pramudi", photo: Pramudi, role: "Group Member", description: "Leveraging data to drive intelligent decisions." },
+    { name: "Pramudi", photo: Pramudi, role: "Group Member", description: "214115C" },
     { name: "Piyushan", photo: Piyushan, role: "Group Member", description: "214154T" }
   ];
 
@@ -258,7 +258,7 @@ export default function Landingpage() {
         </section>
 
         {/* Contact Form */}
-        <section id="contact" className='py-20 bg-[#19191A]'>
+        <section id="contact" className='pt-20 bg-[#19191A]'>
           <div className='container px-4 mx-auto'>
             <h2 className='mb-8 text-3xl font-bold text-center text-white'>Contact Us</h2>
             <form className='max-w-md mx-auto' onSubmit={contactus}>
@@ -298,8 +298,12 @@ export default function Landingpage() {
                 Send
               </motion.button>
             </form>
+            <div className='pt-8 pb-2'>
+          <h1 className='opacity-20'>MergeX</h1>
+        </div>
           </div>
         </section>
+        
       </div>
     </div>
   );
