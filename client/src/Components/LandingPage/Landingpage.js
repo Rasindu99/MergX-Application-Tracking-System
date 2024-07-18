@@ -16,7 +16,23 @@ export default function Landingpage() {
     username:'',
     useremail:'',
     message:''
-  })
+  });
+
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const isScrolled = window.scrollY > 10;
+      if (isScrolled !== scrolled) {
+        setScrolled(isScrolled);
+      }
+    };
+
+    document.addEventListener('scroll', handleScroll);
+    return () => {
+      document.removeEventListener('scroll', handleScroll);
+    };
+  }, [scrolled]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -103,25 +119,26 @@ export default function Landingpage() {
 
       {/* Content */}
       <div className="relative z-10">
-        <nav className='fixed top-0 left-0 right-0 flex items-center justify-between p-4 bg-white bg-opacity-100'>
+        <nav className={`fixed top-0 left-0 right-0 flex items-center justify-between p-2 bg-white bg-opacity-90 transition-all duration-300 ${scrolled ? 'h-12' : 'h-20'}`}>
           <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5 }}
+            initial={{ opacity: 1, x: 0 }}
+            animate={{ opacity: scrolled ? 0 : 1, x: scrolled ? -50 : 0 }}
+            transition={{ duration: 0.3 }}
+            className={`transition-all duration-300 ${scrolled ? 'w-0 overflow-hidden' : 'w-auto'}`}
           >
-            <img src={LOGOMERGEX} alt='logo' className='w-[100px] h-[100px]' />
+            <img src={LOGOMERGEX} alt='logo' className={`transition-all duration-300 ${scrolled ? 'w-0 h-0' : 'w-auto h-[100px]'}`} />
           </motion.div>
           <motion.div
-            className='flex space-x-4'
+            className='flex ml-auto space-x-4'
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
           >
             <a href="#intro" className='text-[#19191A] cursor-pointer'>Intro</a>
-            <a href="#features" className='text-[#19191A] cursor-pointer '>Features</a>
-            <a href="#about" className='text-[#19191A] cursor-pointer '>About</a>
-            <a href="#team" className='text-[#19191A] cursor-pointer '>Team</a>
-            <a href="#contact" className='text-[#19191A] cursor-pointer '>Contact</a>
+            <a href="#features" className='text-[#19191A] cursor-pointer'>Features</a>
+            <a href="#about" className='text-[#19191A] cursor-pointer'>About</a>
+            <a href="#team" className='text-[#19191A] cursor-pointer'>Team</a>
+            <a href="#contact" className='text-[#19191A] cursor-pointer'>Contact</a>
           </motion.div>
         </nav>
 
