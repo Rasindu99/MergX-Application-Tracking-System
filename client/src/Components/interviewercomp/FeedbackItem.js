@@ -5,6 +5,7 @@ import PopUp from './Popup';
 import StarRatings from 'react-star-ratings';
 import axios from 'axios';
 import Swal from 'sweetalert2';
+import {toast} from 'react-hot-toast';
 
 const FeedbackItem = ({ profile, name, date, position, userID }) => {
   const [showPopup, setShowPopup] = useState(false);
@@ -28,6 +29,10 @@ const FeedbackItem = ({ profile, name, date, position, userID }) => {
   }, [userID]);
 
   const togglePopup = (feedback = null) => {
+    if (!feedbacks) {
+      toast.error('Admin blocked temporarily');
+      return;
+    }
     if (!showPopup && feedback && feedback.userId === userID) {
       setRating(feedback.rating);
       setComment(feedback.feedback);
@@ -47,6 +52,10 @@ const FeedbackItem = ({ profile, name, date, position, userID }) => {
   };
 
   const handleSubmit = async () => {
+    if (!feedbacks) {
+      toast.error('Admin blocked temporarily');
+      return;
+    }
     try {
       const response = await axios.post('http://localhost:8000/feedback', {
         rating: rating,
@@ -93,6 +102,23 @@ const handleClear = () => {
     setRating(0);
     setComment('');
   };
+
+  //access
+  const [feedbacks, setfeedback] = useState(false);
+
+  useEffect(() => {
+    // Fetch the current state of create_user_account from the backend
+    const fetchCreateUserAccount = async () => {
+      try {
+        const response = await axios.get('/access/feedbacksubmissionget');
+        setfeedback(response.data.feedback_submission);
+      } catch (error) {
+        console.error('Error fetching create user account state:', error);
+      }
+    };
+
+    fetchCreateUserAccount();
+  }, []);
 
   return (
     <div>
