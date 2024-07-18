@@ -130,8 +130,8 @@ export default function PendingJobs({ pendingJobs, setPendingJobs, fetchPendingJ
   return (
     <div className="flex w-full h-full m-0 text-left">
       <div className="flex flex-col w-[32.5%]">
-        <div className="flex flex-col w-[95%] h-[60%] max-h-[60%] overflow-y-scroll pr-2">
-          <h2 className="text-white text-lg mb-4">Pending Jobs</h2>
+        <h2 className="text-white text-lg mb-4">Pending Jobs</h2>
+        <div className="flex flex-col w-[95%] h-[55%] max-h-[55%] overflow-y-scroll pr-2">
           {pendingJobs.map((job) => (
             <div
               key={job._id}
@@ -191,8 +191,8 @@ export default function PendingJobs({ pendingJobs, setPendingJobs, fetchPendingJ
             <p className="text-white opacity-25 text-center mt-4">No pending jobs found</p>
           )}
         </div >
-        <div className="flex flex-col w-[95%] h-[40%] max-h-[40%] overflow-y-scroll pr-2 mt-5">  
-          <h2 className="text-white text-lg mb-4 mt-8">Rejected Jobs</h2>
+        <h2 className="text-white text-lg mb-4 mt-8">Rejected Jobs</h2>
+        <div className="flex flex-col w-[95%] h-[45%] max-h-[45%] overflow-y-scroll pr-2">  
           {rejectedJobs.map((job) => (
             <div
               key={job._id}
@@ -254,8 +254,8 @@ export default function PendingJobs({ pendingJobs, setPendingJobs, fetchPendingJ
         </div>
       </div>
 
-      <div className="w-[67.5%] h-full max-h-full overflow-y-scroll pr-2 ">
-        {selectedJob && (
+      <div className="w-[67.5%] h-full max-h-full overflow-y-scroll pr-2">
+        {selectedJob ? (
           <div>
             {selectedJob.rejected && (
               <div className="w-full p-4">
@@ -391,6 +391,10 @@ export default function PendingJobs({ pendingJobs, setPendingJobs, fetchPendingJ
                 </button>
               </div>
             )}
+          </div>
+        ) : (
+          <div className="flex items-center justify-center h-full text-white opacity-25 ">
+            <p className="text-xl">Select a job to see details</p>
           </div>
         )}
       </div>
