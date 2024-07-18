@@ -28,12 +28,15 @@ export default function AccessCompo() {
                     <div onClick={() => action(3)} className={`text-center flex-1 cursor-pointer ${state === 3 ? 'bg-[#2B2B2B] text-white h-20 flex items-center justify-center' : 'text-white opacity-25'}`}>
                         Hiring Manager
                     </div>
-                    <div onClick={() => action(4)} className={`text-center flex-1 cursor-pointer ${state === 4 ? 'bg-[#2B2B2B] text-white h-20 flex items-center justify-center ' : 'text-white opacity-25'}`}>
+                    <div onClick={() => action(4)} className={`text-center flex-1 cursor-pointer ${state === 4 ? 'bg-[#2B2B2B] text-white h-20 flex items-center justify-center rounded-tr-[30px]' : 'text-white opacity-25'}`}>
                         Interviewer
                     </div>
-                    <div onClick={() => action(5)} className={`text-center flex-1 cursor-pointer ${state === 5 ? 'bg-[#2B2B2B] text-white h-20 flex items-center justify-center rounded-tr-[30px]' : 'text-white opacity-25'}`}>
+                    {/* 
+                        <div onClick={() => action(5)} className={`text-center flex-1 cursor-pointer ${state === 5 ? 'bg-[#2B2B2B] text-white h-20 flex items-center justify-center rounded-tr-[30px]' : 'text-white opacity-25'}`}>
                         Candidate
                     </div>
+                    */}
+                    
                 </div>
                 
                 <div>
