@@ -17,7 +17,7 @@ export default function Interviewerdash() {
 
   const selectedDateSchedules = interviews.filter(schedule =>
       new Date(schedule.date).toLocaleDateString() === today.toLocaleDateString()
-      && schedule.assign === user._id
+      && (schedule.primary_interviewer === user._id || schedule.second_interviewer === user._id)
   );
 
   const [carddetails,setCardDetails] = useState({
@@ -99,43 +99,6 @@ export default function Interviewerdash() {
    }
 
   return (
-    // <div>
-    //   <div className='flex'>
-    //     <div>
-    //       <InterviewNav/>
-    //     </div>
-    //     <div>
-    //       <Header/>
-    //     </div>
-    //     <div id='background' className="z-0 mx-8 mt-24 w-80 h-80vh rounded-3xl">
-    //       <div className='flex items-center justify-around mt-5'>
-    //         <Card title="Applications" value="10" />
-    //         <Card title="Candidates" value="10" />
-    //         <Card title="Upcomming" value="10" />
-    //         <Card title="Unread" value="02" />
-    //       </div>
-    //       <div>
-    //         <div className='mt-16 ml-8'>
-    //           <p className='mt-8 ml-8 text-xl text-left'>Today's Interviews</p>
-    //         </div>
-    //         <div id='bar-container' className='mt-5 overflow-y-auto max-h-80'>
-    //         {interviews.map((interview, index) => (
-    //               <InterviewBar
-    //                 key={index}
-    //                 interviewTitle={interview.name}
-    //                 interviewDate={interview.date}
-    //                 interviewTime={interview.time}
-    //               />
-    //             ))}
-    //         </div>
-    //       </div>
-    //     </div>
-    //     </div>
-    // </div>
-
-
-
-
 
     <div>
       <div className='flex' >
@@ -158,16 +121,20 @@ export default function Interviewerdash() {
               <p className='mt-8 ml-8 text-xl text-left'>Today's Interviews</p>
             </div>
             <div id='bar-container' className='mt-5 overflow-y-auto max-h-80'>
-            {selectedDateSchedules
-              .sort((a, b) => new Date(`1970-01-01T${a.start_time}Z`) - new Date(`1970-01-01T${b.start_time}Z`))
-              .map((interview, index) => (
-                <InterviewBar
-                  key={index}
-                  interviewTitle={interview.subject}
-                  interviewDate={new Date(interview.date).toLocaleDateString()}
-                  interviewTime={interview.start_time}
-                />
-            ))}
+            {selectedDateSchedules.length === 0 ? (
+              <div className='mt-10 font-medium text-lg'>No scheduled interviews for today</div>
+            ) : (
+              selectedDateSchedules
+                .sort((a, b) => new Date(`1970-01-01T${a.start_time}Z`) - new Date(`1970-01-01T${b.start_time}Z`))
+                .map((interview, index) => (
+                  <InterviewBar
+                    key={index}
+                    interviewTitle={interview.subject}
+                    interviewDate={new Date(interview.date).toLocaleDateString()}
+                    interviewTime={interview.start_time}
+                  />
+                ))
+            )}
             </div>
           </div>
         </div>

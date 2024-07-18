@@ -3,8 +3,9 @@ import Sidebar from '../../../src/Components/candidateComp/sidebar/Sidebar';
 import RightContainer from '../../../src/Components/candidateComp/rightContainer/RightContainer';
 import '../candidate/customStyle.css';
 import { FaRobot } from "react-icons/fa6";
-import ChatBot from '../../Components/chatBotComp/ChatBot';
+//import ChatBot from '../../Components/chatBotComp/ChatBot';
 import Draggable from 'react-draggable';
+import CandiChat from '../../Components/chatBotComp/CandiChat';
 
 export default function Candidatedash() {
   const [isChatbotOpen, setIsChatbotOpen] = useState(false);
@@ -34,7 +35,7 @@ export default function Candidatedash() {
       {isChatbotOpen && (
         <Draggable>
           <div className='fixed bottom-0 right-5 w-[450px] bg-[#17171A] border-orange-400 border-[1px] shadow-lg h-2/3 rounded-lg  overflow-auto  '>
-            <ChatBot onClose={handleClose} />
+            <CandiChat onClose={handleClose} />
           </div>
         </Draggable>
         

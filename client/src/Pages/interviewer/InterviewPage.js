@@ -14,7 +14,7 @@ export default function InterviewPage() {
   const { user } = useContext(UserContext);
 
   const selectedDateSchedules = interviews.filter(schedule =>
-    schedule.assign === user._id
+    (schedule.primary_interviewer === user._id || schedule.second_interviewer === user._id)
   );
 
   useEffect(() => {
