@@ -2,36 +2,44 @@ import React, { useState, useEffect } from 'react';
 import { MdOutlineClose } from "react-icons/md";
 import '../../Pages/interviewer/custom.css'
 import PopUp from './Popup';
-import StarRating from './StarRating';
+import StarRatings from 'react-star-ratings';
 import axios from 'axios';
+import Swal from 'sweetalert2';
 
 const FeedbackItem = ({ profile, name, date, position, userID }) => {
   const [showPopup, setShowPopup] = useState(false);
-  const [selectedRating, setSelectedRating] = useState(0);
+  const [rating, setRating] = useState(0);
   const [comment, setComment] = useState('');
-  const [existingFeedbackList, setExistingFeedbackList] = useState([]);
+  const [feedbackList, setFeedbackList] = useState([]);
 
   useEffect(() => {
-    const fetchExistingFeedback = async () => {
+    const fetchFeedbacks = async () => {
       try {
         const response = await axios.get(`http://localhost:8000/feedback?userId=${userID}`);
         if (response.data.length > 0) {
-          setExistingFeedbackList(response.data);
+          setFeedbackList(response.data);
         }
       } catch (error) {
         console.error('Error fetching existing feedback:', error);
       }
     };
 
-    fetchExistingFeedback();
+    fetchFeedbacks();
   }, [userID]);
 
-  const togglePopup = () => {
+  const togglePopup = (feedback = null) => {
+    if (!showPopup && feedback && feedback.userId === userID) {
+      setRating(feedback.rating);
+      setComment(feedback.feedback);
+    } else {
+      setRating(0);
+      setComment('');
+    }
     setShowPopup(!showPopup);
   };
 
-  const handleRatingChange = (rating) => {
-    setSelectedRating(rating);
+  const handleRatingChange = (newRating) => {
+    setRating(newRating);
   };
 
   const handleCommentChange = (event) => {
@@ -40,30 +48,49 @@ const FeedbackItem = ({ profile, name, date, position, userID }) => {
 
   const handleSubmit = async () => {
     try {
-      // Send feedback data to backend
       const response = await axios.post('http://localhost:8000/feedback', {
-        rating: selectedRating,
+        rating: rating,
         feedback: comment,
         userId: userID
       });
 
-      console.log('Feedback submitted:', response.data);
-
-      // Clear form and close popup
-      setSelectedRating(0);
+      if (response.status === 200) {
+        console.log('Feedback updated:', response.data);
+        await Swal.fire({
+          title: 'Updated Successfully!',
+          text: 'Your feedback has been updated.',
+          icon: 'success',
+          confirmButtonText: 'OK'
+        });
+      } else if (response.status === 201) {
+        console.log('Feedback submitted:', response.data);
+        await Swal.fire({
+          title: 'Feedback Submitted!',
+          text: 'Your feedback has been submitted.',
+          icon: 'success',
+          confirmButtonText: 'OK'
+        });
+      }
+  
+      setRating(0);
       setComment('');
       togglePopup();
 
       window.location.reload();
     } catch (error) {
       console.error('Error submitting feedback:', error);
+
+      Swal.fire({
+        title: 'Error!',
+        text: 'There was an issue submitting your feedback.',
+        icon: 'error',
+        confirmButtonText: 'OK'
+      });
     }
   };
 
-
-
-  const handleClear = () => {
-    setSelectedRating(0);
+const handleClear = () => {
+    setRating(0);
     setComment('');
   };
 
@@ -84,17 +111,20 @@ const FeedbackItem = ({ profile, name, date, position, userID }) => {
           <p className='opacity-50 text-base'>{position}</p>
         </div>
         <div>
-          {existingFeedbackList.some(feedback => feedback.userId === userID) ? (
-              <button
-                className='w-52 h-14 bg-[#EA7122] text-lg rounded-3xl opacity-70'
-                onClick={togglePopup}
-              >
-                Update Feedback
-              </button>
+        {feedbackList.some(feedback => feedback.userId === userID) ? (
+              feedbackList.map(feedback => feedback.userId === userID && (
+                <button
+                  key={feedback._id} // Assuming each feedback has a unique _id
+                  className='w-52 h-14 bg-[#EA7122] text-lg rounded-3xl opacity-70'
+                  onClick={() => togglePopup(feedback)}
+                >
+                  Update Feedback
+                </button>
+              ))
             ) : (
               <button
                 className='w-52 h-14 bg-[#EA7122] text-lg rounded-3xl'
-                onClick={togglePopup}
+                onClick={() => togglePopup()}
               >
                 Submit Feedback
               </button>
@@ -117,7 +147,14 @@ const FeedbackItem = ({ profile, name, date, position, userID }) => {
             <p className='text-xl semi-bold mt-5'>Rate Your Expeirience</p>
             <p className='text-center text-lg mt-5 w-3/4 mx-auto'>We request you to share your feedback. This helps us to get the valuable point to the candidate</p>
             <div className='mx-auto mt-5'>
-              <StarRating onChange={handleRatingChange} />
+            <StarRatings
+                rating={rating}
+                starRatedColor="#EA7122"
+                changeRating={handleRatingChange}
+                numberOfStars={5}
+                starDimension="30px"
+                starSpacing="5px"
+              />
             </div>
             <div className='flex flex-col items-center justify-start mt-8'>
               <p className='text-left'>Add a Comment</p>
