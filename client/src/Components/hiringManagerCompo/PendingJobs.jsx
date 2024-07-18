@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { IoBagHandleSharp, IoClose } from "react-icons/io5";
 import { MdRemoveRedEye } from "react-icons/md";
 import axios from 'axios';
@@ -10,6 +10,10 @@ export default function PendingJobs(props) {
   const [improvements, setImprovements] = useState('');
 
   const handleOpenPopup = () => {
+    if (!approveJob) {
+      toast.error('Admin blocked temporarily');
+      return;
+    }
     setIsPopupOpen(true);
   };
 
@@ -30,6 +34,10 @@ export default function PendingJobs(props) {
   };
 
   const handleRejectSubmit = async () => {
+    if (!approveJob) {
+      toast.error('Admin blocked temporarily');
+      return;
+    }
     if (!props.id) {
       console.error('Job ID is undefined');
       toast.error('Unable to reject job: Invalid job ID');
@@ -66,6 +74,11 @@ export default function PendingJobs(props) {
   };
 
   const approvedJob = async () => {
+    if (!approveJob) {
+      toast.error('Admin blocked temporarily');
+      return;
+    }
+    
     if (!props.id) {
       console.error('Job ID is undefined');
       toast.error('Unable to approve job: Invalid job ID');
@@ -91,6 +104,24 @@ export default function PendingJobs(props) {
       toast.error('Failed to approve job. Please try again.');
     }
   };
+
+  //access controller
+  const [approveJob, setApproveJob] = useState(false);
+  
+  useEffect(() => {
+    // Fetch the current state of create_user_account from the backend
+    const fetchJobApproval = async () => {
+      try {
+        const response = await axios.get('/access/getjobapproval');
+        setApproveJob(response.data.job_approval);
+      } catch (error) {
+        console.error('Error fetching create user account state:', error);
+      }
+    };
+
+    fetchJobApproval();
+  }, []);
+  
 
 
   return (
