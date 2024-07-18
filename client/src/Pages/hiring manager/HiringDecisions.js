@@ -7,6 +7,7 @@ import { UserContext } from '../../Context/UserContext.js';
 import axios from 'axios';
 import { toast } from "react-hot-toast";
 import { IoChevronBackCircle } from "react-icons/io5";
+import AdminChatBotBottom from '../../Components/admincomp/AdminChatBotBottom.js';
 
 export default function HiringDecision() {
 
@@ -241,6 +242,10 @@ useEffect(() => {
 
 const updateEvaluation = async (event) => {
   event.preventDefault();
+  if (!hiringDecision) {
+    toast.error('Admin blocked temporarily');
+    return;
+  }
   try {
     const response = await axios.put(
       `http://localhost:8000/hmfeedback/update/${existEvolution._id}`,
@@ -344,6 +349,23 @@ useEffect(()=>{
 useEffect(()=>{
   processrejectedCandidates();
 },[rejectedevaluations])
+
+//access
+const [hiringDecision, setHiringDecision] = useState(false);
+
+  useEffect(() => {
+    // Fetch the current state of create_user_account from the backend
+    const fetchCreateUserAccount = async () => {
+      try {
+        const response = await axios.get('/access/getmakedecision');
+        setHiringDecision(response.data.make_decision);
+      } catch (error) {
+        console.error('Error fetching create user account state:', error);
+      }
+    };
+
+    fetchCreateUserAccount();
+  }, []);
 
 return (
   <div className='flex w-screen'>
@@ -511,12 +533,12 @@ return (
         <div className='description flex flex-col w-full pt-[20px] box-border h-[85vh] overflow-auto overflow-x-hidden'>
         <div  className='flex flex-row py-[20px] justify-center gap-5 border-[grey]  border-b-[2px] '>
               <img src={selected.image} alt="" className=' userImg  rounded-[50%] border-[solid] border-[#ffffff] ml-[0.7rem] esm:w-[20px] esm:h-[20px]  450px:w-[30px] 450px:h-[30px]  sm:w-[35px] sm:h-[35px] border-[1.5px]  lg:w-[100px] lg:h-[100px] lg:border-[2px] md:w-[37px] md:h-[37px] md:border-[2px] sm:m-1 esm:m-[3px]' />
-             <div className='details flex flex-col justify-evenly  '>
+             <div className='flex flex-col details justify-evenly '>
               <p className='text-left'>{selected.username}</p>
               <p className='text-left text-[#ffffff] opacity-[30%] '>{selected.post}</p>
               <p className='text-left text-[#ffffff] opacity-[30%] '> Interviewer Name:{data.interviewername}</p>
              </div>
-             <div className="flex flex-col  ">
+             <div className="flex flex-col ">
               {/* {submited ?(<label htmlFor="" className="p-[5px] rounded-[10px] bg-[#EA7122] h-fit "> Evaluated</label>):null}   */}
            {data.isHired && showEvaluated? (  <label htmlFor="" className="p-[5px] rounded-[10px] bg-green-700 h-fit " >Hired</label>):null}   
          {data.isRejected && showEvaluated? (      <label htmlFor="" className="p-[5px] rounded-[10px] bg-[#484848] h-fit text-[red] ">Rejected</label>):null} 
@@ -572,6 +594,10 @@ return (
         </div>
 
       </div> 
+       {/* Move AdminChatBotBottom here and wrap it in a positioned div */}
+       <div className="absolute bottom-0 right-0 z-50">
+        <AdminChatBotBottom/>
+      </div>
       </div>
 
       

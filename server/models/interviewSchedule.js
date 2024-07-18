@@ -9,7 +9,7 @@ const interviewScheduleSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    creatorId: {
+    primary_interviewer: {
         type: mongoose.Schema.Types.ObjectId,
         required: true
     },
@@ -29,9 +29,9 @@ const interviewScheduleSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    assign: {
+    second_interviewer: {
         type: mongoose.Schema.Types.ObjectId,
-        required: true
+        required: false
     },
     link: {
         type: String,

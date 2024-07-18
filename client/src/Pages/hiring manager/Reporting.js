@@ -11,6 +11,7 @@ import { AiTwotoneLike } from "react-icons/ai";
 import { FaPeopleGroup } from "react-icons/fa6";
 import { PiCertificateFill } from "react-icons/pi";
 import HiringmanagerNav from '../../Components/hiringManagerCompo/HiringManagerNav';
+import AdminChatBotBottom from '../../Components/admincomp/AdminChatBotBottom.js';
 
 const formatDate = (timestamp) => {
   const date = new Date(timestamp);
@@ -213,19 +214,19 @@ export default function Dashboard() {
             <div className='flex flex-row items-center justify-around mt-[20px]'>
               <div className='flex flex-col'>
                 <PiechartWithIcon value={(source.hiredcountbyposition / source.acceptedapplicationsbyposition) * 100} name='Hiring Rate' icon={AiTwotoneLike} />
-                <p className='text-white m-auto'>Hiring Rate</p>
+                <p className='m-auto text-white'>Hiring Rate</p>
               </div>
               <div className='flex flex-col'>
                 <PiechartWithIcon value={(source.acceptedapplicationsbyposition / source.submittedapplicationsbyposition) * 100} name='Accepted Rate' icon={FaCheckCircle} />
-                <p className='text-white m-auto'>Accepted Rate</p>
+                <p className='m-auto text-white'>Accepted Rate</p>
               </div>
               <div className='flex flex-col'>
                 <PiechartWithIcon value={(source.hiredcountbyposition / source.allhiredcount) * 100} name='Hiring Rate with other post' icon={FaPeopleGroup} />
-                <p className='text-white m-auto'>Hiring Rate with other post</p>
+                <p className='m-auto text-white'>Hiring Rate with other post</p>
               </div>
               <div className='flex flex-col'>
                 <PiechartWithIcon value={(source.submittedapplicationsbyposition / source.totalsubmittedapplications) * 100} name='Apply Rate' icon={PiCertificateFill} />
-                <p className='text-white m-auto'>Apply Rate</p>
+                <p className='m-auto text-white'>Apply Rate</p>
               </div>
             </div>
           </div>
@@ -233,6 +234,10 @@ export default function Dashboard() {
           <p className='text-[#a3a3a3] text-center text-[28px]'>Select a job to view details</p>
         </div>)}
         </div>
+      </div>
+       {/* Move AdminChatBotBottom here and wrap it in a positioned div */}
+       <div className="absolute bottom-0 right-0 z-50">
+        <AdminChatBotBottom/>
       </div>
     </div>
   );

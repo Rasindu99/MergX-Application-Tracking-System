@@ -4,6 +4,7 @@ import Topbar from "../../Components/hiringManagerCompo/Topbar.jsx";
 import PendingJobs from "../../Components/hiringManagerCompo/PendingJobs.jsx";
 import axios from "axios";
 import HiringmanagerNav from '../../Components/hiringManagerCompo/HiringManagerNav';
+import AdminChatBotBottom from "../../Components/admincomp/AdminChatBotBottom.js";
 
 
 export default function JobApproval() {
@@ -69,6 +70,10 @@ export default function JobApproval() {
 
 
 
+      </div>
+       {/* Move AdminChatBotBottom here and wrap it in a positioned div */}
+       <div className="absolute bottom-0 right-0 z-50">
+        <AdminChatBotBottom/>
       </div>
       </div>
           

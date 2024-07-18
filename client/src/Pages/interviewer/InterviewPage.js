@@ -5,6 +5,7 @@ import Description from '../../Components/interviewercomp/InterviewerDes';
 import InterviewItem from '../../Components/interviewercomp/InterviewItem';
 import axios from 'axios';
 import { UserContext } from '../../Context/UserContext';
+import AdminChatBotBottom from '../../Components/admincomp/AdminChatBotBottom';
 
 
 export default function InterviewPage() {
@@ -13,7 +14,7 @@ export default function InterviewPage() {
   const { user } = useContext(UserContext);
 
   const selectedDateSchedules = interviews.filter(schedule =>
-    schedule.assign === user._id
+    (schedule.primary_interviewer === user._id || schedule.second_interviewer === user._id)
   );
 
   useEffect(() => {
@@ -38,8 +39,8 @@ export default function InterviewPage() {
         <div>
             <Description name={name} />
         </div>
-        <div id='background' className="w-80 h-80vh rounded-3xl z-0 mt-24 mx-8">
-            <div id='container' className='mt-8 px-8'>
+        <div id='background' className="z-0 mx-8 mt-24 w-80 h-80vh rounded-3xl">
+            <div id='container' className='px-8 mt-8'>
             {selectedDateSchedules
               .sort((a, b) => {
                 const dateA = new Date(a.date);
@@ -67,6 +68,10 @@ export default function InterviewPage() {
             </div>
         </div>
         </div>
+         {/* Move AdminChatBotBottom here and wrap it in a positioned div */}
+      <div className="absolute bottom-0 right-0 z-50">
+        <AdminChatBotBottom/>
+      </div>
     </div>
   )
 }

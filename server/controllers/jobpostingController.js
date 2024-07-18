@@ -1,4 +1,6 @@
 const JobPosting = require('../models/jobposting');
+const InterviewSchedule = require('../models/interviewSchedule');
+
 
 const jobtest = (req, res) => {
     res.json('test is working superbly');
@@ -9,28 +11,22 @@ const createJobPosting = async (req, res) => {
     try {
         const { jobCreatorId, jobcreatorEmail, jobTitle, vacancies, description, salary, requiredExperience, requiredSkills, approved } = req.body;
 
-        // Check if required fields are provided
         if (!jobTitle || !salary || !requiredExperience) {
             return res.status(400).json({
                 error: 'job title, salary, and required experience are required'
             });
         }
 
-        // Find the highest jobid in the collection
         const lastJobPosting = await JobPosting.findOne().sort({ jobid: -1 });
 
-        // Ensure lastJobPosting is valid and has a valid jobid
         const lastJobId = lastJobPosting && typeof lastJobPosting.jobid === 'number' ? lastJobPosting.jobid : 0;
 
-        // Set the new jobid to be the highest jobid + 1
         const newJobId = lastJobId + 1;
 
-        // Ensure newJobId is a valid number
         if (isNaN(newJobId)) {
             throw new Error('Failed to generate a valid job ID');
         }
 
-        // Create a new job posting
         const jobPosting = await JobPosting.create({
             jobid: newJobId,
             jobCreatorId,
@@ -43,7 +39,6 @@ const createJobPosting = async (req, res) => {
             requiredSkills,
         });
 
-        // Return the created job posting
         return res.status(201).json(jobPosting);
     } catch (error) {
         console.log(error);
@@ -51,7 +46,7 @@ const createJobPosting = async (req, res) => {
     }
 };
 
-// GET all pending job postings
+//GET all pending job postings
 const getAllPendingJobPostings = async (req, res) => {
     try {
         const jobPostings = await JobPosting.find({ pending: true }).sort({ updatedAt: -1 });
@@ -83,7 +78,72 @@ const getAllApprovedJobPostings = async (req, res) => {
     }
 };
 
-// GET all rejected job postings
+// GET all approved and nonscheduled job postings
+const getNonScheduledJobPostings = async (req, res) => {
+    try {
+        const approvedJobPostings = await JobPosting.find({ approved: true }).sort({ approvedAt: -1 }).lean();
+
+        if (!approvedJobPostings || approvedJobPostings.length === 0) {
+            return res.status(404).json({ message: "No approved job postings found" });
+        }
+
+        const scheduledJobIds = await InterviewSchedule.find({ send: true }).distinct('jobId');
+
+        const unscheduledJobPostings = approvedJobPostings.filter(job => 
+            !scheduledJobIds.includes(job._id.toString())
+        );
+
+        if (!unscheduledJobPostings.length) {
+            return res.status(404).json({ message: "No approved job postings without interview schedules found" });
+        }
+
+        return res.status(200).json(unscheduledJobPostings);
+    } catch (error) {
+        console.error('Error fetching approved job postings without interview schedules:', error);
+        return res.status(500).json({ message: error.message });
+    }
+};
+
+//GET all approved and scheduled job postings
+const getScheduledJobPostings = async (req, res) => {
+    try {
+        //Find all approved job postings
+        const jobPostings = await JobPosting.find({ approved: true }).lean();
+
+        //Retrieve interview schedules with send: true and sort by updatedAt descending
+        const interviewSchedules = await InterviewSchedule.find({ send: true }).sort({ updatedAt: -1 }).lean();
+
+        //Create a map of jobId to schedule updatedAt
+        const jobIdToScheduleMap = new Map();
+        interviewSchedules.forEach(schedule => {
+            jobIdToScheduleMap.set(schedule.jobId.toString(), schedule.updatedAt);
+        });
+
+        //Filter the approved job postings to include only those that have a scheduled interview
+        const scheduledJobs = jobPostings.filter(job => 
+            jobIdToScheduleMap.has(job._id.toString())
+        );
+
+        //Sort the filtered job postings by the updatedAt of their respective schedules
+        scheduledJobs.sort((a, b) => {
+            const aUpdatedAt = jobIdToScheduleMap.get(a._id.toString());
+            const bUpdatedAt = jobIdToScheduleMap.get(b._id.toString());
+            return bUpdatedAt - aUpdatedAt;
+        });
+
+        if (!scheduledJobs.length) {
+            return res.status(404).json({ message: "No scheduled job postings found" });
+        }
+
+        return res.status(200).json(scheduledJobs);
+    } catch (error) {
+        console.error('Error fetching scheduled job postings:', error);
+        return res.status(500).json({ message: "Internal server error", error: error.message });
+    }
+};
+
+
+//GET all rejected job postings
 const getAllRejectedJobPostings = async (req, res) => {
     try {
         const jobPostings = await JobPosting.find({ rejected: true }).sort({ createdAt: -1 });
@@ -119,7 +179,7 @@ const updateJobPosting = async(req, res) =>{
     }
 }
 
-//Delete a job post
+//DELETE a job post
 const deleteJobPosting = async(req, res) => {
     const jobId = req.params.id;
 
@@ -137,6 +197,7 @@ const deleteJobPosting = async(req, res) => {
   }
 }
 
+//UPDATE expired tag
 const updateExpiredStatus = async(req,res) => {
     const jobId = req.params.id;
   const { expired } = req.body;
@@ -154,7 +215,8 @@ const updateExpiredStatus = async(req,res) => {
     res.status(500).json({ success: false, message: 'Internal server error' });
   }
 }
-//get expire = false jobs
+
+//GET expire = false jobs
 const getNotExpiredJobposting = async (req, res) => {
     try {
         const jobPostings = await JobPosting.find({ 
@@ -173,7 +235,7 @@ const getNotExpiredJobposting = async (req, res) => {
     }
 };
 
-// PUT approve-true
+//UPDATE approve=true
 const approveJobPosting = async (req, res) => {
     const jobId = req.params.id;
     const { approved } = req.body;
@@ -202,7 +264,7 @@ const approveJobPosting = async (req, res) => {
 };
 
 
-// Update reject-true
+//UPDATE reject=true
 const rejectJobPosting = async (req, res) => {
     const jobId = req.params.id;
     const { rejected, improvements } = req.body;
@@ -217,13 +279,13 @@ const rejectJobPosting = async (req, res) => {
         const job = await JobPosting.findByIdAndUpdate(jobId, updateData, { new: true });
 
         if (!job) {
-            console.log('Job not found'); // Debug log
+            console.log('Job not found');
             return res.status(404).json({ message: 'Job not found' });
         }
 
         res.status(200).json(job);
     } catch (error) {
-        console.error('Error rejecting job:', error); // Detailed error log
+        console.error('Error rejecting job:', error);
         res.status(500).json({ message: 'Failed to reject job.' });
     }
 }
@@ -235,6 +297,8 @@ module.exports = {
     createJobPosting,
     getAllPendingJobPostings,
     getAllApprovedJobPostings,
+    getNonScheduledJobPostings,
+    getScheduledJobPostings,
     getAllRejectedJobPostings,
     updateJobPosting,
     deleteJobPosting,

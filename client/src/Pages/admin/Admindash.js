@@ -6,6 +6,7 @@ import Adminheadrightbar from '../../Components/admincomp/Adminheadrightbar';
 import CardL from '../../Components/hiringManagerCompo/CardL';
 import CardS from '../../Components/hiringManagerCompo/CardS';
 import axios from 'axios';
+import AdminChatBotBottom from '../../Components/admincomp/AdminChatBotBottom';
 
 function Admindash(resreq) {
   const { user } = useContext(UserContext);
@@ -159,6 +160,10 @@ function Admindash(resreq) {
             </div>
           </div>
         </div>
+      </div>
+      {/* Move AdminChatBotBottom here and wrap it in a positioned div */}
+      <div className="absolute bottom-0 right-0 z-50">
+        <AdminChatBotBottom/>
       </div>
     </div>
   );

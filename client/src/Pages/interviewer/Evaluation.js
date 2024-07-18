@@ -6,6 +6,7 @@ import Topbar from "../../Components/hiringManagerCompo/Topbar.jsx";
 import PieCharts from "../../Components/interviewercomp/InputPieCharts";
 import { toast } from "react-hot-toast";
 import { IoChevronBackCircle } from "react-icons/io5";
+import AdminChatBotBottom from "../../Components/admincomp/AdminChatBotBottom.js";
 
 
 export default function Evaluation() {
@@ -181,6 +182,10 @@ export default function Evaluation() {
 
   const createEvaluation = async (event) => {
     event.preventDefault();
+    if (!evaluation) {
+      toast.error('Admin blocked temporarily');
+      return;
+    }
     try {
       const response = await axios.post(
         "http://localhost:8000/evaluation/createevaluation",
@@ -368,21 +373,23 @@ useEffect(()=>{
 useEffect(()=>{
  console.log('evaluatedApplication',evaluatedApplication);
 },[showEvaluated])
- 
 
-// useEffect(() => { 
-//   console.log('Candidate',candidates);
-// }
-// ,[candidates]);
+//access
+const [evaluation, setEvaluation] = useState(false);
 
-// useEffect(() => {
-//   console.log('Evaluated Candidate',evaluatedCandidates);
-// },[evaluatedCandidates]);
-// useEffect(() => { 
-//   console.log(data);
-// }
-// ,[data]);
- 
+useEffect(() => {
+  // Fetch the current state of create_user_account from the backend
+  const fetchviewJob = async () => {
+    try {
+      const response = await axios.get('/access/submitevalutionget');
+      setEvaluation(response.data.submit_evaluation);
+    } catch (error) {
+      console.error('Error fetching create user account state:', error);
+    }
+  };
+
+  fetchviewJob();
+}, []);
 
   return (
     <div>
@@ -586,7 +593,7 @@ useEffect(()=>{
                           id=""
                           className="border-none w-[40px] text-black text-center font-bold  m-auto bottom-0 flex justify-center rounded-[10px] "
                         />
-                        <p className="text-white m-auto">Add Comment</p>
+                        <p className="m-auto text-white">Add Comment</p>
                       </div>
                       <div className="flex flex-col mb-[20px]">
                         <PieCharts percentage={data.collaboration}></PieCharts>
@@ -598,13 +605,13 @@ useEffect(()=>{
                           id=""
                           className="border-none w-[40px] text-black text-center font-bold  m-auto bottom-0 flex justify-center rounded-[10px] "
                         />
-                        <p className="text-white m-auto">
+                        <p className="m-auto text-white">
                           Effective Collaboration
                         </p>
                       </div>
                     </div>
 
-                    <div className="flex flex-col md:flex-row justify-around">
+                    <div className="flex flex-col justify-around md:flex-row">
                       <div className="flex flex-col m-auto mb-[20px]">
                         <PieCharts percentage={data.adoptability}></PieCharts>
                         <input
@@ -615,7 +622,7 @@ useEffect(()=>{
                           id=""
                           className="border-none w-[40px] text-black text-center font-bold  m-auto bottom-0 flex justify-center rounded-[10px] "
                         />
-                        <p className="text-white m-auto">Adoptability</p>
+                        <p className="m-auto text-white">Adoptability</p>
                       </div>
                       <div className="flex flex-col m-auto mb-[20px]">
                         <PieCharts percentage={data.decisionmaking}></PieCharts>
@@ -627,7 +634,7 @@ useEffect(()=>{
                           id=""
                           className="border-none w-[40px] text-black text-center font-bold  m-auto bottom-0 flex justify-center rounded-[10px] "
                         />
-                        <p className="text-white m-auto">Decision Making</p>
+                        <p className="m-auto text-white">Decision Making</p>
                       </div>
                       <div className="flex flex-col m-auto mb-[20px]">
                         <PieCharts percentage={data.leadership}></PieCharts>
@@ -639,11 +646,11 @@ useEffect(()=>{
                           id=""
                           className="border-none w-[40px] text-black text-center font-bold  m-auto bottom-0 flex justify-center rounded-[10px] "
                         />
-                        <p className="text-white m-auto">Leadership Style</p>
+                        <p className="m-auto text-white">Leadership Style</p>
                       </div>
                     </div>
 
-                    <div className="flex flex-raw  justify-center">
+                    <div className="flex justify-center flex-raw">
                       <button
                         type="submit"
                         onClick={clear}
@@ -682,7 +689,7 @@ useEffect(()=>{
                           id=""
                           className="border-none w-[40px] text-black text-center font-bold  m-auto bottom-0 flex justify-center rounded-[10px] "
                         />
-                        <p className="text-white m-auto">Problem Solution</p>
+                        <p className="m-auto text-white">Problem Solution</p>
                       </div>
                       <div className="flex flex-col m-auto mb-[20px]">
                         <PieCharts
@@ -697,7 +704,7 @@ useEffect(()=>{
                           id=""
                           className="border-none w-[40px] text-black text-center font-bold  m-auto bottom-0 flex justify-center rounded-[10px] "
                         />
-                        <p className="text-white m-auto">
+                        <p className="m-auto text-white">
                           Language Proficiency
                         </p>
                       </div>
@@ -720,7 +727,7 @@ useEffect(()=>{
                         </div>
                       </div>
                     </form>
-                    <div className="flex flex-raw  justify-center">
+                    <div className="flex justify-center flex-raw">
                       <button
                         type="submit"
                         onClick={clear}
@@ -757,7 +764,7 @@ useEffect(()=>{
                           id=""
                           className="border-none w-[40px] text-black text-center font-bold  m-auto bottom-0 flex justify-center rounded-[10px] "
                         />
-                        <p className="text-white m-auto">Technical Details</p>
+                        <p className="m-auto text-white">Technical Details</p>
                       </div>
                       <div className="flex flex-col m-auto mb-[20px]">
                         <PieCharts
@@ -772,7 +779,7 @@ useEffect(()=>{
                           id=""
                           className="border-none w-[40px] text-black text-center font-bold  m-auto bottom-0 flex justify-center rounded-[10px] "
                         />
-                        <p className="text-white m-auto">Culteral Fit </p>
+                        <p className="m-auto text-white">Culteral Fit </p>
                       </div>
                       <div className="flex flex-col m-auto mb-[20px]">
                         <PieCharts
@@ -787,7 +794,7 @@ useEffect(()=>{
                           id=""
                           className="border-none w-[40px] text-black text-center font-bold  m-auto bottom-0 flex justify-center rounded-[10px] "
                         />
-                        <p className="text-white m-auto">Communication</p>
+                        <p className="m-auto text-white">Communication</p>
                       </div>
                     </div>
                     <form>
@@ -809,7 +816,7 @@ useEffect(()=>{
                         </div>
                       </div>
                     </form>
-                    <div className="flex flex-raw  justify-center">
+                    <div className="flex justify-center flex-raw">
                       <button
                         type="submit"
                         onClick={clear}
@@ -844,7 +851,7 @@ useEffect(()=>{
                       feedbackTab === 2 ? "block" : "hidden"
                     } `}
                   >
-                    <div className="flex flex-col  md:flex-row justify-around">
+                    <div className="flex flex-col justify-around md:flex-row">
                       <div className="flex flex-col m-auto mb-[20px]">
                         <PieCharts
                           percentage={data.clarity}
@@ -858,7 +865,7 @@ useEffect(()=>{
                           id=""
                           className="border-none w-[40px] text-black text-center font-bold  m-auto bottom-0 flex justify-center rounded-[10px] "
                         />
-                        <p className="text-white m-auto">Clarity</p>
+                        <p className="m-auto text-white">Clarity</p>
                       </div>
                       <div className="flex flex-col m-auto mb-[20px]">
                         <PieCharts
@@ -873,7 +880,7 @@ useEffect(()=>{
                           id=""
                           className="border-none w-[40px] text-black text-center font-bold  m-auto bottom-0 flex justify-center rounded-[10px] "
                         />
-                        <p className="text-white m-auto">Active listening</p>
+                        <p className="m-auto text-white">Active listening</p>
                       </div>
 
                       <div className="flex flex-col m-auto mb-[20px]">
@@ -889,7 +896,7 @@ useEffect(()=>{
                           id=""
                           className="border-none w-[40px] text-black text-center font-bold  m-auto bottom-0 flex justify-center rounded-[10px] "
                         />
-                        <p className="text-white m-auto">Empathy</p>
+                        <p className="m-auto text-white">Empathy</p>
                       </div>
                       <div className="flex flex-col m-auto mb-[20px]">
                         <PieCharts
@@ -904,11 +911,11 @@ useEffect(()=>{
                           id=""
                           className="border-none w-[40px] text-black text-center font-bold  m-auto bottom-0 flex justify-center rounded-[10px] "
                         />
-                        <p className="text-white m-auto">Presenation Skill</p>
+                        <p className="m-auto text-white">Presenation Skill</p>
                       </div>
                     </div>
 
-                    <div className="flex flex-raw  justify-center">
+                    <div className="flex justify-center flex-raw">
                       <button
                         type="submit"
                         onClick={clear}
@@ -934,6 +941,10 @@ useEffect(()=>{
             ) : null}
           </div>
         </div>
+      </div>
+       {/* Move AdminChatBotBottom here and wrap it in a positioned div */}
+       <div className="absolute bottom-0 right-0 z-50">
+        <AdminChatBotBottom/>
       </div>
     </div>
   );

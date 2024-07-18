@@ -1,6 +1,6 @@
 import React, { useState,  useContext  } from 'react'
 import { UserContext } from '../../Context/UserContext';
-import { MdNotificationsActive } from "react-icons/md";
+
 
 export default function Adminheadrightbar() {
     const { user } = useContext(UserContext);
@@ -8,7 +8,7 @@ export default function Adminheadrightbar() {
   return (
     <div className='flex'>
       <div className='flex items-center mr-4'>
-        <MdNotificationsActive className='size-[50px]'/>
+        
       </div>
       <div 
       className="relative flex items-center justify-between px-2  bg-neutral-700 h-[60px] rounded-3xl w-[150px]" 

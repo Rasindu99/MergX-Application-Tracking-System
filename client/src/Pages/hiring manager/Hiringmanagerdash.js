@@ -6,6 +6,7 @@ import Meeting from '../../Components/hiringManagerCompo/Meeting.jsx';
 import Jobs from '../../Components/hiringManagerCompo/Jobs.jsx';
 import HiringmanagerNav from '../../Components/hiringManagerCompo/HiringManagerNav'
 import axios from 'axios';
+import AdminChatBotBottom from '../../Components/admincomp/AdminChatBotBottom.js';
 
 
 export default function Hiringmanagerdash() {
@@ -152,7 +153,7 @@ export default function Hiringmanagerdash() {
         <div className='content items-center flex flex-col justify-center z-40 text-white p-[25px] bg-transparent m-[30px] h-[85vh] overflow-auto rounded-[30px] '> 
         {/*  bg-[linear-gradient(to_top,_#100c08_0%,_#2B2B2B_100%)]  */}
         <div className="card_container mt-[10px] flex flex-col gap-5 "> 
-            <div className="card_container_1 flex  mb-6 justify-center gap-24 ">
+            <div className="flex justify-center gap-24 mb-6 card_container_1 ">
                 <CardL name="Hired" val={carddetails.hire} />
                 <CardL name="Evaluations" val={carddetails.interviewedCandiates}/>
                 <CardL name="Pending Jobs" val={carddetails.pendingjobs}/>
@@ -217,6 +218,10 @@ export default function Hiringmanagerdash() {
          
                   
                 </div>
+                 {/* Move AdminChatBotBottom here and wrap it in a positioned div */}
+      <div className="absolute bottom-0 right-0 z-50">
+        <AdminChatBotBottom/>
+      </div>
       
     </div>
   )

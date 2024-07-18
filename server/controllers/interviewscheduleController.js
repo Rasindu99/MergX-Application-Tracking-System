@@ -3,18 +3,18 @@ const InterviewSchedule = require('../models/interviewSchedule');
 // Post interview schedule
 const createInterviewSchedule = async (req, res) => {
     try {
-        const { jobId, creatorId,jobtitle, date, start_time, end_time, subject, assign, link, password, experience, skills, description } = req.body;
+      const { jobId, primary_interviewer,jobtitle, date, start_time, end_time, subject, second_interviewer, link, password, experience, skills, description } = req.body;
         
         // Create interview schedule in the database
         const interviewschedule = await InterviewSchedule.create({
             jobId,
-            creatorId,
+            primary_interviewer,
             jobtitle,
             date,
             start_time,
             end_time,
             subject,
-            assign,
+            second_interviewer,
             link,
             password,
             experience,
@@ -71,7 +71,7 @@ const deleteInterviewSchedule = async (req, res) => {
 
 // Update interview schedule
 const updateInterviewSchedule = async (req, res) => {
-    const { date, start_time, end_time, subject, assign, link, password } = req.body;
+    const { date, start_time, end_time, subject, second_interviewer, link, password } = req.body;
     const interviewId = req.params.interviewId;
   
     try {
@@ -87,7 +87,7 @@ const updateInterviewSchedule = async (req, res) => {
           start_time,
           end_time,
           subject,
-          assign,
+          second_interviewer,
           link,
           password,
         },

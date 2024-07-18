@@ -1,7 +1,10 @@
 import React from 'react';
 import InterviewNav from '../../Components/interviewercomp/InterviewNav';
 import Description from '../../Components/interviewercomp/InterviewerDes';
+
+import AdminChatBotBottom from '../../Components/admincomp/AdminChatBotBottom';
 import Home from '../../Components/InternalChatComp/home/Home';
+
 
 export default function Message() {
   const name = 'Good Morning, Gangamina';
@@ -20,7 +23,9 @@ export default function Message() {
             <Home />
           </div>
         </div>
-      </div>
+        </div>
+
+      
     </div>
   )
 }

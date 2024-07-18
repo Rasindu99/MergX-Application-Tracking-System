@@ -32,7 +32,7 @@ const Invitation = () => {
   useEffect(() => {
     const fetchInterviews = async () => {
       try {
-        const response = await axios.get('/invitation/sentinvitation');
+        const response = await axios.get('/invitation/getnonexpiredinvitations');
         const data = response.data;
         setInterviews(data);
         setAllInterviews(data);
