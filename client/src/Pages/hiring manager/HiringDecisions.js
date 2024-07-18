@@ -242,6 +242,10 @@ useEffect(() => {
 
 const updateEvaluation = async (event) => {
   event.preventDefault();
+  if (!hiringDecision) {
+    toast.error('Admin blocked temporarily');
+    return;
+  }
   try {
     const response = await axios.put(
       `http://localhost:8000/hmfeedback/update/${existEvolution._id}`,
@@ -345,6 +349,23 @@ useEffect(()=>{
 useEffect(()=>{
   processrejectedCandidates();
 },[rejectedevaluations])
+
+//access
+const [hiringDecision, setHiringDecision] = useState(false);
+
+  useEffect(() => {
+    // Fetch the current state of create_user_account from the backend
+    const fetchCreateUserAccount = async () => {
+      try {
+        const response = await axios.get('/access/getmakedecision');
+        setHiringDecision(response.data.make_decision);
+      } catch (error) {
+        console.error('Error fetching create user account state:', error);
+      }
+    };
+
+    fetchCreateUserAccount();
+  }, []);
 
 return (
   <div className='flex w-screen'>
