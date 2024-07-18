@@ -74,7 +74,6 @@ export default function JobPost({ fetchPendingJobPostings }) {
         toast.error("Number fields cannot have negative values.");
       }else{
         
-      // Split required skills by comma to create an array
       const skillsArray = requiredSkills.split(",");
 
       const formData = {
@@ -85,7 +84,7 @@ export default function JobPost({ fetchPendingJobPostings }) {
         description,
         salary,
         requiredExperience,
-        requiredSkills: skillsArray, // Use the array of skills
+        requiredSkills: skillsArray,
       };
 
       await axios.post("/job/createJobPosting", formData);
