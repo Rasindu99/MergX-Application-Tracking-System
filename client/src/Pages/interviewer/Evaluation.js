@@ -182,6 +182,10 @@ export default function Evaluation() {
 
   const createEvaluation = async (event) => {
     event.preventDefault();
+    if (!evaluation) {
+      toast.error('Admin blocked temporarily');
+      return;
+    }
     try {
       const response = await axios.post(
         "http://localhost:8000/evaluation/createevaluation",
@@ -384,6 +388,23 @@ useEffect(()=>{
 // }
 // ,[data]);
  
+
+//access
+const [evaluation, setEvaluation] = useState(false);
+
+useEffect(() => {
+  // Fetch the current state of create_user_account from the backend
+  const fetchviewJob = async () => {
+    try {
+      const response = await axios.get('/access/submitevalutionget');
+      setEvaluation(response.data.submit_evaluation);
+    } catch (error) {
+      console.error('Error fetching create user account state:', error);
+    }
+  };
+
+  fetchviewJob();
+}, []);
 
   return (
     <div>
