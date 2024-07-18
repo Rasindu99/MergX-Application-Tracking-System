@@ -3,6 +3,7 @@ import { UserContext } from '../../Context/UserContext';
 import axios from 'axios';
 import { IoMdClose } from "react-icons/io";
 import { FaRegFilePdf } from "react-icons/fa6";
+import { toast } from "react-hot-toast";
 
 export default function ApplicationManagementComp() {
   const { user, users } = useContext(UserContext);
@@ -46,6 +47,7 @@ export default function ApplicationManagementComp() {
     try {
       await axios.put(`/cv/approveapplication/${id}`, { approval: true });
       console.log('Application approved');
+      toast.success('Application Approved');
       // After approval, fetch updated job groups
       getJobGroups();
       handleModalClose();
@@ -56,15 +58,24 @@ export default function ApplicationManagementComp() {
 
   const rejectApplication = async (id) => {
     try {
-      await axios.put(`/cv/rejectapplication/${id}`, { approval: false });
-      console.log('Application rejected');
-      // After approval, fetch updated job groups
-      getJobGroups();
-      handleModalClose();
+      const response = await axios.put(`/cv/rejectapplication/${id}`, { approval: false });
+      if (response.data.error) {
+        toast.error(response.data.message);
+      } else {
+        console.log('Application rejected');
+        getJobGroups();
+        handleModalClose();
+      }
     } catch (error) {
-      console.error('Error approving application:', error);
+      console.error('Error rejecting application:', error);
+      if (error.response) {
+        console.error('Server response:', error.response.data);
+        toast.error(error.response.data.message || 'Failed to reject application');
+      }
     }
   };
+  
+  
 
   useEffect(() => {
     getJobGroups();
