@@ -1,7 +1,7 @@
 import React from 'react';
 
 const ProgressTimeline = ({applicationExists}) => {
-
+  //console.log('ProgressLine',applicationExists[0].isHired);
   let a = 0;
 
   if (applicationExists.length === 0) {
@@ -18,7 +18,15 @@ const ProgressTimeline = ({applicationExists}) => {
       a = 1; // started evaluation only interviewer feedbacked
     }
   }
-   
+
+  let status;
+    if (applicationExists.length === 0 || applicationExists[0] === undefined) {
+      status = 'waiting for Approval';
+    } else if (applicationExists[0].isHired === undefined) {
+      status = 'waiting for Approval';
+    } else {
+      status = applicationExists[0].isHired ? 'Hired' : 'Rejected';
+    }
 
   return (
     <div className="flex justify-center">
@@ -104,7 +112,7 @@ const ProgressTimeline = ({applicationExists}) => {
           </div>
           <div className="grow pt-0.5 pb-8">
             <h3 className="flex gap-x-1.5 font-semibold text-gray-400 dark:text-white">
-            Waiting Approval
+            {status}
             </h3>
           </div>
         </div>

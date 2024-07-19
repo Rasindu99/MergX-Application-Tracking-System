@@ -186,7 +186,7 @@ const handleClear = () => {
               />
             </div>
             <div className='flex flex-col items-center justify-start mt-8'>
-              <p className='text-left'>{combinedData.interviewSchedule.jobtitle}</p>
+              <p className='text-left'>{combinedData.interviewSchedule?.jobtitle}</p>
               <textarea
                 className="block px-4 py-2 mt-5 bg-white border border-white border-opacity-25 rounded resize-none bg-opacity-5"
                 placeholder="Enter your text here..."
