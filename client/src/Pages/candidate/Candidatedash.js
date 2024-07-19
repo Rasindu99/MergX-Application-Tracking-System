@@ -35,8 +35,8 @@ export default function Candidatedash() {
       </div>
       {isChatbotOpen && (
         <Draggable>
-          <div className='fixed bottom-0 right-5 w-[450px] bg-[#17171A] border-orange-400 border-[1px] shadow-lg h-2/3 rounded-lg  overflow-auto z-50 '>
-            <ChatBot onClose={handleClose} />
+          <div className='fixed bottom-0 right-5 w-[450px] bg-[#17171A] border-orange-400 border-[1px] shadow-lg h-2/3 rounded-lg  overflow-auto z-50'>
+            <CandiChat onClose={handleClose} />
           </div>
         </Draggable>
         

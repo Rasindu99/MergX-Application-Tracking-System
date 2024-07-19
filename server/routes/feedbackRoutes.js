@@ -11,8 +11,8 @@ feedbackRoute.use(
 );
 
 
-feedbackRoute.post('/', createFeedback);
-feedbackRoute.get('/', getFeedback);
+feedbackRoute.post('/postFeedback', createFeedback);
+feedbackRoute.get('/getFeedback', getFeedback);
 
 
 module.exports = feedbackRoute;

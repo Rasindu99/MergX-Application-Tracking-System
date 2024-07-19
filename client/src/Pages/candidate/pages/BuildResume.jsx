@@ -157,7 +157,7 @@ const BuildResume = () => {
   };
 
   return (
-    <div className='flex flex-col justify-center items-center p-5 overflow-auto w-full z-10 my-comp relative'> 
+    <div className='flex flex-col justify-center items-center p-5 overflow-auto w-full my-comp relative'> 
       <div className='py-[64px] px-0' id ="about-sc" >
         <div className='container'>
           <div class="about-cnt">
@@ -216,7 +216,7 @@ const BuildResume = () => {
                       <input
                         name="image"
                         type="file"
-                        class="form-control image"
+                        class="p-[9px] border"
                         id="image"
                         accept="image/*"
                         onChange={handleImageChange}

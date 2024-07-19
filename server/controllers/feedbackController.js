@@ -3,24 +3,24 @@ const expressAsyncHandler = require("express-async-handler");
 
 const createFeedback = expressAsyncHandler(async (req, res) => {
   try {
-    const { rating, feedback, userId } = req.body;
+    const { rating, feedback, userId, combinedData } = req.body;
 
-    // Check if a feedback with the userId already exists
-    let existingFeedback = await Feedback.findOne({ userId });
-
-    if (existingFeedback) {
-      // Update existing feedback
-      existingFeedback.rating = rating;
-      existingFeedback.feedback = feedback;
-      const updatedFeedback = await existingFeedback.save();
-      res.status(200).json(updatedFeedback);
-    } else {
-      // Create new feedback if no existing feedback found
-      const newFeedback = new Feedback({ rating, feedback, userId });
-      const savedFeedback = await newFeedback.save();
-      res.status(201).json(savedFeedback);
+    // Check if combinedData has required fields
+    if (!combinedData || !combinedData.job_id || !combinedData.invitation_id) {
+      return res.status(400).json({ message: 'Invalid combinedData' });
     }
+
+    // Create new feedback document
+    const { job_id, invitation_id } = combinedData;
+    const newFeedback = new Feedback({ rating, feedback, userId, job_id, invitation_id });
+
+    // Save the new feedback document to the database
+    const savedFeedback = await newFeedback.save();
+
+    // Respond with the saved feedback
+    res.status(201).json(savedFeedback);
   } catch (error) {
+    console.error('Error creating feedback:', error); // Log the error for debugging
     res.status(400).json({ message: error.message });
   }
 });

@@ -43,8 +43,10 @@ router.get('/getRecruitercheckedEvaluations',getRecruitercheckedEvaluations);
 router.get('/getRecruiterUnCheckedEvaluations',getRecruiterUnCheckedEvaluations);
 router.get('/getHMcheckedEvaluations',getHMcheckedEvaluations);
 router.get('/getHMUnCheckedEvaluations',getHMUnCheckedEvaluations);
+
 router.put('/updatecheckedrecruiter/:_id',updatecheckedrecruiter);
 router.put('/updatecheckedhiringmanager/:_id',updatecheckedhiringmanager);
+
 router.get('/getcandidateforfinaldecision',getcandidateforfinaldecision);
 router.get('/gethiredCandidtaesList',gethiredCandidtaesList);
 router.get('/getrejectedList',getrejectedList);

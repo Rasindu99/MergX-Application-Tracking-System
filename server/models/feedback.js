@@ -16,6 +16,14 @@ const feedbackSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: true
+  },
+  job_id: {
+    type: String,
+    required: true
+  },
+  invitation_id: {
+    type: String,
+    required: true
   }
 });
 

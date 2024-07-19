@@ -7,7 +7,7 @@ import axios from 'axios';
 import Swal from 'sweetalert2';
 import {toast} from 'react-hot-toast';
 
-const FeedbackItem = ({ profile, name, date, position, userID }) => {
+const FeedbackItem = ({ profile, name, date, position, userID, combinedData }) => {
   const [showPopup, setShowPopup] = useState(false);
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState('');
@@ -25,8 +25,10 @@ const FeedbackItem = ({ profile, name, date, position, userID }) => {
       }
     };
 
-    fetchFeedbacks();
+    //fetchFeedbacks();
   }, [userID]);
+
+  console.log('xxxxx',combinedData);
 
   const togglePopup = (feedback = null) => {
     if (!feedbacks) {
@@ -57,10 +59,11 @@ const FeedbackItem = ({ profile, name, date, position, userID }) => {
       return;
     }
     try {
-      const response = await axios.post('http://localhost:8000/feedback', {
+      const response = await axios.post('http://localhost:8000/feedback/postFeedback', {
         rating: rating,
         feedback: comment,
-        userId: userID
+        userId: userID,
+        combinedData: combinedData
       });
 
       if (response.status === 200) {
@@ -183,7 +186,7 @@ const handleClear = () => {
               />
             </div>
             <div className='flex flex-col items-center justify-start mt-8'>
-              <p className='text-left'>Add a Comment</p>
+              <p className='text-left'>{combinedData.interviewSchedule.jobtitle}</p>
               <textarea
                 className="block px-4 py-2 mt-5 bg-white border border-white border-opacity-25 rounded resize-none bg-opacity-5"
                 placeholder="Enter your text here..."

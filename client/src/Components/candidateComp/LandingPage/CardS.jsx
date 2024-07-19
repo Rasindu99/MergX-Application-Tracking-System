@@ -1,22 +1,30 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useContext } from 'react'
 import axios from 'axios';
+import { UserContext } from '../../../Context/UserContext';
 
 export default function CardS(props) {
-  const [upcommingInterviews, setUpcommingInterviews] = useState(0);
+  const [upcommingInterviews, setUpcommingInterviews] = useState([]);
+  const [filteredUpcommingInterviews, setFilteredUpcommingInterviews] = useState(0);
+  const {user} = useContext(UserContext);
 
   const fetchData = async () => {
     try {
       const response = await axios.get('/cv/getapprovedapplication');
-      setUpcommingInterviews(response.data.length);
+      setUpcommingInterviews(response.data);
+      
+      const filteredData = upcommingInterviews.filter(item => user._id == item.user_id);
+      setFilteredUpcommingInterviews(filteredData.length);
     } catch (error) {
       console.error('Error fetching data :', error);
     }
   };
 
-
+  //
   useEffect(() => {
     fetchData();
   }, []);
+
+  
 
   return (
     <div className="[perspective:2000px]">
@@ -27,7 +35,7 @@ export default function CardS(props) {
 
        <div className="txt mx-auto my-0 text-center">
          <p className='text-lg text-white text-center font-bold'>Upcomming<br/>Interviews</p>
-         <h1 className='text-6xl text-[#EA7122] mt-3 text-center font-bold '>{upcommingInterviews}</h1>
+         <h1 className='text-6xl text-[#EA7122] mt-3 text-center font-bold '>{filteredUpcommingInterviews}</h1>
        </div>
      </div>
    </div>

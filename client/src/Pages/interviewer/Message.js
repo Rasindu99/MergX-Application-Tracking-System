@@ -1,7 +1,6 @@
 import React from 'react';
 import InterviewNav from '../../Components/interviewercomp/InterviewNav';
 import Description from '../../Components/interviewercomp/InterviewerDes';
-
 import AdminChatBotBottom from '../../Components/admincomp/AdminChatBotBottom';
 import Home from '../../Components/InternalChatComp/home/Home';
 
@@ -24,8 +23,9 @@ export default function Message() {
           </div>
         </div>
         </div>
-
-      
+      <div className="absolute bottom-0 right-0 z-50">
+        <AdminChatBotBottom />
+      </div>
     </div>
   )
 }

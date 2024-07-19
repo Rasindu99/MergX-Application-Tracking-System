@@ -6,21 +6,38 @@ const JoinedInterviews = ({isjoinedTrue, user}) => {
 
   const[startedEvaluations, setStartedEvaluations] = useState([]);
   const [visibleInterviewId, setVisibleInterviewId] = useState(null);
+  const [feedBack, setFeedBack] = useState([]);
 
   const handleToggleVisibility = (id) => {
     setVisibleInterviewId(prevId => prevId === id ? null : id);
   };
 
   useEffect(() => {
+    // Fetch evaluation candidates by job and user
     axios.get('/evaluation/getEvaCandidatesByJobAndUser', {
-      params:{user_id: user._id}
+      params: { user_id: user._id }
     })
-    .then(response => {setStartedEvaluations(response.data);
+    .then(response => {
+      setStartedEvaluations(response.data);
     })
     .catch(error => {
-      console.error('Error fetching JoinedInterviews Data :', error);
+      console.error('Error fetching JoinedInterviews Data:', error);
+    });
+
+    // Fetch feedback data
+    axios.get('/feedback/getFeedback')
+    .then(response => {
+      // Handle the feedback data as needed
+      // console.log('Feedback Data:', response.data);
+      setFeedBack(response.data);
+      // You might want to store this data in the state as well
+      // setFeedbackData(response.data);
     })
-  },[isjoinedTrue])
+    .catch(error => {
+      console.error('Error fetching feedback data:', error);
+    });
+
+  }, [user._id, isjoinedTrue]);
 
 
   return (
@@ -48,6 +65,7 @@ const JoinedInterviews = ({isjoinedTrue, user}) => {
                       isVisible={visibleInterviewId === application._id}
                       onToggleVisibility={() => handleToggleVisibility(application._id)}
                       user={user}
+                      feedBack={feedBack}
                       />
                   ))
               ) : (

@@ -3,27 +3,39 @@ import InterviewNav from '../../Components/interviewercomp/InterviewNav';
 import Description from '../../Components/interviewercomp/InterviewerDes';
 import FeedbackItem from '../../Components/interviewercomp/FeedbackItem';
 import AdminChatBotBottom from '../../Components/admincomp/AdminChatBotBottom';
+import axios from 'axios'
 
 export default function FeedbackSubmission() {
   const name = 'Feedback Submission';
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
-    const fetchUsers = async () => {
+    async function fetchData() {
       try {
-        const response = await fetch('http://localhost:8000/getusers');
-        if (response.ok) {
-          const data = await response.json();
-          setUsers(data);
-        } else {
-          console.error('Failed to fetch users');
-        }
-      } catch (error) {
-        console.error('Error fetching users:', error);
-      }
-    };
+        // Fetch data from the endpoints
+        const [usersResponse, approvedCVResponse] = await Promise.all([
+            axios.get('/getusers'),
+            axios.get('/cv/getapprovedisjoinedtrue')
+        ]);
 
-    fetchUsers(); 
+        // Extract data from responses
+        const usersData = usersResponse.data;
+        const approvedCVData = approvedCVResponse.data;
+
+        const combinedData = approvedCVData.map(cv => {
+          const user = usersData.find(user => user._id === cv.user_id);
+          return user ? { ...cv, user } : cv;
+        });
+        setUsers(combinedData);
+        console.log('Combined Data:', combinedData[0]); // Log the combined data
+
+        // You can now use the combinedData array here
+      } catch (error) {
+        console.error('Error fetching data:', error); // Handle any errors
+      }
+    }
+
+    fetchData();
   }, []);
 
   return (
@@ -41,11 +53,12 @@ export default function FeedbackSubmission() {
           {users.map((user, index) => (
             <FeedbackItem
              key={index}
-             profile={user.image}
-             name= {user.fname + " " + user.lname}
+             profile={user.user.image}
+             name= {user.user.fname + " " + user.user.lname}
              date= '2023/12/07'
              position= 'UI / UX'
-             userID = {user._id}
+             userID = {user.user._id}
+             combinedData = {user}
             />
           ))}
           </div>

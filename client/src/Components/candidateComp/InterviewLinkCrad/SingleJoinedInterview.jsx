@@ -4,10 +4,11 @@ import { GrFormView } from "react-icons/gr";
 import ProgressTimeline from '../../hiringManagerCompo/ProgressTimeline';
 import { IoMdClose } from "react-icons/io";
 
-const SingleJoinedInterview = ({ application, startedEvaluations, isVisible, onToggleVisibility, user }) => {
+const SingleJoinedInterview = ({ application, startedEvaluations, isVisible, onToggleVisibility, user, feedBack }) => {
 
   const [filteredEvaluations, setFilteredEvaluations] = useState();
   const [show, setShow] = useState(false);
+  const [interviewFeedback, setInterviewFeedback] = useState('Empty');
 
   useEffect(() => {
     if (isVisible) {
@@ -25,8 +26,19 @@ const SingleJoinedInterview = ({ application, startedEvaluations, isVisible, onT
   useEffect(() => {
     const applicationExists = startedEvaluations.filter(evaluation => evaluation.job_id === application.job_id);
     setFilteredEvaluations(applicationExists);
-    console.log("Joined -",applicationExists);
   }, [startedEvaluations, application.job_id]);
+
+  const filteredFeedbacks = feedBack.filter(fedback => fedback.job_id === application.job_id );
+  //console.log('zzz',feedback);
+  // Access the feedback property safely
+  // const feedback = filteredFeedbacks[0]?.feedback ?? '';
+
+  const feedback = filteredFeedbacks.length > 0
+    ? filteredFeedbacks[0]?.feedback ?? ''
+    : 'No Feedback';
+
+
+ 
 
   return (
     <div className='border-opacity-30 bg-gradient-to-b from-[#2B2B2B] to-[#272727] hover:from-[#464646] hover:to-[#333333]  cursor-pointer rounded-lg mb-[2px]'>
@@ -60,7 +72,7 @@ const SingleJoinedInterview = ({ application, startedEvaluations, isVisible, onT
             <div className='flex flex-col justify-around bg-neutral-800 p-3 rounded-lg h-[600px] overflow-y-auto box-border'>
               <h1 className='text-lg text text-gray-400 bg-[#3f3f3f] mb-3'>Tracking History</h1>
               <ProgressTimeline applicationExists={filteredEvaluations} />
-              <div className=' bg-[#3f3f3f] h-auto p-2 '><h1>Interviewer Feedback</h1></div>
+              <div className=' bg-[#3f3f3f] h-auto p-2 '><h1>{feedback}</h1></div>
             </div>
           </div>
 
