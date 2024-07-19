@@ -16,7 +16,7 @@ const Conversations = () => {
 
 	useEffect(() => {
     if (inputselected) {
-      // Filter conversations based on the selected conversation
+      //Filter conversations based on the selected conversation
       const filtered = conversations.filter((conversation) => conversation._id === inputselected._id);
       setFilteredConversations(filtered);
     } else {
@@ -28,7 +28,7 @@ const Conversations = () => {
 	return (
 		<div className=' py-2 flex h-full flex-col p-2 overflow-y-auto'>
 			{filteredConversations
-			//.filter(conversation => conversation.role !== 'candidate')
+			.filter(conversation => conversation.role !== 'candidate' &&  conversation.role !== 'admin')
 			.map((conversation, idx) => (
 				<Conversation
 					key={conversation._id}
