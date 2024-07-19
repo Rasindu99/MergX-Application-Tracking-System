@@ -66,6 +66,19 @@ export default function StatusUpdatePopup({ visible, onClose }) {
 
     const statusUpdate = async (e) => {
         e.preventDefault();
+
+        
+        if (!data.image && !data.description) {
+            toast.error('All fields must be filled!');
+            return;
+        }else if(!data.image){
+            toast.error('Image must be filled!');
+            return;     
+        }else if(!data.description){
+            toast.error('Description field must be filled!');
+            return; 
+        }
+
         if (user) {
             try {
                 const response = await axios.post('/status/update', data);
