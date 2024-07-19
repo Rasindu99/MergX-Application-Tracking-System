@@ -84,7 +84,7 @@ export default function ApprovedJobs() {
     return (
         <div className="w-full h-full flex text-left">
             <div className="flex flex-col w-[32.5%]">
-                <h2 className="text-white text-lg mb-4">Approved Jobs</h2>
+                <h2 className="text-white text-lg mb-4">Non Scheduled Jobs</h2>
                 <div className="flex flex-col w-[95%] h-[50%] max-h-[50%] overflow-y-auto pr-2">
                         {approvedJobPostings.map(job => (
                             <div 

@@ -33,7 +33,7 @@ function Forget() {
   return (
     <div className='flex h-screen'>
       <div className='absolute block h-12 mx-6 my-6'>
-        <Link to='/' className='text-4xl text-white opacity-40'><IoArrowBackSharp /></Link>
+        <Link to='/login' className='text-4xl text-white opacity-40'><IoArrowBackSharp /></Link>
       </div>
 
       {/* Left Section */}
@@ -76,10 +76,10 @@ function Forget() {
             </div>
             
             <div className='pt-10'>
-              <button type='submit' className='w-full h-12 px-12 bg-orange-600 rounded-2xl'>Send verification code</button>
+              <button type='submit' className='w-full h-12 px-12 bg-orange-600 hover:bg-orange-500 rounded-2xl'>Send verification code</button>
             </div>
             <div className='opacity-30'>
-              <label>Check your email or phone</label>
+              <label>Check your email</label>
             </div>
             {message && <div className='mt-4 text-white'>{message}</div>}
           </form>

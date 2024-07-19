@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const cors = require('cors');
-const { updateannouncement, getannouncement, deleteAnnouncement } = require('../controllers/announcementController');
+const { updateannouncement, getannouncement, deleteAnnouncement,editAnnouncement } = require('../controllers/announcementController');
 
 router.use(
     cors({
@@ -14,5 +14,6 @@ router.use(
 router.post('/updateannouncement', updateannouncement);
 router.get('/getannouncement', getannouncement);
 router.delete('/deleteannouncement/:announcementId', deleteAnnouncement);
+router.put('/editAnnouncement/:announcementId', editAnnouncement)
 
 module.exports = router;
