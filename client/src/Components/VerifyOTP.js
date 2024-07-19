@@ -39,7 +39,7 @@ export default function VerifyOTP() {
       const response = await axios.put('/changepassword', { otp, newPassword: password });
       if (response.status === 200) {
         toast.success('Password changed successfully');
-        navigate('/');
+        navigate('/login');
       } else {
         toast.error(response.data.error || 'Failed to change password');
       }
@@ -114,7 +114,7 @@ export default function VerifyOTP() {
               {!isVerified ? (
                 <button
                   type='button'
-                  className='w-full h-12 px-12 bg-orange-600 rounded-2xl md:w-auto'
+                  className='w-full h-12 px-12 bg-orange-600 hover:bg-orange-500 rounded-2xl md:w-auto'
                   onClick={handleVerifyClick}
                 >
                   Verify
@@ -122,7 +122,7 @@ export default function VerifyOTP() {
               ) : (
                 <button
                   type='button'
-                  className='w-full h-12 px-12 bg-orange-600 rounded-2xl md:w-auto'
+                  className='w-full h-12 px-12 bg-orange-600 hover:bg-orange-500 rounded-2xl md:w-auto'
                   onClick={handlePasswordChange}
                 >
                   Change Password

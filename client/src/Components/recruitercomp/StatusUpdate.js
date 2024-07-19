@@ -5,13 +5,16 @@ import StatusUpdatePopup from "./StatusUpdatePopup";
 import { MdDeleteForever } from "react-icons/md";
 import { GrFormView } from "react-icons/gr";
 //import { IoMdSettings } from "react-icons/io";
-import moment from 'moment';
-import AnnouncementUpdatePopup from './AnnouncementUpdatePopup';
-import { toast } from 'react-hot-toast';
-import StatusView from '../../Components/candidateComp/StatusView';
-import AnnouncementView from '../../Components/candidateComp/AnnouncementView';
 
-import { useInterviewContext } from '../../Context/InterviewContext';
+
+
+
+
+import moment from "moment";
+import AnnouncementUpdatePopup from "./AnnouncementUpdatePopup";
+import { toast } from "react-hot-toast";
+import StatusView from "../../Components/candidateComp/StatusView";
+import AnnouncementView from "../../Components/candidateComp/AnnouncementView";
 
 export default function StatusUpdate() {
   const { user } = useContext(UserContext);
@@ -89,6 +92,7 @@ export default function StatusUpdate() {
       .get("/status/getstatus")
       .then((response) => {
         setStatusData(response.data);
+        console.log('Updated Status');
       })
       .catch((error) => {
         console.error("Error fetching status:", error);
@@ -98,6 +102,7 @@ export default function StatusUpdate() {
       .get("/announcement/getannouncement")
       .then((response) => {
         setAnnouncementData(response.data);
+        console.log('Updated Announcement');
       })
       .catch((error) => {
         console.error("Error fetching announcement:", error);
@@ -295,10 +300,10 @@ export default function StatusUpdate() {
                         return null; // Skip rendering if the time format is invalid
                       }
 
-                      const timeAgo = announcementsTime.fromNow();
-                      const formattedTimeAgo = timeAgo.includes("seconds")
-                        ? timeAgo.replace("seconds", "secs")
-                        : timeAgo;
+                      // const timeAgo = announcementsTime.fromNow();
+                      // const formattedTimeAgo = timeAgo.includes("seconds")
+                      //   ? timeAgo.replace("seconds", "secs")
+                      //   : timeAgo;
 
                       return (
                         // Reverse the array before mapping
@@ -314,9 +319,9 @@ export default function StatusUpdate() {
                             <p className=" opacity-30">
                               {announcements.announce.slice(0, 35)}.....
                             </p>
-                            <div className="text-sm text-gray-400">
+                            {/* <div className="text-sm text-gray-400">
                               {formattedTimeAgo}
-                            </div>
+                            </div> */}
                           </td>
                           <td>
                             <div className="mr-4">

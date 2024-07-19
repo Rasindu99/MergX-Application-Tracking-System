@@ -1,5 +1,6 @@
 const Application = require('../models/application');
 const InterviewSchedule = require('../models/interviewSchedule');
+const {sendMail} = require('../helpers/sendMail')
 
 
 const uploadApplication = async (req, res) => {
@@ -94,6 +95,10 @@ const approveApplication = async (req, res) => {
         }
 
         res.status(200).json({ message: 'Application approved successfully', application: updatedApplication });
+        
+        sendMail( updatedApplication.user_email,"Application Approvel","Your application has been accepted")
+            
+
     } catch (error) {
         console.error('Error in approving application:', error);
         res.status(500).json({ message: 'Failed to approve application' });
@@ -123,6 +128,8 @@ const rejectApplication = async (req, res) => {
       await application.save();
   
       res.status(200).json({ message: 'Application rejected successfully', application });
+
+      sendMail( application.user_email,"Application Approvel","Your application has been rejected")
     } catch (error) {
       console.error('Error in rejecting application:', error);
       res.status(500).json({ error: true, message: 'Failed to reject application' });

@@ -78,12 +78,36 @@ const deleteStatuses = async (req, res) => {
     }
   };
 
+const editStatus = async (req, res) => {
+    try {
+        const statusId = req.params.statusId;
+        const { image, description } = req.body;
+
+        // Find the status by ID and update the fields
+        const updatedStatus = await Status.findByIdAndUpdate(
+            statusId,
+            { image, description },
+            { new: true }
+        );
+
+        if (!updatedStatus) {
+            return res.status(404).json({ error: 'Status not found' });
+        }
+
+        return res.status(200).json({ message: 'Status updated successfully', status: updatedStatus });
+    } catch (error) {
+        console.error('Error updating status:', error);
+        return res.status(500).json({ error: 'Internal server error' });
+    }
+};
+
 
 module.exports = {
     statusset,
     updatestatus,
     getstatus,
-    deleteStatuses
+    deleteStatuses,
+    editStatus
     
     
 };

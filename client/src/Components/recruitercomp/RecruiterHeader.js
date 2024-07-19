@@ -15,7 +15,7 @@ const { user } = useContext(UserContext);
             <Greatings/> <p className="text-3xl text-white font-medium ml-2">{user.fname}</p>
           </div>
           <div className='flex items-center justify-between'>
-            <MdOutlineNotificationsActive size={50} className="hover:text-white hover:opacity-70 mt-4"/>
+            {/* <MdOutlineNotificationsActive size={50} className="hover:text-white hover:opacity-70 mt-4"/> */}
             {!!user && <Popup
               img = {user.image}
               name = {user?.fname}

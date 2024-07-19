@@ -20,7 +20,6 @@ const updateannouncement = async (req, res) => {
             announce,
         });
         io.emit('anouncement_update', announcement);
-
         return res.status(200).json({ message: 'Announcement updated successfully', announcement });
     } catch (error) {
         console.error(error);
@@ -58,8 +57,36 @@ const deleteAnnouncement = async (req, res) => {
     }
 };
 
+// update announcement
+const editAnnouncement = async (req, res) => {
+    const announcementId = req.params.announcementId;
+    try {
+        const { title, announce } = req.body;
+
+        if (!title || !announce) {
+            return res.status(400).json({ error: 'Missing required fields' });
+        }
+
+        const updatedAnnouncement = await Announcement.findByIdAndUpdate(
+            announcementId,
+            { title, announce },
+            { new: true } // to return the updated document
+        );
+
+        if (!updatedAnnouncement) {
+            return res.status(404).json({ error: 'Announcement not found' });
+        }
+
+        return res.status(200).json({ message: 'Announcement updated successfully', announcement: updatedAnnouncement });
+    } catch (error) {
+        console.error('Error updating announcement', error);
+        return res.status(500).json({ error: 'Internal server error' });
+    }
+};
+
 module.exports = {
     updateannouncement,
     getannouncement,
-    deleteAnnouncement
+    deleteAnnouncement,
+    editAnnouncement
 };

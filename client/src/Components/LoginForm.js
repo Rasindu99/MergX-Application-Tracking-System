@@ -95,7 +95,7 @@ function LoginForm() {
 
             <div className='flex pt-5 mt-3 mb-6 text-right'>
               <div className='flex '>
-                <input type='checkbox' className='' /><label className='mx-2'> Remember me</label>
+               <label className='mx-2'></label>
               </div>
               <div className='flex ml-auto text-blue-400 '>
                 <Link to='/forget' className=''>Forget password</Link>
@@ -103,7 +103,7 @@ function LoginForm() {
             </div>
 
             <div className='pt-4 '>
-              <button className='h-12 px-12 bg-orange-600 rounded-xl md:w-auto'>LOGIN</button>
+              <button className='h-12 px-12 bg-orange-600 hover:bg-orange-500 rounded-xl md:w-auto'>LOGIN</button>
             </div>
             <div className='pt-5 my-3 opacity-30'>
               <hr className=''></hr>
@@ -113,7 +113,7 @@ function LoginForm() {
             </div>
             <div className='pt-4'>
               <Link to='/createNewAccount'>
-                <button type='button' className='w-full h-12 px-12 bg-orange-600 rounded-2xl md:w-auto'>Create New Account</button>
+                <button type='button' className='w-full h-12 px-12 bg-orange-600 hover:bg-orange-500 rounded-2xl md:w-auto'>Create New Account</button>
               </Link>
             </div>
           </form>
